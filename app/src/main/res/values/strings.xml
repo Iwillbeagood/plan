@@ -1,0 +1,6 @@
+<resources>
+
+    <string name="fcm_topic">hmmcargouser</string>
+    <string name="fcm_description">화물맨 화물등록기 알림입니다.</string>
+
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error_server">서비스가 잠시 지연되고 있습니다.\n잠시후 다시 해 주세요.</string>
+    <string name="error_network">네트워크 연결을 확인해 주세요.</string>
+    <string name="error_login">아이디 또는 비밀번호가 일치하지 않습니다.</string>
+
+</resources>

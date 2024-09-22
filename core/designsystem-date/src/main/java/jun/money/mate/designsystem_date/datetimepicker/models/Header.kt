@@ -1,0 +1,26 @@
+package jun.money.mate.designsystem_date.datetimepicker.models
+
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.Composable
+import kic.owner2.designsystem_date.datetimepicker.core.util.IconSource
+
+abstract class Header {
+
+    /**
+     * Standard implementation of a header.
+     * @param title The title of the header.
+     * @param icon The icon of the header.
+     */
+    data class Default(
+        val title: String,
+        val icon: IconSource? = null,
+    ) : Header()
+
+    /**
+     * Custom implementation of a header.
+     * @param header The custom header implementation with the horizontal padding values of the default header.
+     */
+    data class Custom(
+        val header: @Composable (paddingValues: PaddingValues) -> Unit
+    ) : Header()
+}

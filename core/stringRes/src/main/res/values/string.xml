@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">머니 메이트</string>
+    <string name="main_title">Money Mate</string>
+
+    <string name="btn_complete">확인</string>
+    <string name="btn_setting">설정</string>
+    <string name="btn_update">업데이트</string>
+    <string name="btn_select_complete">선택완료</string>
+    <string name="btn_yes">예</string>
+    <string name="btn_no">아니요</string>
+    <string name="btn_exit">종료</string>
+    <string name="btn_login">로그인</string>
+    <string name="btn_register">등록</string>
+    <string name="btn_register2">등록하기</string>
+    <string name="btn_dispatch">배차</string>
+    <string name="btn_open">열기</string>
+    <string name="btn_close">닫기</string>
+    <string name="btn_cancel">취소</string>
+    <string name="btn_close_today">하루동안 이 창을 열지 않음</string>
+    <string name="btn_auto_login">자동 로그인</string>
+    <string name="btn_cargo_registration">화물 등록하기</string>
+    <string name="btn_shared_cargo">공유화물정보</string>
+    <string name="btn_phone_call">전화 연결</string>
+    <string name="btn_reception_time_change">접수시간 변경</string>
+    <string name="btn_show_all">전체보기</string>
+    <string name="btn_change">변경</string>
+    <string name="btn_changing">변경하기</string>
+    <string name="btn_agree">동의</string>
+    <string name="btn_refusal">거절</string>
+    <string name="btn_reject">거부</string>
+    <string name="btn_select">선택</string>
+    <string name="btn_refresh">새로고침</string>
+    <string name="btn_search">검색하기</string>
+    <string name="btn_delete">삭제</string>
+    <string name="btn_delete_all">전체 삭제</string>
+
+</resources>

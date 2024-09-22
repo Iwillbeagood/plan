@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="login_validation_message">아이디를 입력하세요.</string>
+    <string name="password_validation_message">비밀번호를 입력하세요.</string>
+
+    <string name="login_error_message">아이디 또는 비밀번호가 일치하지 않습니다.</string>
+
+    <string name="email_error_message">이메일 형식이 올바르지 않습니다.</string>
+    <string name="number_error_message">번호를 바르게 입력해주세요.</string>
+</resources>
