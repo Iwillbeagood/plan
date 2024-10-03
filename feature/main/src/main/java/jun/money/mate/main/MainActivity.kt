@@ -37,11 +37,11 @@ class MainActivity : ComponentActivity() {
 
             val coroutineScope = rememberCoroutineScope()
             val snackBarHostState = remember { SnackbarHostState() }
-            val onShowErrorSnackBar: (MessageType) -> Unit = { errorType ->
+            val onShowSnackBar: (MessageType) -> Unit = { messageType ->
                 coroutineScope.launch {
-                    when (errorType) {
-                        is MessageType.Message -> snackBarHostState.showSnackbar(errorType.message)
-                        is MessageType.ResId -> snackBarHostState.showSnackbar(getString(errorType.resId))
+                    when (messageType) {
+                        is MessageType.Message -> snackBarHostState.showSnackbar(messageType.message)
+                        is MessageType.ResId -> snackBarHostState.showSnackbar(getString(messageType.resId))
                     }
                 }
             }
@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
                     navigator = navigator,
                     snackBarHostState = snackBarHostState,
                     appRestart = ::appRestart,
-                    onShowErrorSnackBar = onShowErrorSnackBar,
+                    onShowSnackBar = onShowSnackBar,
                 )
 
                 DialogContent(

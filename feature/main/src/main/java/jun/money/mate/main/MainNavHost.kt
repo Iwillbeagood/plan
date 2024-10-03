@@ -21,7 +21,7 @@ internal fun MainNavHost(
     paddingValues: PaddingValues,
     navigator: MainNavigator,
     appRestart: () -> Unit,
-    onShowErrorSnackBar: (MessageType) -> Unit,
+    onShowSnackBar: (MessageType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -37,7 +37,7 @@ internal fun MainNavHost(
             exitTransition = { fadeOut(animationSpec = tween(300)) }
         ) {
             homeNavGraph(
-                onShowErrorSnackBar = onShowErrorSnackBar,
+                onShowSnackBar = onShowSnackBar,
             )
         }
     }

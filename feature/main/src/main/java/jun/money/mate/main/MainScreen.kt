@@ -28,7 +28,7 @@ fun MainScreen(
     navigator: MainNavigator,
     snackBarHostState: SnackbarHostState,
     appRestart: () -> Unit,
-    onShowErrorSnackBar: (MessageType) -> Unit,
+    onShowSnackBar: (MessageType) -> Unit,
 ) {
     val connection by connectivityState()
 
@@ -37,7 +37,7 @@ fun MainScreen(
         connection = connection,
         snackBarHostState = snackBarHostState,
         appRestart = appRestart,
-        onShowErrorSnackBar = onShowErrorSnackBar,
+        onShowSnackBar = onShowSnackBar,
     )
 }
 
@@ -49,7 +49,7 @@ private fun MainScreenContent(
     connection: ConnectionState,
     snackBarHostState: SnackbarHostState,
     appRestart: () -> Unit,
-    onShowErrorSnackBar: (MessageType) -> Unit,
+    onShowSnackBar: (MessageType) -> Unit,
 ) {
     Scaffold(
         modifier = Modifier
@@ -79,7 +79,7 @@ private fun MainScreenContent(
                 navigator = navigator,
                 paddingValues = it,
                 appRestart = appRestart,
-                onShowErrorSnackBar = onShowErrorSnackBar,
+                onShowSnackBar = onShowSnackBar,
             )
         },
         snackbarHost = { SnackbarHost(snackBarHostState) }

@@ -42,6 +42,8 @@ include(
 // feature
 include(
     ":feature:main",
+    ":feature:splash",
+
     ":feature:home",
     ":feature:income",
     ":feature:saving-plan",
