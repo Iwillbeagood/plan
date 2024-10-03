@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,9 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jun.money.mate.database.AppDatabase
 import jun.money.mate.database.AppDatabase.Companion.DATABASE_NAME
-import jun.money.mate.database.entity.SettingEntity
 import kic.owner2.utils.BuildConfig
-import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 import javax.inject.Singleton
 
@@ -37,28 +34,28 @@ internal object DatabaseModule {
         }
     }
 
-    @Provides
-    @Singleton
-    fun databaseCallBack(): RoomDatabase.Callback = object : RoomDatabase.Callback() {
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-
-            Executors.newSingleThreadExecutor().execute {
-                runBlocking {
-                    db.execSQL(SettingEntity.INSERT_QUERY)
-                }
-            }
-        }
-    }
+//    @Provides
+//    @Singleton
+//    fun databaseCallBack(): RoomDatabase.Callback = object : RoomDatabase.Callback() {
+//        override fun onCreate(db: SupportSQLiteDatabase) {
+//            super.onCreate(db)
+//
+//            Executors.newSingleThreadExecutor().execute {
+//                runBlocking {
+//                    db.execSQL(SettingEntity.INSERT_QUERY)
+//                }
+//            }
+//        }
+//    }
 
     @Provides
     @Singleton
     fun providesAppDatabase(
         @ApplicationContext context: Context,
         queryCallBackLogger: RoomDatabase.QueryCallback,
-        addCallback: RoomDatabase.Callback
+//        addCallback: RoomDatabase.Callback
     ): AppDatabase = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
         .setQueryCallback(queryCallBackLogger, Executors.newSingleThreadExecutor())
-        .addCallback(addCallback)
+//        .addCallback(addCallback)
         .build()
 }

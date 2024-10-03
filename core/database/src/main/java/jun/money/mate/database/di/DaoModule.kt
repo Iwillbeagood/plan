@@ -5,9 +5,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import jun.money.mate.database.AppDatabase
-import jun.money.mate.database.dao.NoticePopUpDao
-import jun.money.mate.database.dao.PushDao
-import jun.money.mate.database.dao.SettingDao
+import jun.money.mate.database.dao.IncomeDao
+import jun.money.mate.database.dao.SavingPlanDao
+import jun.money.mate.database.dao.SpendingPlanDao
 import javax.inject.Singleton
 
 @Module
@@ -16,19 +16,19 @@ internal object DaoModule {
 
     @Provides
     @Singleton
-    fun providesNoticePopUpDao(
+    fun provideSpendingDao(
         database: AppDatabase,
-    ): NoticePopUpDao = database.noticePopUpDao()
+    ) : SpendingPlanDao = database.spendingPlanDao()
 
     @Provides
     @Singleton
-    fun provideSettingDao(
+    fun provideSavingPlanDao(
         database: AppDatabase,
-    ) : SettingDao = database.settingDao()
+    ) : SavingPlanDao = database.savingPlanDao()
 
     @Provides
     @Singleton
-    fun providePushDao(
+    fun provideIncomeDao(
         database: AppDatabase,
-    ) : PushDao = database.pushDao()
+    ) : IncomeDao = database.incomeDao()
 }

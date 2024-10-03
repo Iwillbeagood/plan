@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kic.owner2.main.component.MainNavigator
 import kic.owner2.main.component.MenuDrawerSheet
-import jun.money.mate.model.error.MessageType
+import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.etc.ConnectionState
 import jun.money.mate.network.connectivityState
 import kotlinx.coroutines.launch

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kic.owner2.domain.AppVersionSettingUsecase
 import kic.owner2.domain.login.CheckLoginRequirementUseCase
-import jun.money.mate.model.error.MessageType
+import jun.money.mate.model.etc.error.MessageType
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

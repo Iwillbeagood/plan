@@ -27,7 +27,7 @@ import jun.money.mate.designsystem.theme.JUNTheme
 import kic.owner2.main.component.MainNavigator
 import kic.owner2.main.component.UpdateDialog
 import kic.owner2.main.component.rememberMainNavigator
-import jun.money.mate.model.error.MessageType
+import jun.money.mate.model.etc.error.MessageType
 import kic.owner2.stringres.R
 import kic.owner2.utils.device.DeviceInfo
 import kotlinx.coroutines.launch

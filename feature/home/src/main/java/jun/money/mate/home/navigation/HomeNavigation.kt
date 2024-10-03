@@ -5,7 +5,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
-import jun.money.mate.model.error.MessageType
+import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.Route
 
 fun NavController.navigateToHome() {

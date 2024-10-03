@@ -1,4 +1,4 @@
-package jun.money.mate.model.error
+package jun.money.mate.model.etc.error
 
 sealed interface NoticeErrorType {
     data class Snackbar(val message: String): NoticeErrorType

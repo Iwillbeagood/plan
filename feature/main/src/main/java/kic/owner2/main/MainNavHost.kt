@@ -19,7 +19,7 @@ import kic.owner2.login.navigation.loginNavGraph
 import kic.owner2.customer_service.navigation.customerServiceNavGraph
 import kic.owner2.main.component.MainMenuNavItem
 import kic.owner2.main.component.MainNavigator
-import jun.money.mate.model.error.MessageType
+import jun.money.mate.model.etc.error.MessageType
 import kic.owner2.myInfo.navigation.myInfoNavGraph
 import kic.owner2.notice.navigation.noticeNavGraph
 import kic.owner2.push.navigation.pushNavGraph

@@ -1,4 +1,4 @@
-package jun.money.mate.model.error
+package jun.money.mate.model.etc.error
 
 sealed class MessageType {
     data class Message(val message: String) : MessageType()

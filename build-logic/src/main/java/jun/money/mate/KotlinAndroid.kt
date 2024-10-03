@@ -21,7 +21,7 @@ internal fun Project.configureKotlinAndroid() {
     androidExtension.apply {
         compileSdk = 34
         defaultConfig {
-            minSdk = 21
+            minSdk = 26
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
         compileOptions {
@@ -52,8 +52,6 @@ internal fun Project.configureKotlin() {
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
-            // Treat all Kotlin warnings as errors (disabled by default)
-            // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
             val warningsAsErrors: String? by project
             allWarningsAsErrors.set(warningsAsErrors.toBoolean())
             freeCompilerArgs.set(

@@ -1,7 +1,3 @@
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.TimeZone
-
 plugins {
     alias(libs.plugins.jun.android.application)
     alias(libs.plugins.google.services)
@@ -25,16 +21,6 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
-    applicationVariants.all {
-        val variant = this
-        variant.outputs
-            .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
-            .forEach { output ->
-                val currentTime = SimpleDateFormat("yyyy.MM.dd")
-                currentTime.timeZone = TimeZone.getTimeZone("Asia/Seoul")
-                output.outputFileName = "[${variant.versionName}] 뺙통_${currentTime.format(Date())}.apk"
-            }
-    }
     buildFeatures {
         buildConfig = true
     }
@@ -42,7 +28,6 @@ android {
 
 dependencies {
     implementation(projects.core.data)
-    implementation(projects.core.dataApi)
     implementation(projects.core.utils)
     implementation(projects.core.model)
     implementation(projects.core.stringRes)

@@ -3,20 +3,22 @@ package jun.money.mate.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import jun.money.mate.database.converter.IncomeTypeConverter
 import jun.money.mate.database.converter.LocalDateConverter
 import jun.money.mate.database.converter.LocalDateTimeConverter
-import jun.money.mate.database.dao.NoticePopUpDao
-import jun.money.mate.database.dao.PushDao
-import jun.money.mate.database.dao.SettingDao
-import jun.money.mate.database.entity.NoticePopUpEntity
-import jun.money.mate.database.entity.PushEntity
-import jun.money.mate.database.entity.SettingEntity
+import jun.money.mate.database.converter.SpendingTypeConverter
+import jun.money.mate.database.dao.IncomeDao
+import jun.money.mate.database.dao.SavingPlanDao
+import jun.money.mate.database.dao.SpendingPlanDao
+import jun.money.mate.database.entity.IncomeEntity
+import jun.money.mate.database.entity.SavingPlanEntity
+import jun.money.mate.database.entity.SpendingPlanEntity
 
 @Database(
     entities = [
-        NoticePopUpEntity::class,
-        SettingEntity::class,
-        PushEntity::class
+        SpendingPlanEntity::class,
+        SavingPlanEntity::class,
+        IncomeEntity::class,
     ],
     version = 1,
     exportSchema = true,
@@ -24,19 +26,22 @@ import jun.money.mate.database.entity.SettingEntity
 @TypeConverters(
     value = [
         LocalDateTimeConverter::class,
-        LocalDateConverter::class
+        LocalDateConverter::class,
+        SpendingTypeConverter::class,
+        IncomeTypeConverter::class,
     ]
 )
 internal abstract class AppDatabase : RoomDatabase() {
-    abstract fun noticePopUpDao(): NoticePopUpDao
-    abstract fun settingDao(): SettingDao
-    abstract fun pushDao(): PushDao
+
+    abstract fun spendingPlanDao(): SpendingPlanDao
+    abstract fun savingPlanDao(): SavingPlanDao
+    abstract fun incomeDao(): IncomeDao
 
     companion object {
         const val DATABASE_NAME = "app_database"
 
-        const val SETTINGS_TABLE_NAME = "settings"
-        const val NOTICE_POP_UP_TABLE_NAME = "notice_pop_up"
-        const val PUSH_TABLE_NAME = "pushes"
+        const val INCOME_TABLE_NAME = "income"
+        const val SPENDING_PLAN_TABLE_NAME = "spending_plan"
+        const val SAVING_PLAN_TABLE_NAME = "saving_plan"
     }
 }
