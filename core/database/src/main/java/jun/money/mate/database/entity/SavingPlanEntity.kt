@@ -7,7 +7,7 @@ import java.time.LocalDate
 
 @Entity(tableName = AppDatabase.SAVING_PLAN_TABLE_NAME)
 data class SavingPlanEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val title: String,
     val amount: Double,
     val planDate: LocalDate,

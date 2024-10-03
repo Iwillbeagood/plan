@@ -3,7 +3,7 @@ package jun.money.mate.database.converter
 import androidx.room.TypeConverter
 import jun.money.mate.model.income.IncomeType
 
-class IncomeTypeConverter {
+internal class IncomeTypeConverter {
 
     @TypeConverter
     fun fromIncomeType(incomeType: IncomeType): String {

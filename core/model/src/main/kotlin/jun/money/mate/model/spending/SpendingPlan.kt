@@ -10,6 +10,5 @@ data class SpendingPlan(
     val planDate: LocalDate,
     val executeDate: LocalDate,
     val isExecuted: Boolean,
-    val notificationEnabled: Boolean,
     val willExecute: Boolean
 )

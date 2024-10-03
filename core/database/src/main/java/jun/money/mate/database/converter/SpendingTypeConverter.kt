@@ -3,7 +3,7 @@ package jun.money.mate.database.converter
 import androidx.room.TypeConverter
 import jun.money.mate.model.spending.SpendingType
 
-class SpendingTypeConverter {
+internal class SpendingTypeConverter {
 
     @TypeConverter
     fun fromSpendingType(spendingType: SpendingType): String {

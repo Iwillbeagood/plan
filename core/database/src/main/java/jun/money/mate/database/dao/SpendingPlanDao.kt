@@ -5,6 +5,7 @@ import androidx.room.Query
 import androidx.room.Upsert
 import jun.money.mate.database.AppDatabase.Companion.SPENDING_PLAN_TABLE_NAME
 import jun.money.mate.database.entity.SpendingPlanEntity
+import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
 @Dao
@@ -12,6 +13,9 @@ interface SpendingPlanDao {
 
     @Upsert
     suspend fun upsertSpendingPlan(entity: SpendingPlanEntity)
+
+    @Query("SELECT * FROM $SPENDING_PLAN_TABLE_NAME")
+    fun getSpendingPlanFlow(): Flow<List<SpendingPlanEntity>>
 
     @Query("DELETE FROM $SPENDING_PLAN_TABLE_NAME WHERE id = :id")
     suspend fun deleteById(id: Long)

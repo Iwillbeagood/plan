@@ -8,7 +8,7 @@ import java.time.LocalDate
 
 @Entity(tableName = AppDatabase.SPENDING_PLAN_TABLE_NAME)
 data class SpendingPlanEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val title: String,
     val type: SpendingType,
     val amount: Double,
