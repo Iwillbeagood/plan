@@ -1,4 +1,4 @@
-package kic.owner2.main.component
+package jun.money.mate.main.component
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

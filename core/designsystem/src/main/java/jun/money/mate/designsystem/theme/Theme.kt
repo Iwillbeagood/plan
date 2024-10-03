@@ -79,6 +79,7 @@ fun ChangeStatusBarColor(
 ) {
     val view = LocalView.current
     val darkTheme = LocalDarkTheme.current
+
     SideEffect {
         val window = (view.context as Activity).window
         window.statusBarColor = color.toArgb()
