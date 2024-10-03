@@ -20,6 +20,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:ui"))
     implementation(project(":core:stringRes"))
+    implementation(project(":core:utils"))
     implementation(project(":core:navigation"))
 
     testImplementation(project(":core:testing"))
