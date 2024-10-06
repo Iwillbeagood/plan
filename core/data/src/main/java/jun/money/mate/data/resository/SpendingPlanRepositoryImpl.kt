@@ -52,8 +52,13 @@ class SpendingPlanRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getSpendingPlansByMonth(year: String, month: String): Flow<SpendingPlanList> {
-        return spendingPlanDao.getSpendingPlansByMonth(year, month).map { list ->
+    override fun getSpendingPlansByMonth(
+        date: LocalDate
+    ): Flow<SpendingPlanList> {
+        return spendingPlanDao.getSpendingPlansByMonth(
+            date.year.toString(),
+            date.monthValue.toString()
+        ).map { list ->
             SpendingPlanList(
                 list.map {
                     SpendingPlan(

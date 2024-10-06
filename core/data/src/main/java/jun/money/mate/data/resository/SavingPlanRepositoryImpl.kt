@@ -5,7 +5,6 @@ import jun.money.mate.database.dao.SavingPlanDao
 import jun.money.mate.database.entity.SavingPlanEntity
 import jun.money.mate.model.saving.SavingPlan
 import jun.money.mate.model.saving.SavingPlanList
-import jun.money.mate.model.spending.SpendingPlanList
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -50,8 +49,11 @@ class SavingPlanRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getSavingPlansByMonth(year: String, month: String): Flow<SavingPlanList> {
-        return savingPlanDao.getSavingPlansByMonth(year, month).map { list ->
+    override fun getSavingPlansByMonth(date: LocalDate): Flow<SavingPlanList> {
+        return savingPlanDao.getSavingPlansByMonth(
+            date.year.toString(),
+            date.monthValue.toString()
+        ).map { list ->
             SavingPlanList(
                 list.map {
                     SavingPlan(

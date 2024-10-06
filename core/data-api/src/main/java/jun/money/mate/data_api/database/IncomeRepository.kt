@@ -3,6 +3,7 @@ package jun.money.mate.data_api.database
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 interface IncomeRepository {
 
@@ -10,7 +11,9 @@ interface IncomeRepository {
 
     fun getIncomeFlow(): Flow<IncomeList>
 
-    fun getIncomesByMonth(year: String, month: String): Flow<IncomeList>
+    fun getIncomesByMonth(
+        data: LocalDate = LocalDate.now()
+    ): Flow<IncomeList>
 
     suspend fun deleteById(id: Long)
 }

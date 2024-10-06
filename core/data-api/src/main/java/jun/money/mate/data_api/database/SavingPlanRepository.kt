@@ -11,7 +11,9 @@ interface SavingPlanRepository {
 
     fun getSavingPlanFlow(): Flow<SavingPlanList>
 
-    fun getSavingPlansByMonth(year: String, month: String): Flow<SavingPlanList>
+    fun getSavingPlansByMonth(
+        date: LocalDate = LocalDate.now()
+    ): Flow<SavingPlanList>
 
     suspend fun updateExecuteState(id: Long, executeDate: LocalDate, isExecuted: Boolean)
 

@@ -8,6 +8,7 @@ import jun.money.mate.model.income.IncomeList
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.LocalDate
 import javax.inject.Inject
 
 class IncomeRepositoryImpl @Inject constructor(
@@ -47,8 +48,11 @@ class IncomeRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getIncomesByMonth(year: String, month: String): Flow<IncomeList> {
-        return incomeDao.getIncomesByMonth(year, month).map { list ->
+    override fun getIncomesByMonth(data: LocalDate): Flow<IncomeList> {
+        return incomeDao.getIncomesByMonth(
+            year = data.year.toString(),
+            month = data.monthValue.toString()
+        ).map { list ->
             IncomeList(
                 list.map {
                     Income(
