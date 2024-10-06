@@ -1,6 +1,7 @@
 package jun.money.mate.splash
 
-import android.window.SplashScreen
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,34 +12,50 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.nonScaledSp
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.stringres.R
+import jun.money.mate.res.R
+import kotlinx.coroutines.delay
 
 @Composable
 internal fun SplashRoute(
-    onShowSnackbar: (MessageType) -> Unit,
+    onShowHomeScreen: () -> Unit
 ) {
+    SplashScreen()
 
+    LaunchedEffect(Unit) {
+        delay(2000)
+        onShowHomeScreen()
+    }
 }
 
 @Composable
-private fun SplashScreen(
-) {
+private fun SplashScreen() {
+    var visible by remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -51,22 +68,28 @@ private fun SplashScreen(
                 .fillMaxWidth()
                 .align(Alignment.TopCenter)
         ) {
-            Spacer(modifier = Modifier.height(100.dp))
-            Text(
-                text = stringResource(id = R.string.app_name),
-                color = White1,
-                style = JUNTheme.typography.titleLargeR.nonScaledSp,
+            VerticalSpacer(150.dp)
+            Icon(
+                painter = painterResource(R.drawable.ic_main),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier.padding(horizontal = 100.dp)
             )
             Text(
                 text = stringResource(id = R.string.app_name),
                 color = White1,
-                style = JUNTheme.typography.titleLargeR.copy(
-                    fontSize = 80.sp,
-                    platformStyle = PlatformTextStyle(
-                        includeFontPadding = false
-                    )
-                ).nonScaledSp
+                style = JUNTheme.typography.displayLargeB.nonScaledSp,
             )
+            AnimatedVisibility(
+                visible = visible,
+                enter = slideInVertically(initialOffsetY = { -it })
+            ) {
+                Text(
+                    text = "나의 가장 좋은 지출관리 친구",
+                    color = White1,
+                    style = JUNTheme.typography.displayLargeB.nonScaledSp
+                )
+            }
         }
         Text(
             text = stringResource(id = R.string.app_copyright),
@@ -76,6 +99,10 @@ private fun SplashScreen(
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 20.dp)
         )
+    }
+
+    LaunchedEffect(Unit) {
+        visible = true
     }
 }
 

@@ -13,8 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import jun.money.mate.home.navigation.homeNavGraph
+import jun.money.mate.main.component.MainBottomNavItem
 import jun.money.mate.main.component.MainNavigator
 import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.splash.navigation.splashNavGraph
 
 @Composable
 internal fun MainNavHost(
@@ -36,6 +38,9 @@ internal fun MainNavHost(
             enterTransition = { fadeIn(animationSpec = tween(300)) },
             exitTransition = { fadeOut(animationSpec = tween(300)) }
         ) {
+            splashNavGraph(
+                onShowHomeScreen = { navigator.navigateTo(MainBottomNavItem.Home) },
+            )
             homeNavGraph(
                 onShowSnackBar = onShowSnackBar,
             )

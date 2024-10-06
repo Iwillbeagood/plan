@@ -36,7 +36,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.JUNTheme
-import jun.money.mate.stringres.R
+import jun.money.mate.res.R
 
 @Composable
 fun DefaultDialog(

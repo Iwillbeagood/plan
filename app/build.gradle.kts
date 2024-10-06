@@ -30,7 +30,7 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.utils)
     implementation(projects.core.model)
-    implementation(projects.core.stringRes)
+    implementation(projects.core.res)
 
     implementation(projects.feature.main)
 

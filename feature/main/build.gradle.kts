@@ -9,9 +9,9 @@ android {
 }
 
 dependencies {
+    implementation(projects.feature.splash)
     implementation(projects.feature.home)
 
     implementation(projects.core.network)
-    implementation(projects.core.stringRes)
     implementation(projects.core.utils)
 }

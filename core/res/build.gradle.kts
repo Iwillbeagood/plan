@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    setNamespace("stringres")
+    setNamespace("res")
 
     buildFeatures {
         buildConfig = true

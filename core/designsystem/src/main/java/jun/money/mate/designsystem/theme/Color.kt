@@ -2,7 +2,7 @@ package jun.money.mate.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
-val main = Color(0xFF1693ff)
+val main = Color(0xFF5FAFFF)
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)

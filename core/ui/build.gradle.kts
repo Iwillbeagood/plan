@@ -11,8 +11,7 @@ android {
 
 dependencies {
     implementation(projects.core.model)
-    implementation(projects.core.stringRes)
+    implementation(projects.core.res)
     implementation(projects.core.designsystem)
-    implementation(projects.core.stringRes)
     implementation(projects.core.utils)
 }

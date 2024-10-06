@@ -22,7 +22,7 @@ import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.White1
-import jun.money.mate.stringres.R
+import jun.money.mate.res.R
 
 @Composable
 fun LargeButton(

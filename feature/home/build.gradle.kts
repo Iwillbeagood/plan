@@ -10,6 +10,5 @@ android {
 
 dependencies {
     implementation(projects.core.utils)
-    implementation(projects.core.stringRes)
     implementation(projects.core.dataApi)
 }

@@ -13,6 +13,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.stringRes)
+    implementation(projects.core.res)
     implementation(projects.core.model)
 }

@@ -19,7 +19,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:domain"))
     implementation(project(":core:ui"))
-    implementation(project(":core:stringRes"))
+    implementation(project(":core:res"))
     implementation(project(":core:utils"))
     implementation(project(":core:navigation"))
 

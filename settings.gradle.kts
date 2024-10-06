@@ -33,7 +33,7 @@ include(
     ":core:model",
     ":core:navigation",
     ":core:network",
-    ":core:stringRes",
+    ":core:res",
     ":core:testing",
     ":core:ui",
     ":core:utils"
