@@ -4,6 +4,8 @@ import jun.money.mate.data_api.database.SavingPlanRepository
 import jun.money.mate.database.dao.SavingPlanDao
 import jun.money.mate.database.entity.SavingPlanEntity
 import jun.money.mate.model.saving.SavingPlan
+import jun.money.mate.model.saving.SavingPlanList
+import jun.money.mate.model.spending.SpendingPlanList
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -30,19 +32,39 @@ class SavingPlanRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getSavingPlanFlow(): Flow<List<SavingPlan>> {
+    override fun getSavingPlanFlow(): Flow<SavingPlanList> {
         return savingPlanDao.getSavingPlanFlow().map { list ->
-            list.map {
-                SavingPlan(
-                    id = it.id,
-                    title = it.title,
-                    amount = it.amount,
-                    planDate = it.planDate,
-                    executeDate = it.executeDate,
-                    isExecuted = it.isExecuted,
-                    willExecute = it.willExecute
-                )
-            }
+            SavingPlanList(
+                list.map {
+                    SavingPlan(
+                        id = it.id,
+                        title = it.title,
+                        amount = it.amount,
+                        planDate = it.planDate,
+                        executeDate = it.executeDate,
+                        isExecuted = it.isExecuted,
+                        willExecute = it.willExecute
+                    )
+                }
+            )
+        }
+    }
+
+    override fun getSavingPlansByMonth(year: String, month: String): Flow<SavingPlanList> {
+        return savingPlanDao.getSavingPlansByMonth(year, month).map { list ->
+            SavingPlanList(
+                list.map {
+                    SavingPlan(
+                        id = it.id,
+                        title = it.title,
+                        amount = it.amount,
+                        planDate = it.planDate,
+                        executeDate = it.executeDate,
+                        isExecuted = it.isExecuted,
+                        willExecute = it.willExecute
+                    )
+                }
+            )
         }
     }
 

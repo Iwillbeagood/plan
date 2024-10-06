@@ -16,6 +16,9 @@ interface IncomeDao {
     @Query("SELECT * FROM $INCOME_TABLE_NAME")
     fun getIncomeFlow(): Flow<List<IncomeEntity>>
 
+    @Query("SELECT * FROM $INCOME_TABLE_NAME WHERE strftime('%Y', incomeDate) = :year AND strftime('%m', incomeDate) = :month")
+    fun getIncomesByMonth(year: String, month: String): Flow<List<IncomeEntity>>
+
     @Query("DELETE FROM $INCOME_TABLE_NAME WHERE id = :id")
     suspend fun deleteById(id: Long)
 }

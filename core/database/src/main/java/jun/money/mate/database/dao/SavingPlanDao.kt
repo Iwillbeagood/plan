@@ -4,7 +4,9 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
 import jun.money.mate.database.AppDatabase.Companion.SAVING_PLAN_TABLE_NAME
+import jun.money.mate.database.AppDatabase.Companion.SPENDING_PLAN_TABLE_NAME
 import jun.money.mate.database.entity.SavingPlanEntity
+import jun.money.mate.database.entity.SpendingPlanEntity
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
@@ -16,6 +18,10 @@ interface SavingPlanDao {
 
     @Query("SELECT * FROM $SAVING_PLAN_TABLE_NAME")
     fun getSavingPlanFlow(): Flow<List<SavingPlanEntity>>
+
+
+    @Query("SELECT * FROM $SAVING_PLAN_TABLE_NAME WHERE strftime('%Y', planDate) = :year AND strftime('%m', planDate) = :month")
+    fun getSavingPlansByMonth(year: String, month: String): Flow<List<SavingPlanEntity>>
 
     @Query("UPDATE $SAVING_PLAN_TABLE_NAME SET executeDate = :executeDate, isExecuted = :isExecuted WHERE id = :id")
     suspend fun updateExecuteState(id: Long, executeDate: LocalDate, isExecuted: Boolean)

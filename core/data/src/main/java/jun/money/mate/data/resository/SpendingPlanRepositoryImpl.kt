@@ -4,6 +4,7 @@ import jun.money.mate.data_api.database.SpendingPlanRepository
 import jun.money.mate.database.dao.SpendingPlanDao
 import jun.money.mate.database.entity.SpendingPlanEntity
 import jun.money.mate.model.spending.SpendingPlan
+import jun.money.mate.model.spending.SpendingPlanList
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -32,20 +33,41 @@ class SpendingPlanRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getSpendingPlanFlow(): Flow<List<SpendingPlan>> {
+    override fun getSpendingPlanFlow(): Flow<SpendingPlanList> {
         return spendingPlanDao.getSpendingPlanFlow().map { list ->
-            list.map {
-                SpendingPlan(
-                    id = it.id,
-                    title = it.title,
-                    type = it.type,
-                    amount = it.amount,
-                    planDate = it.planDate,
-                    executeDate = it.executeDate,
-                    isExecuted = it.isExecuted,
-                    willExecute = it.willExecute,
-                )
-            }
+            SpendingPlanList(
+                list.map {
+                    SpendingPlan(
+                        id = it.id,
+                        title = it.title,
+                        type = it.type,
+                        amount = it.amount,
+                        planDate = it.planDate,
+                        executeDate = it.executeDate,
+                        isExecuted = it.isExecuted,
+                        willExecute = it.willExecute,
+                    )
+                }
+            )
+        }
+    }
+
+    override fun getSpendingPlansByMonth(year: String, month: String): Flow<SpendingPlanList> {
+        return spendingPlanDao.getSpendingPlansByMonth(year, month).map { list ->
+            SpendingPlanList(
+                list.map {
+                    SpendingPlan(
+                        id = it.id,
+                        title = it.title,
+                        type = it.type,
+                        amount = it.amount,
+                        planDate = it.planDate,
+                        executeDate = it.executeDate,
+                        isExecuted = it.isExecuted,
+                        willExecute = it.willExecute,
+                    )
+                }
+            )
         }
     }
 

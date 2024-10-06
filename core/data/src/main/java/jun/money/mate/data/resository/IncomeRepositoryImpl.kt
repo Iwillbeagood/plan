@@ -4,6 +4,7 @@ import jun.money.mate.data_api.database.IncomeRepository
 import jun.money.mate.database.dao.IncomeDao
 import jun.money.mate.database.entity.IncomeEntity
 import jun.money.mate.model.income.Income
+import jun.money.mate.model.income.IncomeList
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -29,18 +30,37 @@ class IncomeRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getIncomeFlow(): Flow<List<Income>> {
+    override fun getIncomeFlow(): Flow<IncomeList> {
         return incomeDao.getIncomeFlow().map { list ->
-            list.map {
-                Income(
-                    id = it.id,
-                    title = it.title,
-                    amount = it.amount,
-                    type = it.type,
-                    incomeDate = it.incomeDate,
-                    isExecuted = it.isExecuted
-                )
-            }
+            IncomeList(
+                list.map {
+                    Income(
+                        id = it.id,
+                        title = it.title,
+                        amount = it.amount,
+                        type = it.type,
+                        incomeDate = it.incomeDate,
+                        isExecuted = it.isExecuted
+                    )
+                }
+            )
+        }
+    }
+
+    override fun getIncomesByMonth(year: String, month: String): Flow<IncomeList> {
+        return incomeDao.getIncomesByMonth(year, month).map { list ->
+            IncomeList(
+                list.map {
+                    Income(
+                        id = it.id,
+                        title = it.title,
+                        amount = it.amount,
+                        type = it.type,
+                        incomeDate = it.incomeDate,
+                        isExecuted = it.isExecuted
+                    )
+                }
+            )
         }
     }
 

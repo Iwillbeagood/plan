@@ -10,3 +10,10 @@ data class Income(
     val incomeDate: LocalDate,
     val isExecuted: Boolean,
 )
+
+data class IncomeList(
+    val incomes: List<Income>
+) {
+    val total get() = incomes.sumOf { it.amount }
+    val isEmpty get() = incomes.isEmpty()
+}

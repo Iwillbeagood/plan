@@ -11,3 +11,10 @@ data class SavingPlan(
     val isExecuted: Boolean,
     val willExecute: Boolean
 )
+
+data class SavingPlanList(
+    val savingPlans: List<SavingPlan>
+) {
+    val total get() = savingPlans.sumOf { it.amount }
+    val isEmpty get() = savingPlans.isEmpty()
+}

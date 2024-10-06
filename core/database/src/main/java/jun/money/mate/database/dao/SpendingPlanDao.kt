@@ -3,7 +3,9 @@ package jun.money.mate.database.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import jun.money.mate.database.AppDatabase.Companion.INCOME_TABLE_NAME
 import jun.money.mate.database.AppDatabase.Companion.SPENDING_PLAN_TABLE_NAME
+import jun.money.mate.database.entity.IncomeEntity
 import jun.money.mate.database.entity.SpendingPlanEntity
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
@@ -16,6 +18,9 @@ interface SpendingPlanDao {
 
     @Query("SELECT * FROM $SPENDING_PLAN_TABLE_NAME")
     fun getSpendingPlanFlow(): Flow<List<SpendingPlanEntity>>
+
+    @Query("SELECT * FROM $SPENDING_PLAN_TABLE_NAME WHERE strftime('%Y', planDate) = :year AND strftime('%m', planDate) = :month")
+    fun getSpendingPlansByMonth(year: String, month: String): Flow<List<SpendingPlanEntity>>
 
     @Query("DELETE FROM $SPENDING_PLAN_TABLE_NAME WHERE id = :id")
     suspend fun deleteById(id: Long)
