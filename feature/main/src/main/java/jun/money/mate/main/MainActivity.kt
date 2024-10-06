@@ -92,7 +92,7 @@ private fun DialogContent(
                 title = stringResource(id = R.string.app_close_dialog_title),
                 onDismissRequest = onDismissRequest,
                 button1Click = onDismissRequest,
-                button2Text = stringResource(id = jun.money.mate.stringres.R.string.btn_yes),
+                button2Text = stringResource(id = jun.money.mate.res.R.string.btn_yes),
                 button2Click = onFinishApp,
                 content = {
                     Text(

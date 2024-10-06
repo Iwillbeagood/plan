@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import jun.money.mate.home.navigation.navigateToHome
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 
@@ -36,7 +37,7 @@ class MainNavigator(
         }
 
         when (menuItem) {
-            MainBottomNavItem.Home -> TODO()
+            MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
             MainBottomNavItem.SpendingList -> TODO()
             MainBottomNavItem.SavingPlan -> TODO()
             MainBottomNavItem.SpendingPlan -> TODO()

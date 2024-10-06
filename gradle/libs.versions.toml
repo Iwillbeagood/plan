@@ -7,6 +7,7 @@ androidxAppCompat = "1.7.0"
 androidxLifecycle = "2.8.3"
 androidxTestRunner = "1.6.1"
 androidxActivity = "1.9.0"
+composeCharts = "0.0.14"
 coreTesting = "2.2.0"
 gradleDependencyGraphGeneratorPlugin = "0.8.0"
 room = "2.6.1"
@@ -98,6 +99,7 @@ googleGson = "2.10.1"
 # Gradle
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
+compose-charts = { module = "io.github.ehsannarmani:compose-charts", version.ref = "composeCharts" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradle-dependency-graph-generator-plugin = { module = "com.vanniktech:gradle-dependency-graph-generator-plugin", version.ref = "gradleDependencyGraphGeneratorPlugin" }
 

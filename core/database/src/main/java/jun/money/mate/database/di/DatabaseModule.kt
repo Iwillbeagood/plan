@@ -11,7 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jun.money.mate.database.AppDatabase
 import jun.money.mate.database.AppDatabase.Companion.DATABASE_NAME
-import kic.owner2.utils.BuildConfig
+import jun.money.mate.utils.BuildConfig
 import java.util.concurrent.Executors
 import javax.inject.Singleton
 

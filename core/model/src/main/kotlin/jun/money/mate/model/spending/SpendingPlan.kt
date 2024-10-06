@@ -16,6 +16,11 @@ data class SpendingPlan(
 data class SpendingPlanList(
     val spendingPlans: List<SpendingPlan>
 ) {
-    val total get() = spendingPlans.sumOf { it.amount }
+    val regularTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.REGULAR_EXPENSE) it.amount else 0.0 }
+    val allowanceTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.ALLOWANCE) it.amount else 0.0 }
+    val livingTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.LIVING_EXPENSE) it.amount else 0.0 }
+    val variableTotal get() = allowanceTotal + livingTotal
+    val total get() = regularTotal + variableTotal
+
     val isEmpty get() = spendingPlans.isEmpty()
 }

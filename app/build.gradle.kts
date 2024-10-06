@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.jun.android.application)
-    alias(libs.plugins.google.services)
 }
 
 android {

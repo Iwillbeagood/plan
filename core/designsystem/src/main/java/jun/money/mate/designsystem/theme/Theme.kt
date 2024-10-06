@@ -19,13 +19,13 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    surfaceDim = Black,
-    primary = Black,
-    onPrimary = Black,
-    onSurface = White1,
+    surfaceDim = Black2,
+    primary = Black2,
+    onPrimary = White2,
+    onSurface = White2,
     onSurfaceVariant = Gray9,
-    onTertiary = White1,
-    surface = Black,
+    onTertiary = White2,
+    surface = Black3,
     secondary = Gray3,
     tertiary = Gray3
 )
@@ -33,10 +33,10 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
     surfaceDim = White,
     primary = main,
-    onPrimary = Color(0xFF1693ff),
+    onPrimary = main,
     secondary = Color(0xFFc7dcdc),
     tertiary = White1,
-    surface = Color(0xFFFFFBFE),
+    surface = Gray13,
     onSurface = Black, // 텍스트 색상
     onSurfaceVariant = Gray4,
     onSecondary = White,

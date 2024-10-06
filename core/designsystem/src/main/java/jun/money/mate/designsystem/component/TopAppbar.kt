@@ -32,7 +32,6 @@ fun TopAppbar(
     modifier: Modifier = Modifier,
     title: String = "",
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceDim,
-    lineColor: Color = LightBlue2,
     navigationType: HmTopAppbarType = HmTopAppbarType.Default,
     onBackEvent: () -> Unit = {}
 ) {
@@ -42,25 +41,30 @@ fun TopAppbar(
             .height(50.dp)
             .background(backgroundColor)
             .statusBarsPadding()
+            .padding(end = 10.dp)
     ) {
         Row(
             modifier = modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clickable(onClick = onBackEvent)
-            ) {
-                TopAppbarIcon(
-                    modifier = Modifier.align(Alignment.Center),
-                    tint = MaterialTheme.colorScheme.onSurface,
-                    iconId = R.drawable.ic_back
-                )
+            if (navigationType == HmTopAppbarType.Default) {
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clickable(onClick = onBackEvent)
+                ) {
+                    TopAppbarIcon(
+                        iconId = R.drawable.ic_back,
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
+            } else {
+                HorizontalSpacer(20.dp)
             }
             Text(
                 text = title,
-                style = JUNTheme.typography.titleMediumM
+                style = JUNTheme.typography.titleMediumB
             )
             Spacer(modifier = Modifier.weight(1f))
 
@@ -71,12 +75,6 @@ fun TopAppbar(
                 }
             }
         }
-        HorizontalDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
-            lineColor = lineColor
-        )
     }
 }
 

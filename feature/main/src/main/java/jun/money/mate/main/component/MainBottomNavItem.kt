@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
-import jun.money.mate.stringres.R
+import jun.money.mate.res.R
 
 enum class MainBottomNavItem(
     @StringRes val titleRes: Int,
