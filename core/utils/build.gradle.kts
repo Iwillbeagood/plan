@@ -14,5 +14,4 @@ android {
 
 dependencies {
     implementation(projects.core.res)
-    implementation(projects.core.model)
 }

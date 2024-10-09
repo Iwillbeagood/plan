@@ -3,6 +3,7 @@ package jun.money.mate.home
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
@@ -30,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.ehsannarmani.compose_charts.models.Pie
 import jun.money.mate.designsystem.component.HmTopAppbarType
+import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
@@ -42,6 +45,7 @@ import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem.theme.Yellow1
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.home.component.HomePieChart
+import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.res.R
 import jun.money.mate.ui.SplashScreen
 import jun.money.mate.utils.currency.CurrencyFormatter
@@ -49,6 +53,9 @@ import java.time.LocalDate
 
 @Composable
 internal fun HomeRoute(
+    onShowMenu: () -> Unit,
+    onShowNotification: () -> Unit,
+    onShowSnackBar: (MessageType) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
@@ -56,8 +63,10 @@ internal fun HomeRoute(
     val homeState by viewModel.homeState.collectAsStateWithLifecycle()
 
     HomeContent(
-        homeState,
-        viewModel,
+        homeState = homeState,
+        viewModel = viewModel,
+        onShowMenu = onShowMenu,
+        onShowNotification = onShowNotification,
     )
 }
 
@@ -65,15 +74,23 @@ internal fun HomeRoute(
 private fun HomeContent(
     homeState: HomeState,
     viewModel: HomeViewModel,
+    onShowMenu: () -> Unit,
+    onShowNotification: () -> Unit,
 ) {
     when (homeState) {
         HomeState.Loading -> SplashScreen()
         is HomeState.HomeData -> {
             HomeScreen(
+                balance = homeState.balanceString,
+                incomeTotal = homeState.incomes.totalString,
+                spendingTotal = homeState.spendingPlans.totalString,
                 isShowPieChart = homeState.isShowPieChart,
                 pieList = homeState.pieList,
-                onShowMenu = { },
-                onShowNotification = { },
+                onIncomeTotalClick = { },
+                onSpendingTotalClick = { },
+                onShowMenu = onShowMenu,
+                onShowNotification = onShowNotification,
+                onPieItemClick = { },
             )
         }
     }
@@ -81,15 +98,21 @@ private fun HomeContent(
 
 @Composable
 private fun HomeScreen(
+    balance: String,
+    incomeTotal: String,
+    spendingTotal: String,
     isShowPieChart: Boolean,
     pieList: List<Pie>,
+    onIncomeTotalClick: () -> Unit,
+    onSpendingTotalClick: () -> Unit,
     onShowMenu: () -> Unit,
     onShowNotification: () -> Unit,
+    onPieItemClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             TopAppbar(
-                title = stringResource(R.string.app_name),
+                title = "${LocalDate.now().monthValue}월의 머니 메이트",
                 backgroundColor = MaterialTheme.colorScheme.surface,
                 navigationType = HmTopAppbarType.Custom {
                     Row(
@@ -116,68 +139,95 @@ private fun HomeScreen(
                     }
                 }
             )
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
                 .padding(it)
-                .padding(horizontal = 16.dp)
         ) {
-            VerticalSpacer(20.dp)
-            HomeTitle("${LocalDate.now().monthValue}월 전체 내역")
-            HomeField(
-                title = "전체 수입",
-                value = "+100원",
-                valueColor = main
-            )
-            VerticalSpacer(10.dp)
-            HomeField(
-                title = "전체 지출",
-                value = "-100원",
-                valueColor = Red3
-            )
-            VerticalSpacer(30.dp)
-            HomeTitle("지출 차트")
-            if (isShowPieChart) {
-                HomePieChart(pieList)
+            Column(
+                modifier = Modifier.padding(30.dp)
+            ) {
+                Text(
+                    text = "이번달 남은 예산",
+                    style = JUNTheme.typography.titleLargeM,
+                )
+                VerticalSpacer(10.dp)
+                Text(
+                    text = balance,
+                    style = JUNTheme.typography.headlineSmallB,
+                )
             }
-            pieList.forEach {
-                HomeBox(
-                    color = it.color
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
+            HorizontalDivider(thickness = 10.dp)
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                VerticalSpacer(20.dp)
+                HomeTitle("${LocalDate.now().monthValue}월 내역")
+                VerticalSpacer(5.dp)
+                HomeField(
+                    title = "전체 수입",
+                    value = incomeTotal,
+                    onClick = onIncomeTotalClick,
+                    valueColor = main
+                )
+                VerticalSpacer(10.dp)
+                HomeField(
+                    title = "전체 지출",
+                    value = spendingTotal,
+                    onClick = onSpendingTotalClick,
+                    valueColor = Red3
+                )
+                VerticalSpacer(30.dp)
+                if (isShowPieChart) {
+                    HomeTitle("지출 차트")
+                    HomePieChart(pieList)
+                    HomeBorderBox(
+                        onClick = onPieItemClick,
                     ) {
-                        Text(
-                            text = it.label!!,
-                            style = JUNTheme.typography.titleMediumM,
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(start = 5.dp)
-                        )
-                        Text(
-                            text = "-" + CurrencyFormatter.formatAmountWon(it.data),
-                            style = JUNTheme.typography.titleMediumB,
-                            modifier = Modifier.padding(start = 5.dp)
-                        )
+                        pieList.forEach { pie ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Circle,
+                                    tint = pie.color,
+                                    contentDescription = null,
+                                )
+                                Text(
+                                    text = pie.label!!,
+                                    style = JUNTheme.typography.titleMediumM,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(start = 10.dp)
+                                )
+                                Text(
+                                    text = "-" + CurrencyFormatter.formatAmountWon(pie.data),
+                                    style = JUNTheme.typography.titleMediumB,
+                                    modifier = Modifier.padding(start = 5.dp)
+                                )
+                            }
+                        }
                     }
                 }
-                VerticalSpacer(10.dp)
             }
         }
+
     }
 }
 
 @Composable
 private fun HomeField(
+    onClick: () -> Unit,
     title: String,
     value: String,
-    valueColor: Color,
-    isEmpty: Boolean = true
+    valueColor: Color
 ) {
-    HomeBox {
+    HomeBox(
+        onClick = onClick
+    ) {
         Row {
             Text(
                 text = title,
@@ -185,13 +235,13 @@ private fun HomeField(
                 modifier = Modifier.weight(1f)
             )
             Text(
-                text = if (isEmpty) "+ 추가하기" else "자세히보기 >",
+                text = "자세히보기 >",
                 style = JUNTheme.typography.labelLargeR,
                 color = Gray1
             )
         }
         Text(
-            text = if (isEmpty) "내역이 존재하지 않습니다" else value,
+            text = value,
             style = JUNTheme.typography.titleNormalB,
             color = valueColor,
             textAlign = TextAlign.End,
@@ -202,6 +252,7 @@ private fun HomeField(
 
 @Composable
 private fun HomeBox(
+    onClick: () -> Unit,
     color: Color = MaterialTheme.colorScheme.surfaceDim,
     content: @Composable () -> Unit,
 ) {
@@ -209,10 +260,34 @@ private fun HomeBox(
         shape = RoundedCornerShape(4.dp),
         border = BorderStroke(1.dp, Gray6),
         color = color,
+        onClick = onClick,
         contentColor = MaterialTheme.colorScheme.onSurface,
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            content()
+        }
+    }
+}
+
+@Composable
+private fun HomeBorderBox(
+    onClick: () -> Unit,
+    color: Color = Gray6,
+    content: @Composable () -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(4.dp),
+        border = BorderStroke(1.dp, color),
+        onClick = onClick,
+        color = MaterialTheme.colorScheme.surfaceDim,
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier.padding(16.dp)
         ) {
             content()
@@ -234,6 +309,9 @@ private fun HomeTitle(title: String) {
 private fun HomeScreenPreview() {
     JunTheme {
         HomeScreen(
+            balance = "-100,000원",
+            incomeTotal = "100,000원",
+            spendingTotal = "-200,000원",
             isShowPieChart = true,
             pieList = listOf(
                 Pie(label = "정기 지출", data = 100.0, color = Yellow1, selected = true),
@@ -241,6 +319,9 @@ private fun HomeScreenPreview() {
             ),
             onShowMenu = {},
             onShowNotification = {},
+            onIncomeTotalClick = {},
+            onSpendingTotalClick = {},
+            onPieItemClick = {},
         )
     }
 }

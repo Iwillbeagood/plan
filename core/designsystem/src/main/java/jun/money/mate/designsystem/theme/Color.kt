@@ -43,7 +43,7 @@ val LightGray = Color(0xFFF7F7F7)
 val LightGray2 = Color(0xFFF5F5F5)
 val LightGray3 = Color(0xFFDBDADB)
 
-val Yellow1 = Color(0xFFFFF15E)
+val Yellow1 = Color(0xFFFFE642)
 val Orange1 = Color(0xFFFFA500)
 
 val Red1 = Color(0xFFff0000)

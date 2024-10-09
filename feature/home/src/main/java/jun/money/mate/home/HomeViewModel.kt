@@ -2,7 +2,6 @@ package jun.money.mate.home
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,17 +14,12 @@ import jun.money.mate.designsystem.theme.Yellow1
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.model.saving.SavingPlanList
 import jun.money.mate.model.spending.SpendingPlanList
+import jun.money.mate.utils.currency.CurrencyFormatter
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -67,6 +61,9 @@ internal sealed interface HomeState {
         val savingPlans: SavingPlanList,
         val spendingPlans: SpendingPlanList
     ) : HomeState {
+
+        val balance get() =  incomes.total - spendingPlans.total
+        val balanceString get() = CurrencyFormatter.formatAmountWon(balance)
 
         val isShowPieChart get() = spendingPlans.total > 0
 

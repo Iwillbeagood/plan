@@ -42,6 +42,8 @@ internal fun MainNavHost(
                 onShowHomeScreen = { navigator.navigateTo(MainBottomNavItem.Home) },
             )
             homeNavGraph(
+                onShowMenu = {  },
+                onShowNotification = {  },
                 onShowSnackBar = onShowSnackBar,
             )
         }

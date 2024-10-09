@@ -49,7 +49,7 @@ import jun.money.mate.designsystem_date.datetimepicker.models.rememberCalendarSt
 import jun.money.mate.designsystem_date.datetimepicker.views.CalendarTopComponent
 import jun.money.mate.designsystem_date.datetimepicker.views.setupMonthSelectionView
 import jun.money.mate.designsystem_date.datetimepicker.views.setupYearSelectionView
-import jun.money.mate.stringres.R
+import jun.money.mate.res.R
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

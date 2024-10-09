@@ -1,5 +1,6 @@
 package jun.money.mate.model.income
 
+import jun.money.mate.model.Utils
 import java.time.LocalDate
 
 data class Income(
@@ -9,11 +10,16 @@ data class Income(
     val type: IncomeType,
     val incomeDate: LocalDate,
     val isExecuted: Boolean,
-)
+) {
+    val amountString: String get() = Utils.formatAmountWon(amount)
+}
 
 data class IncomeList(
     val incomes: List<Income>
 ) {
+
     val total get() = incomes.sumOf { it.amount }
-    val isEmpty get() = incomes.isEmpty()
+    val isEmpty get() = total > 0
+
+    val totalString get() = if (isEmpty) Utils.formatAmountWon(total) else "내역이 존재하지 않습니다"
 }
