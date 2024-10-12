@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.SnapOffsets
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
-import kic.owner2.designsystem_date.datetimepicker.core.util.BaseConstants
-import kic.owner2.designsystem_date.datetimepicker.models.CalendarDisplayMode
-import kic.owner2.designsystem_date.datetimepicker.models.LibOrientation
+import jun.money.mate.designsystem_date.datetimepicker.core.util.BaseConstants
+import jun.money.mate.designsystem_date.datetimepicker.models.CalendarDisplayMode
+import jun.money.mate.designsystem_date.datetimepicker.models.LibOrientation
 
 @OptIn(ExperimentalSnapperApi::class)
 @Composable

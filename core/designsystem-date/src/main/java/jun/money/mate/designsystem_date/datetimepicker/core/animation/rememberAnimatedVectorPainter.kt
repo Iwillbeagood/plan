@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.vector.VectorConfig
 import androidx.compose.ui.graphics.vector.VectorGroup
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.util.fastForEach
-import kic.owner2.designsystem_date.datetimepicker.core.util.ExperimentalAnimationGraphicsApi
+import jun.money.mate.designsystem_date.datetimepicker.core.util.ExperimentalAnimationGraphicsApi
 
 @ExperimentalAnimationGraphicsApi
 @Composable

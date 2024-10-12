@@ -3,7 +3,7 @@ package jun.money.mate.designsystem_date.datetimepicker.core.animation
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.util.fastMaxBy
-import kic.owner2.designsystem_date.datetimepicker.core.util.ExperimentalAnimationGraphicsApi
+import jun.money.mate.designsystem_date.datetimepicker.core.util.ExperimentalAnimationGraphicsApi
 
 /**
  * Animated vector graphics object that is generated as a result of

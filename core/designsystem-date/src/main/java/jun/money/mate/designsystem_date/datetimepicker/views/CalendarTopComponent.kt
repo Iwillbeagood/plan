@@ -43,13 +43,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.nonScaledSp
-import kic.owner2.designsystem_date.R
-import kic.owner2.designsystem_date.datetimepicker.core.animation.AnimatedImageVector
-import kic.owner2.designsystem_date.datetimepicker.core.animation.animatedVectorResource
-import kic.owner2.designsystem_date.datetimepicker.core.animation.rememberAnimatedVectorPainter
-import kic.owner2.designsystem_date.datetimepicker.core.util.ExperimentalAnimationGraphicsApi
-import kic.owner2.designsystem_date.datetimepicker.models.CalendarConfig
-import kic.owner2.designsystem_date.datetimepicker.models.CalendarDisplayMode
+import jun.money.mate.designsystem_date.R
+import jun.money.mate.designsystem_date.datetimepicker.core.animation.AnimatedImageVector
+import jun.money.mate.designsystem_date.datetimepicker.core.animation.animatedVectorResource
+import jun.money.mate.designsystem_date.datetimepicker.core.animation.rememberAnimatedVectorPainter
+import jun.money.mate.designsystem_date.datetimepicker.core.util.ExperimentalAnimationGraphicsApi
+import jun.money.mate.designsystem_date.datetimepicker.models.CalendarConfig
+import jun.money.mate.designsystem_date.datetimepicker.models.CalendarDisplayMode
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

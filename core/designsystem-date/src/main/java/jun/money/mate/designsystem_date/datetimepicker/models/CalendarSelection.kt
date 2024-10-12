@@ -1,8 +1,8 @@
 package jun.money.mate.designsystem_date.datetimepicker.models
 
 import android.util.Range
-import kic.owner2.designsystem_date.datetimepicker.core.util.BaseConstants
-import kic.owner2.designsystem_date.datetimepicker.views.SelectionButton
+import jun.money.mate.designsystem_date.datetimepicker.core.util.BaseConstants
+import jun.money.mate.designsystem_date.datetimepicker.views.SelectionButton
 import java.time.LocalDate
 
 /**

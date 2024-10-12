@@ -21,8 +21,8 @@ import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.designsystem.theme.nonScaledSp
-import kic.owner2.designsystem_date.datetimepicker.models.CalendarDateData
-import kic.owner2.designsystem_date.datetimepicker.models.LibOrientation
+import jun.money.mate.designsystem_date.datetimepicker.models.CalendarDateData
+import jun.money.mate.designsystem_date.datetimepicker.models.LibOrientation
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

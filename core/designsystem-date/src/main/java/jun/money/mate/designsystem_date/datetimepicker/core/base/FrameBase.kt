@@ -14,9 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import kic.owner2.designsystem_date.datetimepicker.core.util.shouldUseLandscape
-import kic.owner2.designsystem_date.datetimepicker.models.BaseConfigs
-import kic.owner2.designsystem_date.datetimepicker.models.LibOrientation
+import jun.money.mate.designsystem_date.datetimepicker.core.util.shouldUseLandscape
+import jun.money.mate.designsystem_date.datetimepicker.models.BaseConfigs
+import jun.money.mate.designsystem_date.datetimepicker.models.LibOrientation
 
 /**
  * Base component for the content structure of a dialog.

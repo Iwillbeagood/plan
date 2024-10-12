@@ -1,7 +1,7 @@
 package jun.money.mate.designsystem_date.datetimepicker.models
 
-import kic.owner2.designsystem_date.datetimepicker.core.util.BaseConstants
-import kic.owner2.designsystem_date.datetimepicker.core.util.Constants
+import jun.money.mate.designsystem_date.datetimepicker.core.util.BaseConstants
+import jun.money.mate.designsystem_date.datetimepicker.core.util.Constants
 import java.time.LocalDate
 import java.util.Locale
 
