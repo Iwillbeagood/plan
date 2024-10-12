@@ -44,6 +44,10 @@ internal fun MainNavHost(
             homeNavGraph(
                 onShowMenu = {  },
                 onShowNotification = {  },
+                onShowIncomeList = {  },
+                onShowIncomeAdd = {  },
+                onShowSpendingList = {  },
+                onShowSpendingAdd = {  },
                 onShowSnackBar = onShowSnackBar,
             )
         }

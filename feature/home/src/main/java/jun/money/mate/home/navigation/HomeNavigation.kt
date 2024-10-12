@@ -15,13 +15,21 @@ fun NavController.navigateToHome(navOptions: NavOptions) {
 fun NavGraphBuilder.homeNavGraph(
     onShowMenu: () -> Unit,
     onShowNotification: () -> Unit,
+    onShowIncomeList: () -> Unit,
+    onShowIncomeAdd: () -> Unit,
+    onShowSpendingList: () -> Unit,
+    onShowSpendingAdd: () -> Unit,
     onShowSnackBar: (MessageType) -> Unit
 ) {
     composable<MainTabRoute.Home> {
         HomeRoute(
             onShowMenu = onShowMenu,
             onShowNotification = onShowNotification,
-            onShowSnackBar = onShowSnackBar
+            onShowSnackBar = onShowSnackBar,
+            onShowIncomeList = onShowIncomeList,
+            onShowIncomeAdd = onShowIncomeAdd,
+            onShowSpendingList = onShowSpendingList,
+            onShowSpendingAdd = onShowSpendingAdd
         )
     }
 }

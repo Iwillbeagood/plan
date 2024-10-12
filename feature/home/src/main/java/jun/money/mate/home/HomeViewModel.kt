@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.ehsannarmani.compose_charts.models.Pie
 import jun.money.mate.data_api.database.IncomeRepository
@@ -16,10 +17,14 @@ import jun.money.mate.model.saving.SavingPlanList
 import jun.money.mate.model.spending.SpendingPlanList
 import jun.money.mate.utils.currency.CurrencyFormatter
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,9 +40,9 @@ internal class HomeViewModel @Inject constructor(
         spendingPlanRepository.getSpendingPlansByMonth()
     ) { incomes, savingPlans, spendingPlans ->
         HomeState.HomeData(
-            incomes = incomes,
-            savingPlans = savingPlans,
-            spendingPlans = spendingPlans
+            incomeList = incomes,
+            savingPlanList = savingPlans,
+            spendingPlanList = spendingPlans
         )
     }.stateIn(
         scope = viewModelScope,
@@ -45,8 +50,34 @@ internal class HomeViewModel @Inject constructor(
         initialValue = HomeState.Loading
     )
 
+    private val _homeEffect = MutableSharedFlow<HomeEffect>()
+    val homeEffect: SharedFlow<HomeEffect> get() = _homeEffect.asSharedFlow()
+
     private var contentJob: Job? = null
 
+    fun showIncomeScreen() {
+        val state = homeState.value as? HomeState.HomeData ?: return
+
+        viewModelScope.launch {
+            if (state.incomeList.incomes.isEmpty()) {
+                _homeEffect.emit(HomeEffect.ShowIncomeAddScreen)
+            } else {
+                _homeEffect.emit(HomeEffect.ShowIncomeListScreen)
+            }
+        }
+    }
+
+    fun showSpendingScreen() {
+        val state = homeState.value as? HomeState.HomeData ?: return
+
+        viewModelScope.launch {
+            if (state.spendingPlanList.spendingPlans.isEmpty()) {
+                _homeEffect.emit(HomeEffect.ShowSpendingAddScreen)
+            } else {
+                _homeEffect.emit(HomeEffect.ShowSpendingListScreen)
+            }
+        }
+    }
 }
 
 @Stable
@@ -57,20 +88,39 @@ internal sealed interface HomeState {
 
     @Immutable
     data class HomeData(
-        val incomes: IncomeList,
-        val savingPlans: SavingPlanList,
-        val spendingPlans: SpendingPlanList
+        val incomeList: IncomeList,
+        val savingPlanList: SavingPlanList,
+        val spendingPlanList: SpendingPlanList
     ) : HomeState {
 
-        val balance get() =  incomes.total - spendingPlans.total
+        val balance get() =  incomeList.total - spendingPlanList.total
         val balanceString get() = CurrencyFormatter.formatAmountWon(balance)
 
-        val isShowPieChart get() = spendingPlans.total > 0
+        val isShowPieChart get() = spendingPlanList.total > 0
 
         val pieList: List<Pie>
             get() = listOf(
-                Pie(label = "정기 지출", data = spendingPlans.regularTotal, color = Yellow1),
-                Pie(label = "변동 지출", data = spendingPlans.variableTotal, color = Green2),
+                Pie(label = "정기 지출", data = spendingPlanList.regularTotal, color = Yellow1),
+                Pie(label = "변동 지출", data = spendingPlanList.variableTotal, color = Green2),
             )
     }
+}
+
+@Stable
+internal sealed interface HomeEffect {
+
+    @Immutable
+    data object ShowIncomeListScreen : HomeEffect
+
+    @Immutable
+    data object ShowIncomeAddScreen : HomeEffect
+
+    @Immutable
+    data object ShowSpendingPlanListScreen : HomeEffect
+
+    @Immutable
+    data object ShowSpendingListScreen : HomeEffect
+
+    @Immutable
+    data object ShowSpendingAddScreen : HomeEffect
 }

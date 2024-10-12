@@ -1,7 +1,6 @@
 package jun.money.mate.home
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,10 +20,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,7 +45,6 @@ import jun.money.mate.designsystem.theme.Yellow1
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.home.component.HomePieChart
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.res.R
 import jun.money.mate.ui.SplashScreen
 import jun.money.mate.utils.currency.CurrencyFormatter
 import java.time.LocalDate
@@ -55,6 +53,10 @@ import java.time.LocalDate
 internal fun HomeRoute(
     onShowMenu: () -> Unit,
     onShowNotification: () -> Unit,
+    onShowIncomeList: () -> Unit,
+    onShowIncomeAdd: () -> Unit,
+    onShowSpendingList: () -> Unit,
+    onShowSpendingAdd: () -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -68,6 +70,18 @@ internal fun HomeRoute(
         onShowMenu = onShowMenu,
         onShowNotification = onShowNotification,
     )
+
+    LaunchedEffect(Unit) {
+        viewModel.homeEffect.collect { effect ->
+            when (effect) {
+                HomeEffect.ShowIncomeAddScreen -> onShowIncomeAdd()
+                HomeEffect.ShowIncomeListScreen -> onShowIncomeList()
+                HomeEffect.ShowSpendingAddScreen -> onShowSpendingList()
+                HomeEffect.ShowSpendingListScreen -> onShowSpendingAdd()
+                HomeEffect.ShowSpendingPlanListScreen -> {}
+            }
+        }
+    }
 }
 
 @Composable
@@ -82,15 +96,14 @@ private fun HomeContent(
         is HomeState.HomeData -> {
             HomeScreen(
                 balance = homeState.balanceString,
-                incomeTotal = homeState.incomes.totalString,
-                spendingTotal = homeState.spendingPlans.totalString,
+                incomeTotal = homeState.incomeList.totalString,
+                spendingTotal = homeState.spendingPlanList.totalString,
                 isShowPieChart = homeState.isShowPieChart,
                 pieList = homeState.pieList,
-                onIncomeTotalClick = { },
-                onSpendingTotalClick = { },
+                onIncomeTotalClick = viewModel::showIncomeScreen,
+                onSpendingTotalClick = viewModel::showSpendingScreen,
                 onShowMenu = onShowMenu,
                 onShowNotification = onShowNotification,
-                onPieItemClick = { },
             )
         }
     }
@@ -107,7 +120,6 @@ private fun HomeScreen(
     onSpendingTotalClick: () -> Unit,
     onShowMenu: () -> Unit,
     onShowNotification: () -> Unit,
-    onPieItemClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -184,9 +196,7 @@ private fun HomeScreen(
                 if (isShowPieChart) {
                     HomeTitle("지출 차트")
                     HomePieChart(pieList)
-                    HomeBorderBox(
-                        onClick = onPieItemClick,
-                    ) {
+                    HomeBorderBox {
                         pieList.forEach { pie ->
                             Row(
                                 modifier = Modifier.fillMaxWidth()
@@ -274,14 +284,12 @@ private fun HomeBox(
 
 @Composable
 private fun HomeBorderBox(
-    onClick: () -> Unit,
     color: Color = Gray6,
     content: @Composable () -> Unit,
 ) {
     Surface(
         shape = RoundedCornerShape(4.dp),
         border = BorderStroke(1.dp, color),
-        onClick = onClick,
         color = MaterialTheme.colorScheme.surfaceDim,
         contentColor = MaterialTheme.colorScheme.onSurface,
         modifier = Modifier.fillMaxWidth(),
@@ -321,7 +329,6 @@ private fun HomeScreenPreview() {
             onShowNotification = {},
             onIncomeTotalClick = {},
             onSpendingTotalClick = {},
-            onPieItemClick = {},
         )
     }
 }
