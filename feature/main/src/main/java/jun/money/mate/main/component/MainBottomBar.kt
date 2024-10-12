@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +25,7 @@ import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.designsystem.theme.main20
+import jun.money.mate.designsystem.theme.nonScaledSp
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -40,7 +42,8 @@ internal fun MainBottomBar(
         exit = fadeOut() + slideOut { IntOffset(0, it.height) }
     ) {
         NavigationBar(
-            containerColor = MaterialTheme.colorScheme.surfaceDim
+            containerColor = MaterialTheme.colorScheme.surfaceDim,
+            modifier = Modifier.height(65.dp)
         ) {
             bottomItems.forEach { item ->
                 val title = stringResource(item.titleRes)
@@ -50,9 +53,7 @@ internal fun MainBottomBar(
                         Icon(
                             imageVector = item.icon,
                             contentDescription = title,
-                            modifier = Modifier
-                                .width(20.dp)
-                                .height(20.dp)
+                            modifier = Modifier.size(18.dp)
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(
@@ -65,7 +66,7 @@ internal fun MainBottomBar(
                     label = {
                         Text(
                             text = title,
-                            style = JUNTheme.typography.labelLargeM
+                            style = JUNTheme.typography.labelLargeM.nonScaledSp
                         )
                     },
                     onClick = { onBottomItemClicked(item) },
