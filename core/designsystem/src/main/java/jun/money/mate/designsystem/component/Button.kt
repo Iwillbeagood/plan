@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,7 +29,7 @@ import jun.money.mate.res.R
 fun LargeButton(
     modifier: Modifier = Modifier,
     text: String = stringResource(id = R.string.btn_complete),
-    color: Color = Black,
+    color: Color = MaterialTheme.colorScheme.primary,
     inActiveColor: Color = Gray6,
     textColor: Color = White1,
     isActive: Boolean = true,

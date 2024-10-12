@@ -10,6 +10,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import jun.money.mate.home.navigation.navigateToHome
+import jun.money.mate.income.navigation.navigateToIncomeAdd
+import jun.money.mate.income.navigation.navigateToIncomeList
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 
@@ -42,6 +44,15 @@ class MainNavigator(
             MainBottomNavItem.SavingPlan -> TODO()
             MainBottomNavItem.SpendingPlan -> TODO()
         }
+    }
+
+    fun navigateToIncomeList() {
+        navController.navigateToIncomeList()
+    }
+
+    fun navigateToIncomeAdd() {
+        navigateToIncomeList()
+        navController.navigateToIncomeAdd()
     }
 
     fun popBackStackIfNotHome(): Boolean {

@@ -13,5 +13,4 @@ data class IncomeEntity(
     val amount: Double,
     val type: IncomeType,
     val incomeDate: LocalDate,
-    val isExecuted: Boolean = false,
 )

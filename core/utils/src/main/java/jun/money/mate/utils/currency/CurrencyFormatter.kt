@@ -28,4 +28,15 @@ object CurrencyFormatter {
         return formatter.format(amount)
     }
 
+    fun deFormatAmountInt(amount: String): Int {
+        return amount.replace(CURRENCY_UNIT, "").replace(",", "").toIntOrNull() ?: 0
+    }
+
+    fun deFormatAmountLong(amount: String): Long {
+        return amount.replace(CURRENCY_UNIT, "").replace(",", "").toLongOrNull() ?: 0
+    }
+
+    fun deFormatAmountDouble(amount: String): Double {
+        return amount.replace(CURRENCY_UNIT, "").replace(",", "").toDoubleOrNull() ?: 0.0
+    }
 }

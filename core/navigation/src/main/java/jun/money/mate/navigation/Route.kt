@@ -7,6 +7,16 @@ sealed interface Route {
     @Serializable
     data object Splash : Route
 
+    @Serializable
+    sealed interface Income : Route {
+
+        @Serializable
+        data object List : Income
+
+        @Serializable
+        data object Add : Income
+    }
+
 }
 
 sealed interface MainTabRoute : Route {

@@ -125,7 +125,6 @@ private fun HomeScreen(
         topBar = {
             TopAppbar(
                 title = "${LocalDate.now().monthValue}월의 머니 메이트",
-                backgroundColor = MaterialTheme.colorScheme.surface,
                 navigationType = HmTopAppbarType.Custom {
                     Row(
                         modifier = Modifier.fillMaxHeight(),

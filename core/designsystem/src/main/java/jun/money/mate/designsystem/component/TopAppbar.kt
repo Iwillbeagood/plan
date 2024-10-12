@@ -26,12 +26,13 @@ import jun.money.mate.designsystem.R
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.LightBlue2
+import jun.money.mate.designsystem.theme.nonScaledSp
 
 @Composable
 fun TopAppbar(
     modifier: Modifier = Modifier,
     title: String = "",
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceDim,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
     navigationType: HmTopAppbarType = HmTopAppbarType.Default,
     onBackEvent: () -> Unit = {}
 ) {
@@ -64,7 +65,7 @@ fun TopAppbar(
             }
             Text(
                 text = title,
-                style = JUNTheme.typography.titleMediumB
+                style = JUNTheme.typography.titleNormalB.nonScaledSp
             )
             Spacer(modifier = Modifier.weight(1f))
 

@@ -8,8 +8,7 @@ data class Income(
     val title: String,
     val amount: Double,
     val type: IncomeType,
-    val incomeDate: LocalDate,
-    val isExecuted: Boolean,
+    val incomeDate: LocalDate
 ) {
     val amountString: String get() = Utils.formatAmountWon(amount)
 }

@@ -23,7 +23,6 @@ class IncomeRepositoryImpl @Inject constructor(
                     amount = income.amount,
                     type = income.type,
                     incomeDate = income.incomeDate,
-                    isExecuted = income.isExecuted
                 )
             )
         } catch (e: Exception) {
@@ -41,7 +40,6 @@ class IncomeRepositoryImpl @Inject constructor(
                         amount = it.amount,
                         type = it.type,
                         incomeDate = it.incomeDate,
-                        isExecuted = it.isExecuted
                     )
                 }
             )
@@ -61,7 +59,6 @@ class IncomeRepositoryImpl @Inject constructor(
                         amount = it.amount,
                         type = it.type,
                         incomeDate = it.incomeDate,
-                        isExecuted = it.isExecuted
                     )
                 }
             )
