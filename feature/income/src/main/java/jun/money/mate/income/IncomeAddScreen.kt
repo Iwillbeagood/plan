@@ -42,7 +42,7 @@ import java.time.YearMonth
 
 @Composable
 internal fun IncomeAddRoute(
-    onBackClick: () -> Unit,
+    onGoBack: () -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: IncomeAddViewModel = hiltViewModel()
 ) {
@@ -58,7 +58,7 @@ internal fun IncomeAddRoute(
         onIncomeTitleChange = viewModel::onTitleValueChange,
         onIncomeAmountChange = viewModel::onAmountValueChange,
         onShowIncomeDateBottomSheet = viewModel::onShowDatePicker,
-        onBackClick = onBackClick,
+        onBackClick = onGoBack,
         onAddIncome = viewModel::onAddIncome,
         onRegularIncomeClick = viewModel::onRegularIncomeClick,
         onVariableIncomeClick = viewModel::onVariableIncomeClick,
@@ -74,7 +74,7 @@ internal fun IncomeAddRoute(
         viewModel.incomeAddEffect.collect {
             when (it) {
                 is IncomeAddEffect.ShowSnackBar -> onShowSnackBar(it.messageType)
-                IncomeAddEffect.IncomeAddComplete -> onBackClick()
+                IncomeAddEffect.IncomeAddComplete -> onGoBack()
             }
         }
     }

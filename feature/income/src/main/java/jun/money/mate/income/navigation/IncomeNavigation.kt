@@ -2,11 +2,10 @@ package jun.money.mate.income.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import jun.money.mate.income.IncomeAddRoute
+import jun.money.mate.income.IncomeListRoute
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 
 fun NavController.navigateToIncomeList() {
@@ -18,17 +17,21 @@ fun NavController.navigateToIncomeAdd() {
 }
 
 fun NavGraphBuilder.incomeNavGraph(
-    onBackClick: () -> Unit,
+    onGoBack: () -> Unit,
+    onShowIncomeAdd: () -> Unit,
     onShowSnackBar: (MessageType) -> Unit
 ) {
 
     composable<Route.Income.List> {
-
+        IncomeListRoute(
+            onGoBack = onGoBack,
+            onShowIncomeAdd = onShowIncomeAdd
+        )
     }
 
     composable<Route.Income.Add> {
         IncomeAddRoute(
-            onBackClick = onBackClick,
+            onGoBack = onGoBack,
             onShowSnackBar = onShowSnackBar
         )
     }

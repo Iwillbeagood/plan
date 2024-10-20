@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import jun.money.mate.home.navigation.homeNavGraph
 import jun.money.mate.income.navigation.incomeNavGraph
@@ -46,14 +45,15 @@ internal fun MainNavHost(
             homeNavGraph(
                 onShowMenu = {  },
                 onShowNotification = {  },
-                onShowIncomeList = {  },
+                onShowIncomeList = navigator::navigateToIncomeList,
                 onShowIncomeAdd = navigator::navigateToIncomeAdd,
                 onShowSpendingList = {  },
                 onShowSpendingAdd = {  },
                 onShowSnackBar = onShowSnackBar,
             )
             incomeNavGraph(
-                onBackClick = navigator::popBackStackIfNotHome,
+                onGoBack = navigator::popBackStackIfNotHome,
+                onShowIncomeAdd = navigator::navigateToIncomeAdd,
                 onShowSnackBar = onShowSnackBar
             )
         }

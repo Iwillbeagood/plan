@@ -244,7 +244,7 @@ private fun HomeField(
                 modifier = Modifier.weight(1f)
             )
             Text(
-                text = "자세히보기 >",
+                text = "자세히보기",
                 style = JUNTheme.typography.labelLargeR,
                 color = Gray1
             )

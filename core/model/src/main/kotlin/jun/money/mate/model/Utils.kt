@@ -1,6 +1,8 @@
 package jun.money.mate.model
 
 import java.text.DecimalFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 object Utils {
 
@@ -20,4 +22,10 @@ object Utils {
         val formatter = DecimalFormat(DECIMAL_PATTERN)
         return "${formatter.format(amount)}$CURRENCY_UNIT"
     }
+
+    fun formatDateToKorean(date: LocalDate): String {
+        val formatter = DateTimeFormatter.ofPattern("MM월 dd일")
+        return date.format(formatter)
+    }
+
 }
