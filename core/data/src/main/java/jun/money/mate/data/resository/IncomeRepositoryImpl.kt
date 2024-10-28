@@ -19,6 +19,7 @@ class IncomeRepositoryImpl @Inject constructor(
         try {
             incomeDao.upsertIncome(
                 IncomeEntity(
+                    id = income.id,
                     title = income.title,
                     amount = income.amount,
                     type = income.type,

@@ -8,7 +8,7 @@ import java.time.LocalDate
 
 @Entity(tableName = AppDatabase.INCOME_TABLE_NAME)
 data class IncomeEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey val id: Long,
     val title: String,
     val amount: Double,
     val type: IncomeType,

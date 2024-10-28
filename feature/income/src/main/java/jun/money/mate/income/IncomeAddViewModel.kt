@@ -38,7 +38,7 @@ internal class IncomeAddViewModel @Inject constructor(
 
     private val _incomeAddState = MutableStateFlow<IncomeAddState>(IncomeAddState.Loading)
     val incomeAddState: StateFlow<IncomeAddState> = _incomeAddState.onStart {
-       init()
+        init()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -56,14 +56,17 @@ internal class IncomeAddViewModel @Inject constructor(
             _incomeAddState.update {
                 when (addType) {
                     AddType.New -> IncomeAddState.IncomeData(
+                        id = System.currentTimeMillis(),
                         title = "",
                         amount = 0.0,
                         date = LocalDate.now(),
                         type = IncomeType.REGULAR
                     )
+
                     is AddType.Edit -> {
                         incomeRepository.getIncomeById(addType.id).let {
                             IncomeAddState.IncomeData(
+                                id = it.id,
                                 title = it.title,
                                 amount = it.amount,
                                 date = it.incomeDate,
@@ -80,12 +83,22 @@ internal class IncomeAddViewModel @Inject constructor(
         val state = _incomeAddState.value as? IncomeAddState.IncomeData ?: return
         viewModelScope.launch {
             addIncomeUsecase(
+                id = state.id,
                 title = state.title,
                 amount = state.amount,
                 type = state.type,
                 incomeDate = state.date,
                 onSuccess = {
-                    showSnackBar(MessageType.Message("수입이 추가되었습니다."))
+                    showSnackBar(
+                        MessageType.Message(
+                            "수입이 ${
+                                when (addType) {
+                                    is AddType.Edit -> "수정"
+                                    AddType.New -> "추가"
+                                }
+                            }되었습니다."
+                        )
+                    )
                     incomeAddComplete()
                 },
                 onError = ::showSnackBar
@@ -163,6 +176,7 @@ internal sealed interface IncomeAddState {
 
     @Immutable
     data class IncomeData(
+        val id: Long,
         val title: String,
         val amount: Double,
         val date: LocalDate,

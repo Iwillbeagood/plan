@@ -12,6 +12,7 @@ class AddIncomeUsecase @Inject constructor(
 ) {
 
     suspend operator fun invoke(
+        id: Long,
         title: String,
         amount: Double,
         type: IncomeType,
@@ -31,7 +32,7 @@ class AddIncomeUsecase @Inject constructor(
 
         incomeRepository.upsertIncome(
             Income(
-                id = 0,
+                id = id,
                 title = title,
                 amount = amount,
                 type = type,

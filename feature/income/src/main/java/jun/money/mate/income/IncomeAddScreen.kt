@@ -303,6 +303,7 @@ private fun IncomeAddScreenPreview() {
         IncomeAddScreen(
             title = "추가",
             incomeAddState = IncomeAddState.IncomeData(
+                id = 0,
                 title = "월급",
                 amount = 1000000.0,
                 date = LocalDate.now(),
