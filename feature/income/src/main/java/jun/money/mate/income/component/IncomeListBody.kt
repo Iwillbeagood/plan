@@ -65,7 +65,7 @@ fun IncomeListBody(
                         style = JUNTheme.typography.headlineSmallB,
                     )
                 }
-                HorizontalDivider(thickness = 10.dp)
+                HorizontalDivider(thickness = 5.dp)
             }
         }
 

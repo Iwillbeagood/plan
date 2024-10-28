@@ -29,9 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.BottomToTopSlideFadeAnimatedVisibility
-import jun.money.mate.designsystem.component.CrossfadeIfStateChanged
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.ProgressIndicator
 import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.etc.EmptyMessage
 import jun.money.mate.designsystem.theme.JunTheme
@@ -183,16 +181,17 @@ private fun IncomeListContent(
     incomeListState: IncomeListState,
     onIncomeClick: (Income) -> Unit,
 ) {
-    CrossfadeIfStateChanged(incomeListState) {
-        when (it) {
-            is IncomeListState.Loading -> ProgressIndicator()
-            IncomeListState.Empty -> EmptyMessage("수입 내역이 없습니다.")
-            is IncomeListState.IncomeListData -> {
-                IncomeListBody(
-                    incomeList = it.incomeList,
-                    onIncomeClick = onIncomeClick
-                )
-            }
+    FadeAnimatedVisibility(incomeListState is IncomeListState.Empty) {
+        if (incomeListState is IncomeListState.Empty) {
+            EmptyMessage("수입 내역이 없습니다.")
+        }
+    }
+    FadeAnimatedVisibility(incomeListState is IncomeListState.IncomeListData) {
+        if (incomeListState is IncomeListState.IncomeListData) {
+            IncomeListBody(
+                incomeList = incomeListState.incomeList,
+                onIncomeClick = onIncomeClick
+            )
         }
     }
 }
