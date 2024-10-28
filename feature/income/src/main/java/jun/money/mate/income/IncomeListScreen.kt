@@ -1,6 +1,5 @@
 package jun.money.mate.income
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -18,9 +17,11 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,6 +42,7 @@ import jun.money.mate.designsystem_date.datetimepicker.models.CalendarSelection
 import jun.money.mate.designsystem_date.datetimepicker.models.CalendarStyle
 import jun.money.mate.income.component.IncomeEditButton
 import jun.money.mate.income.component.IncomeListBody
+import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
 import java.time.LocalDate
 
@@ -48,23 +50,34 @@ import java.time.LocalDate
 internal fun IncomeListRoute(
     onGoBack: () -> Unit,
     onShowIncomeAdd: () -> Unit,
-    incomeListViewModel: IncomeListViewModel = hiltViewModel()
+    onShowIncomeEdit: (id: Long) -> Unit,
+    onShowSnackBar: (MessageType) -> Unit,
+    viewModel: IncomeListViewModel = hiltViewModel()
 ) {
-    val incomeListState by incomeListViewModel.incomeListState.collectAsStateWithLifecycle()
-    val incomeListViewMode by incomeListViewModel.incomeListViewMode.collectAsStateWithLifecycle()
-    val selectedDate by incomeListViewModel.dateState.collectAsStateWithLifecycle()
+    val incomeListState by viewModel.incomeListState.collectAsStateWithLifecycle()
+    val incomeListViewMode by viewModel.incomeListViewMode.collectAsStateWithLifecycle()
+    val selectedDate by viewModel.dateState.collectAsStateWithLifecycle()
 
     IncomeListScreen(
         incomeListState = incomeListState,
         incomeListViewMode = incomeListViewMode,
         selectedDate = selectedDate,
         onGoBack = onGoBack,
-        onIncomeClick = incomeListViewModel::changeIncomeSelected,
+        onIncomeClick = viewModel::changeIncomeSelected,
         onIncomeAdd = onShowIncomeAdd,
-        onIncomeEdit = {},
-        onIncomeDelete = {},
-        onDateSelect = incomeListViewModel::onDateSelected
+        onIncomeEdit = viewModel::editIncome,
+        onIncomeDelete = viewModel::deleteIncome,
+        onDateSelect = viewModel::onDateSelected
     )
+
+    LaunchedEffect(Unit) {
+        viewModel.incomeListEffect.collect { effect ->
+            when (effect) {
+                is IncomeListEffect.EditIncome -> onShowIncomeEdit(effect.id)
+                is IncomeListEffect.ShowSnackBar -> onShowSnackBar(effect.messageType)
+            }
+        }
+    }
 }
 
 @Composable
@@ -139,6 +152,7 @@ private fun IncomeListScreen(
                 Button(
                     modifier= Modifier.size(56.dp),
                     shape = CircleShape,
+                    elevation = ButtonDefaults.buttonElevation(8.dp),
                     contentPadding = PaddingValues(0.dp),
                     onClick = onIncomeAdd
                 ) {

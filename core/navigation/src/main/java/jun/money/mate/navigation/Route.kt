@@ -1,5 +1,7 @@
 package jun.money.mate.navigation
 
+import android.annotation.SuppressLint
+import jun.money.mate.navigation.argument.AddType
 import kotlinx.serialization.Serializable
 
 sealed interface Route {
@@ -13,10 +15,10 @@ sealed interface Route {
         @Serializable
         data object List : Income
 
+        @SuppressLint("UnsafeOptInUsageError")
         @Serializable
-        data object Add : Income
+        data class Add(val addType: AddType) : Income
     }
-
 }
 
 sealed interface MainTabRoute : Route {
@@ -32,5 +34,5 @@ sealed interface MainTabRoute : Route {
 
     @Serializable
     data object SpendingPlan : MainTabRoute
-
 }
+

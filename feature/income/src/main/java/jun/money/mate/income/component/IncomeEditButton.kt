@@ -33,7 +33,7 @@ fun IncomeEditButton(
         )
         Text(
             text = text,
-            style = JUNTheme.typography.labelLargeM
+            style = JUNTheme.typography.titleSmallM
         )
     }
 }

@@ -46,6 +46,18 @@ class IncomeRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getIncomeById(id: Long): Income {
+        return incomeDao.getIncomeById(id).let {
+            Income(
+                id = it.id,
+                title = it.title,
+                amount = it.amount,
+                type = it.type,
+                incomeDate = it.incomeDate,
+            )
+        }
+    }
+
     override fun getIncomesByMonth(data: LocalDate): Flow<IncomeList> {
         return incomeDao.getIncomesByMonth(
             year = data.year.toString(),

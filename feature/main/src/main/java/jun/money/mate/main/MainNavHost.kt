@@ -54,6 +54,7 @@ internal fun MainNavHost(
             incomeNavGraph(
                 onGoBack = navigator::popBackStackIfNotHome,
                 onShowIncomeAdd = navigator::navigateToIncomeAdd,
+                onShowIncomeEdit = navigator::navigateToIncomeEdit,
                 onShowSnackBar = onShowSnackBar
             )
         }

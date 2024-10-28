@@ -11,6 +11,10 @@ interface IncomeRepository {
 
     fun getIncomeFlow(): Flow<IncomeList>
 
+    suspend fun getIncomeById(
+        id: Long
+    ): Income
+
     fun getIncomesByMonth(
         data: LocalDate = LocalDate.now()
     ): Flow<IncomeList>

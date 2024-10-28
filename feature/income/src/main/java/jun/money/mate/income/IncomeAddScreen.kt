@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HmDefaultTextField
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.LargeButton
@@ -37,11 +38,14 @@ import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem_date.datetimepicker.DatePicker
 import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.model.income.IncomeType
+import jun.money.mate.navigation.argument.AddType
 import java.time.LocalDate
 import java.time.YearMonth
 
 @Composable
 internal fun IncomeAddRoute(
+    addType: AddType,
     onGoBack: () -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: IncomeAddViewModel = hiltViewModel()
@@ -50,16 +54,16 @@ internal fun IncomeAddRoute(
     val incomeModalEffect by viewModel.incomeModalEffect.collectAsStateWithLifecycle()
 
     IncomeAddScreen(
-        regularIncomeSelected = incomeAddState.regularIncomeSelected,
-        variableIncomeSelected = incomeAddState.variableIncomeSelected,
-        incomeTitle = incomeAddState.title,
-        incomeAmount = incomeAddState.amountString,
-        incomeDate = incomeAddState.date.toString(),
+        title = when (addType) {
+            is AddType.Edit -> "수정"
+            AddType.New -> "추가"
+        },
+        incomeAddState = incomeAddState,
+        onBackClick = onGoBack,
+        onAddIncome = viewModel::onAddIncome,
         onIncomeTitleChange = viewModel::onTitleValueChange,
         onIncomeAmountChange = viewModel::onAmountValueChange,
         onShowIncomeDateBottomSheet = viewModel::onShowDatePicker,
-        onBackClick = onGoBack,
-        onAddIncome = viewModel::onAddIncome,
         onRegularIncomeClick = viewModel::onRegularIncomeClick,
         onVariableIncomeClick = viewModel::onVariableIncomeClick,
     )
@@ -82,16 +86,13 @@ internal fun IncomeAddRoute(
 
 @Composable
 private fun IncomeAddScreen(
-    regularIncomeSelected: Boolean,
-    variableIncomeSelected: Boolean,
-    incomeTitle: String,
-    incomeAmount: String,
-    incomeDate: String,
+    title: String,
+    incomeAddState: IncomeAddState,
+    onBackClick: () -> Unit,
+    onAddIncome: () -> Unit,
     onIncomeTitleChange: (String) -> Unit,
     onIncomeAmountChange: (String) -> Unit,
     onShowIncomeDateBottomSheet: () -> Unit,
-    onBackClick: () -> Unit,
-    onAddIncome: () -> Unit,
     onRegularIncomeClick: () -> Unit,
     onVariableIncomeClick: () -> Unit,
 
@@ -99,13 +100,13 @@ private fun IncomeAddScreen(
     Scaffold(
         topBar = {
             TopAppbar(
-                title = "수입 추가",
+                title = "수입 $title",
                 onBackEvent = onBackClick
             )
         },
         bottomBar = {
             LargeButton(
-                text = "추가하기",
+                text = "${title}하기",
                 onClick = onAddIncome,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -119,58 +120,114 @@ private fun IncomeAddScreen(
                 .padding(horizontal = 16.dp)
                 .padding(it)
         ) {
-            VerticalSpacer(20.dp)
-            IncomeTitle("수입 타입")
-            Row {
-                IncomeTypeButton(
-                    text = "정기 수입",
-                    description = "매달 반복되는 수입",
-                    selected = regularIncomeSelected,
-                    onClick = onRegularIncomeClick,
-                    modifier = Modifier.weight(1f)
-                )
-                HorizontalSpacer(10.dp)
-                IncomeTypeButton(
-                    text = "변동 수입",
-                    description = "매달 반복되지 않는 수입",
-                    selected = variableIncomeSelected,
-                    onClick = onVariableIncomeClick,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            VerticalSpacer(30.dp)
-            IncomeTitle("수입명")
-            HmDefaultTextField(
-                value = incomeTitle,
-                onValueChange = onIncomeTitleChange,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                ),
-                hint = "수입명을 입력해주세요"
-            )
-            VerticalSpacer(30.dp)
-            IncomeTitle("수입 금액")
-            HmDefaultTextField(
-                value = incomeAmount,
-                onValueChange = onIncomeAmountChange,
-                hint = "수입 금액을 입력해주세요",
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                    keyboardType = KeyboardType.NumberPassword
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        onAddIncome()
-                    }
-                )
-            )
-            VerticalSpacer(30.dp)
-            IncomeTitle("수입 발생 날짜")
-            NonTextField(
-                text = incomeDate,
-                onClick = onShowIncomeDateBottomSheet
+            IncomeAddContent(
+                incomeAddState = incomeAddState,
+                onAddIncome = onAddIncome,
+                onIncomeTitleChange = onIncomeTitleChange,
+                onIncomeAmountChange = onIncomeAmountChange,
+                onShowIncomeDateBottomSheet = onShowIncomeDateBottomSheet,
+                onRegularIncomeClick = onRegularIncomeClick,
+                onVariableIncomeClick = onVariableIncomeClick,
             )
         }
+    }
+}
+
+@Composable
+private fun IncomeAddContent(
+    incomeAddState: IncomeAddState,
+    onAddIncome: () -> Unit,
+    onIncomeTitleChange: (String) -> Unit,
+    onIncomeAmountChange: (String) -> Unit,
+    onShowIncomeDateBottomSheet: () -> Unit,
+    onRegularIncomeClick: () -> Unit,
+    onVariableIncomeClick: () -> Unit,
+) {
+    FadeAnimatedVisibility(incomeAddState is IncomeAddState.IncomeData) {
+        if (incomeAddState is IncomeAddState.IncomeData) {
+            IncomeAddBody(
+                regularIncomeSelected = incomeAddState.regularIncomeSelected,
+                variableIncomeSelected = incomeAddState.variableIncomeSelected,
+                incomeTitle = incomeAddState.title,
+                incomeAmount = incomeAddState.amountString,
+                incomeDate = incomeAddState.date.toString(),
+                onAddIncome = onAddIncome,
+                onIncomeTitleChange = onIncomeTitleChange,
+                onIncomeAmountChange = onIncomeAmountChange,
+                onShowIncomeDateBottomSheet = onShowIncomeDateBottomSheet,
+                onRegularIncomeClick = onRegularIncomeClick,
+                onVariableIncomeClick = onVariableIncomeClick,
+            )
+        }
+    }
+}
+
+@Composable
+private fun IncomeAddBody(
+    regularIncomeSelected: Boolean,
+    variableIncomeSelected: Boolean,
+    incomeTitle: String,
+    incomeAmount: String,
+    incomeDate: String,
+    onAddIncome: () -> Unit,
+    onIncomeTitleChange: (String) -> Unit,
+    onIncomeAmountChange: (String) -> Unit,
+    onShowIncomeDateBottomSheet: () -> Unit,
+    onRegularIncomeClick: () -> Unit,
+    onVariableIncomeClick: () -> Unit,
+) {
+    Column {
+        VerticalSpacer(20.dp)
+        IncomeTitle("수입 타입")
+        Row {
+            IncomeTypeButton(
+                text = "정기 수입",
+                description = "매달 반복되는 수입",
+                selected = regularIncomeSelected,
+                onClick = onRegularIncomeClick,
+                modifier = Modifier.weight(1f)
+            )
+            HorizontalSpacer(10.dp)
+            IncomeTypeButton(
+                text = "변동 수입",
+                description = "매달 반복되지 않는 수입",
+                selected = variableIncomeSelected,
+                onClick = onVariableIncomeClick,
+                modifier = Modifier.weight(1f)
+            )
+        }
+        VerticalSpacer(30.dp)
+        IncomeTitle("수입명")
+        HmDefaultTextField(
+            value = incomeTitle,
+            onValueChange = onIncomeTitleChange,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next,
+            ),
+            hint = "수입명을 입력해주세요"
+        )
+        VerticalSpacer(30.dp)
+        IncomeTitle("수입 금액")
+        HmDefaultTextField(
+            value = incomeAmount,
+            onValueChange = onIncomeAmountChange,
+            hint = "수입 금액을 입력해주세요",
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.NumberPassword
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    onAddIncome()
+                }
+            )
+        )
+        VerticalSpacer(30.dp)
+        IncomeTitle("수입 발생 날짜")
+        NonTextField(
+            text = incomeDate,
+            onClick = onShowIncomeDateBottomSheet
+        )
     }
 }
 
@@ -244,11 +301,13 @@ private fun IncomeModalContent(
 private fun IncomeAddScreenPreview() {
     JunTheme {
         IncomeAddScreen(
-            regularIncomeSelected = true,
-            variableIncomeSelected = false,
-            incomeTitle = "월급",
-            incomeAmount = "1000000",
-            incomeDate = "2021-09-01",
+            title = "추가",
+            incomeAddState = IncomeAddState.IncomeData(
+                title = "월급",
+                amount = 1000000.0,
+                date = LocalDate.now(),
+                type = IncomeType.REGULAR,
+            ),
             onIncomeTitleChange = {},
             onIncomeAmountChange = {},
             onShowIncomeDateBottomSheet = {},

@@ -82,12 +82,31 @@ internal class IncomeListViewModel @Inject constructor(
                             if (it.id == income.id) {
                                 it.copy(selected = !it.selected)
                             } else {
-                                it
+                                it.copy(selected = false)
                             }
                         }
                     )
                 )
             }
+        }
+    }
+
+    fun editIncome() {
+        val incomeState = incomeListState.value as? IncomeListState.IncomeListData ?: return
+        val selectedIncomeId = incomeState.selectedIncomeId ?: return
+
+        viewModelScope.launch {
+            _incomeListEffect.emit(IncomeListEffect.EditIncome(selectedIncomeId))
+        }
+    }
+
+    fun deleteIncome() {
+        val incomeState = incomeListState.value as? IncomeListState.IncomeListData ?: return
+        val selectedIncomeId = incomeState.selectedIncomeId ?: return
+
+        viewModelScope.launch {
+            incomeRepository.deleteById(selectedIncomeId)
+            showSnackBar(MessageType.Message("수입이 삭제되었습니다"))
         }
     }
 
@@ -117,6 +136,8 @@ internal sealed interface IncomeListState {
     ) : IncomeListState {
 
         val incomeListViewMode: IncomeListViewMode get() = if (incomeList.incomes.any { it.selected }) IncomeListViewMode.EDIT else IncomeListViewMode.LIST
+
+        val selectedIncomeId get() = incomeList.incomes.firstOrNull { it.selected }?.id
     }
 }
 
@@ -125,6 +146,9 @@ internal sealed interface IncomeListEffect {
 
     @Immutable
     data class ShowSnackBar(val messageType: MessageType) : IncomeListEffect
+
+    @Immutable
+    data class EditIncome(val id: Long) : IncomeListEffect
 }
 
 internal enum class IncomeListViewMode {

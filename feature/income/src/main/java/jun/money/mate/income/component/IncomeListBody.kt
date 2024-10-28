@@ -25,7 +25,7 @@ import jun.money.mate.designsystem.component.CheckBox
 import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.LeftToRightSlideFadeAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.Gray7
+import jun.money.mate.designsystem.theme.Gray5
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.main
@@ -113,13 +113,14 @@ fun IncomeItem(
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(
             width = 1.dp,
-            color = if (income.selected) main else Gray7
+            color = if (income.selected) main else Gray5
         ),
         color = MaterialTheme.colorScheme.surfaceDim,
         onClick = onIncomeClick,
         contentColor = MaterialTheme.colorScheme.onSurface,
         modifier = modifier
             .fillMaxWidth()
+            .animateContentSize()
             .padding(16.dp),
     ) {
         Row(

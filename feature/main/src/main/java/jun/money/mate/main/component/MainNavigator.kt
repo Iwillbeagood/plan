@@ -14,6 +14,7 @@ import jun.money.mate.income.navigation.navigateToIncomeAdd
 import jun.money.mate.income.navigation.navigateToIncomeList
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
+import jun.money.mate.navigation.argument.AddType
 
 class MainNavigator(
     val navController: NavHostController
@@ -52,7 +53,11 @@ class MainNavigator(
 
     fun navigateToIncomeAdd() {
         navigateToIncomeList()
-        navController.navigateToIncomeAdd()
+        navController.navigateToIncomeAdd(AddType.New)
+    }
+
+    fun navigateToIncomeEdit(id: Long) {
+        navController.navigateToIncomeAdd(AddType.Edit(id))
     }
 
     fun popBackStackIfNotHome(): Boolean {
