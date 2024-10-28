@@ -207,7 +207,7 @@ private fun IncomeItemPreview() {
             income = Income(
                 id = 1,
                 title = "Title",
-                amount = 1000.0,
+                amount = 1000,
                 type = IncomeType.REGULAR,
                 incomeDate = LocalDate.now(),
                 selected = true

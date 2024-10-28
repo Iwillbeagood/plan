@@ -6,7 +6,7 @@ import java.time.LocalDate
 data class Income(
     val id: Long,
     val title: String,
-    val amount: Double,
+    val amount: Long,
     val type: IncomeType,
     val incomeDate: LocalDate,
     val selected: Boolean = false
@@ -22,7 +22,7 @@ data class Income(
         val regularSample = Income(
             id = 1,
             title = "정기 지출 제목",
-            amount = 1000000.0,
+            amount = 1000000,
             type = IncomeType.REGULAR,
             incomeDate = LocalDate.now(),
             selected = true
@@ -31,7 +31,7 @@ data class Income(
         val variableSample = Income(
             id = 2,
             title = "변동 지출 제목",
-            amount = 2000000.0,
+            amount = 2000000,
             type = IncomeType.VARIABLE,
             incomeDate = LocalDate.now()
         )

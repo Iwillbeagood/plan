@@ -10,7 +10,7 @@ import java.time.LocalDate
 data class IncomeEntity(
     @PrimaryKey val id: Long,
     val title: String,
-    val amount: Double,
+    val amount: Long,
     val type: IncomeType,
     val incomeDate: LocalDate,
 )

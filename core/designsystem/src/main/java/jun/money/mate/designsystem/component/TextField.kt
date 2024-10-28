@@ -3,12 +3,14 @@ package jun.money.mate.designsystem.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -23,9 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.icon.MyIconPack
@@ -182,9 +186,62 @@ fun NonTextField(
     }
 }
 
+@Composable
+fun UnderlineTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = JUNTheme.typography.titleMediumB,
+    hint: String = "",
+    focusRequester: FocusRequester = FocusRequester(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+) {
+    val requester by remember { mutableStateOf(focusRequester) }
+    var isFocus by remember { mutableStateOf(false) }
+
+    BasicTextField(
+        value = value,
+        textStyle = textStyle.copy(color = MaterialTheme.colorScheme.onSurface),
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        onValueChange = onValueChange,
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
+        maxLines = 1,
+        modifier = modifier
+            .focusRequester(requester)
+            .onFocusChanged {
+                isFocus = it.isFocused
+            },
+    ) { innerTextField ->
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+            ) {
+                Box(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    if (value.isEmpty() && !isFocus) {
+                        Text(
+                            text = hint,
+                            style = textStyle,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    innerTextField()
+                }
+            }
+            HorizontalDivider()
+        }
+    }
+}
+
 @Preview
 @Composable
-fun DefaultTextFieldPreview() {
+private fun DefaultTextFieldPreview() {
     JunTheme() {
         HmDefaultTextField(
             value = "",
@@ -201,6 +258,19 @@ private fun PasswordTextFieldPreview() {
     JunTheme {
         HmPasswordTextField(
             value = "a124124",
+            onValueChange = {},
+            hint = "인증번호 입력",
+            modifier = Modifier
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun UnderlineTextFieldPreview() {
+    JunTheme {
+        UnderlineTextField(
+            value = "",
             onValueChange = {},
             hint = "인증번호 입력",
             modifier = Modifier

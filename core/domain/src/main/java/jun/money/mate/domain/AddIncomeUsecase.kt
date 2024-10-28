@@ -14,7 +14,7 @@ class AddIncomeUsecase @Inject constructor(
     suspend operator fun invoke(
         id: Long,
         title: String,
-        amount: Double,
+        amount: Long,
         type: IncomeType,
         incomeDate: LocalDate,
         onSuccess: () -> Unit,

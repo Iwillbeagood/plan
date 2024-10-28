@@ -1,5 +1,6 @@
 package jun.money.mate.income
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,16 +23,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.HmDefaultTextField
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.LargeButton
 import jun.money.mate.designsystem.component.NonTextField
+import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbar
+import jun.money.mate.designsystem.component.UnderlineTextField
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JUNTheme
@@ -105,10 +108,12 @@ private fun IncomeAddScreen(
             )
         },
         bottomBar = {
-            LargeButton(
+            RegularButton (
                 text = "${title}하기",
                 onClick = onAddIncome,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,
@@ -150,6 +155,7 @@ private fun IncomeAddContent(
                 variableIncomeSelected = incomeAddState.variableIncomeSelected,
                 incomeTitle = incomeAddState.title,
                 incomeAmount = incomeAddState.amountString,
+                incomeAmountWon = incomeAddState.amountWon,
                 incomeDate = incomeAddState.date.toString(),
                 onAddIncome = onAddIncome,
                 onIncomeTitleChange = onIncomeTitleChange,
@@ -168,6 +174,7 @@ private fun IncomeAddBody(
     variableIncomeSelected: Boolean,
     incomeTitle: String,
     incomeAmount: String,
+    incomeAmountWon: String,
     incomeDate: String,
     onAddIncome: () -> Unit,
     onIncomeTitleChange: (String) -> Unit,
@@ -176,7 +183,9 @@ private fun IncomeAddBody(
     onRegularIncomeClick: () -> Unit,
     onVariableIncomeClick: () -> Unit,
 ) {
-    Column {
+    Column(
+        modifier = Modifier.animateContentSize()
+    ) {
         VerticalSpacer(20.dp)
         IncomeTitle("수입 타입")
         Row {
@@ -196,9 +205,15 @@ private fun IncomeAddBody(
                 modifier = Modifier.weight(1f)
             )
         }
-        VerticalSpacer(30.dp)
+        VerticalSpacer(20.dp)
+        IncomeTitle("수입 발생 날짜")
+        NonTextField(
+            text = incomeDate,
+            onClick = onShowIncomeDateBottomSheet
+        )
+        VerticalSpacer(20.dp)
         IncomeTitle("수입명")
-        HmDefaultTextField(
+        UnderlineTextField(
             value = incomeTitle,
             onValueChange = onIncomeTitleChange,
             keyboardOptions = KeyboardOptions(
@@ -206,9 +221,9 @@ private fun IncomeAddBody(
             ),
             hint = "수입명을 입력해주세요"
         )
-        VerticalSpacer(30.dp)
+        VerticalSpacer(20.dp)
         IncomeTitle("수입 금액")
-        HmDefaultTextField(
+        UnderlineTextField(
             value = incomeAmount,
             onValueChange = onIncomeAmountChange,
             hint = "수입 금액을 입력해주세요",
@@ -222,11 +237,11 @@ private fun IncomeAddBody(
                 }
             )
         )
-        VerticalSpacer(30.dp)
-        IncomeTitle("수입 발생 날짜")
-        NonTextField(
-            text = incomeDate,
-            onClick = onShowIncomeDateBottomSheet
+        Text(
+            text = incomeAmountWon,
+            style = JUNTheme.typography.titleMediumM,
+            textAlign = TextAlign.End,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -261,7 +276,7 @@ private fun IncomeTypeButton(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(vertical = 30.dp)
+            modifier = Modifier.padding(vertical = 15.dp)
         ) {
             Text(
                 text = text,
@@ -305,7 +320,7 @@ private fun IncomeAddScreenPreview() {
             incomeAddState = IncomeAddState.IncomeData(
                 id = 0,
                 title = "월급",
-                amount = 1000000.0,
+                amount = 1000000,
                 date = LocalDate.now(),
                 type = IncomeType.REGULAR,
             ),

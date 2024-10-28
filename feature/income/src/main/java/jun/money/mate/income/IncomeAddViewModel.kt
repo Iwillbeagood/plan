@@ -58,7 +58,7 @@ internal class IncomeAddViewModel @Inject constructor(
                     AddType.New -> IncomeAddState.IncomeData(
                         id = System.currentTimeMillis(),
                         title = "",
-                        amount = 0.0,
+                        amount = 0,
                         date = LocalDate.now(),
                         type = IncomeType.REGULAR
                     )
@@ -119,7 +119,7 @@ internal class IncomeAddViewModel @Inject constructor(
 
         _incomeAddState.update {
             state.copy(
-                amount = CurrencyFormatter.deFormatAmountDouble(value)
+                amount = value.toLongOrNull() ?: 0
             )
         }
     }
@@ -178,7 +178,7 @@ internal sealed interface IncomeAddState {
     data class IncomeData(
         val id: Long,
         val title: String,
-        val amount: Double,
+        val amount: Long,
         val date: LocalDate,
         val type: IncomeType,
     ) : IncomeAddState {
@@ -186,7 +186,8 @@ internal sealed interface IncomeAddState {
         val regularIncomeSelected get() = type == IncomeType.REGULAR
         val variableIncomeSelected get() = type == IncomeType.VARIABLE
 
-        val amountString get() = if (amount > 0) CurrencyFormatter.formatAmountWon(amount) else ""
+        val amountString get() = if (amount > 0) amount.toString() else ""
+        val amountWon get() = if (amount > 0) CurrencyFormatter.formatAmountWon(amount) else ""
     }
 }
 

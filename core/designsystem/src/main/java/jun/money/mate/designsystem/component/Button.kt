@@ -58,7 +58,7 @@ fun LargeButton(
 fun RegularButton(
     modifier: Modifier = Modifier,
     text: String = stringResource(id = R.string.btn_complete),
-    color: Color = Black,
+    color: Color = MaterialTheme.colorScheme.primary,
     inActiveColor: Color = Gray6,
     textColor: Color = White1,
     isActive: Boolean = true,
