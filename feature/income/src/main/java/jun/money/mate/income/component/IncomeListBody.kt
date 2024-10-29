@@ -22,7 +22,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.CheckBox
-import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.LeftToRightSlideFadeAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray5
@@ -46,13 +45,15 @@ fun IncomeListBody(
             .background(MaterialTheme.colorScheme.surfaceDim)
     ) {
         item {
-            Column(
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceDim,
+                shadowElevation = 4.dp,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 10.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(30.dp),
+                    modifier = Modifier.padding(20.dp),
                 ) {
                      Text(
                         text = "전체 수입",
@@ -65,7 +66,6 @@ fun IncomeListBody(
                         style = JUNTheme.typography.headlineSmallB,
                     )
                 }
-                HorizontalDivider(thickness = 5.dp)
             }
         }
 

@@ -193,15 +193,17 @@ private fun TextDialogPreview() {
                 RegularButton(
                     text = "아니요",
                     modifier = Modifier.weight(3f),
-                    isActive = false
-                ) {}
+                    isActive = false,
+                    onClick = {}
+                )
             },
             button2 = {
                 RegularButton(
                     text = "예",
-                    modifier = Modifier.weight(7f)
-                ) {
-                }
+                    modifier = Modifier.weight(7f),
+                    onClick = {},
+                )
+
             },
             onDismissRequest = {}
         )
@@ -227,15 +229,16 @@ private fun BottomScaffoldPreview() {
                 RegularButton(
                     text = "아니요",
                     modifier = Modifier.weight(3f),
-                    isActive = false
-                ) {}
+                    isActive = false,
+                    onClick = {}
+                )
             },
             sheetButton2 = {
                 RegularButton(
                     text = "예",
-                    modifier = Modifier.weight(7f)
-                ) {
-                }
+                    modifier = Modifier.weight(7f),
+                    onClick = {},
+                )
             },
             onDismissRequest = { /*TODO*/ }
         )

@@ -25,8 +25,6 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.R
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.JUNTheme
-import jun.money.mate.designsystem.theme.LightBlue2
-import jun.money.mate.designsystem.theme.nonScaledSp
 
 @Composable
 fun TopAppbar(
@@ -65,7 +63,7 @@ fun TopAppbar(
             }
             Text(
                 text = title,
-                style = JUNTheme.typography.titleNormalB.nonScaledSp
+                style = JUNTheme.typography.titleNormalB
             )
             Spacer(modifier = Modifier.weight(1f))
 
@@ -103,7 +101,7 @@ sealed interface HmTopAppbarType {
 fun BasicTopAppbarPreview() {
     JunTheme {
         TopAppbar(
-            title = "화물등록"
+            title = "등록"
         )
     }
 }

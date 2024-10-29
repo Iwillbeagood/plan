@@ -6,19 +6,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.EditNote
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,11 +23,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.BottomToTopSlideFadeAnimatedVisibility
+import jun.money.mate.designsystem.component.CircleButton
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.etc.EmptyMessage
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem_date.datetimepicker.YearMonthPickerScaffold
 import jun.money.mate.designsystem_date.datetimepicker.models.CalendarConfig
 import jun.money.mate.designsystem_date.datetimepicker.models.CalendarSelection
@@ -147,21 +141,12 @@ private fun IncomeListScreen(
             FadeAnimatedVisibility(
                 visible = incomeListViewMode == IncomeListViewMode.LIST,
             ) {
-                Button(
-                    modifier= Modifier.size(56.dp),
-                    shape = CircleShape,
-                    elevation = ButtonDefaults.buttonElevation(8.dp),
-                    contentPadding = PaddingValues(0.dp),
+                CircleButton(
+                    size = 56.dp,
+                    icon = Icons.Default.Add,
+                    elevation = 8.dp,
                     onClick = onIncomeAdd
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        tint = White1,
-                        contentDescription = "수입 추가",
-                        modifier = Modifier
-                            .size(35.dp)
-                    )
-                }
+                )
             }
         }
     ) {
