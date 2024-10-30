@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -35,22 +36,21 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.icon.MyIconPack
 import jun.money.mate.designsystem.icon.myiconpack.Visibility
 import jun.money.mate.designsystem.icon.myiconpack.VisibilityOff
-import jun.money.mate.designsystem.theme.Gray1
-import jun.money.mate.designsystem.theme.Gray3
 import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 
 @Composable
-fun HmDefaultTextField(
+fun DefaultTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     focusRequester: FocusRequester = FocusRequester(),
-    value: String,
     hint: String = "",
-    textStyle: TextStyle = JUNTheme.typography.titleMediumR,
+    label: String = "",
+    textStyle: TextStyle = JUNTheme.typography.titleSmallR,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    onValueChange: (String) -> Unit,
 ) {
     val requester by remember { mutableStateOf(focusRequester) }
     var isFocus by remember { mutableStateOf(false) }
@@ -62,7 +62,7 @@ fun HmDefaultTextField(
         singleLine = true,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
             .focusRequester(requester)
             .onFocusChanged {
                 isFocus = it.isFocused
@@ -77,31 +77,40 @@ fun HmDefaultTextField(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
-                Box(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    if (value.isEmpty() && !isFocus) {
+                Column {
+                    if (label.isNotEmpty()) {
                         Text(
-                            text = hint,
-                            style = textStyle
+                            text = label,
+                            style = JUNTheme.typography.labelLargeR,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    innerTextField()
+                    VerticalSpacer(2.dp)
+                    Box{
+                        if (value.isEmpty() && !isFocus) {
+                            Text(
+                                text = hint,
+                                style = textStyle
+                            )
+                        }
+                        innerTextField()
+                    }
                 }
+
             }
         }
     }
 }
 
 @Composable
-fun HmPasswordTextField(
+fun PasswordTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     focusRequester: FocusRequester = FocusRequester(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    value: String,
     hint: String = "",
     textStyle: TextStyle = JUNTheme.typography.titleMediumB,
-    onValueChange: (String) -> Unit,
 ) {
     val requester by remember { mutableStateOf(focusRequester) }
     var isFocus by remember { mutableStateOf(false) }
@@ -243,10 +252,11 @@ fun UnderlineTextField(
 @Composable
 private fun DefaultTextFieldPreview() {
     JunTheme() {
-        HmDefaultTextField(
+        DefaultTextField(
             value = "",
             onValueChange = {},
             hint = "인증번호 입력",
+            label = "인증번호",
             modifier = Modifier
         )
     }
@@ -256,7 +266,7 @@ private fun DefaultTextFieldPreview() {
 @Composable
 private fun PasswordTextFieldPreview() {
     JunTheme {
-        HmPasswordTextField(
+        PasswordTextField(
             value = "a124124",
             onValueChange = {},
             hint = "인증번호 입력",

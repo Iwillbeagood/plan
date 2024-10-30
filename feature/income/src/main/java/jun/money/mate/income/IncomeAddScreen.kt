@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import jun.money.mate.designsystem.component.DefaultTextField
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.LargeButton
@@ -108,7 +109,7 @@ private fun IncomeAddScreen(
             )
         },
         bottomBar = {
-            RegularButton (
+            RegularButton(
                 text = "${title}하기",
                 onClick = onAddIncome,
                 modifier = Modifier
@@ -184,7 +185,7 @@ private fun IncomeAddBody(
     onVariableIncomeClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.animateContentSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         VerticalSpacer(20.dp)
         IncomeTitle("수입 타입")
@@ -213,7 +214,7 @@ private fun IncomeAddBody(
         )
         VerticalSpacer(20.dp)
         IncomeTitle("수입명")
-        UnderlineTextField(
+        DefaultTextField(
             value = incomeTitle,
             onValueChange = onIncomeTitleChange,
             keyboardOptions = KeyboardOptions(
@@ -223,7 +224,7 @@ private fun IncomeAddBody(
         )
         VerticalSpacer(20.dp)
         IncomeTitle("수입 금액")
-        UnderlineTextField(
+        DefaultTextField(
             value = incomeAmount,
             onValueChange = onIncomeAmountChange,
             hint = "수입 금액을 입력해주세요",
@@ -239,7 +240,7 @@ private fun IncomeAddBody(
         )
         Text(
             text = incomeAmountWon,
-            style = JUNTheme.typography.titleMediumM,
+            style = JUNTheme.typography.labelLargeM,
             textAlign = TextAlign.End,
             modifier = Modifier.fillMaxWidth()
         )

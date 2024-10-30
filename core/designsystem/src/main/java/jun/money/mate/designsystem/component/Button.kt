@@ -89,7 +89,7 @@ fun RegularButton(
         Text(
             text = text,
             style = JUNTheme.typography.titleNormalB,
-            color = if (isActive) textColor else Black
+            color = textColor
         )
     }
 }
