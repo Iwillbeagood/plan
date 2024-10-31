@@ -13,5 +13,8 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.res)
     implementation(projects.core.designsystem)
+    implementation(projects.core.designsystemDate)
     implementation(projects.core.utils)
+
+    implementation(libs.androidx.compose.material.icon)
 }

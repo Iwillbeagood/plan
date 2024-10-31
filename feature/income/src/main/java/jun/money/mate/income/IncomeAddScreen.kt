@@ -1,6 +1,5 @@
 package jun.money.mate.income
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,11 +30,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.DefaultTextField
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalSpacer
-import jun.money.mate.designsystem.component.LargeButton
 import jun.money.mate.designsystem.component.NonTextField
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbar
-import jun.money.mate.designsystem.component.UnderlineTextField
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JUNTheme
@@ -188,31 +185,6 @@ private fun IncomeAddBody(
         modifier = Modifier.fillMaxSize()
     ) {
         VerticalSpacer(20.dp)
-        IncomeTitle("수입 타입")
-        Row {
-            IncomeTypeButton(
-                text = "정기 수입",
-                description = "매달 반복되는 수입",
-                selected = regularIncomeSelected,
-                onClick = onRegularIncomeClick,
-                modifier = Modifier.weight(1f)
-            )
-            HorizontalSpacer(10.dp)
-            IncomeTypeButton(
-                text = "변동 수입",
-                description = "매달 반복되지 않는 수입",
-                selected = variableIncomeSelected,
-                onClick = onVariableIncomeClick,
-                modifier = Modifier.weight(1f)
-            )
-        }
-        VerticalSpacer(20.dp)
-        IncomeTitle("수입 발생 날짜")
-        NonTextField(
-            text = incomeDate,
-            onClick = onShowIncomeDateBottomSheet
-        )
-        VerticalSpacer(20.dp)
         IncomeTitle("수입명")
         DefaultTextField(
             value = incomeTitle,
@@ -243,6 +215,31 @@ private fun IncomeAddBody(
             style = JUNTheme.typography.labelLargeM,
             textAlign = TextAlign.End,
             modifier = Modifier.fillMaxWidth()
+        )
+        VerticalSpacer(20.dp)
+        IncomeTitle("수입 타입")
+        Row {
+            IncomeTypeButton(
+                text = "정기 수입",
+                description = "매달 반복되는 수입",
+                selected = regularIncomeSelected,
+                onClick = onRegularIncomeClick,
+                modifier = Modifier.weight(1f)
+            )
+            HorizontalSpacer(10.dp)
+            IncomeTypeButton(
+                text = "변동 수입",
+                description = "매달 반복되지 않는 수입",
+                selected = variableIncomeSelected,
+                onClick = onVariableIncomeClick,
+                modifier = Modifier.weight(1f)
+            )
+        }
+        VerticalSpacer(20.dp)
+        IncomeTitle("수입 발생 날짜")
+        NonTextField(
+            text = incomeDate,
+            onClick = onShowIncomeDateBottomSheet
         )
     }
 }

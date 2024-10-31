@@ -1,41 +1,18 @@
 package jun.money.mate.income
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.DeleteOutline
-import androidx.compose.material.icons.filled.EditNote
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.designsystem.component.BottomToTopSlideFadeAnimatedVisibility
-import jun.money.mate.designsystem.component.CircleButton
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.etc.EmptyMessage
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.designsystem_date.datetimepicker.YearMonthPickerScaffold
-import jun.money.mate.designsystem_date.datetimepicker.models.CalendarConfig
-import jun.money.mate.designsystem_date.datetimepicker.models.CalendarSelection
-import jun.money.mate.designsystem_date.datetimepicker.models.CalendarStyle
-import jun.money.mate.income.component.IncomeEditButton
 import jun.money.mate.income.component.IncomeListBody
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
+import jun.money.mate.ui.IncomeSpendingScaffold
 import java.time.LocalDate
 
 @Composable
@@ -84,80 +61,21 @@ private fun IncomeListScreen(
     onIncomeDelete: () -> Unit,
     onDateSelect: (LocalDate) -> Unit,
 ) {
-    YearMonthPickerScaffold(
-        config = CalendarConfig(
-            yearSelection = true,
-            monthSelection = true,
-            style = CalendarStyle.MONTH,
-            boundary = LocalDate.now().let { now ->
-                now.minusYears(1).withMonth(1).withDayOfMonth(1)..now
-            }
-        ),
-        selection = CalendarSelection.Date(
-            selectedDate = selectedDate,
-            onSelectDate = onDateSelect
-        ),
-        topBar = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .animateContentSize(animationSpec = tween(durationMillis = 500))
-            ) {
-                TopAppbar(
-                    title = "수입 내역",
-                    onBackEvent = onGoBack,
-                )
-            }
-        },
-        bottomBar = {
-            BottomToTopSlideFadeAnimatedVisibility(
-                visible = incomeListViewMode == IncomeListViewMode.EDIT,
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surface)
-                ) {
-                    IncomeEditButton(
-                        icon = Icons.Default.EditNote,
-                        text = "수정",
-                        modifier = Modifier
-                            .weight(1f)
-                            .clickable(onClick = onIncomeEdit)
-                            .padding(10.dp)
-                    )
-                    IncomeEditButton(
-                        icon = Icons.Default.DeleteOutline,
-                        text = "삭제",
-                        modifier = Modifier
-                            .weight(1f)
-                            .clickable(onClick = onIncomeDelete)
-                            .padding(5.dp)
-                    )
-                }
-            }
-        },
-        floatingActionButton = {
-            FadeAnimatedVisibility(
-                visible = incomeListViewMode == IncomeListViewMode.LIST,
-            ) {
-                CircleButton(
-                    size = 56.dp,
-                    icon = Icons.Default.Add,
-                    elevation = 8.dp,
-                    onClick = onIncomeAdd
-                )
-            }
-        }
+    IncomeSpendingScaffold(
+        title = "수입 내역",
+        bottomBarVisible = incomeListViewMode == IncomeListViewMode.EDIT,
+        addButtonVisible = incomeListViewMode == IncomeListViewMode.LIST,
+        selectedDate = selectedDate,
+        onDateSelect = onDateSelect,
+        onAdd = onIncomeAdd,
+        onEdit = onIncomeEdit,
+        onDelete = onIncomeDelete,
+        onGoBack = onGoBack,
     ) {
-        Box(
-            modifier = Modifier
-        ) {
-            IncomeListContent(
-                incomeListState = incomeListState,
-                onIncomeClick = onIncomeClick,
-            )
-        }
+        IncomeListContent(
+            incomeListState = incomeListState,
+            onIncomeClick = onIncomeClick,
+        )
     }
 }
 
@@ -181,7 +99,7 @@ private fun IncomeListContent(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun IncomeListScreenPreview() {
     JunTheme {

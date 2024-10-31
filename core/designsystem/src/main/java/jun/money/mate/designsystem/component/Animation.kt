@@ -51,7 +51,7 @@ fun LeftToRightSlideFadeAnimatedVisibility(
             animationSpec = tween(300)
         ) + fadeIn(animationSpec = tween(300)),
         exit = slideOutHorizontally(
-            targetOffsetX = { fullWidth -> fullWidth },
+            targetOffsetX = { fullWidth -> -fullWidth },
             animationSpec = tween(300)
         ) + fadeOut(animationSpec = tween(300)),
         content = content
