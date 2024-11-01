@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.BottomToTopSlideFadeAnimatedVisibility
@@ -35,6 +36,7 @@ import java.time.LocalDate
 @Composable
 fun IncomeSpendingScaffold(
     title: String,
+    color: Color,
     bottomBarVisible: Boolean,
     addButtonVisible: Boolean,
     selectedDate: LocalDate,
@@ -105,6 +107,7 @@ fun IncomeSpendingScaffold(
                     size = 56.dp,
                     icon = Icons.Default.Add,
                     elevation = 8.dp,
+                    color = color,
                     onClick = onAdd
                 )
             }

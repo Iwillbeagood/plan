@@ -15,6 +15,7 @@ import jun.money.mate.income.navigation.navigateToIncomeList
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 import jun.money.mate.navigation.argument.AddType
+import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanList
 
 class MainNavigator(
     val navController: NavHostController
@@ -32,10 +33,9 @@ class MainNavigator(
 
     fun navigateTo(menuItem: MainBottomNavItem) {
         val navOptions = navOptions {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
+            popUpTo(0) {
+                inclusive = true
             }
-            launchSingleTop = true
             restoreState = true
         }
 
@@ -43,9 +43,9 @@ class MainNavigator(
             MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
             MainBottomNavItem.SpendingList -> TODO()
             MainBottomNavItem.SavingPlan -> TODO()
-            MainBottomNavItem.SpendingPlan -> TODO()
+            MainBottomNavItem.SpendingPlan -> navController.navigateToSpendingPlanList(navOptions)
         }
-    }
+    };
 
     fun navigateToIncomeList() {
         navController.navigateToIncomeList()

@@ -9,6 +9,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.etc.EmptyMessage
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.main
 import jun.money.mate.income.component.IncomeListBody
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
@@ -63,6 +64,7 @@ private fun IncomeListScreen(
 ) {
     IncomeSpendingScaffold(
         title = "수입 내역",
+        color = main,
         bottomBarVisible = incomeListViewMode == IncomeListViewMode.EDIT,
         addButtonVisible = incomeListViewMode == IncomeListViewMode.LIST,
         selectedDate = selectedDate,

@@ -1,6 +1,7 @@
 package jun.money.mate.model.spending
 
 import jun.money.mate.model.Utils
+import jun.money.mate.model.income.IncomeType
 import java.time.LocalDate
 
 data class SpendingPlan(
@@ -11,15 +12,21 @@ data class SpendingPlan(
     val planDate: LocalDate,
     val executeDate: LocalDate,
     val isExecuted: Boolean,
-    val willExecute: Boolean
+    val willExecute: Boolean,
+    val selected: Boolean = false
 ) {
 
     val amountString: String get() = "-" + Utils.formatAmountWon(amount)
+
+    val dateString: String get() = "${planDate.dayOfMonth}일"
 }
 
 data class SpendingPlanList(
     val spendingPlans: List<SpendingPlan>
 ) {
+    val groupedPlans = spendingPlans.groupBy { it.type }
+
+
     val regularTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.REGULAR_EXPENSE) it.amount else 0.0 }
     val allowanceTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.ALLOWANCE) it.amount else 0.0 }
     val livingTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.LIVING_EXPENSE) it.amount else 0.0 }

@@ -52,6 +52,21 @@ class SpendingPlanRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSpendingPlanById(id: Long): SpendingPlan {
+        return spendingPlanDao.getSpendingPlanById(id).let {
+            SpendingPlan(
+                id = it.id,
+                title = it.title,
+                type = it.type,
+                amount = it.amount,
+                planDate = it.planDate,
+                executeDate = it.executeDate,
+                isExecuted = it.isExecuted,
+                willExecute = it.willExecute,
+            )
+        }
+    }
+
     override fun getSpendingPlansByMonth(
         date: LocalDate
     ): Flow<SpendingPlanList> {

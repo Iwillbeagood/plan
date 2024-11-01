@@ -42,7 +42,6 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.IncomeType
 import jun.money.mate.navigation.argument.AddType
 import java.time.LocalDate
-import java.time.YearMonth
 
 @Composable
 internal fun IncomeAddRoute(
@@ -302,7 +301,6 @@ private fun IncomeModalContent(
         is IncomeModalEffect.ShowDatePicker -> {
             DatePicker(
                 onDateSelect = onDateSelect,
-                timeBoundary = LocalDate.now().let { now -> YearMonth.from(now).atDay(1)..now },
                 onDismissRequest = onDismissRequest,
             )
         }

@@ -11,6 +11,8 @@ interface SpendingPlanRepository {
 
     fun getSpendingPlanFlow(): Flow<SpendingPlanList>
 
+    suspend fun getSpendingPlanById(id: Long): SpendingPlan
+
     fun getSpendingPlansByMonth(
         date: LocalDate = LocalDate.now()
     ): Flow<SpendingPlanList>

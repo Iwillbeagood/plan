@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.ehsannarmani.compose_charts.models.Pie
+import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HmTopAppbarType
 import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.TopAppbar
@@ -91,9 +92,10 @@ private fun HomeContent(
     onShowMenu: () -> Unit,
     onShowNotification: () -> Unit,
 ) {
-    when (homeState) {
-        HomeState.Loading -> SplashScreen()
-        is HomeState.HomeData -> {
+    FadeAnimatedVisibility(
+        visible = homeState is HomeState.HomeData
+    ) {
+        if (homeState is HomeState.HomeData) {
             HomeScreen(
                 balance = homeState.balanceString,
                 incomeTotal = homeState.incomeList.totalString,

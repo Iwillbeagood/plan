@@ -35,7 +35,7 @@ enum class MainBottomNavItem(
     SpendingPlan(
         titleRes = R.string.tab_spending_plan,
         icon = Icons.Default.CalendarToday,
-        route = MainTabRoute.SpendingPlan
+        route = MainTabRoute.SpendingPlan.List
     );
 
     companion object {

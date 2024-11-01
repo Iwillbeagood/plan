@@ -42,6 +42,8 @@ data class IncomeList(
     val incomes: List<Income>
 ) {
 
+    val groupedIncomes = incomes.groupBy { it.type }
+
     val total get() = incomes.sumOf { it.amount }
     val isEmpty get() = total > 0
 

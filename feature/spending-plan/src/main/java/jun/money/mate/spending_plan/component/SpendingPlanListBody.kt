@@ -1,4 +1,4 @@
-package jun.money.mate.income.component
+package jun.money.mate.spending_plan.component
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
@@ -6,7 +6,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,25 +18,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.CheckBox
 import jun.money.mate.designsystem.component.LeftToRightSlideFadeAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray5
 import jun.money.mate.designsystem.theme.JUNTheme
-import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.model.income.Income
-import jun.money.mate.model.income.IncomeList
-import jun.money.mate.model.income.IncomeType
-import java.time.LocalDate
+import jun.money.mate.model.spending.SpendingPlan
+import jun.money.mate.model.spending.SpendingPlanList
+import kotlin.collections.component1
+import kotlin.collections.component2
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun IncomeListBody(
-    incomeList: IncomeList,
-    onIncomeClick: (Income) -> Unit
+fun SpendingPlanListBody(
+    spendingPlanList: SpendingPlanList,
+    onSpendingPlanClick: (SpendingPlan) -> Unit
 ) {
     Column {
         Surface(
@@ -51,13 +50,13 @@ internal fun IncomeListBody(
                 modifier = Modifier.padding(20.dp),
             ) {
                 Text(
-                    text = "전체 수입",
+                    text = "전체 지출",
                     style = JUNTheme.typography.titleLargeM,
                 )
                 VerticalSpacer(10.dp)
                 Text(
-                    text = incomeList.totalString,
-                    color = main,
+                    text = spendingPlanList.totalString,
+                    color = Red3,
                     style = JUNTheme.typography.headlineSmallB,
                 )
             }
@@ -68,19 +67,19 @@ internal fun IncomeListBody(
                 .weight(1f)
                 .background(MaterialTheme.colorScheme.surfaceDim)
         ) {
-            incomeList.groupedIncomes.forEach { (type, incomes) ->
-                if (incomes.isNotEmpty()) {
+            spendingPlanList.groupedPlans.forEach { (type, planes) ->
+                if (planes.isNotEmpty()) {
                     stickyHeader {
-                        IncomeStickyHeader(
+                        SpendingStickyHeader(
                             title = type.title,
                         )
                     }
                 }
 
-                items(incomes) { income ->
-                    IncomeItem(
-                        income = income,
-                        onIncomeClick = { onIncomeClick(income) },
+                items(planes) { spendingPlan ->
+                    SpendingPlanItem(
+                        spendingPlan = spendingPlan,
+                        onIncomeClick = { onSpendingPlanClick(spendingPlan) },
                         modifier = Modifier.animateContentSize()
                     )
                 }
@@ -90,8 +89,25 @@ internal fun IncomeListBody(
 }
 
 @Composable
-private fun IncomeItem(
-    income: Income,
+private fun SpendingStickyHeader(
+    title: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, top = 20.dp)
+    ) {
+        Text(
+            text = title,
+            style = JUNTheme.typography.titleNormalM,
+        )
+    }
+}
+
+@Composable
+private fun SpendingPlanItem(
+    spendingPlan: SpendingPlan,
     onIncomeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -99,7 +115,7 @@ private fun IncomeItem(
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(
             width = 1.dp,
-            color = if (income.selected) main else Gray5
+            color = if (spendingPlan.selected) main else Gray5
         ),
         color = MaterialTheme.colorScheme.surfaceDim,
         onClick = onIncomeClick,
@@ -117,10 +133,10 @@ private fun IncomeItem(
                 .animateContentSize()
         ) {
             LeftToRightSlideFadeAnimatedVisibility(
-                visible = income.selected
+                visible = spendingPlan.selected
             ) {
                 CheckBox(
-                    checked = income.selected,
+                    checked = spendingPlan.selected,
                     onCheckedChange = {
                         onIncomeClick()
                     },
@@ -131,17 +147,17 @@ private fun IncomeItem(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = income.dateString,
+                    text = spendingPlan.dateString,
                     style = JUNTheme.typography.titleSmallB,
                 )
                 Text(
-                    text = income.title,
+                    text = spendingPlan.title,
                     style = JUNTheme.typography.titleSmallR,
                     textAlign = TextAlign.End,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    text = income.amountString,
+                    text = spendingPlan.amountString,
                     style = JUNTheme.typography.titleNormalB,
                     textAlign = TextAlign.End,
                     modifier = Modifier.fillMaxWidth()
@@ -149,56 +165,5 @@ private fun IncomeItem(
             }
         }
 
-    }
-}
-
-@Composable
-private fun IncomeStickyHeader(
-    title: String,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, top = 20.dp)
-    ) {
-        Text(
-            text = title,
-            style = JUNTheme.typography.titleNormalM,
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun IncomeListBodyPreview() {
-    JunTheme {
-        IncomeListBody(
-            incomeList = IncomeList(
-                incomes = listOf(
-                    Income.regularSample,
-                    Income.variableSample,
-                ),
-            ),
-            onIncomeClick = {}
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun IncomeItemPreview() {
-    JunTheme {
-        IncomeItem(
-            income = Income(
-                id = 1,
-                title = "Title",
-                amount = 1000,
-                type = IncomeType.REGULAR,
-                incomeDate = LocalDate.now(),
-                selected = true
-            ),
-            onIncomeClick = {}
-        )
     }
 }

@@ -72,7 +72,7 @@ fun RegularButton(
     textColor: Color = White1,
     isActive: Boolean = true,
     enabled: Boolean = true,
-    borderStroke: Dp = 4.dp,
+    borderStroke: Dp = 8.dp,
 ) {
     Button(
         shape = RoundedCornerShape(borderStroke),
@@ -97,6 +97,7 @@ fun RegularButton(
 @Composable
 fun CircleButton(
     icon: ImageVector,
+    color: Color = main,
     enabled: Boolean = true,
     size: Dp = 56.dp,
     elevation: Dp = 0.dp,
@@ -107,8 +108,8 @@ fun CircleButton(
         modifier= modifier.size(size),
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
-            containerColor = main,
-            disabledContainerColor = main
+            containerColor = color,
+            disabledContainerColor = color
         ),
         enabled = enabled,
         elevation = ButtonDefaults.buttonElevation(elevation),

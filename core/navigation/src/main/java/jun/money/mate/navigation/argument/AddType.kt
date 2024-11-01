@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface AddType {
+
     @Serializable
     data object New : AddType
 
