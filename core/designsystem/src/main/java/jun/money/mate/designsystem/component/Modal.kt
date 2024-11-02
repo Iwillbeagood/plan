@@ -136,9 +136,9 @@ fun DefaultBottomSheet(
     sheetTitle: String = "",
     sheetTitleColor: Color = MaterialTheme.colorScheme.onSurface,
     sheetContentSpace: Dp = 20.dp,
-    sheetContent: @Composable () -> Unit = {},
     sheetButton1: (@Composable RowScope.() -> Unit)? = null,
     sheetButton2: (@Composable RowScope.() -> Unit)? = null,
+    sheetContent: @Composable () -> Unit = {},
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
@@ -180,6 +180,45 @@ fun DefaultBottomSheet(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TwoButtonBottomSheet(
+    onDismissRequest: () -> Unit,
+    sheetState: SheetState = rememberModalBottomSheetState(true),
+    sheetTitle: String = "",
+    sheetTitleColor: Color = MaterialTheme.colorScheme.onSurface,
+    sheetContentSpace: Dp = 20.dp,
+    button1Text: String = stringResource(id = R.string.btn_no),
+    button2Text: String = stringResource(id = R.string.btn_complete),
+    button1Click: () -> Unit = onDismissRequest,
+    button2Click: () -> Unit = {},
+    sheetContent: @Composable () -> Unit = {},
+) {
+    DefaultBottomSheet(
+        sheetState = sheetState,
+        onDismissRequest = onDismissRequest,
+        sheetTitle = sheetTitle,
+        sheetTitleColor = sheetTitleColor,
+        sheetContentSpace = sheetContentSpace,
+        sheetContent = sheetContent,
+        sheetButton1 = {
+            RegularButton(
+                text = button1Text,
+                modifier = Modifier.weight(3f),
+                isActive = false,
+                onClick = button1Click
+            )
+        },
+        sheetButton2 = {
+            RegularButton(
+                text = button2Text,
+                modifier = Modifier.weight(7f),
+                onClick = button2Click
+            )
+        },
+    )
+}
+
 @Preview
 @Composable
 private fun TextDialogPreview() {
@@ -217,10 +256,10 @@ private fun BottomScaffoldPreview() {
     JunTheme {
         DefaultBottomSheet(
             sheetState = SheetState(true, Density(1f), SheetValue.Expanded, { true }, false),
-            sheetTitle = "화물등록",
+            sheetTitle = "등록",
             sheetContent = {
                 Text(
-                    text = "화물 등록을 하시겠습니까?",
+                    text = "등록을 하시겠습니까?",
                     style = JUNTheme.typography.titleLargeM,
                     color = MaterialTheme.colorScheme.onSurface
                 )

@@ -1,5 +1,6 @@
 package jun.money.mate.data.resository
 
+import jun.money.mate.data.mapper.toSpendingPlan
 import jun.money.mate.data_api.database.SpendingPlanRepository
 import jun.money.mate.database.dao.SpendingPlanDao
 import jun.money.mate.database.entity.SpendingPlanEntity
@@ -19,13 +20,13 @@ class SpendingPlanRepositoryImpl @Inject constructor(
         try {
             spendingPlanDao.upsertSpendingPlan(
                 SpendingPlanEntity(
+                    id = spendingPlan.id,
                     title = spendingPlan.title,
                     type = spendingPlan.type,
+                    spendingCategoryName = spendingPlan.spendingCategoryName,
                     amount = spendingPlan.amount,
                     planDate = spendingPlan.planDate,
-                    executeDate = spendingPlan.executeDate,
-                    isExecuted = spendingPlan.isExecuted,
-                    willExecute = spendingPlan.willExecute
+                    isApply = spendingPlan.isApply,
                 )
             )
         } catch (e: Exception) {
@@ -37,34 +38,14 @@ class SpendingPlanRepositoryImpl @Inject constructor(
         return spendingPlanDao.getSpendingPlanFlow().map { list ->
             SpendingPlanList(
                 list.map {
-                    SpendingPlan(
-                        id = it.id,
-                        title = it.title,
-                        type = it.type,
-                        amount = it.amount,
-                        planDate = it.planDate,
-                        executeDate = it.executeDate,
-                        isExecuted = it.isExecuted,
-                        willExecute = it.willExecute,
-                    )
+                    it.toSpendingPlan()
                 }
             )
         }
     }
 
     override suspend fun getSpendingPlanById(id: Long): SpendingPlan {
-        return spendingPlanDao.getSpendingPlanById(id).let {
-            SpendingPlan(
-                id = it.id,
-                title = it.title,
-                type = it.type,
-                amount = it.amount,
-                planDate = it.planDate,
-                executeDate = it.executeDate,
-                isExecuted = it.isExecuted,
-                willExecute = it.willExecute,
-            )
-        }
+        return spendingPlanDao.getSpendingPlanById(id).toSpendingPlan()
     }
 
     override fun getSpendingPlansByMonth(
@@ -76,34 +57,17 @@ class SpendingPlanRepositoryImpl @Inject constructor(
         ).map { list ->
             SpendingPlanList(
                 list.map {
-                    SpendingPlan(
-                        id = it.id,
-                        title = it.title,
-                        type = it.type,
-                        amount = it.amount,
-                        planDate = it.planDate,
-                        executeDate = it.executeDate,
-                        isExecuted = it.isExecuted,
-                        willExecute = it.willExecute,
-                    )
+                    it.toSpendingPlan()
                 }
             )
         }
     }
 
-    override suspend fun updateExecuteState(id: Long, executeDate: LocalDate, isExecuted: Boolean) {
+    override suspend fun updateApplyingState(id: Long, isApply: Boolean) {
         try {
-            spendingPlanDao.updateExecuteState(id, executeDate, isExecuted)
+            spendingPlanDao.updateApplyingState(id, isApply)
         } catch (e: Exception) {
             Logger.e("updateExecuteState error: $e")
-        }
-    }
-
-    override suspend fun updateWillExecuteState(id: Long, willExecute: Boolean) {
-        try {
-            spendingPlanDao.updateWillExecuteState(id, willExecute)
-        } catch (e: Exception) {
-            Logger.e("updateWillExecuteState error: $e")
         }
     }
 

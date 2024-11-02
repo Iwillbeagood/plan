@@ -17,9 +17,7 @@ interface SpendingPlanRepository {
         date: LocalDate = LocalDate.now()
     ): Flow<SpendingPlanList>
 
-    suspend fun updateExecuteState(id: Long, executeDate: LocalDate, isExecuted: Boolean)
-
-    suspend fun updateWillExecuteState(id: Long, willExecute: Boolean)
+    suspend fun updateApplyingState(id: Long, isApply: Boolean)
 
     suspend fun deleteById(id: Long)
 }

@@ -75,6 +75,8 @@ internal fun MainNavHost(
             )
             spendingPlanNavGraph(
                 onGoBack = navigator::popBackStackIfNotHome,
+                onShowSpendingPlanAdd = navigator::navigateToSpendingPlanAdd,
+                onShowSpendingPlanEdit = navigator::navigateToSpendingPlanEdit,
                 onShowErrorSnackBar = onShowSnackBar
             )
         }

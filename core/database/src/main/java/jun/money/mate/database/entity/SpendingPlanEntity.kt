@@ -8,12 +8,11 @@ import java.time.LocalDate
 
 @Entity(tableName = AppDatabase.SPENDING_PLAN_TABLE_NAME)
 data class SpendingPlanEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey val id: Long,
     val title: String,
     val type: SpendingType,
-    val amount: Double,
+    val spendingCategoryName: String,
+    val amount: Long,
     val planDate: LocalDate,
-    val executeDate: LocalDate,
-    val isExecuted: Boolean = false,
-    val willExecute: Boolean = true
+    val isApply: Boolean = false
 )

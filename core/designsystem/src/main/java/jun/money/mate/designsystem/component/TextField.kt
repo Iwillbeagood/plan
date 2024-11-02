@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -169,12 +170,15 @@ fun NonTextField(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.surfaceDim,
     textStyle: TextStyle = JUNTheme.typography.titleMediumR,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    icon: (@Composable () -> Unit)? = null,
 ) {
     Surface(
         shape = RoundedCornerShape(5.dp),
         onClick = onClick,
-        color = MaterialTheme.colorScheme.surfaceDim,
+        color = color,
         border = BorderStroke(1.dp, Gray6),
         modifier = modifier
     ) {
@@ -185,9 +189,14 @@ fun NonTextField(
             Box(
                 modifier = Modifier.weight(1f)
             ) {
+                icon?.let {
+                    it()
+                    HorizontalSpacer(4.dp)
+                }
                 Text(
                     text = text,
                     style = textStyle,
+                    color = textColor,
                     modifier = Modifier.align(Alignment.Center)
                 )
             }

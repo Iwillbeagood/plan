@@ -17,7 +17,7 @@ import jun.money.mate.ui.IncomeSpendingScaffold
 import java.time.LocalDate
 
 @Composable
-internal fun SpendingListScreen(
+internal fun SpendingPlanListRoute(
     onGoBack: () -> Unit,
     onShowSpendingPlanAdd: () -> Unit,
     onShowSpendingPlanEdit: (id: Long) -> Unit,

@@ -77,3 +77,24 @@ fun BottomToTopSlideFadeAnimatedVisibility(
     )
 }
 
+
+@Composable
+fun TopToBottomAnimatedVisibility(
+    visible: Boolean,
+    content: @Composable AnimatedVisibilityScope.() -> Unit
+) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = slideInVertically(
+            initialOffsetY = { fullHeight -> -fullHeight },
+            animationSpec = tween(300)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { fullHeight -> -fullHeight },
+            animationSpec = tween(300)
+        ),
+        content = content
+    )
+}
+
+

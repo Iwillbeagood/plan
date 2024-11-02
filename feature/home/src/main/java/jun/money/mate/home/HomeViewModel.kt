@@ -100,8 +100,7 @@ internal sealed interface HomeState {
 
         val pieList: List<Pie>
             get() = listOf(
-                Pie(label = "정기 지출", data = spendingPlanList.regularTotal, color = Yellow1),
-                Pie(label = "변동 지출", data = spendingPlanList.variableTotal, color = Green2),
+                Pie(label = "정기 지출", data = spendingPlanList.regularTotal.toDouble(), color = Yellow1),
             )
     }
 }

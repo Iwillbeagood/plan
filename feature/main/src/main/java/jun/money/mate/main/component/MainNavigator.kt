@@ -1,10 +1,10 @@
 package jun.money.mate.main.component
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -15,6 +15,7 @@ import jun.money.mate.income.navigation.navigateToIncomeList
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 import jun.money.mate.navigation.argument.AddType
+import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanAdd
 import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanList
 
 class MainNavigator(
@@ -60,6 +61,14 @@ class MainNavigator(
         navController.navigateToIncomeAdd(AddType.Edit(id))
     }
 
+    fun navigateToSpendingPlanAdd() {
+        navController.navigateToSpendingPlanAdd(AddType.New)
+    }
+
+    fun navigateToSpendingPlanEdit(id: Long) {
+        navController.navigateToSpendingPlanAdd(AddType.Edit(id))
+    }
+
     fun popBackStackIfNotHome(): Boolean {
         return if (isSameCurrentDestination<Route.Splash>() || isSameCurrentDestination<MainTabRoute.Home>()) {
             true
@@ -77,6 +86,7 @@ class MainNavigator(
         return navController.currentDestination?.hasRoute<T>() == true
     }
 
+    @SuppressLint("RestrictedApi")
     @Composable
     fun shouldShowBottomBar() = MainBottomNavItem.contains {
         currentDestination?.hasRoute(it::class) == true
