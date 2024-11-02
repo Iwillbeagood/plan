@@ -26,7 +26,6 @@ data class SpendingPlanList(
 ) {
     val groupedPlans = spendingPlans.groupBy { it.type }
 
-
     val regularTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.REGULAR_EXPENSE) it.amount else 0 }
     val livingTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.LIVING_EXPENSE) it.amount else 0 }
     val variableTotal get() = livingTotal

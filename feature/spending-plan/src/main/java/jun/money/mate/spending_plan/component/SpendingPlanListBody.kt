@@ -26,7 +26,6 @@ import jun.money.mate.designsystem.theme.Gray5
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem.theme.main
-import jun.money.mate.model.income.Income
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingPlanList
 import kotlin.collections.component1
