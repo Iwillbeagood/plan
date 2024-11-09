@@ -69,7 +69,15 @@ internal fun SpendingPlanListBody(
             )
         }
 
-        spendingPlanList.spendingPlanGroup.forEach { (date, spendingPlans) ->
+        items(spendingPlanList.consumptionPlan) { spendingPlan ->
+            ConsumptionPlanItem(
+                spendingPlan = spendingPlan,
+                onIncomeClick = { onSpendingPlanClick(spendingPlan) },
+                modifier = Modifier.animateContentSize()
+            )
+        }
+
+        spendingPlanList.predictPlanGroup.forEach { (date, spendingPlans) ->
             item {
                 Text(
                     text = date,
@@ -80,24 +88,11 @@ internal fun SpendingPlanListBody(
             }
 
             items(spendingPlans) { spendingPlan ->
-                when (spendingPlan.type) {
-                    SpendingType.ConsumptionPlan -> {
-                        ConsumptionPlanItem(
-                            spendingPlan = spendingPlan,
-                            onIncomeClick = { onSpendingPlanClick(spendingPlan) },
-                            modifier = Modifier.animateContentSize()
-                        )
-                    }
-
-                    SpendingType.PredictedSpending -> {
-                        PredictedSpendingItem(
-                            spendingPlan = spendingPlan,
-                            onIncomeClick = { onSpendingPlanClick(spendingPlan) },
-                            modifier = Modifier.animateContentSize()
-                        )
-                    }
-                    else -> {}
-                }
+                PredictedSpendingItem(
+                    spendingPlan = spendingPlan,
+                    onIncomeClick = { onSpendingPlanClick(spendingPlan) },
+                    modifier = Modifier.animateContentSize()
+                )
             }
         }
     }

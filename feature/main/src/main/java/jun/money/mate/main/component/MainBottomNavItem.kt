@@ -25,7 +25,7 @@ enum class MainBottomNavItem(
     SpendingList(
         titleRes = R.string.tab_spending_list,
         icon = Icons.Default.AttachMoney,
-        route = MainTabRoute.SpendingList
+        route = MainTabRoute.SpendingList.List
     ),
     SavingPlan(
         titleRes = R.string.tab_saving_plan,

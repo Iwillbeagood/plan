@@ -22,7 +22,6 @@ import jun.money.mate.designsystem.theme.Gray5
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
-import jun.money.mate.designsystem.theme.main
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingType
 import java.time.LocalDate
@@ -37,7 +36,7 @@ internal fun ConsumptionPlanItem(
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(
             width = 1.dp,
-            color = if (spendingPlan.selected) main else Gray5
+            color = if (spendingPlan.selected) Red3 else Gray5
         ),
         color = MaterialTheme.colorScheme.surfaceDim,
         onClick = onIncomeClick,

@@ -26,13 +26,11 @@ data class SpendingPlan(
 data class SpendingPlanList(
     val spendingPlans: List<SpendingPlan>
 ) {
-    val spendingPlanGroup get() = spendingPlans.groupBy { it.dateString }
 
-    val regularPlans get() = spendingPlans.filter { it.type == SpendingType.PredictedSpending }
-    val regularPlansGroup get() = regularPlans.groupBy { it.dateString }
+    val predictPlans get() = spendingPlans.filter { it.type == SpendingType.PredictedSpending }
+    val predictPlanGroup get() = predictPlans.groupBy { it.dateString }
 
     val consumptionPlan get() = spendingPlans.filter { it.type == SpendingType.ConsumptionPlan }
-    val consumptionPlanGroup get() = consumptionPlan.groupBy { it.dateString }
 
     val regularTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.PredictedSpending) it.amount else 0 }
     val livingTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.ConsumptionPlan) it.amount else 0 }

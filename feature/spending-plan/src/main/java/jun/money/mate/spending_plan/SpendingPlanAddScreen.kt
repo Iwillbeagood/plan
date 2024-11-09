@@ -117,7 +117,8 @@ private fun SpendingPlanAddScreen(
                 onClick = onAddIncome,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp),
+                    .padding(bottom = 10.dp)
+                    .padding(horizontal = 10.dp),
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,
@@ -258,13 +259,13 @@ private fun SpendingPlanAddBody(
                     }
                 }
             )
+            VerticalSpacer(20.dp)
+            SpendingPlanTitle("지출 예정 날짜")
+            TextButton(
+                text = date,
+                onClick = onShowDateBottomSheet
+            )
         }
-        VerticalSpacer(20.dp)
-        SpendingPlanTitle("지출 예정 날짜")
-        TextButton(
-            text = date,
-            onClick = onShowDateBottomSheet
-        )
     }
 }
 
