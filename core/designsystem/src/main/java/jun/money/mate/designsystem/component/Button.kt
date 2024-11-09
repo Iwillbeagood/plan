@@ -1,6 +1,10 @@
 package jun.money.mate.designsystem.component
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,20 +16,22 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.etc.BooleanProvider
-import jun.money.mate.designsystem.theme.Black
 import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
@@ -105,7 +111,7 @@ fun CircleButton(
     modifier: Modifier = Modifier
 ) {
     Button(
-        modifier= modifier.size(size),
+        modifier = modifier.size(size),
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = color,
@@ -127,33 +133,55 @@ fun CircleButton(
 }
 
 @Composable
-fun CircleButton(
-    icon: Painter,
-    enabled: Boolean = true,
-    size: Dp = 56.dp,
-    elevation: Dp = 0.dp,
-    onClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+fun TextButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    text2: String = "",
+    color: Color = MaterialTheme.colorScheme.surfaceDim,
+    textStyle: TextStyle = JUNTheme.typography.titleMediumR,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    icon: (@Composable () -> Unit)? = null,
 ) {
-    Button(
-        modifier= modifier.size(size),
-        shape = CircleShape,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = main,
-            disabledContainerColor = main
-        ),
-        enabled = enabled,
-        elevation = ButtonDefaults.buttonElevation(elevation),
-        contentPadding = PaddingValues(0.dp),
-        onClick = onClick
+    Surface(
+        shape = RoundedCornerShape(5.dp),
+        onClick = onClick,
+        color = color,
+        border = BorderStroke(1.dp, Gray6),
+        modifier = modifier
     ) {
-        Icon(
-            painter = icon,
-            tint = White1,
-            contentDescription = "circle button",
-            modifier = Modifier
-                .size(35.dp)
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+        ) {
+            Box(
+                modifier = Modifier.weight(1f)
+            ) {
+                icon?.let {
+                    it()
+                    HorizontalSpacer(4.dp)
+                }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.align(Alignment.Center)
+                ) {
+                    Text(
+                        text = text,
+                        style = textStyle,
+                        textAlign = TextAlign.Center,
+                        color = textColor
+                    )
+                    if (text2.isNotEmpty()) {
+                        Text(
+                            text = text2,
+                            style = JUNTheme.typography.labelLargeR,
+                            textAlign = TextAlign.Center,
+                            color = textColor
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -187,6 +215,17 @@ fun CircleButtonPreview() {
     JunTheme {
         CircleButton(
             icon = Icons.Default.Add,
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun TextButtonPreview() {
+    JunTheme {
+        TextButton(
+            text = "텍스트 버튼",
             onClick = {}
         )
     }

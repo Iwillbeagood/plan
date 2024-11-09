@@ -19,7 +19,7 @@ internal fun Project.configureKotlinAndroid() {
 
     // Android settings
     androidExtension.apply {
-        compileSdk = 34
+        compileSdk = 35
         defaultConfig {
             minSdk = 26
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -33,9 +33,9 @@ internal fun Project.configureKotlinAndroid() {
 
     extensions.getByType<BaseExtension>().apply {
         defaultConfig {
-            targetSdk = 34
-            versionCode = 55
-            versionName = "2.1.5"
+            targetSdk = 35
+            versionCode = 1
+            versionName = "1.0.0"
         }
     }
 

@@ -37,28 +37,28 @@ internal object DatabaseModule {
         }
     }
 
-    @Provides
-    @Singleton
-    fun databaseCallBack(): RoomDatabase.Callback = object : RoomDatabase.Callback() {
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-
-            Executors.newSingleThreadExecutor().execute {
-                runBlocking {
-                    db.execSQL(SpendingPlanEntity.INSERT_QUERY)
-                }
-            }
-        }
-    }
+//    @Provides
+//    @Singleton
+//    fun databaseCallBack(): RoomDatabase.Callback = object : RoomDatabase.Callback() {
+//        override fun onCreate(db: SupportSQLiteDatabase) {
+//            super.onCreate(db)
+//
+//            Executors.newSingleThreadExecutor().execute {
+//                runBlocking {
+//                    db.execSQL(SpendingPlanEntity.INSERT_QUERY)
+//                }
+//            }
+//        }
+//    }
 
     @Provides
     @Singleton
     fun providesAppDatabase(
         @ApplicationContext context: Context,
         queryCallBackLogger: RoomDatabase.QueryCallback,
-        addCallback: RoomDatabase.Callback
+//        addCallback: RoomDatabase.Callback
     ): AppDatabase = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
         .setQueryCallback(queryCallBackLogger, Executors.newSingleThreadExecutor())
-        .addCallback(addCallback)
+//        .addCallback(addCallback)
         .build()
 }

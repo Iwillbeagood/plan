@@ -27,7 +27,14 @@ sealed interface MainTabRoute : Route {
     data object Home : MainTabRoute
 
     @Serializable
-    data object SpendingList : MainTabRoute
+    sealed interface SpendingList : MainTabRoute {
+
+        @Serializable
+        data object List : SpendingPlan
+
+        @Serializable
+        data class Add(val addType: AddType) : SpendingPlan
+    }
 
     @Serializable
     data object SavingPlan : MainTabRoute

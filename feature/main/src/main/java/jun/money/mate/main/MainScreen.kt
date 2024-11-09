@@ -24,7 +24,7 @@ import jun.money.mate.network.connectivityState
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-fun MainScreen(
+internal fun MainScreen(
     navigator: MainNavigator,
     snackBarHostState: SnackbarHostState,
     appRestart: () -> Unit,
@@ -40,8 +40,6 @@ fun MainScreen(
         onShowSnackBar = onShowSnackBar,
     )
 }
-
-
 
 @Composable
 private fun MainScreenContent(

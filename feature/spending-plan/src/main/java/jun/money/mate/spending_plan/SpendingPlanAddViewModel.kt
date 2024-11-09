@@ -47,6 +47,9 @@ internal class SpendingPlanAddViewModel @Inject constructor(
         initialValue = SpendingPlanAddState.Loading
     )
 
+    var spendingTypeTab = MutableStateFlow(SpendingType.entries.toList())
+        private set
+
     private val _spendingPlanModalEffect = MutableStateFlow<SpendingPlanModalEffect>(SpendingPlanModalEffect.Idle)
     val spendingPlanModalEffect: StateFlow<SpendingPlanModalEffect> get() = _spendingPlanModalEffect
 
@@ -62,7 +65,7 @@ internal class SpendingPlanAddViewModel @Inject constructor(
                         title = "",
                         amount = 0,
                         date = LocalDate.now(),
-                        type = SpendingType.REGULAR_EXPENSE,
+                        type = SpendingType.ALL,
                         spendingCategory = SpendingCategory.NotSelected
                     )
 
@@ -129,12 +132,11 @@ internal class SpendingPlanAddViewModel @Inject constructor(
         }
     }
 
-
-    fun applyFromThisMonthChange(checked: Boolean) {
+    fun applyTypeSelected(type: SpendingType) {
         val state = _spendingPlanAddState.value as? SpendingPlanAddState.SpendingPlanData ?: return
 
         _spendingPlanAddState.update {
-            state.copy(applyFromThisMonth = checked)
+            state.copy(type = type)
         }
     }
 
@@ -198,7 +200,6 @@ internal sealed interface SpendingPlanAddState {
         val date: LocalDate,
         val type: SpendingType,
         val spendingCategory: SpendingCategory,
-        val applyFromThisMonth: Boolean = true
     ) : SpendingPlanAddState {
 
         val amountString get() = if (amount > 0) amount.toString() else ""

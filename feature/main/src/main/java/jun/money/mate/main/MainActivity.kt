@@ -112,9 +112,10 @@ private fun MainBackHandler(
     navigator: MainNavigator,
     onShowAppCloseDialog: () -> Unit
 ) {
+    val isShowBottomBar = navigator.shouldShowBottomBar()
+
     BackHandler {
-        val isHome = navigator.popBackStackIfNotHome()
-        if (isHome) {
+        if (isShowBottomBar) {
             onShowAppCloseDialog()
         }
     }

@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.SpendingPlanRepository
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.model.income.Income
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingPlanList
+import jun.money.mate.model.spending.SpendingType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -111,8 +111,18 @@ internal class SpendingPlanListViewModel @Inject constructor(
         }
     }
 
-    fun onDateSelected(date: LocalDate) {
+    fun dateSelected(date: LocalDate) {
         dateState.update { date }
+    }
+
+    fun spendingTabClick(index: Int) {
+        val spendingListState = spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
+
+        viewModelScope.launch {
+            _spendingPlanListState.update {
+                spendingListState.copy(spendingTypeTabIndex = index)
+            }
+        }
     }
 
     private fun showSnackBar(messageType: MessageType) {
@@ -134,9 +144,22 @@ internal sealed interface SpendingPlanListState {
     @Immutable
     data class SpendingPlanListData(
         val spendingPlanList: SpendingPlanList,
+        val spendingTypeTabIndex: Int = 0,
     ) : SpendingPlanListState {
 
         val spendingListViewMode: SpendingListViewMode get() = if (spendingPlanList.spendingPlans.any { it.selected }) SpendingListViewMode.EDIT else SpendingListViewMode.LIST
+
+        val selectedSpendingType: SpendingType get() = SpendingType.entries[spendingTypeTabIndex]
+
+        val filterSpendingPlanList: SpendingPlanList
+            get() = spendingPlanList.copy(
+                spendingPlans = if (selectedSpendingType == SpendingType.ALL) {
+                    spendingPlanList.spendingPlans
+                } else {
+                    spendingPlanList.spendingPlans.filter { it.type == selectedSpendingType }
+                }
+            )
+
 
         val selectedIncomeId get() = spendingPlanList.spendingPlans.firstOrNull { it.selected }?.id
     }

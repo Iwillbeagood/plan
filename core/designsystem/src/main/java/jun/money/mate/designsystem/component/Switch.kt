@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -30,10 +31,10 @@ import jun.money.mate.designsystem.theme.main
 @Composable
 fun DefaultSwitch(
     checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     checkedColor: Color = main,
     uncheckedColor: Color = Gray5,
-    onCheckedChange: ((Boolean) -> Unit)?,
 ) {
     CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
         Switch(
@@ -65,11 +66,11 @@ fun DefaultSwitch(
 fun TextSwitch(
     text: String,
     checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    textColor: Color = White1,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
     checkedColor: Color = main,
     uncheckedColor: Color = Gray5,
-    onCheckedChange: ((Boolean) -> Unit)?,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -96,10 +97,11 @@ private fun SwitchPreview(
     JunTheme {
         Column {
             DefaultSwitch(
-                checked = checked
-            ) {
+                checked = checked,
+                onCheckedChange = {
 
-            }
+                }
+            )
         }
     }
 }
@@ -114,9 +116,10 @@ private fun TextSwitchPreview(
             TextSwitch(
                 text = "자동",
                 checked = checked,
-            ) {
+                onCheckedChange = {
 
-            }
+                }
+            )
         }
     }
 }

@@ -1,6 +1,15 @@
 package jun.money.mate.model.spending
 
 enum class SpendingType(val title: String) {
-    LIVING_EXPENSE("생활비"),
-    REGULAR_EXPENSE("정기 지출"),
+    ALL("전체"),
+    ConsumptionPlan("지출 계획"),
+    PredictedSpending("예상 지출");
+
+    companion object {
+        val SpendingType.isConsumptionPlan: Boolean
+            get() = this == ConsumptionPlan
+
+        val SpendingType.isPredictedSpending: Boolean
+            get() = this == PredictedSpending
+     }
 }

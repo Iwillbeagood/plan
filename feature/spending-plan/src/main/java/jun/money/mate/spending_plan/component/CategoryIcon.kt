@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.model.spending.SpendingCategoryType
@@ -15,13 +16,15 @@ import jun.money.mate.res.R
 @Composable
 internal fun CategoryIcon(
     category: SpendingCategoryType,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    size: Dp = 30.dp
 ) {
     Icon(
         painter = painterResource(id = categoryIcon(category)),
         contentDescription = null,
-        tint = Color.Unspecified,
-        modifier = Modifier
-            .size(30.dp)
+        tint = color,
+        modifier = modifier.size(size)
     )
 }
 

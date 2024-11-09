@@ -17,10 +17,10 @@ object Utils {
     }
 
     fun formatAmountWon(amount: Long?): String {
-        if (amount == null) return "0$CURRENCY_UNIT"
+        if (amount == null) return "0 $CURRENCY_UNIT"
 
         val formatter = DecimalFormat(DECIMAL_PATTERN)
-        return "${formatter.format(amount)}$CURRENCY_UNIT"
+        return "${formatter.format(amount)} $CURRENCY_UNIT"
     }
 
     fun formatAmountWon(amount: Double?): String {

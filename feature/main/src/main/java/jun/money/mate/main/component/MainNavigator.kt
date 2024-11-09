@@ -28,11 +28,13 @@ class MainNavigator(
     val startDestination = Route.Splash
 
     val currentItem: MainBottomNavItem?
-        @Composable get() = MainBottomNavItem.find { tab ->
-            currentDestination?.hasRoute(tab::class) == true
+        get() = MainBottomNavItem.find { tab ->
+            navController.currentDestination?.hasRoute(tab::class) == true
         }
 
     fun navigateTo(menuItem: MainBottomNavItem) {
+        if (currentItem == menuItem) return
+
         val navOptions = navOptions {
             popUpTo(0) {
                 inclusive = true

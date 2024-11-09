@@ -166,45 +166,6 @@ fun PasswordTextField(
 }
 
 @Composable
-fun NonTextField(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.surfaceDim,
-    textStyle: TextStyle = JUNTheme.typography.titleMediumR,
-    textColor: Color = MaterialTheme.colorScheme.onSurface,
-    icon: (@Composable () -> Unit)? = null,
-) {
-    Surface(
-        shape = RoundedCornerShape(5.dp),
-        onClick = onClick,
-        color = color,
-        border = BorderStroke(1.dp, Gray6),
-        modifier = modifier
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
-        ) {
-            Box(
-                modifier = Modifier.weight(1f)
-            ) {
-                icon?.let {
-                    it()
-                    HorizontalSpacer(4.dp)
-                }
-                Text(
-                    text = text,
-                    style = textStyle,
-                    color = textColor,
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
-        }
-    }
-}
-
-@Composable
 fun UnderlineTextField(
     value: String,
     onValueChange: (String) -> Unit,

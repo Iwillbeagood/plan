@@ -37,7 +37,8 @@ internal fun SpendingPlanListRoute(
         onSpendingPlanAdd = onShowSpendingPlanAdd,
         onSpendingPlanEdit = viewModel::editSpending,
         onSpendingPlanDelete = viewModel::deleteSpending,
-        onDateSelect = viewModel::onDateSelected
+        onDateSelect = viewModel::dateSelected,
+        onSpendingTabClick = viewModel::spendingTabClick
     )
 
     LaunchedEffect(Unit) {
@@ -61,6 +62,7 @@ private fun SpendingListScreen(
     onSpendingPlanEdit: () -> Unit,
     onSpendingPlanDelete: () -> Unit,
     onDateSelect: (LocalDate) -> Unit,
+    onSpendingTabClick: (Int) -> Unit,
 ) {
     IncomeSpendingScaffold(
         title = "지출 계획",
@@ -77,6 +79,7 @@ private fun SpendingListScreen(
         SpendingListContent(
             spendingPlanListState = spendingPlanListState,
             onSpendingPlanClick = onSpendingPlanClick,
+            onSpendingTabClick = onSpendingTabClick
         )
     }
 }
@@ -85,17 +88,21 @@ private fun SpendingListScreen(
 private fun SpendingListContent(
     spendingPlanListState: SpendingPlanListState,
     onSpendingPlanClick: (SpendingPlan) -> Unit,
+    onSpendingTabClick: (Int) -> Unit,
 ) {
     FadeAnimatedVisibility(spendingPlanListState is SpendingPlanListState.Empty) {
         if (spendingPlanListState is SpendingPlanListState.Empty) {
             EmptyMessage("지출 계획이 없습니다.")
         }
     }
+
     FadeAnimatedVisibility(spendingPlanListState is SpendingPlanListState.SpendingPlanListData) {
         if (spendingPlanListState is SpendingPlanListState.SpendingPlanListData) {
             SpendingPlanListBody(
-                spendingPlanList = spendingPlanListState.spendingPlanList,
-                onSpendingPlanClick = onSpendingPlanClick
+                spendingPlanList = spendingPlanListState.filterSpendingPlanList,
+                spendingTypeTabIndex = spendingPlanListState.spendingTypeTabIndex,
+                onSpendingPlanClick = onSpendingPlanClick,
+                onSpendingTabClick = onSpendingTabClick
             )
         }
     }
@@ -114,6 +121,7 @@ private fun SpendingListScreenPreview() {
             onSpendingPlanClick = {},
             onSpendingPlanEdit = {},
             onSpendingPlanDelete = {},
+            onSpendingTabClick = {},
             spendingListViewMode = SpendingListViewMode.EDIT
         )
     }

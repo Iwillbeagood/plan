@@ -42,7 +42,7 @@ import jun.money.mate.res.R
 fun DefaultDialog(
     title: String = "",
     onDismissRequest: () -> Unit = {},
-    contentSpace: Dp = 20.dp,
+    contentSpace: Dp = 30.dp,
     contentPadding: Dp = 16.dp,
     button1: @Composable RowScope.() -> Unit = {},
     button2: (@Composable RowScope.() -> Unit)? = null,
@@ -65,12 +65,11 @@ fun DefaultDialog(
                     Text(
                         text = title,
                         style = JUNTheme.typography.titleLargeM,
-                        textAlign = TextAlign.Center,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 10.dp)
+                            .padding(horizontal = 20.dp)
+                            .padding(top = 10.dp)
                     )
-                    HorizontalDivider()
                     Spacer(modifier = Modifier.height(contentSpace))
                 }
                 Column(
@@ -224,9 +223,9 @@ fun TwoButtonBottomSheet(
 private fun TextDialogPreview() {
     JunTheme {
         DefaultDialog(
-            title = "배차요청",
+            title = "요청",
             content = {
-                Text(text = "배차요청을 하시겠습니까?")
+                Text(text = "요청을 하시겠습니까?")
             },
             button1 = {
                 RegularButton(

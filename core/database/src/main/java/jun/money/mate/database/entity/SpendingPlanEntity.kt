@@ -19,10 +19,10 @@ data class SpendingPlanEntity(
 ) {
 
     companion object {
-        val DEFAULT_SPENDING_PLAN = SpendingPlanEntity(
+        private val DEFAULT_SPENDING_PLAN = SpendingPlanEntity(
             id = System.currentTimeMillis(),
-            title = "",
-            type = SpendingType.LIVING_EXPENSE,
+            title = "생활비",
+            type = SpendingType.ConsumptionPlan,
             spendingCategoryName = "",
             amount = 0,
             planDate = LocalDate.now(),

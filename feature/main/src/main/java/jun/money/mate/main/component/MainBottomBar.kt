@@ -5,9 +5,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -16,6 +18,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,37 +44,40 @@ internal fun MainBottomBar(
         enter = fadeIn() + slideIn { IntOffset(0, it.height) },
         exit = fadeOut() + slideOut { IntOffset(0, it.height) }
     ) {
-        NavigationBar(
-            containerColor = MaterialTheme.colorScheme.surfaceDim,
-            modifier = Modifier.height(65.dp)
-        ) {
-            bottomItems.forEach { item ->
-                val title = stringResource(item.titleRes)
-
-                NavigationBarItem(
-                    icon = {
-                        Icon(
-                            imageVector = item.icon,
-                            contentDescription = title,
-                            modifier = Modifier.size(18.dp)
-                        )
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = main,
-                        selectedTextColor = main,
-                        indicatorColor = main20,
-                        unselectedIconColor = Gray,
-                        unselectedTextColor = Gray,
-                    ),
-                    label = {
-                        Text(
-                            text = title,
-                            style = JUNTheme.typography.labelLargeM.nonScaledSp
-                        )
-                    },
-                    onClick = { onBottomItemClicked(item) },
-                    selected = item == currentItem
-                )
+        Column {
+            HorizontalDivider()
+            NavigationBar(
+                containerColor = MaterialTheme.colorScheme.surfaceDim,
+                modifier = Modifier.height(65.dp)
+            ) {
+                bottomItems.forEach { item ->
+                    val title = stringResource(item.titleRes)
+    
+                    NavigationBarItem(
+                        icon = {
+                            Icon(
+                                imageVector = item.icon,
+                                contentDescription = title,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = main,
+                            selectedTextColor = main,
+                            indicatorColor = Color.Transparent,
+                            unselectedIconColor = Gray,
+                            unselectedTextColor = Gray,
+                        ),
+                        label = {
+                            Text(
+                                text = title,
+                                style = JUNTheme.typography.labelLargeM.nonScaledSp
+                            )
+                        },
+                        onClick = { onBottomItemClicked(item) },
+                        selected = item == currentItem
+                    )
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package jun.money.mate.spending_plan
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.DefaultTextField
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalSpacer
-import jun.money.mate.designsystem.component.NonTextField
+import jun.money.mate.designsystem.component.TextButton
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
@@ -41,6 +42,8 @@ import jun.money.mate.model.spending.SpendingCategory
 import jun.money.mate.model.spending.SpendingCategory.Companion.name
 import jun.money.mate.model.spending.SpendingCategoryType
 import jun.money.mate.model.spending.SpendingType
+import jun.money.mate.model.spending.SpendingType.Companion.isConsumptionPlan
+import jun.money.mate.model.spending.SpendingType.Companion.isPredictedSpending
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.spending_plan.component.CategoryIcon
 import jun.money.mate.spending_plan.component.SpendingCategoryBottomSheet
@@ -68,7 +71,7 @@ internal fun SpendingPlanAddRoute(
         onIncomeAmountChange = viewModel::amountValueChange,
         onShowDateBottomSheet = viewModel::showDatePicker,
         onShowCategoryBottomSheet = viewModel::showCategoryBottomSheet,
-        onApplyFromThisMonthChange = viewModel::applyFromThisMonthChange,
+        onApplyType = viewModel::applyTypeSelected
     )
 
     SpendingPlanModalContent(
@@ -98,7 +101,7 @@ private fun SpendingPlanAddScreen(
     onIncomeAmountChange: (String) -> Unit,
     onShowDateBottomSheet: () -> Unit,
     onShowCategoryBottomSheet: () -> Unit,
-    onApplyFromThisMonthChange: (Boolean) -> Unit,
+    onApplyType: (SpendingType) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -132,7 +135,7 @@ private fun SpendingPlanAddScreen(
                 onIncomeAmountChange = onIncomeAmountChange,
                 onShowIncomeDateBottomSheet = onShowDateBottomSheet,
                 onShowCategoryBottomSheet = onShowCategoryBottomSheet,
-                onApplyFromThisMonthChange = onApplyFromThisMonthChange,
+                onApplyType = onApplyType
             )
         }
     }
@@ -145,7 +148,7 @@ private fun SpendingPlanAddContent(
     onIncomeAmountChange: (String) -> Unit,
     onShowIncomeDateBottomSheet: () -> Unit,
     onShowCategoryBottomSheet: () -> Unit,
-    onApplyFromThisMonthChange: (Boolean) -> Unit,
+    onApplyType: (SpendingType) -> Unit,
 ) {
     FadeAnimatedVisibility(spendingPlanAddState is SpendingPlanAddState.SpendingPlanData) {
         if (spendingPlanAddState is SpendingPlanAddState.SpendingPlanData) {
@@ -154,13 +157,13 @@ private fun SpendingPlanAddContent(
                 amount = spendingPlanAddState.amountString,
                 amountWon = spendingPlanAddState.amountWon,
                 date = "${spendingPlanAddState.date.dayOfMonth}일",
+                type = spendingPlanAddState.type,
                 spendingCategory = spendingPlanAddState.spendingCategory,
-                applyFromThisMonth = spendingPlanAddState.applyFromThisMonth,
                 onTitleChange = onIncomeTitleChange,
                 onAmountChange = onIncomeAmountChange,
                 onShowDateBottomSheet = onShowIncomeDateBottomSheet,
                 onShowCategoryBottomSheet = onShowCategoryBottomSheet,
-                onApplyFromThisMonthChange = onApplyFromThisMonthChange,
+                onApplyType = onApplyType
             )
         }
     }
@@ -172,17 +175,40 @@ private fun SpendingPlanAddBody(
     amount: String,
     amountWon: String,
     date: String,
+    type: SpendingType,
     spendingCategory: SpendingCategory,
-    applyFromThisMonth: Boolean,
     onTitleChange: (String) -> Unit,
     onAmountChange: (String) -> Unit,
     onShowDateBottomSheet: () -> Unit,
     onShowCategoryBottomSheet: () -> Unit,
-    onApplyFromThisMonthChange: (Boolean) -> Unit,
+    onApplyType: (SpendingType) -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateContentSize()
     ) {
+        VerticalSpacer(20.dp)
+        SpendingPlanTitle("지출 카테고리")
+        Row {
+            TextButton(
+                text = SpendingType.ConsumptionPlan.title,
+                text2 = "이번달에 소비할 지출 계획을 설정합니다.",
+                onClick = { onApplyType(SpendingType.ConsumptionPlan) },
+                color = if (type.isConsumptionPlan) Red3 else MaterialTheme.colorScheme.surfaceDim,
+                textColor = if (type.isConsumptionPlan) White1 else MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f)
+            )
+            HorizontalSpacer(10.dp)
+            TextButton(
+                text = SpendingType.PredictedSpending.title,
+                text2 = "이번달에 예상되는 지출 금액을 설정합니다.",
+                onClick = { onApplyType(SpendingType.PredictedSpending) },
+                color = if (type.isPredictedSpending) Red3 else MaterialTheme.colorScheme.surfaceDim,
+                textColor = if (type.isPredictedSpending) White1 else MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f),
+            )
+        }
         VerticalSpacer(20.dp)
         SpendingPlanTitle("지출명")
         DefaultTextField(
@@ -218,44 +244,27 @@ private fun SpendingPlanAddBody(
                 modifier = Modifier.fillMaxWidth()
             )
         }
-        VerticalSpacer(20.dp)
-        SpendingPlanTitle("지출 카테고리")
-        NonTextField(
-            text = spendingCategory.name(),
-            onClick = onShowCategoryBottomSheet,
-            icon = {
-                if (spendingCategory is SpendingCategory.CategoryType) {
-                    CategoryIcon(
-                        category = spendingCategory.type
-                    )
+        if (type == SpendingType.PredictedSpending) {
+            VerticalSpacer(20.dp)
+            SpendingPlanTitle("지출 카테고리")
+            TextButton(
+                text = spendingCategory.name(),
+                onClick = onShowCategoryBottomSheet,
+                icon = {
+                    if (spendingCategory is SpendingCategory.CategoryType) {
+                        CategoryIcon(
+                            category = spendingCategory.type
+                        )
+                    }
                 }
-            }
-        )
+            )
+        }
         VerticalSpacer(20.dp)
         SpendingPlanTitle("지출 예정 날짜")
-        NonTextField(
+        TextButton(
             text = date,
             onClick = onShowDateBottomSheet
         )
-        VerticalSpacer(20.dp)
-        SpendingPlanTitle("적용 시작 시점")
-        Row {
-            NonTextField(
-                text = "이번 달부터 적용",
-                onClick = { onApplyFromThisMonthChange(true) },
-                color = if (applyFromThisMonth) Red3 else MaterialTheme.colorScheme.surfaceDim,
-                textColor = if (applyFromThisMonth) White1 else MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.weight(1f),
-            )
-            HorizontalSpacer(10.dp)
-            NonTextField(
-                text = "다음 달부터 적용",
-                onClick = { onApplyFromThisMonthChange(false) },
-                color = if (!applyFromThisMonth) Red3 else MaterialTheme.colorScheme.surfaceDim,
-                textColor = if (!applyFromThisMonth) White1 else MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.weight(1f)
-            )
-        }
     }
 }
 
@@ -305,7 +314,7 @@ private fun SpendingPlanAddScreenPreview() {
                 title = "월급",
                 amount = 1000000,
                 date = LocalDate.now(),
-                type = SpendingType.LIVING_EXPENSE,
+                type = SpendingType.ConsumptionPlan,
                 spendingCategory = SpendingCategory.NotSelected
             ),
             onIncomeTitleChange = {},
@@ -314,7 +323,7 @@ private fun SpendingPlanAddScreenPreview() {
             onShowCategoryBottomSheet = {},
             onBackClick = {},
             onAddIncome = {},
-            onApplyFromThisMonthChange = {}
+            onApplyType = {}
         )
     }
 }

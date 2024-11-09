@@ -15,8 +15,8 @@ sealed interface SpendingCategory {
             }
         }
 
-        fun find(title: String): SpendingCategory {
-            val categoryType = SpendingCategoryType.entries.find { it.name == title } ?: SpendingCategoryType.기타
+        fun find(name: String): CategoryType {
+            val categoryType = SpendingCategoryType.entries.find { it.name == name } ?: SpendingCategoryType.기타
             return CategoryType(categoryType)
         }
     }

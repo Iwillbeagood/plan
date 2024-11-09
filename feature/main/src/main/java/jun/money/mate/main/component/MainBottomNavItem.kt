@@ -39,8 +39,7 @@ enum class MainBottomNavItem(
     );
 
     companion object {
-        @Composable
-        fun find(predicate: @Composable (MainTabRoute) -> Boolean): MainBottomNavItem? {
+        fun find(predicate: (MainTabRoute) -> Boolean): MainBottomNavItem? {
             return entries.find { predicate(it.route) }
         }
 

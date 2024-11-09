@@ -30,7 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.DefaultTextField
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalSpacer
-import jun.money.mate.designsystem.component.NonTextField
+import jun.money.mate.designsystem.component.TextButton
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.VerticalSpacer
@@ -236,7 +236,7 @@ private fun IncomeAddBody(
         }
         VerticalSpacer(20.dp)
         IncomeTitle("수입 발생 날짜")
-        NonTextField(
+        TextButton(
             text = incomeDate,
             onClick = onShowIncomeDateBottomSheet
         )
