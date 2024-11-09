@@ -48,5 +48,5 @@ include(
     ":feature:income",
     ":feature:saving-plan",
     ":feature:spending-plan",
-    ":feature:spending-list",
+    ":feature:comsumption-spend",
 )

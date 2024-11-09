@@ -110,7 +110,8 @@ private fun IncomeAddScreen(
                 onClick = onAddIncome,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp),
+                    .padding(horizontal = 10.dp)
+                    .padding(top = 10.dp),
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,
@@ -307,7 +308,7 @@ private fun IncomeModalContent(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun IncomeAddScreenPreview() {
     JunTheme {

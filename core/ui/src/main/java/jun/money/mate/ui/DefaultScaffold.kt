@@ -34,7 +34,7 @@ import jun.money.mate.designsystem_date.datetimepicker.models.CalendarStyle
 import java.time.LocalDate
 
 @Composable
-fun IncomeSpendingScaffold(
+fun DefaultScaffold(
     title: String,
     color: Color,
     bottomBarVisible: Boolean,

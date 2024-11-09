@@ -38,7 +38,7 @@ fun NavGraphBuilder.spendingPlanNavGraph(
     }
 
     composableType<MainTabRoute.SpendingPlan.Add, AddType> { backStackEntry ->
-        val addType = backStackEntry.toRoute<Route.Income.Add>().addType
+        val addType = backStackEntry.toRoute<MainTabRoute.SpendingPlan.Add>().addType
 
         SpendingPlanAddRoute(
             addType = addType,

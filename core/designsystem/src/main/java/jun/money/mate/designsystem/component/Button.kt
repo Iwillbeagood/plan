@@ -139,7 +139,7 @@ fun TextButton(
     modifier: Modifier = Modifier,
     text2: String = "",
     color: Color = MaterialTheme.colorScheme.surfaceDim,
-    textStyle: TextStyle = JUNTheme.typography.titleMediumB,
+    textStyle: TextStyle = JUNTheme.typography.titleMediumM,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
     icon: (@Composable () -> Unit)? = null,
 ) {

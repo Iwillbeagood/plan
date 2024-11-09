@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.IncomeRepository
+import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
@@ -41,17 +42,17 @@ internal class IncomeListViewModel @Inject constructor(
         initialValue = IncomeListState.Loading
     )
 
-    val incomeListViewMode: StateFlow<IncomeListViewMode> = incomeListState.flatMapLatest {
+    val incomeListViewMode: StateFlow<ViewMode> = incomeListState.flatMapLatest {
         flowOf(
             when (it) {
                 is IncomeListState.IncomeListData -> it.incomeListViewMode
-                else -> IncomeListViewMode.LIST
+                else -> ViewMode.LIST
             }
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = IncomeListViewMode.LIST
+        started = SharingStarted.Lazily,
+        initialValue = ViewMode.LIST
     )
 
     private val _incomeListEffect = MutableSharedFlow<IncomeListEffect>()
@@ -135,7 +136,7 @@ internal sealed interface IncomeListState {
         val incomeList: IncomeList,
     ) : IncomeListState {
 
-        val incomeListViewMode: IncomeListViewMode get() = if (incomeList.incomes.any { it.selected }) IncomeListViewMode.EDIT else IncomeListViewMode.LIST
+        val incomeListViewMode: ViewMode get() = if (incomeList.incomes.any { it.selected }) ViewMode.EDIT else ViewMode.LIST
 
         val selectedIncomeId get() = incomeList.incomes.firstOrNull { it.selected }?.id
     }
@@ -149,9 +150,4 @@ internal sealed interface IncomeListEffect {
 
     @Immutable
     data class EditIncome(val id: Long) : IncomeListEffect
-}
-
-internal enum class IncomeListViewMode {
-    LIST,
-    EDIT
 }

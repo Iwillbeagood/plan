@@ -7,6 +7,7 @@ import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import javax.inject.Inject
@@ -44,6 +45,8 @@ class IncomeRepositoryImpl @Inject constructor(
                     )
                 }
             )
+        }.catch {
+            Logger.e("getIncomeFlow error: $it")
         }
     }
 
@@ -75,6 +78,8 @@ class IncomeRepositoryImpl @Inject constructor(
                     )
                 }
             )
+        }.catch {
+            Logger.e("getIncomesByMonth error: $it")
         }
     }
 

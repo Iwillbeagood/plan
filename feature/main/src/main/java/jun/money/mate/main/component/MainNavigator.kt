@@ -9,6 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import jun.money.mate.consumption_spend.navigation.navigateToConsumptionAdd
+import jun.money.mate.consumption_spend.navigation.navigateToConsumptionList
 import jun.money.mate.home.navigation.navigateToHome
 import jun.money.mate.income.navigation.navigateToIncomeAdd
 import jun.money.mate.income.navigation.navigateToIncomeList
@@ -44,7 +46,7 @@ class MainNavigator(
 
         when (menuItem) {
             MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
-            MainBottomNavItem.SpendingList -> TODO()
+            MainBottomNavItem.ConsumptionSpend -> navController.navigateToConsumptionList(navOptions)
             MainBottomNavItem.SavingPlan -> TODO()
             MainBottomNavItem.SpendingPlan -> navController.navigateToSpendingPlanList(navOptions)
         }
@@ -65,6 +67,14 @@ class MainNavigator(
 
     fun navigateToSpendingPlanAdd() {
         navController.navigateToSpendingPlanAdd(AddType.New)
+    }
+
+    fun navigateToConsumptionAdd() {
+        navController.navigateToConsumptionAdd(AddType.New)
+    }
+
+    fun navigateToConsumptionEdit(id: Long) {
+        navController.navigateToConsumptionAdd(AddType.Edit(id))
     }
 
     fun navigateToSpendingPlanEdit(id: Long) {

@@ -22,21 +22,22 @@ enum class MainBottomNavItem(
         icon = Icons.Default.Home,
         route = MainTabRoute.Home
     ),
-    SpendingList(
+    SpendingPlan(
+        titleRes = R.string.tab_spending_plan,
+        icon = Icons.Default.CalendarToday,
+        route = MainTabRoute.SpendingPlan.List
+    ),
+    ConsumptionSpend(
         titleRes = R.string.tab_spending_list,
         icon = Icons.Default.AttachMoney,
-        route = MainTabRoute.SpendingList.List
+        route = MainTabRoute.ConsumptionSpend.List
     ),
     SavingPlan(
         titleRes = R.string.tab_saving_plan,
         icon = Icons.Default.Savings,
         route = MainTabRoute.SavingPlan
     ),
-    SpendingPlan(
-        titleRes = R.string.tab_spending_plan,
-        icon = Icons.Default.CalendarToday,
-        route = MainTabRoute.SpendingPlan.List
-    );
+   ;
 
     companion object {
         fun find(predicate: (MainTabRoute) -> Boolean): MainBottomNavItem? {

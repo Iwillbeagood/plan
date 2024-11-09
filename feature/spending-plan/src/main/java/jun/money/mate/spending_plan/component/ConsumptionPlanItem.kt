@@ -57,7 +57,7 @@ internal fun ConsumptionPlanItem(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = SpendingType.ConsumptionPlan.title,
+                    text = spendingPlan.title,
                     style = JUNTheme.typography.headlineSmallM,
                 )
                 VerticalSpacer(10.dp)
@@ -65,7 +65,7 @@ internal fun ConsumptionPlanItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = spendingPlan.title,
+                        text = "예산",
                         style = JUNTheme.typography.titleSmallR,
                     )
                     Text(
@@ -80,7 +80,7 @@ internal fun ConsumptionPlanItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "실제 사용금액",
+                        text = "사용금액",
                         style = JUNTheme.typography.titleSmallR,
                     )
                     Text(

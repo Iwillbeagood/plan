@@ -8,7 +8,7 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
 
 fun NavController.navigateToSpendingList(navOptions: NavOptions) {
-    navigate(MainTabRoute.SpendingList.List, navOptions)
+    navigate(MainTabRoute.ConsumptionSpend.List, navOptions)
 }
 
 fun NavGraphBuilder.homeNavGraph(

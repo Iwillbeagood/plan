@@ -143,6 +143,8 @@ internal class IncomeAddViewModel @Inject constructor(
         _incomeAddState.update {
             state.copy(date = date)
         }
+
+        onAddIncome()
     }
 
     fun onShowDatePicker() {
@@ -161,7 +163,7 @@ internal class IncomeAddViewModel @Inject constructor(
         }
     }
 
-    fun incomeAddComplete() {
+    private fun incomeAddComplete() {
         viewModelScope.launch {
             _incomeAddEffect.emit(IncomeAddEffect.IncomeAddComplete)
         }

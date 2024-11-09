@@ -12,7 +12,7 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.SpendingCategory
 import jun.money.mate.model.spending.SpendingCategoryType
 import jun.money.mate.model.spending.SpendingType
-import jun.money.mate.navigation.Route
+import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.navigation.utils.toRouteType
 import jun.money.mate.utils.currency.CurrencyFormatter
@@ -36,7 +36,7 @@ internal class SpendingPlanAddViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val addType = savedStateHandle.toRouteType<Route.Income.Add, AddType>().addType
+    private val addType = savedStateHandle.toRouteType<MainTabRoute.SpendingPlan.Add, AddType>().addType
 
     private val _spendingPlanAddState = MutableStateFlow<SpendingPlanAddState>(SpendingPlanAddState.Loading)
     val spendingPlanAddState: StateFlow<SpendingPlanAddState> = _spendingPlanAddState.onStart {
@@ -46,9 +46,6 @@ internal class SpendingPlanAddViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = SpendingPlanAddState.Loading
     )
-
-    var spendingTypeTab = MutableStateFlow(SpendingType.entries.toList())
-        private set
 
     private val _spendingPlanModalEffect = MutableStateFlow<SpendingPlanModalEffect>(SpendingPlanModalEffect.Idle)
     val spendingPlanModalEffect: StateFlow<SpendingPlanModalEffect> get() = _spendingPlanModalEffect
@@ -107,7 +104,7 @@ internal class SpendingPlanAddViewModel @Inject constructor(
                             }되었습니다."
                         )
                     )
-                    incomeAddComplete()
+                    spendingPlanAddComplete()
                 },
                 onError = ::showSnackBar
             )
@@ -145,6 +142,8 @@ internal class SpendingPlanAddViewModel @Inject constructor(
         _spendingPlanAddState.update {
             state.copy(date = date)
         }
+
+        addSpendingPlan()
     }
 
     fun categorySelected(category: SpendingCategoryType) {
@@ -179,7 +178,7 @@ internal class SpendingPlanAddViewModel @Inject constructor(
         }
     }
 
-    fun incomeAddComplete() {
+    private fun spendingPlanAddComplete() {
         viewModelScope.launch {
             _spendingPlanAddEffect.emit(SpendingPlanAddEffect.SpendingPlanAddComplete)
         }

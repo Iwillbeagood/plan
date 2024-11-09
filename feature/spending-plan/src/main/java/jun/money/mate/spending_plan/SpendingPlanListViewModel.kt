@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.SpendingPlanRepository
+import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingPlanList
@@ -42,17 +43,17 @@ internal class SpendingPlanListViewModel @Inject constructor(
         initialValue = SpendingPlanListState.Loading
     )
 
-    val spendingListViewMode: StateFlow<SpendingListViewMode> = spendingPlanListState.flatMapLatest {
+    val spendingListViewMode: StateFlow<ViewMode> = spendingPlanListState.flatMapLatest {
         flowOf(
             when (it) {
                 is SpendingPlanListState.SpendingPlanListData -> it.spendingListViewMode
-                else -> SpendingListViewMode.LIST
+                else -> ViewMode.LIST
             }
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = SpendingListViewMode.LIST
+        started = SharingStarted.Lazily,
+        initialValue = ViewMode.LIST
     )
 
     private val _spendingPlanListEffect = MutableSharedFlow<SpendingPlanListEffect>()
@@ -147,7 +148,7 @@ internal sealed interface SpendingPlanListState {
         val spendingTypeTabIndex: Int = 0,
     ) : SpendingPlanListState {
 
-        val spendingListViewMode: SpendingListViewMode get() = if (spendingPlanList.spendingPlans.any { it.selected }) SpendingListViewMode.EDIT else SpendingListViewMode.LIST
+        val spendingListViewMode: ViewMode get() = if (spendingPlanList.spendingPlans.any { it.selected }) ViewMode.EDIT else ViewMode.LIST
 
         val selectedSpendingType: SpendingType get() = SpendingType.entries[spendingTypeTabIndex]
 
@@ -173,9 +174,4 @@ internal sealed interface SpendingPlanListEffect {
 
     @Immutable
     data class EditSpendingPlan(val id: Long) : SpendingPlanListEffect
-}
-
-internal enum class SpendingListViewMode {
-    LIST,
-    EDIT
 }

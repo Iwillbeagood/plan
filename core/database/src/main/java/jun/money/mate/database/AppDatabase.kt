@@ -7,9 +7,11 @@ import jun.money.mate.database.converter.IncomeTypeConverter
 import jun.money.mate.database.converter.LocalDateConverter
 import jun.money.mate.database.converter.LocalDateTimeConverter
 import jun.money.mate.database.converter.SpendingTypeConverter
+import jun.money.mate.database.dao.ConsumptionDao
 import jun.money.mate.database.dao.IncomeDao
 import jun.money.mate.database.dao.SavingPlanDao
 import jun.money.mate.database.dao.SpendingPlanDao
+import jun.money.mate.database.entity.ConsumptionEntity
 import jun.money.mate.database.entity.IncomeEntity
 import jun.money.mate.database.entity.SavingPlanEntity
 import jun.money.mate.database.entity.SpendingPlanEntity
@@ -19,6 +21,7 @@ import jun.money.mate.database.entity.SpendingPlanEntity
         SpendingPlanEntity::class,
         SavingPlanEntity::class,
         IncomeEntity::class,
+        ConsumptionEntity::class
     ],
     version = 1,
     exportSchema = true,
@@ -36,6 +39,7 @@ internal abstract class AppDatabase : RoomDatabase() {
     abstract fun spendingPlanDao(): SpendingPlanDao
     abstract fun savingPlanDao(): SavingPlanDao
     abstract fun incomeDao(): IncomeDao
+    abstract fun consumptionDao(): ConsumptionDao
 
     companion object {
         const val DATABASE_NAME = "app_database"
@@ -43,5 +47,6 @@ internal abstract class AppDatabase : RoomDatabase() {
         const val INCOME_TABLE_NAME = "income"
         const val SPENDING_PLAN_TABLE_NAME = "spending_plan"
         const val SAVING_PLAN_TABLE_NAME = "saving_plan"
+        const val CONSUMPTION_TABLE_NAME = "consumption"
     }
 }

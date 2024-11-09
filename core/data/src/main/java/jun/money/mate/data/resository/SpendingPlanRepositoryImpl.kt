@@ -44,6 +44,14 @@ class SpendingPlanRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSpendingPlan(): SpendingPlanList {
+        return SpendingPlanList(
+            spendingPlans = spendingPlanDao.getSpendingPlan().map {
+                it.toSpendingPlan()
+            }
+        )
+    }
+
     override suspend fun getSpendingPlanById(id: Long): SpendingPlan {
         return spendingPlanDao.getSpendingPlanById(id).toSpendingPlan()
     }

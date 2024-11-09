@@ -13,7 +13,7 @@ import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.spending_plan.component.SpendingPlanListBody
-import jun.money.mate.ui.IncomeSpendingScaffold
+import jun.money.mate.ui.DefaultScaffold
 import java.time.LocalDate
 
 @Composable
@@ -64,7 +64,7 @@ private fun SpendingListScreen(
     onDateSelect: (LocalDate) -> Unit,
     onSpendingTabClick: (Int) -> Unit,
 ) {
-    IncomeSpendingScaffold(
+    DefaultScaffold(
         title = "지출 계획",
         color = Red3,
         bottomBarVisible = spendingListViewMode == SpendingListViewMode.EDIT,

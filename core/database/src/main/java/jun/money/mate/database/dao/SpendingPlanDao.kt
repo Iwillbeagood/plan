@@ -17,6 +17,10 @@ interface SpendingPlanDao {
     @Query("SELECT * FROM $SPENDING_PLAN_TABLE_NAME")
     fun getSpendingPlanFlow(): Flow<List<SpendingPlanEntity>>
 
+
+    @Query("SELECT * FROM $SPENDING_PLAN_TABLE_NAME")
+    suspend fun getSpendingPlan(): List<SpendingPlanEntity>
+
     @Query("SELECT * FROM $SPENDING_PLAN_TABLE_NAME WHERE id = :id")
     suspend fun getSpendingPlanById(id: Long): SpendingPlanEntity
 

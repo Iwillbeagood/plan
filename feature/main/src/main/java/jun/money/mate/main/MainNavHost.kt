@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import jun.money.mate.consumption_spend.navigation.consumptionNavGraph
 import jun.money.mate.home.navigation.homeNavGraph
 import jun.money.mate.income.navigation.incomeNavGraph
 import jun.money.mate.main.component.MainBottomNavItem
@@ -77,6 +78,12 @@ internal fun MainNavHost(
                 onGoBack = navigator::popBackStackIfNotHome,
                 onShowSpendingPlanAdd = navigator::navigateToSpendingPlanAdd,
                 onShowSpendingPlanEdit = navigator::navigateToSpendingPlanEdit,
+                onShowErrorSnackBar = onShowSnackBar
+            )
+            consumptionNavGraph(
+                onGoBack = navigator::popBackStackIfNotHome,
+                onShowConsumptionAdd = navigator::navigateToConsumptionAdd,
+                onShowConsumptionEdit = navigator::navigateToConsumptionEdit,
                 onShowErrorSnackBar = onShowSnackBar
             )
         }

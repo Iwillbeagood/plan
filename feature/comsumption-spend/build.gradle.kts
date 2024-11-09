@@ -5,9 +5,11 @@ plugins {
 }
 
 android {
-    setNamespace("spending_list")
+    setNamespace("consumption_spend")
 }
 
 dependencies {
     implementation(projects.core.dataApi)
+    implementation(projects.core.designsystemDate)
+    implementation(project(":feature:income"))
 }
