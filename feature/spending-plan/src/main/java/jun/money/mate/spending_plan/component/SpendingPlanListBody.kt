@@ -20,6 +20,7 @@ import jun.money.mate.designsystem.component.ScrollableTab
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.model.spending.ConsumptionSpend
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingPlanList
 import jun.money.mate.model.spending.SpendingType
@@ -29,6 +30,7 @@ import java.time.LocalDate
 @Composable
 internal fun SpendingPlanListBody(
     spendingPlanList: SpendingPlanList,
+    consumptionSpend: List<ConsumptionSpend>,
     spendingTypeTabIndex: Int,
     onSpendingPlanClick: (SpendingPlan) -> Unit,
     onSpendingTabClick: (Int) -> Unit,
@@ -69,10 +71,10 @@ internal fun SpendingPlanListBody(
             )
         }
 
-        items(spendingPlanList.consumptionPlan) { spendingPlan ->
+        items(consumptionSpend) {
             ConsumptionPlanItem(
-                spendingPlan = spendingPlan,
-                onIncomeClick = { onSpendingPlanClick(spendingPlan) },
+                consumptionSpend = it,
+                onIncomeClick = { onSpendingPlanClick(it.spendingPlan) },
                 modifier = Modifier.animateContentSize()
             )
         }
@@ -95,6 +97,10 @@ internal fun SpendingPlanListBody(
                 )
             }
         }
+
+        item {
+             VerticalSpacer(100.dp)
+        }
     }
 }
 
@@ -105,24 +111,6 @@ private fun SpendingPlanListBodyPreview() {
         SpendingPlanListBody(
             spendingPlanList = SpendingPlanList(
                 spendingPlans = listOf(
-                    SpendingPlan(
-                        id = 1,
-                        title = "식비",
-                        amount = 10000,
-                        spendingCategoryName = "식비",
-                        planDate = LocalDate.now(),
-                        type = SpendingType.ConsumptionPlan,
-                        isApply = false,
-                    ),
-                    SpendingPlan(
-                        id = 2,
-                        title = "식비",
-                        amount = 10000,
-                        spendingCategoryName = "식비",
-                        planDate = LocalDate.now(),
-                        type = SpendingType.PredictedSpending,
-                        isApply = false,
-                    ),
                     SpendingPlan(
                         id = 3,
                         title = "식비",
@@ -159,24 +147,20 @@ private fun SpendingPlanListBodyPreview() {
                         type = SpendingType.PredictedSpending,
                         isApply = false,
                     ),
+                )
+            ),
+            consumptionSpend = listOf(
+                ConsumptionSpend(
                     SpendingPlan(
-                        id = 7,
+                        id = 1,
                         title = "식비",
                         amount = 10000,
                         spendingCategoryName = "식비",
                         planDate = LocalDate.now(),
-                        type = SpendingType.PredictedSpending,
+                        type = SpendingType.ConsumptionPlan,
                         isApply = false,
                     ),
-                    SpendingPlan(
-                        id = 8,
-                        title = "식비",
-                        amount = 10000,
-                        spendingCategoryName = "식비",
-                        planDate = LocalDate.now(),
-                        type = SpendingType.PredictedSpending,
-                        isApply = false,
-                    ),
+                    10000,
                 )
             ),
             spendingTypeTabIndex = 0,

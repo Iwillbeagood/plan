@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.SpendingPlanRepository
+import jun.money.mate.domain.GetSpendingPlanUsecase
 import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.model.spending.ConsumptionSpend
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingPlanList
 import jun.money.mate.model.spending.SpendingType
@@ -28,13 +30,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SpendingPlanListViewModel @Inject constructor(
-    private val spendingPlanRepository: SpendingPlanRepository
+    private val spendingPlanRepository: SpendingPlanRepository,
+    private val getSpendingPlanUsecase: GetSpendingPlanUsecase
 ) : ViewModel() {
 
     var dateState = MutableStateFlow<LocalDate>(LocalDate.now())
         private set
 
-    private val _spendingPlanListState = MutableStateFlow<SpendingPlanListState>(SpendingPlanListState.Loading)
+    private val _spendingPlanListState =
+        MutableStateFlow<SpendingPlanListState>(SpendingPlanListState.Loading)
     val spendingPlanListState: StateFlow<SpendingPlanListState> = _spendingPlanListState.onStart {
         loadSpending()
     }.stateIn(
@@ -62,19 +66,24 @@ internal class SpendingPlanListViewModel @Inject constructor(
     private fun loadSpending() {
         viewModelScope.launch {
             dateState.flatMapLatest {
-                spendingPlanRepository.getSpendingPlansByMonth(it)
-            }.collect {
-                _spendingPlanListState.value = if (it.spendingPlans.isEmpty()) {
-                    SpendingPlanListState.Empty
-                } else {
-                    SpendingPlanListState.SpendingPlanListData(it)
-                }
+                getSpendingPlanUsecase(it)
+            }.collect { spendingPlanData ->
+                _spendingPlanListState.value =
+                    if (spendingPlanData.spendingPlanList.spendingPlans.isEmpty()) {
+                        SpendingPlanListState.Empty
+                    } else {
+                        SpendingPlanListState.SpendingPlanListData(
+                            spendingPlanData.spendingPlanList,
+                            spendingPlanData.consumptionPlan
+                        )
+                    }
             }
         }
     }
 
     fun changeSpendingSelected(spendingPlan: SpendingPlan) {
-        val spendingListState = spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
+        val spendingListState =
+            spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
 
         viewModelScope.launch {
             _spendingPlanListState.update {
@@ -86,15 +95,29 @@ internal class SpendingPlanListViewModel @Inject constructor(
                             } else {
                                 it.copy(selected = false)
                             }
+                        },
+                    ),
+                    consumptionPlan = spendingListState.consumptionPlan.map { consumptionSpend ->
+                        if (consumptionSpend.spendingPlan.id == spendingPlan.id) {
+                            consumptionSpend.copy(
+                                spendingPlan = consumptionSpend.spendingPlan.copy(
+                                    selected = !consumptionSpend.spendingPlan.selected
+                                )
+                            )
+                        } else {
+                            consumptionSpend.copy(
+                                spendingPlan = consumptionSpend.spendingPlan.copy(selected = false)
+                            )
                         }
-                    )
+                    }
                 )
             }
         }
     }
 
     fun editSpending() {
-        val spendingListState = spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
+        val spendingListState =
+            spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
         val selectedIncomeId = spendingListState.selectedIncomeId ?: return
 
         viewModelScope.launch {
@@ -103,12 +126,13 @@ internal class SpendingPlanListViewModel @Inject constructor(
     }
 
     fun deleteSpending() {
-        val spendingListState = spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
+        val spendingListState =
+            spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
         val selectedIncomeId = spendingListState.selectedIncomeId ?: return
 
         viewModelScope.launch {
             spendingPlanRepository.deleteById(selectedIncomeId)
-            showSnackBar(MessageType.Message("수입이 삭제되었습니다"))
+            showSnackBar(MessageType.Message("지출 계획이 삭제되었습니다"))
         }
     }
 
@@ -117,7 +141,8 @@ internal class SpendingPlanListViewModel @Inject constructor(
     }
 
     fun spendingTabClick(index: Int) {
-        val spendingListState = spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
+        val spendingListState =
+            spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
 
         viewModelScope.launch {
             _spendingPlanListState.update {
@@ -145,6 +170,7 @@ internal sealed interface SpendingPlanListState {
     @Immutable
     data class SpendingPlanListData(
         val spendingPlanList: SpendingPlanList,
+        val consumptionPlan: List<ConsumptionSpend>,
         val spendingTypeTabIndex: Int = 0,
     ) : SpendingPlanListState {
 
@@ -161,6 +187,8 @@ internal sealed interface SpendingPlanListState {
                 }
             )
 
+        val filterConsumptionPlan: List<ConsumptionSpend>
+            get() = consumptionPlan.filter { selectedSpendingType == SpendingType.ConsumptionPlan || selectedSpendingType == SpendingType.ALL }
 
         val selectedIncomeId get() = spendingPlanList.spendingPlans.firstOrNull { it.selected }?.id
     }

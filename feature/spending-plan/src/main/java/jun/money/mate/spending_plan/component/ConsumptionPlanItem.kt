@@ -22,16 +22,19 @@ import jun.money.mate.designsystem.theme.Gray5
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
+import jun.money.mate.model.spending.ConsumptionSpend
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingType
 import java.time.LocalDate
 
 @Composable
 internal fun ConsumptionPlanItem(
-    spendingPlan: SpendingPlan,
+    consumptionSpend: ConsumptionSpend,
     onIncomeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val spendingPlan = consumptionSpend.spendingPlan
+
     Surface(
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(
@@ -84,7 +87,7 @@ internal fun ConsumptionPlanItem(
                         style = JUNTheme.typography.titleSmallR,
                     )
                     Text(
-                        text = "-" + spendingPlan.amountString,
+                        text = consumptionSpend.totalString,
                         style = JUNTheme.typography.titleNormalM,
                         color = Red3,
                         textAlign = TextAlign.End,
@@ -102,7 +105,7 @@ internal fun ConsumptionPlanItem(
                         style = JUNTheme.typography.titleNormalM,
                     )
                     Text(
-                        text = spendingPlan.amountString,
+                        text = consumptionSpend.remainingString,
                         style = JUNTheme.typography.titleLargeB,
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(1f)
@@ -118,14 +121,17 @@ internal fun ConsumptionPlanItem(
 private fun ConsumptionPlanItemPreview() {
     JunTheme {
         ConsumptionPlanItem(
-            spendingPlan = SpendingPlan(
-                id = 1,
-                title = "식비",
-                amount = 10000,
-                spendingCategoryName = "식비",
-                planDate = LocalDate.now(),
-                type = SpendingType.ConsumptionPlan,
-                isApply = false,
+            consumptionSpend = ConsumptionSpend(
+                SpendingPlan(
+                    id = 1,
+                    title = "식비",
+                    amount = 10000,
+                    spendingCategoryName = "식비",
+                    planDate = LocalDate.now(),
+                    type = SpendingType.ConsumptionPlan,
+                    isApply = false,
+                ),
+                consumptionTotal = 1000
             ),
             onIncomeClick = {},
         )

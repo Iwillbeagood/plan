@@ -102,6 +102,7 @@ private fun SpendingListContent(
         if (spendingPlanListState is SpendingPlanListState.SpendingPlanListData) {
             SpendingPlanListBody(
                 spendingPlanList = spendingPlanListState.filterSpendingPlanList,
+                consumptionSpend = spendingPlanListState.filterConsumptionPlan,
                 spendingTypeTabIndex = spendingPlanListState.spendingTypeTabIndex,
                 onSpendingPlanClick = onSpendingPlanClick,
                 onSpendingTabClick = onSpendingTabClick

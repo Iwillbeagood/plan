@@ -32,12 +32,23 @@ data class SpendingPlanList(
 
     val consumptionPlan get() = spendingPlans.filter { it.type == SpendingType.ConsumptionPlan }
 
-    val regularTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.PredictedSpending) it.amount else 0 }
-    val livingTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.ConsumptionPlan) it.amount else 0 }
-    val variableTotal get() = livingTotal
+    val predictTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.PredictedSpending) it.amount else 0 }
+    val consumptionTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.ConsumptionPlan) it.amount else 0 }
 
-    val total get() = regularTotal + variableTotal
-    val totalString get() = "-" + Utils.formatAmountWon(total)
+    val total get() = predictTotal + consumptionTotal
+    val totalString get() = Utils.formatAmountWon(total)
 
     val isEmpty get() = spendingPlans.isEmpty()
+}
+
+
+data class ConsumptionSpend(
+    val spendingPlan: SpendingPlan,
+    val consumptionTotal: Long
+) {
+
+    val totalString get() = "- " + Utils.formatAmountWon(consumptionTotal)
+
+    private val remaining get() = spendingPlan.amount - consumptionTotal
+    val remainingString get() = Utils.formatAmountWon(remaining)
 }

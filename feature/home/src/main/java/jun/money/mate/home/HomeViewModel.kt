@@ -4,13 +4,11 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.ehsannarmani.compose_charts.models.Pie
 import jun.money.mate.data_api.database.IncomeRepository
 import jun.money.mate.data_api.database.SavingPlanRepository
 import jun.money.mate.data_api.database.SpendingPlanRepository
-import jun.money.mate.designsystem.theme.Green2
 import jun.money.mate.designsystem.theme.Yellow1
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.model.saving.SavingPlanList
@@ -100,7 +98,7 @@ internal sealed interface HomeState {
 
         val pieList: List<Pie>
             get() = listOf(
-                Pie(label = "정기 지출", data = spendingPlanList.regularTotal.toDouble(), color = Yellow1),
+                Pie(label = "정기 지출", data = spendingPlanList.predictTotal.toDouble(), color = Yellow1),
             )
     }
 }
