@@ -28,7 +28,9 @@ data class SpendingPlanList(
 ) {
 
     val predictPlans get() = spendingPlans.filter { it.type == SpendingType.PredictedSpending }
-    val predictPlanGroup get() = predictPlans.groupBy { it.dateString }
+    val predictPlanGroup get() = predictPlans
+        .groupBy { it.dateString }
+        .toSortedMap()
 
     val consumptionPlan get() = spendingPlans.filter { it.type == SpendingType.ConsumptionPlan }
 

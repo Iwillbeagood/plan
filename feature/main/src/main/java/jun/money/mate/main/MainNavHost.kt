@@ -1,9 +1,8 @@
 package jun.money.mate.main
 
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,22 +38,8 @@ internal fun MainNavHost(
         NavHost(
             navController = navigator.navController,
             startDestination = navigator.startDestination,
-            enterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { fullWidth -> fullWidth }
-                ) + fadeIn()
-            },
-            exitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { fullWidth -> -fullWidth }
-                ) + fadeOut()
-            },
-            popEnterTransition = {
-                fadeIn()
-            },
-            popExitTransition = {
-                fadeOut()
-            }
+            enterTransition = { fadeIn(animationSpec = tween(300)) },
+            exitTransition = { fadeOut(animationSpec = tween(300)) }
         ) {
             splashNavGraph(
                 onShowHomeScreen = { navigator.navigateTo(MainBottomNavItem.Home) },

@@ -50,7 +50,7 @@ internal fun SpendingPlanListBody(
                     modifier = Modifier.padding(20.dp),
                 ) {
                     Text(
-                        text = "전체 지출",
+                        text = "예상 전체 지출",
                         style = JUNTheme.typography.titleLargeM,
                     )
                     VerticalSpacer(10.dp)

@@ -53,7 +53,7 @@ internal fun ConsumptionPlanItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(10.dp)
                 .animateContentSize()
         ) {
             Column(
@@ -61,7 +61,7 @@ internal fun ConsumptionPlanItem(
             ) {
                 Text(
                     text = spendingPlan.title,
-                    style = JUNTheme.typography.headlineSmallM,
+                    style = JUNTheme.typography.titleLargeM,
                 )
                 VerticalSpacer(10.dp)
                 Row(
@@ -73,7 +73,7 @@ internal fun ConsumptionPlanItem(
                     )
                     Text(
                         text = spendingPlan.amountString,
-                        style = JUNTheme.typography.titleNormalM,
+                        style = JUNTheme.typography.titleMediumM,
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(1f)
                     )
@@ -88,7 +88,7 @@ internal fun ConsumptionPlanItem(
                     )
                     Text(
                         text = consumptionSpend.totalString,
-                        style = JUNTheme.typography.titleNormalM,
+                        style = JUNTheme.typography.titleMediumM,
                         color = Red3,
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(1f)
@@ -102,11 +102,11 @@ internal fun ConsumptionPlanItem(
                 ) {
                     Text(
                         text = "남은 금액",
-                        style = JUNTheme.typography.titleNormalM,
+                        style = JUNTheme.typography.titleSmallM,
                     )
                     Text(
                         text = consumptionSpend.remainingString,
-                        style = JUNTheme.typography.titleLargeB,
+                        style = JUNTheme.typography.titleMediumB,
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(1f)
                     )

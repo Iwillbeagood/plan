@@ -21,10 +21,10 @@ data class Consumption(
 data class ConsumptionList(
     val consumptions: List<Consumption>
 ) {
-
-    val consumptionsGroup: List<ConsumptionGroup> get() = consumptions.groupBy { it.dateString }.map {
-        ConsumptionGroup(it.key, it.value)
-    }
+    val consumptionsGroup: List<ConsumptionGroup>
+        get() = consumptions.groupBy { it.dateString }
+            .toSortedMap()
+            .map { ConsumptionGroup(it.key, it.value) }
 
     val isEmpty get() = consumptions.isEmpty()
 

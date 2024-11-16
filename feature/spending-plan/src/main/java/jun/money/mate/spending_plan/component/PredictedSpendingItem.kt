@@ -55,7 +55,6 @@ internal fun PredictedSpendingItem(
         ) {
             CategoryIcon(
                 category = spendingPlan.spendingCategory.type,
-                color = White1,
                 size = 25.dp,
                 modifier = Modifier.circleBackground()
            )
