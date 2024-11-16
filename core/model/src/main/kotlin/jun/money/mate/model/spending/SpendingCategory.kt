@@ -22,16 +22,36 @@ sealed interface SpendingCategory {
     }
 }
 
-enum class SpendingCategoryType {
+enum class SpendingCategoryType(val isSubscribe: Boolean = false) {
     교통비,
     교육,
     보험,
     통신비,
     주거비,
     관리비,
-    구독료,
     운동,
     할부,
     렌트비,
-    기타;
+    기타,
+
+    넷플릭스(true),
+    유튜브(true),
+    디즈니플러스(true),
+    아마존프라임(true),
+    왓챠(true),
+    웨이브(true),
+    티빙(true),
+    쿠팡(true),
+    멜론(true),
+    스포티파이(true),
+    네이버플러스(true)
+
+    ;
+
+    companion object {
+        val normals = entries.filter { !it.isSubscribe }
+        val subscribes = entries.filter { it.isSubscribe }
+
+        fun values(isSubscribe: Boolean) = if (isSubscribe) subscribes else normals
+    }
 }

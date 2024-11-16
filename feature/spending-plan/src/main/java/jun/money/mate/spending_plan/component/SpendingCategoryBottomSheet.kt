@@ -1,3 +1,4 @@
+
 package jun.money.mate.spending_plan.component
 
 import androidx.compose.foundation.clickable
@@ -14,6 +15,11 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,10 +29,12 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.DefaultBottomSheet
 import jun.money.mate.designsystem.component.RegularButton
+import jun.money.mate.designsystem.component.ScrollableTab
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.model.spending.SpendingCategoryType
+import jun.money.mate.model.spending.SpendingType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,6 +43,8 @@ internal fun SpendingCategoryBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(true),
     onCategorySelected: (SpendingCategoryType) -> Unit
 ) {
+    var spendingTypeTabIndex by remember { mutableIntStateOf(0) }
+
     DefaultBottomSheet(
         sheetState = sheetState,
         sheetTitle = "카테고리 선택",
@@ -48,10 +58,18 @@ internal fun SpendingCategoryBottomSheet(
             )
         }
     ) {
+        ScrollableTab(
+            tabs = listOf("구독", "일반"),
+            selectedTabIndex = spendingTypeTabIndex,
+            onTabClick = {
+                spendingTypeTabIndex = it
+            },
+            modifier = Modifier.padding(bottom = 20.dp)
+        )
         LazyVerticalGrid(
             columns = GridCells.Fixed(4)
         ) {
-            items(SpendingCategoryType.entries) { category ->
+            items(SpendingCategoryType.values(isSubscribe = spendingTypeTabIndex == 0)) { category ->
                 CategoryItem(
                     category = category,
                     modifier = Modifier

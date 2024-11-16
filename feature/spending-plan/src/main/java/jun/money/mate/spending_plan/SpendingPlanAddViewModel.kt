@@ -152,7 +152,10 @@ internal class SpendingPlanAddViewModel @Inject constructor(
         val state = _spendingPlanAddState.value as? SpendingPlanAddState.SpendingPlanData ?: return
 
         _spendingPlanAddState.update {
-            state.copy(spendingCategory = SpendingCategory.CategoryType(category))
+            state.copy(
+                spendingCategory = SpendingCategory.CategoryType(category),
+                title = state.title.ifEmpty { category.name }
+            )
         }
     }
 

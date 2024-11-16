@@ -36,11 +36,21 @@ private fun categoryIcon(spendingCategoryType: SpendingCategoryType): Int {
         SpendingCategoryType.보험 -> R.drawable.ic_health
         SpendingCategoryType.통신비 -> R.drawable.ic_phone
         SpendingCategoryType.관리비 -> R.drawable.ic_manage
-        SpendingCategoryType.구독료 -> R.drawable.ic_subscribe
         SpendingCategoryType.운동 -> R.drawable.ic_gym
         SpendingCategoryType.할부 -> R.drawable.ic_bill
         SpendingCategoryType.렌트비 -> R.drawable.ic_rant
         SpendingCategoryType.기타 -> R.drawable.ic_etc
+        SpendingCategoryType.넷플릭스 -> R.drawable.ic_netflix
+        SpendingCategoryType.유튜브 -> R.drawable.ic_youtube
+        SpendingCategoryType.디즈니플러스 -> R.drawable.ic_disney_plus
+        SpendingCategoryType.아마존프라임 -> R.drawable.ic_amazon_prime
+        SpendingCategoryType.왓챠 -> R.drawable.ic_watcha
+        SpendingCategoryType.웨이브 -> R.drawable.ic_wavve
+        SpendingCategoryType.티빙 -> R.drawable.ic_tving
+        SpendingCategoryType.쿠팡 -> R.drawable.ic_coupang
+        SpendingCategoryType.멜론 -> R.drawable.ic_melon
+        SpendingCategoryType.스포티파이 -> R.drawable.ic_spotify
+        SpendingCategoryType.네이버플러스 -> R.drawable.ic_naver
     }
 }
 
