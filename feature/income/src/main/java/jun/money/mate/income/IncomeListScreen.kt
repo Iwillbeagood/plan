@@ -11,6 +11,7 @@ import jun.money.mate.designsystem.etc.EmptyMessage
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.income.component.IncomeListBody
+import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
 import jun.money.mate.ui.DefaultScaffold
@@ -53,7 +54,7 @@ internal fun IncomeListRoute(
 @Composable
 private fun IncomeListScreen(
     incomeListState: IncomeListState,
-    incomeListViewMode: IncomeListViewMode,
+    incomeListViewMode: ViewMode,
     selectedDate: LocalDate,
     onGoBack: () -> Unit,
     onIncomeClick: (Income) -> Unit,
@@ -65,8 +66,8 @@ private fun IncomeListScreen(
     DefaultScaffold(
         title = "수입 내역",
         color = main,
-        bottomBarVisible = incomeListViewMode == IncomeListViewMode.EDIT,
-        addButtonVisible = incomeListViewMode == IncomeListViewMode.LIST,
+        bottomBarVisible = incomeListViewMode == ViewMode.EDIT,
+        addButtonVisible = incomeListViewMode == ViewMode.LIST,
         selectedDate = selectedDate,
         onDateSelect = onDateSelect,
         onAdd = onIncomeAdd,
@@ -114,7 +115,7 @@ private fun IncomeListScreenPreview() {
             onIncomeClick = {},
             onIncomeEdit = {},
             onIncomeDelete = {},
-            incomeListViewMode = IncomeListViewMode.EDIT
+            incomeListViewMode = ViewMode.EDIT
         )
     }
 }

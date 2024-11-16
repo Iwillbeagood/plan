@@ -5,11 +5,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.etc.EmptyMessage
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
+import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.spending_plan.component.SpendingPlanListBody
@@ -54,7 +56,7 @@ internal fun SpendingPlanListRoute(
 @Composable
 private fun SpendingListScreen(
     spendingPlanListState: SpendingPlanListState,
-    spendingListViewMode: SpendingListViewMode,
+    spendingListViewMode: ViewMode,
     selectedDate: LocalDate,
     onGoBack: () -> Unit,
     onSpendingPlanClick: (SpendingPlan) -> Unit,
@@ -67,8 +69,8 @@ private fun SpendingListScreen(
     DefaultScaffold(
         title = "지출 계획",
         color = Red3,
-        bottomBarVisible = spendingListViewMode == SpendingListViewMode.EDIT,
-        addButtonVisible = spendingListViewMode == SpendingListViewMode.LIST,
+        bottomBarVisible = spendingListViewMode == ViewMode.EDIT,
+        addButtonVisible = spendingListViewMode == ViewMode.LIST,
         selectedDate = selectedDate,
         onDateSelect = onDateSelect,
         onAdd = onSpendingPlanAdd,
@@ -122,7 +124,7 @@ private fun SpendingListScreenPreview() {
             onSpendingPlanEdit = {},
             onSpendingPlanDelete = {},
             onSpendingTabClick = {},
-            spendingListViewMode = SpendingListViewMode.EDIT
+            spendingListViewMode = ViewMode.EDIT
         )
     }
 }
