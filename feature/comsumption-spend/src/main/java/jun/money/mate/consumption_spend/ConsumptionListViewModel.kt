@@ -40,7 +40,8 @@ internal class ConsumptionListViewModel @Inject constructor(
     var dateState = MutableStateFlow<LocalDate>(LocalDate.now())
         private set
 
-    private val _consumptionListState = MutableStateFlow<ConsumptionListState>(ConsumptionListState.Loading)
+    private val _consumptionListState =
+        MutableStateFlow<ConsumptionListState>(ConsumptionListState.Loading)
     val consumptionListState: StateFlow<ConsumptionListState> = _consumptionListState.onStart {
         loadSpending()
     }.stateIn(
@@ -73,7 +74,8 @@ internal class ConsumptionListViewModel @Inject constructor(
         initialValue = emptyList()
     )
 
-    private val _consumptionModalEffect = MutableStateFlow<ConsumptionDialogEffect>(ConsumptionDialogEffect.Idle)
+    private val _consumptionModalEffect =
+        MutableStateFlow<ConsumptionDialogEffect>(ConsumptionDialogEffect.Idle)
     val consumptionModalEffect: StateFlow<ConsumptionDialogEffect> get() = _consumptionModalEffect
 
     private val _consumptionListEffect = MutableSharedFlow<ConsumptionListEffect>()
@@ -94,17 +96,14 @@ internal class ConsumptionListViewModel @Inject constructor(
                     }
                 }
             }.collect {
-                _consumptionListState.value = if (it.isEmpty()) {
-                    ConsumptionListState.Empty
-                } else {
-                    ConsumptionListState.ConsumptionListData(ConsumptionList(it))
-                }
+                _consumptionListState.value = ConsumptionListState.ConsumptionListData(ConsumptionList(it))
             }
         }
     }
 
     fun changeConsumptionSelected(consumption: Consumption) {
-        val state = consumptionListState.value as? ConsumptionListState.ConsumptionListData ?: return
+        val state =
+            consumptionListState.value as? ConsumptionListState.ConsumptionListData ?: return
 
         viewModelScope.launch {
             _consumptionListState.update {
@@ -127,7 +126,11 @@ internal class ConsumptionListViewModel @Inject constructor(
         val filterValue = consumptionFilter.value
 
         viewModelScope.launch {
-            _consumptionModalEffect.update { ConsumptionDialogEffect.ShowFilterBottomSheet(filterValue.toStringList()) }
+            _consumptionModalEffect.update {
+                ConsumptionDialogEffect.ShowFilterBottomSheet(
+                    filterValue.toStringList()
+                )
+            }
         }
     }
 
@@ -183,9 +186,6 @@ internal sealed interface ConsumptionListState {
 
     @Immutable
     data object Loading : ConsumptionListState
-
-    @Immutable
-    data object Empty : ConsumptionListState
 
     @Immutable
     data class ConsumptionListData(

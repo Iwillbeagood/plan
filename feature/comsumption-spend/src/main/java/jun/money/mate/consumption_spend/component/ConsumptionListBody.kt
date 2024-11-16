@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray10
+import jun.money.mate.designsystem.theme.Gray6
+import jun.money.mate.designsystem.theme.Gray7
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
@@ -133,14 +135,7 @@ internal fun ConsumptionListBody(
                 ConsumptionItem(
                     consumption = consump,
                     modifier = Modifier
-                        .background(
-                            if (consump.selected)
-                                Gray10
-                            else
-                                MaterialTheme.colorScheme.surfaceDim
-                        )
                         .clickable { onConsumptionClick(consump) }
-                        .padding(horizontal = 20.dp, vertical = 5.dp)
                 )
             }
 
@@ -156,27 +151,35 @@ private fun ConsumptionItem(
     consumption: Consumption,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    Surface(
+        color = if (consumption.selected) Gray7 else MaterialTheme.colorScheme.surfaceDim,
         modifier = modifier
     ) {
-        Row {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 10.dp)
+        ) {
+            Row {
+                Text(
+                    text = consumption.title,
+                    style = JUNTheme.typography.titleMediumM,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    text = consumption.amountString,
+                    color = Red3,
+                    style = JUNTheme.typography.titleMediumB,
+                )
+            }
             Text(
-                text = consumption.title,
-                style = JUNTheme.typography.titleMediumR,
-                modifier = Modifier.weight(1f)
-            )
-            Text(
-                text = consumption.amountString,
-                color = Red3,
-                style = JUNTheme.typography.titleMediumR,
+                text = consumption.planTitle,
+                style = JUNTheme.typography.titleSmallR,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        Text(
-            text = consumption.planTitle,
-            style = JUNTheme.typography.titleSmallR,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
     }
+
 }
 
 @Preview(showBackground = true)
@@ -192,7 +195,8 @@ private fun SpendingPlanListBodyPreview() {
                         title = "맥도날드",
                         amount = 10000,
                         consumptionDate = LocalDate.now(),
-                        planTitle = "식비"
+                        planTitle = "식비",
+                        selected = true
                     ),
                     Consumption(
                         id = 2,

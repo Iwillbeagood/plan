@@ -29,7 +29,7 @@ data class ConsumptionList(
     val isEmpty get() = consumptions.isEmpty()
 
     val total get() = consumptions.sumOf { it.amount }
-    val totalString get() = "- " + Utils.formatAmountWon(total)
+    val totalString get() = Utils.formatAmountWon(total)
 }
 
 data class ConsumptionGroup(

@@ -84,7 +84,7 @@ private fun ConsumptionListScreen(
         title = "지출 계획",
         color = Red3,
         bottomBarVisible = consumptionListViewMode == ViewMode.EDIT,
-        addButtonVisible = consumptionListViewMode == ViewMode.LIST,
+        addButtonVisible = false,
         selectedDate = selectedDate,
         onDateSelect = onDateSelect,
         onAdd = onSpendingPlanAdd,
@@ -110,12 +110,6 @@ private fun SpendingListContent(
     onFilterClick: () -> Unit,
     onConsumptionClick: (Consumption) -> Unit,
 ) {
-    FadeAnimatedVisibility(consumptionListState is ConsumptionListState.Empty) {
-        if (consumptionListState is ConsumptionListState.Empty) {
-            EmptyMessage("계획 소비가 없습니다.")
-        }
-    }
-
     FadeAnimatedVisibility(consumptionListState is ConsumptionListState.ConsumptionListData) {
         if (consumptionListState is ConsumptionListState.ConsumptionListData) {
             ConsumptionListBody(
