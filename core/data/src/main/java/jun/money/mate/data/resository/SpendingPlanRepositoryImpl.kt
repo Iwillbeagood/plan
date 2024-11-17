@@ -4,6 +4,7 @@ import jun.money.mate.data.mapper.toSpendingPlan
 import jun.money.mate.data_api.database.SpendingPlanRepository
 import jun.money.mate.database.dao.SpendingPlanDao
 import jun.money.mate.database.entity.SpendingPlanEntity
+import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingPlanList
 import kic.owner2.utils.etc.Logger
@@ -15,8 +16,19 @@ class SpendingPlanRepositoryImpl @Inject constructor(
     private val spendingPlanDao: SpendingPlanDao
 ) : SpendingPlanRepository {
 
-    override suspend fun upsertSpendingPlan(spendingPlan: SpendingPlan) {
+    override suspend fun upsertSpendingPlan(
+        spendingPlan: SpendingPlan,
+        onError: (MessageType) -> Unit,
+        onSuccess: () -> Unit
+    ) {
         try {
+            spendingPlanDao.getSpendingPlan().forEach {
+                if (it.title == spendingPlan.title) {
+                    onError(MessageType.Message("이미 존재하는 지출 계획입니다."))
+                    return
+                }
+            }
+
             spendingPlanDao.upsertSpendingPlan(
                 SpendingPlanEntity(
                     id = spendingPlan.id,
@@ -28,6 +40,8 @@ class SpendingPlanRepositoryImpl @Inject constructor(
                     isApply = spendingPlan.isApply,
                 )
             )
+
+            onSuccess()
         } catch (e: Exception) {
             Logger.e("upsertSpendingPlan error: $e")
         }

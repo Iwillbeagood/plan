@@ -33,16 +33,17 @@ class AddSpendingPlanUsecase @Inject constructor(
         }
 
         spendingPlanRepository.upsertSpendingPlan(
-            SpendingPlan(
+            spendingPlan = SpendingPlan(
                 id = id,
                 title = title,
                 amount = amount,
                 type = type,
                 spendingCategoryName = category.name(),
                 planDay = day,
-                isApply = true
-            )
+                isApply = true,
+            ),
+            onError = onError,
+            onSuccess = onSuccess
         )
-        onSuccess()
     }
 }
