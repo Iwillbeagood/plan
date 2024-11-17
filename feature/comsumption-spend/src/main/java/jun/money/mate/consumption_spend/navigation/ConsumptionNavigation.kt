@@ -25,6 +25,7 @@ fun NavController.navigateToConsumptionAdd(addType: AddType) {
 fun NavGraphBuilder.consumptionNavGraph(
     onGoBack: () -> Unit,
     onShowConsumptionAdd: () -> Unit,
+    onShowSpendingPlanAdd: () -> Unit,
     onShowConsumptionEdit: (id: Long) -> Unit,
     onShowErrorSnackBar: (MessageType) -> Unit
 ) {
@@ -32,6 +33,7 @@ fun NavGraphBuilder.consumptionNavGraph(
         ConsumptionListRoute(
             onGoBack = onGoBack,
             onShowConsumptionAdd = onShowConsumptionAdd,
+            onShowSpendingPlanAdd = onShowSpendingPlanAdd,
             onShowConsumptionEdit = onShowConsumptionEdit,
             onShowSnackBar = onShowErrorSnackBar
         )

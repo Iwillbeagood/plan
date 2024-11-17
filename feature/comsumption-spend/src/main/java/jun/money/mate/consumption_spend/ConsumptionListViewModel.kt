@@ -40,8 +40,7 @@ internal class ConsumptionListViewModel @Inject constructor(
     var dateState = MutableStateFlow<LocalDate>(LocalDate.now())
         private set
 
-    private val _consumptionListState =
-        MutableStateFlow<ConsumptionListState>(ConsumptionListState.Loading)
+    private val _consumptionListState = MutableStateFlow<ConsumptionListState>(ConsumptionListState.Loading)
     val consumptionListState: StateFlow<ConsumptionListState> = _consumptionListState.onStart {
         loadSpending()
     }.stateIn(
@@ -134,6 +133,12 @@ internal class ConsumptionListViewModel @Inject constructor(
         }
     }
 
+    fun showSpendingPlanDialog() {
+        viewModelScope.launch {
+            _consumptionModalEffect.update { ConsumptionDialogEffect.ShowSpendingPlanDialog }
+        }
+    }
+
     fun filterClicked(filterTitle: String) {
         _consumptionFilter.update {
             it.map {
@@ -146,8 +151,7 @@ internal class ConsumptionListViewModel @Inject constructor(
     }
 
     fun editSpending() {
-        val state =
-            consumptionListState.value as? ConsumptionListState.ConsumptionListData ?: return
+        val state = consumptionListState.value as? ConsumptionListState.ConsumptionListData ?: return
         val id = state.selectedId ?: return
 
         viewModelScope.launch {
@@ -156,8 +160,7 @@ internal class ConsumptionListViewModel @Inject constructor(
     }
 
     fun deleteSpending() {
-        val state =
-            consumptionListState.value as? ConsumptionListState.ConsumptionListData ?: return
+        val state = consumptionListState.value as? ConsumptionListState.ConsumptionListData ?: return
         val selectedIncomeId = state.selectedId ?: return
 
         viewModelScope.launch {
@@ -172,6 +175,17 @@ internal class ConsumptionListViewModel @Inject constructor(
 
     fun onDismissModal() {
         _consumptionModalEffect.update { ConsumptionDialogEffect.Idle }
+    }
+
+    fun showConsumptionAdd() {
+        if (consumptionFilter.value.size < 2) {
+            showSpendingPlanDialog()
+            return
+        }
+
+        viewModelScope.launch {
+            _consumptionListEffect.emit(ConsumptionListEffect.ShowConsumptionAdd)
+        }
     }
 
     private fun showSnackBar(messageType: MessageType) {
@@ -207,6 +221,9 @@ internal sealed interface ConsumptionListEffect {
 
     @Immutable
     data class EditSpendingPlan(val id: Long) : ConsumptionListEffect
+
+    @Immutable
+    data object ShowConsumptionAdd : ConsumptionListEffect
 }
 
 @Stable
@@ -217,4 +234,7 @@ internal sealed interface ConsumptionDialogEffect {
 
     @Immutable
     data class ShowFilterBottomSheet(val filterTitles: List<String>) : ConsumptionDialogEffect
+
+    @Immutable
+    data object ShowSpendingPlanDialog : ConsumptionDialogEffect
 }
