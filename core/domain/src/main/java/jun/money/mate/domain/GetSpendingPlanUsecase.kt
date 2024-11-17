@@ -6,7 +6,6 @@ import jun.money.mate.model.spending.ConsumptionSpend
 import jun.money.mate.model.spending.SpendingPlanList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import java.time.LocalDate
 import javax.inject.Inject
 
 class GetSpendingPlanUsecase @Inject constructor(
@@ -14,10 +13,10 @@ class GetSpendingPlanUsecase @Inject constructor(
     private val consumptionRepository: ConsumptionRepository
 ) {
 
-    operator fun invoke(date: LocalDate): Flow<SpendingPlanData> {
+    operator fun invoke(): Flow<SpendingPlanData> {
         return combine(
-            spendingPlanRepository.getSpendingPlansByMonth(date),
-            consumptionRepository.getConsumptionByMonth(date)
+            spendingPlanRepository.getSpendingPlanFlow(),
+            consumptionRepository.getConsumptionByMonth()
         ) { spendingPlanList, consumptionList ->
             SpendingPlanData(
                 spendingPlanList,

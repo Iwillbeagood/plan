@@ -21,7 +21,6 @@ import jun.money.mate.designsystem.theme.Gray5
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
-import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingType
 import java.time.LocalDate
@@ -32,19 +31,10 @@ internal fun PredictedSpendingItem(
     onIncomeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(
-        shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = if (spendingPlan.selected) Red3 else Gray5
-        ),
-        color = MaterialTheme.colorScheme.surfaceDim,
+    SpendingItemContainer(
+        selected = spendingPlan.selected,
         onClick = onIncomeClick,
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        modifier = modifier
-            .fillMaxWidth()
-            .animateContentSize()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = modifier,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -91,7 +81,7 @@ private fun PredictedSpendingItemPreview() {
                 title = "식비",
                 amount = 10000,
                 spendingCategoryName = "식비",
-                planDate = LocalDate.now(),
+                planDay = 12,
                 type = SpendingType.PredictedSpending,
                 isApply = false,
             ),

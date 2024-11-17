@@ -14,7 +14,7 @@ data class SpendingPlanEntity(
     val type: SpendingType,
     val spendingCategoryName: String,
     val amount: Long,
-    val planDate: LocalDate,
+    val planDay: Int,
     val isApply: Boolean = false
 ) {
 
@@ -25,7 +25,7 @@ data class SpendingPlanEntity(
             type = SpendingType.ConsumptionPlan,
             spendingCategoryName = "",
             amount = 0,
-            planDate = LocalDate.now(),
+            planDay = 1,
             isApply = false
         )
 

@@ -35,7 +35,7 @@ internal class HomeViewModel @Inject constructor(
     val homeState: StateFlow<HomeState> = combine(
         incomeRepository.getIncomesByMonth(),
         savingPlanRepository.getSavingPlansByMonth(),
-        spendingPlanRepository.getSpendingPlansByMonth()
+        spendingPlanRepository.getSpendingPlanFlow()
     ) { incomes, savingPlans, spendingPlans ->
         HomeState.HomeData(
             incomeList = incomes,

@@ -5,7 +5,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.etc.EmptyMessage
@@ -16,7 +15,6 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.spending_plan.component.SpendingPlanListBody
 import jun.money.mate.ui.DefaultScaffold
-import java.time.LocalDate
 
 @Composable
 internal fun SpendingPlanListRoute(
@@ -28,18 +26,15 @@ internal fun SpendingPlanListRoute(
 ) {
     val spendingPlanListState by viewModel.spendingPlanListState.collectAsStateWithLifecycle()
     val spendingListViewMode by viewModel.spendingListViewMode.collectAsStateWithLifecycle()
-    val selectedDate by viewModel.dateState.collectAsStateWithLifecycle()
 
     SpendingListScreen(
         spendingPlanListState = spendingPlanListState,
         spendingListViewMode = spendingListViewMode,
-        selectedDate = selectedDate,
         onGoBack = onGoBack,
         onSpendingPlanClick = viewModel::changeSpendingSelected,
         onSpendingPlanAdd = onShowSpendingPlanAdd,
         onSpendingPlanEdit = viewModel::editSpending,
         onSpendingPlanDelete = viewModel::deleteSpending,
-        onDateSelect = viewModel::dateSelected,
         onSpendingTabClick = viewModel::spendingTabClick
     )
 
@@ -57,13 +52,11 @@ internal fun SpendingPlanListRoute(
 private fun SpendingListScreen(
     spendingPlanListState: SpendingPlanListState,
     spendingListViewMode: ViewMode,
-    selectedDate: LocalDate,
     onGoBack: () -> Unit,
     onSpendingPlanClick: (SpendingPlan) -> Unit,
     onSpendingPlanAdd: () -> Unit,
     onSpendingPlanEdit: () -> Unit,
     onSpendingPlanDelete: () -> Unit,
-    onDateSelect: (LocalDate) -> Unit,
     onSpendingTabClick: (Int) -> Unit,
 ) {
     DefaultScaffold(
@@ -71,8 +64,6 @@ private fun SpendingListScreen(
         color = Red3,
         bottomBarVisible = spendingListViewMode == ViewMode.EDIT,
         addButtonVisible = spendingListViewMode == ViewMode.LIST,
-        selectedDate = selectedDate,
-        onDateSelect = onDateSelect,
         onAdd = onSpendingPlanAdd,
         onEdit = onSpendingPlanEdit,
         onDelete = onSpendingPlanDelete,
@@ -101,6 +92,7 @@ private fun SpendingListContent(
     FadeAnimatedVisibility(spendingPlanListState is SpendingPlanListState.SpendingPlanListData) {
         if (spendingPlanListState is SpendingPlanListState.SpendingPlanListData) {
             SpendingPlanListBody(
+                totalString = spendingPlanListState.totalString,
                 spendingPlanList = spendingPlanListState.filterSpendingPlanList,
                 consumptionSpend = spendingPlanListState.filterConsumptionPlan,
                 spendingTypeTabIndex = spendingPlanListState.spendingTypeTabIndex,
@@ -117,9 +109,7 @@ private fun SpendingListScreenPreview() {
     JunTheme {
         SpendingListScreen(
             spendingPlanListState = SpendingPlanListState.Loading,
-            selectedDate = LocalDate.now(),
             onGoBack = {},
-            onDateSelect = {},
             onSpendingPlanAdd = {},
             onSpendingPlanClick = {},
             onSpendingPlanEdit = {},

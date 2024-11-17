@@ -9,14 +9,14 @@ data class SpendingPlan(
     val type: SpendingType,
     val spendingCategoryName: String,
     val amount: Long,
-    val planDate: LocalDate,
+    val planDay: Int,
     val isApply: Boolean,
     val selected: Boolean = false
 ) {
 
     val amountString: String get() = Utils.formatAmountWon(amount)
 
-    val dateString: String get() = "${planDate.dayOfMonth}일"
+    val dateString: String get() = "${planDay}일"
 
     val spendingCategory get() = SpendingCategory.find(spendingCategoryName)
 
@@ -37,7 +37,7 @@ data class SpendingPlanList(
     val predictTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.PredictedSpending) it.amount else 0 }
     val consumptionTotal get() = spendingPlans.sumOf { if (it.type == SpendingType.ConsumptionPlan) it.amount else 0 }
 
-    val total get() = predictTotal + consumptionTotal
+    val total get() = spendingPlans.sumOf { it.amount }
     val totalString get() = Utils.formatAmountWon(total)
 
     val isEmpty get() = spendingPlans.isEmpty()
@@ -49,7 +49,7 @@ data class ConsumptionSpend(
     val consumptionTotal: Long
 ) {
 
-    val totalString get() = "- " + Utils.formatAmountWon(consumptionTotal)
+    val totalString get() = if (consumptionTotal == 0L) "0원" else "- " + Utils.formatAmountWon(consumptionTotal)
 
     private val remaining get() = spendingPlan.amount - consumptionTotal
     val remainingString get() = Utils.formatAmountWon(remaining)

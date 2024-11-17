@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.BottomToTopSlideFadeAnimatedVisibility
 import jun.money.mate.designsystem.component.CircleButton
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
+import jun.money.mate.designsystem.component.IconButton
 import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem_date.datetimepicker.YearMonthPickerScaffold
@@ -39,27 +41,13 @@ fun DefaultScaffold(
     color: Color,
     bottomBarVisible: Boolean,
     addButtonVisible: Boolean,
-    selectedDate: LocalDate,
-    onDateSelect: (LocalDate) -> Unit,
     onAdd: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
     onGoBack: () -> Unit,
     content: @Composable () -> Unit,
 ) {
-    YearMonthPickerScaffold(
-        config = CalendarConfig(
-            yearSelection = true,
-            monthSelection = true,
-            style = CalendarStyle.MONTH,
-            boundary = LocalDate.now().let { now ->
-                now.minusYears(1).withMonth(1).withDayOfMonth(1)..now
-            }
-        ),
-        selection = CalendarSelection.Date(
-            selectedDate = selectedDate,
-            onSelectDate = onDateSelect
-        ),
+    Scaffold(
         topBar = {
             TopAppbar(
                 title = title,
@@ -111,34 +99,13 @@ fun DefaultScaffold(
                     onClick = onAdd
                 )
             }
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         Box(
-            modifier = Modifier
+            modifier = Modifier.padding(it)
         ) {
             content()
         }
-    }
-}
-
-@Composable
-private fun IconButton(
-    icon: ImageVector,
-    text: String,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null
-        )
-        Text(
-            text = text,
-            style = JUNTheme.typography.titleSmallM
-        )
     }
 }

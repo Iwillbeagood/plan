@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,9 +32,6 @@ internal class SpendingPlanListViewModel @Inject constructor(
     private val spendingPlanRepository: SpendingPlanRepository,
     private val getSpendingPlanUsecase: GetSpendingPlanUsecase
 ) : ViewModel() {
-
-    var dateState = MutableStateFlow<LocalDate>(LocalDate.now())
-        private set
 
     private val _spendingPlanListState =
         MutableStateFlow<SpendingPlanListState>(SpendingPlanListState.Loading)
@@ -65,9 +61,7 @@ internal class SpendingPlanListViewModel @Inject constructor(
 
     private fun loadSpending() {
         viewModelScope.launch {
-            dateState.flatMapLatest {
-                getSpendingPlanUsecase(it)
-            }.collect { spendingPlanData ->
+            getSpendingPlanUsecase().collect { spendingPlanData ->
                 _spendingPlanListState.value =
                     if (spendingPlanData.spendingPlanList.spendingPlans.isEmpty()) {
                         SpendingPlanListState.Empty
@@ -136,10 +130,6 @@ internal class SpendingPlanListViewModel @Inject constructor(
         }
     }
 
-    fun dateSelected(date: LocalDate) {
-        dateState.update { date }
-    }
-
     fun spendingTabClick(index: Int) {
         val spendingListState =
             spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
@@ -176,7 +166,9 @@ internal sealed interface SpendingPlanListState {
 
         val spendingListViewMode: ViewMode get() = if (spendingPlanList.spendingPlans.any { it.selected }) ViewMode.EDIT else ViewMode.LIST
 
-        val selectedSpendingType: SpendingType get() = SpendingType.entries[spendingTypeTabIndex]
+        private val selectedSpendingType: SpendingType get() = SpendingType.entries[spendingTypeTabIndex]
+
+        val totalString get() = spendingPlanList.totalString
 
         val filterSpendingPlanList: SpendingPlanList
             get() = spendingPlanList.copy(

@@ -61,7 +61,7 @@ internal class SpendingPlanAddViewModel @Inject constructor(
                         id = System.currentTimeMillis(),
                         title = "",
                         amount = 0,
-                        date = LocalDate.now(),
+                        day = LocalDate.now().dayOfMonth,
                         type = SpendingType.ALL,
                         spendingCategory = SpendingCategory.NotSelected
                     )
@@ -72,7 +72,7 @@ internal class SpendingPlanAddViewModel @Inject constructor(
                                 id = it.id,
                                 title = it.title,
                                 amount = it.amount,
-                                date = it.planDate,
+                                day = it.planDay,
                                 type = it.type,
                                 spendingCategory = it.spendingCategory
                             )
@@ -92,7 +92,7 @@ internal class SpendingPlanAddViewModel @Inject constructor(
                 amount = state.amount,
                 type = state.type,
                 category = state.spendingCategory,
-                date = state.date,
+                day = state.day,
                 onSuccess = {
                     showSnackBar(
                         MessageType.Message(
@@ -140,7 +140,7 @@ internal class SpendingPlanAddViewModel @Inject constructor(
     fun dateSelected(date: LocalDate) {
         val state = _spendingPlanAddState.value as? SpendingPlanAddState.SpendingPlanData ?: return
         _spendingPlanAddState.update {
-            state.copy(date = date)
+            state.copy(day = date.dayOfMonth)
         }
 
         addSpendingPlan()
@@ -162,7 +162,7 @@ internal class SpendingPlanAddViewModel @Inject constructor(
     fun showDatePicker() {
         val state = _spendingPlanAddState.value as? SpendingPlanAddState.SpendingPlanData ?: return
 
-        _spendingPlanModalEffect.update { SpendingPlanModalEffect.ShowDatePicker(state.date) }
+        _spendingPlanModalEffect.update { SpendingPlanModalEffect.ShowDatePicker(LocalDate.now().withDayOfMonth(state.day)) }
     }
 
     fun showCategoryBottomSheet() {
@@ -199,7 +199,7 @@ internal sealed interface SpendingPlanAddState {
         val id: Long,
         val title: String,
         val amount: Long,
-        val date: LocalDate,
+        val day: Int,
         val type: SpendingType,
         val spendingCategory: SpendingCategory,
     ) : SpendingPlanAddState {

@@ -9,7 +9,6 @@ import jun.money.mate.model.spending.SpendingPlanList
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.time.LocalDate
 import javax.inject.Inject
 
 class SpendingPlanRepositoryImpl @Inject constructor(
@@ -25,7 +24,7 @@ class SpendingPlanRepositoryImpl @Inject constructor(
                     type = spendingPlan.type,
                     spendingCategoryName = spendingPlan.spendingCategoryName,
                     amount = spendingPlan.amount,
-                    planDate = spendingPlan.planDate,
+                    planDay = spendingPlan.planDay,
                     isApply = spendingPlan.isApply,
                 )
             )
@@ -54,21 +53,6 @@ class SpendingPlanRepositoryImpl @Inject constructor(
 
     override suspend fun getSpendingPlanById(id: Long): SpendingPlan {
         return spendingPlanDao.getSpendingPlanById(id).toSpendingPlan()
-    }
-
-    override fun getSpendingPlansByMonth(
-        date: LocalDate
-    ): Flow<SpendingPlanList> {
-        return spendingPlanDao.getSpendingPlansByMonth(
-            date.year.toString(),
-            date.monthValue.toString()
-        ).map { list ->
-            SpendingPlanList(
-                list.map {
-                    it.toSpendingPlan()
-                }
-            )
-        }
     }
 
     override suspend fun updateApplyingState(id: Long, isApply: Boolean) {

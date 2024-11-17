@@ -29,6 +29,7 @@ import java.time.LocalDate
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SpendingPlanListBody(
+    totalString: String,
     spendingPlanList: SpendingPlanList,
     consumptionSpend: List<ConsumptionSpend>,
     spendingTypeTabIndex: Int,
@@ -43,8 +44,7 @@ internal fun SpendingPlanListBody(
         item {
             Surface(
                 color = MaterialTheme.colorScheme.surfaceDim,
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
                     modifier = Modifier.padding(20.dp),
@@ -55,7 +55,7 @@ internal fun SpendingPlanListBody(
                     )
                     VerticalSpacer(10.dp)
                     Text(
-                        text = spendingPlanList.totalString,
+                        text = totalString,
                         style = JUNTheme.typography.headlineSmallB,
                     )
                 }
@@ -82,7 +82,7 @@ internal fun SpendingPlanListBody(
         spendingPlanList.predictPlanGroup.forEach { (date, spendingPlans) ->
             item {
                 Text(
-                    text = date,
+                    text = "매월 $date",
                     style = JUNTheme.typography.titleSmallR,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp)
@@ -109,6 +109,7 @@ internal fun SpendingPlanListBody(
 private fun SpendingPlanListBodyPreview() {
     JunTheme {
         SpendingPlanListBody(
+            totalString = "100,000원",
             spendingPlanList = SpendingPlanList(
                 spendingPlans = listOf(
                     SpendingPlan(
@@ -116,7 +117,7 @@ private fun SpendingPlanListBodyPreview() {
                         title = "식비",
                         amount = 10000,
                         spendingCategoryName = "식비",
-                        planDate = LocalDate.now(),
+                        planDay = 11,
                         type = SpendingType.PredictedSpending,
                         isApply = false,
                     ),
@@ -125,7 +126,7 @@ private fun SpendingPlanListBodyPreview() {
                         title = "식비",
                         amount = 10000,
                         spendingCategoryName = "식비",
-                        planDate = LocalDate.now(),
+                        planDay = 11,
                         type = SpendingType.PredictedSpending,
                         isApply = false,
                     ),
@@ -134,7 +135,7 @@ private fun SpendingPlanListBodyPreview() {
                         title = "식비",
                         amount = 10000,
                         spendingCategoryName = "식비",
-                        planDate = LocalDate.now(),
+                        planDay = 11,
                         type = SpendingType.PredictedSpending,
                         isApply = false,
                     ),
@@ -143,7 +144,7 @@ private fun SpendingPlanListBodyPreview() {
                         title = "식비",
                         amount = 10000,
                         spendingCategoryName = "식비",
-                        planDate = LocalDate.now(),
+                        planDay = 11,
                         type = SpendingType.PredictedSpending,
                         isApply = false,
                     ),
@@ -156,7 +157,7 @@ private fun SpendingPlanListBodyPreview() {
                         title = "식비",
                         amount = 10000,
                         spendingCategoryName = "식비",
-                        planDate = LocalDate.now(),
+                        planDay = 11,
                         type = SpendingType.ConsumptionPlan,
                         isApply = false,
                     ),

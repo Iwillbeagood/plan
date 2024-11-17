@@ -1,6 +1,8 @@
 package jun.money.mate.spending_plan
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -104,13 +106,14 @@ private fun SpendingPlanAddScreen(
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,
-        modifier = Modifier.imePadding()
-    ) {
+        modifier = Modifier
+            .imePadding()
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(padding)
                 .padding(horizontal = 16.dp)
-                .padding(it)
         ) {
             SpendingPlanAddContent(
                 spendingPlanAddState = incomeAddState,
@@ -118,7 +121,8 @@ private fun SpendingPlanAddScreen(
                 onIncomeAmountChange = onIncomeAmountChange,
                 onShowIncomeDateBottomSheet = onShowDateBottomSheet,
                 onShowCategoryBottomSheet = onShowCategoryBottomSheet,
-                onApplyType = onApplyType
+                onApplyType = onApplyType,
+                onAddIncome = onAddIncome
             )
         }
     }
@@ -132,6 +136,7 @@ private fun SpendingPlanAddContent(
     onShowIncomeDateBottomSheet: () -> Unit,
     onShowCategoryBottomSheet: () -> Unit,
     onApplyType: (SpendingType) -> Unit,
+    onAddIncome: () -> Unit,
 ) {
     FadeAnimatedVisibility(spendingPlanAddState is SpendingPlanAddState.SpendingPlanData) {
         if (spendingPlanAddState is SpendingPlanAddState.SpendingPlanData) {
@@ -139,14 +144,15 @@ private fun SpendingPlanAddContent(
                 title = spendingPlanAddState.title,
                 amount = spendingPlanAddState.amountString,
                 amountWon = spendingPlanAddState.amountWon,
-                date = "${spendingPlanAddState.date.dayOfMonth}일",
+                date = "${spendingPlanAddState.day}일",
                 type = spendingPlanAddState.type,
                 spendingCategory = spendingPlanAddState.spendingCategory,
                 onTitleChange = onIncomeTitleChange,
                 onAmountChange = onIncomeAmountChange,
                 onShowDateBottomSheet = onShowIncomeDateBottomSheet,
                 onShowCategoryBottomSheet = onShowCategoryBottomSheet,
-                onApplyType = onApplyType
+                onApplyType = onApplyType,
+                onAddIncome = onAddIncome
             )
         }
     }
@@ -188,7 +194,7 @@ private fun SpendingPlanAddScreenPreview() {
                 id = 0,
                 title = "월급",
                 amount = 1000000,
-                date = LocalDate.now(),
+                day = 12,
                 type = SpendingType.PredictedSpending,
                 spendingCategory = SpendingCategory.NotSelected
             ),

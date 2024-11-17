@@ -15,10 +15,6 @@ interface SpendingPlanRepository {
 
     suspend fun getSpendingPlanById(id: Long): SpendingPlan
 
-    fun getSpendingPlansByMonth(
-        date: LocalDate = LocalDate.now()
-    ): Flow<SpendingPlanList>
-
     suspend fun updateApplyingState(id: Long, isApply: Boolean)
 
     suspend fun deleteById(id: Long)

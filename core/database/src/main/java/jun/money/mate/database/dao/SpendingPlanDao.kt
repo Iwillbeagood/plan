@@ -17,15 +17,11 @@ interface SpendingPlanDao {
     @Query("SELECT * FROM $SPENDING_PLAN_TABLE_NAME")
     fun getSpendingPlanFlow(): Flow<List<SpendingPlanEntity>>
 
-
     @Query("SELECT * FROM $SPENDING_PLAN_TABLE_NAME")
     suspend fun getSpendingPlan(): List<SpendingPlanEntity>
 
     @Query("SELECT * FROM $SPENDING_PLAN_TABLE_NAME WHERE id = :id")
     suspend fun getSpendingPlanById(id: Long): SpendingPlanEntity
-
-    @Query("SELECT * FROM $SPENDING_PLAN_TABLE_NAME WHERE strftime('%Y', planDate) = :year AND strftime('%m', planDate) = :month")
-    fun getSpendingPlansByMonth(year: String, month: String): Flow<List<SpendingPlanEntity>>
 
     @Query("DELETE FROM $SPENDING_PLAN_TABLE_NAME WHERE id = :id")
     suspend fun deleteById(id: Long)

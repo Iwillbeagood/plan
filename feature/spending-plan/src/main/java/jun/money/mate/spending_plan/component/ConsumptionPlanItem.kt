@@ -35,19 +35,10 @@ internal fun ConsumptionPlanItem(
 ) {
     val spendingPlan = consumptionSpend.spendingPlan
 
-    Surface(
-        shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = if (spendingPlan.selected) Red3 else Gray5
-        ),
-        color = MaterialTheme.colorScheme.surfaceDim,
+    SpendingItemContainer(
+        selected = spendingPlan.selected,
         onClick = onIncomeClick,
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        modifier = modifier
-            .fillMaxWidth()
-            .animateContentSize()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = modifier,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -83,7 +74,7 @@ internal fun ConsumptionPlanItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "사용금액",
+                        text = "이번달 사용금액",
                         style = JUNTheme.typography.titleSmallR,
                     )
                     Text(
@@ -127,7 +118,7 @@ private fun ConsumptionPlanItemPreview() {
                     title = "식비",
                     amount = 10000,
                     spendingCategoryName = "식비",
-                    planDate = LocalDate.now(),
+                    planDay = 12,
                     type = SpendingType.ConsumptionPlan,
                     isApply = false,
                 ),

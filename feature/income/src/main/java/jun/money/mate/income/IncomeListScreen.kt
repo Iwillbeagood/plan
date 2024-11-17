@@ -14,7 +14,7 @@ import jun.money.mate.income.component.IncomeListBody
 import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
-import jun.money.mate.ui.DefaultScaffold
+import jun.money.mate.ui.DateScaffold
 import java.time.LocalDate
 
 @Composable
@@ -63,7 +63,7 @@ private fun IncomeListScreen(
     onIncomeDelete: () -> Unit,
     onDateSelect: (LocalDate) -> Unit,
 ) {
-    DefaultScaffold(
+    DateScaffold(
         title = "수입 내역",
         color = main,
         bottomBarVisible = incomeListViewMode == ViewMode.EDIT,

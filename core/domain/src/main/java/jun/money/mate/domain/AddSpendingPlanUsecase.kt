@@ -6,7 +6,6 @@ import jun.money.mate.model.spending.SpendingCategory
 import jun.money.mate.model.spending.SpendingCategory.Companion.name
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingType
-import java.time.LocalDate
 import javax.inject.Inject
 
 class AddSpendingPlanUsecase @Inject constructor(
@@ -19,7 +18,7 @@ class AddSpendingPlanUsecase @Inject constructor(
         amount: Long,
         type: SpendingType,
         category: SpendingCategory,
-        date: LocalDate,
+        day: Int,
         onSuccess: () -> Unit,
         onError: (MessageType) -> Unit
     ) {
@@ -40,7 +39,7 @@ class AddSpendingPlanUsecase @Inject constructor(
                 amount = amount,
                 type = type,
                 spendingCategoryName = category.name(),
-                planDate = date,
+                planDay = day,
                 isApply = true
             )
         )

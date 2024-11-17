@@ -46,6 +46,7 @@ internal fun SpendingPlanAddBody(
     onShowDateBottomSheet: () -> Unit,
     onShowCategoryBottomSheet: () -> Unit,
     onApplyType: (SpendingType) -> Unit,
+    onAddIncome: () -> Unit,
 ) {
     val listState = rememberScrollState()
 
@@ -53,7 +54,6 @@ internal fun SpendingPlanAddBody(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(listState)
-            .imePadding()
             .animateContentSize()
     ) {
         SpendingPlanTitle("지출 카테고리") {
@@ -117,12 +117,12 @@ internal fun SpendingPlanAddBody(
                 onValueChange = onAmountChange,
                 hint = "지출 금액을 입력해주세요",
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
+                    imeAction = ImeAction.Done,
                     keyboardType = KeyboardType.NumberPassword
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = {
-                        onShowCategoryBottomSheet()
+                    onDone = {
+                        onAddIncome()
                     }
                 )
             )
@@ -191,7 +191,8 @@ private fun SpendingAddBodyPreview() {
             onAmountChange = {},
             onShowDateBottomSheet = {},
             onShowCategoryBottomSheet = {},
-            onApplyType = {}
+            onApplyType = {},
+            onAddIncome = {}
         )
     }
 }

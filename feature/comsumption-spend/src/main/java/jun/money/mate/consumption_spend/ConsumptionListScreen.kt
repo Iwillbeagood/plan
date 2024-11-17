@@ -10,14 +10,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.consumption_spend.component.ConsumptionListBody
 import jun.money.mate.consumption_spend.component.SpendingCategoryBottomSheet
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.etc.EmptyMessage
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.model.consumption.Consumption
 import jun.money.mate.model.consumption.ConsumptionFilter.Companion.selectedFilter
 import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.ui.DefaultScaffold
+import jun.money.mate.ui.DateScaffold
 import java.time.LocalDate
 
 @Composable
@@ -80,7 +79,7 @@ private fun ConsumptionListScreen(
     onFilterClick: () -> Unit,
     onConsumptionClick: (Consumption) -> Unit,
 ) {
-    DefaultScaffold(
+    DateScaffold(
         title = "지출 계획",
         color = Red3,
         bottomBarVisible = consumptionListViewMode == ViewMode.EDIT,

@@ -1,6 +1,7 @@
 package jun.money.mate.designsystem.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -185,6 +186,28 @@ fun TextButton(
     }
 }
 
+@Composable
+fun IconButton(
+    icon: ImageVector,
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null
+        )
+        Text(
+            text = text,
+            style = JUNTheme.typography.titleSmallM
+        )
+    }
+}
+
 @Preview
 @Composable
 fun LargeButtonPreview(
@@ -227,6 +250,17 @@ fun TextButtonPreview() {
         TextButton(
             text = "텍스트 버튼",
             onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun IconButtonPreview() {
+    JunTheme {
+        IconButton(
+            icon = Icons.Default.Add,
+            text = "수정"
         )
     }
 }
