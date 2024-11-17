@@ -1,18 +1,19 @@
 package jun.money.mate.income
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,16 +32,17 @@ import jun.money.mate.designsystem.component.DefaultTextField
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.TextButton
-import jun.money.mate.designsystem.component.RegularButton
-import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.main
 import jun.money.mate.designsystem_date.datetimepicker.DatePicker
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.IncomeType
 import jun.money.mate.navigation.argument.AddType
+import jun.money.mate.ui.AddScaffold
+import jun.money.mate.ui.AddTitleContent
 import java.time.LocalDate
 
 @Composable
@@ -94,45 +96,23 @@ private fun IncomeAddScreen(
     onIncomeAmountChange: (String) -> Unit,
     onShowIncomeDateBottomSheet: () -> Unit,
     onRegularIncomeClick: () -> Unit,
-    onVariableIncomeClick: () -> Unit,
-
+    onVariableIncomeClick: () -> Unit
+) {
+    AddScaffold(
+        title = "수입 $title",
+        color = main,
+        onGoBack = onBackClick,
+        onComplete = onAddIncome,
     ) {
-    Scaffold(
-        topBar = {
-            TopAppbar(
-                title = "수입 $title",
-                onBackEvent = onBackClick
-            )
-        },
-        bottomBar = {
-            RegularButton(
-                text = "${title}하기",
-                onClick = onAddIncome,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
-                    .padding(top = 10.dp),
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.surface,
-        modifier = Modifier.imePadding()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp)
-                .padding(it)
-        ) {
-            IncomeAddContent(
-                incomeAddState = incomeAddState,
-                onAddIncome = onAddIncome,
-                onIncomeTitleChange = onIncomeTitleChange,
-                onIncomeAmountChange = onIncomeAmountChange,
-                onShowIncomeDateBottomSheet = onShowIncomeDateBottomSheet,
-                onRegularIncomeClick = onRegularIncomeClick,
-                onVariableIncomeClick = onVariableIncomeClick,
-            )
-        }
+        IncomeAddContent(
+            incomeAddState = incomeAddState,
+            onAddIncome = onAddIncome,
+            onIncomeTitleChange = onIncomeTitleChange,
+            onIncomeAmountChange = onIncomeAmountChange,
+            onShowIncomeDateBottomSheet = onShowIncomeDateBottomSheet,
+            onRegularIncomeClick = onRegularIncomeClick,
+            onVariableIncomeClick = onVariableIncomeClick,
+        )
     }
 }
 
@@ -181,76 +161,73 @@ private fun IncomeAddBody(
     onRegularIncomeClick: () -> Unit,
     onVariableIncomeClick: () -> Unit,
 ) {
+    val listState = rememberScrollState()
+
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(listState)
+            .animateContentSize()
     ) {
-        VerticalSpacer(20.dp)
-        IncomeTitle("수입명")
-        DefaultTextField(
-            value = incomeTitle,
-            onValueChange = onIncomeTitleChange,
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next,
-            ),
-            hint = "수입명을 입력해주세요"
-        )
-        VerticalSpacer(20.dp)
-        IncomeTitle("수입 금액")
-        DefaultTextField(
-            value = incomeAmount,
-            onValueChange = onIncomeAmountChange,
-            hint = "수입 금액을 입력해주세요",
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.NumberPassword
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    onAddIncome()
-                }
-            )
-        )
-        Text(
-            text = incomeAmountWon,
-            style = JUNTheme.typography.labelLargeM,
-            textAlign = TextAlign.End,
-            modifier = Modifier.fillMaxWidth()
-        )
-        VerticalSpacer(20.dp)
-        IncomeTitle("수입 타입")
-        Row {
-            IncomeTypeButton(
-                text = "정기 수입",
-                description = "매달 반복되는 수입",
-                selected = regularIncomeSelected,
-                onClick = onRegularIncomeClick,
-                modifier = Modifier.weight(1f)
-            )
-            HorizontalSpacer(10.dp)
-            IncomeTypeButton(
-                text = "변동 수입",
-                description = "매달 반복되지 않는 수입",
-                selected = variableIncomeSelected,
-                onClick = onVariableIncomeClick,
-                modifier = Modifier.weight(1f)
+        AddTitleContent("수입명") {
+            DefaultTextField(
+                value = incomeTitle,
+                onValueChange = onIncomeTitleChange,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                ),
+                hint = "수입명을 입력해주세요"
             )
         }
-        VerticalSpacer(20.dp)
-        IncomeTitle("수입 발생 날짜")
-        TextButton(
-            text = incomeDate,
-            onClick = onShowIncomeDateBottomSheet
-        )
+        AddTitleContent("수입 금액") {
+            DefaultTextField(
+                value = incomeAmount,
+                onValueChange = onIncomeAmountChange,
+                hint = "수입 금액을 입력해주세요",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.NumberPassword
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        onAddIncome()
+                    }
+                )
+            )
+            Text(
+                text = incomeAmountWon,
+                style = JUNTheme.typography.labelLargeM,
+                textAlign = TextAlign.End,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        AddTitleContent("수입 타입") {
+            Row {
+                IncomeTypeButton(
+                    text = "정기 수입",
+                    description = "매달 반복되는 수입",
+                    selected = regularIncomeSelected,
+                    onClick = onRegularIncomeClick,
+                    modifier = Modifier.weight(1f)
+                )
+                HorizontalSpacer(10.dp)
+                IncomeTypeButton(
+                    text = "변동 수입",
+                    description = "매달 반복되지 않는 수입",
+                    selected = variableIncomeSelected,
+                    onClick = onVariableIncomeClick,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+        AddTitleContent("수입 발생 날짜") {
+            TextButton(
+                text = incomeDate,
+                onClick = onShowIncomeDateBottomSheet
+            )
+        }
+        VerticalSpacer(30.dp)
     }
-}
-
-@Composable
-private fun IncomeTitle(title: String) {
-    Text(
-        text = title,
-        style = JUNTheme.typography.titleMediumM,
-    )
-    VerticalSpacer(10.dp)
 }
 
 @Composable
