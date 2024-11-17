@@ -59,7 +59,7 @@ internal fun ConsumptionListBody(
                     modifier = Modifier.padding(20.dp),
                 ) {
                     Text(
-                        text = "전체 계획 소비",
+                        text = "전체 소비",
                         style = JUNTheme.typography.titleLargeM,
                     )
                     VerticalSpacer(10.dp)

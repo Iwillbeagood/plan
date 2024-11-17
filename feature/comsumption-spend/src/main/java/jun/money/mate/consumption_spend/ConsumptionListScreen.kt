@@ -80,7 +80,7 @@ private fun ConsumptionListScreen(
     onConsumptionClick: (Consumption) -> Unit,
 ) {
     DateScaffold(
-        title = "지출 계획",
+        title = "소비",
         color = Red3,
         bottomBarVisible = consumptionListViewMode == ViewMode.EDIT,
         addButtonVisible = false,
