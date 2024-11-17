@@ -1,26 +1,13 @@
 package jun.money.mate.spending_plan
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.RegularButton
-import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem_date.datetimepicker.DatePicker
@@ -31,6 +18,7 @@ import jun.money.mate.model.spending.SpendingType
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.spending_plan.component.SpendingCategoryBottomSheet
 import jun.money.mate.spending_plan.component.SpendingPlanAddBody
+import jun.money.mate.ui.AddScaffold
 import java.time.LocalDate
 
 @Composable
@@ -87,44 +75,21 @@ private fun SpendingPlanAddScreen(
     onShowCategoryBottomSheet: () -> Unit,
     onApplyType: (SpendingType) -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppbar(
-                title = "지출 계획 $title",
-                onBackEvent = onBackClick
-            )
-        },
-        bottomBar = {
-            RegularButton(
-                text = "${title}하기",
-                color = Red3,
-                onClick = onAddIncome,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 10.dp)
-                    .padding(horizontal = 10.dp),
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.surface,
-        modifier = Modifier
-            .imePadding()
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 16.dp)
-        ) {
-            SpendingPlanAddContent(
-                spendingPlanAddState = incomeAddState,
-                onIncomeTitleChange = onIncomeTitleChange,
-                onIncomeAmountChange = onIncomeAmountChange,
-                onShowIncomeDateBottomSheet = onShowDateBottomSheet,
-                onShowCategoryBottomSheet = onShowCategoryBottomSheet,
-                onApplyType = onApplyType,
-                onAddIncome = onAddIncome
-            )
-        }
+    AddScaffold(
+        title = "지출 계획 $title",
+        color = Red3,
+        onGoBack = onBackClick,
+        onComplete = onAddIncome,
+    ) {
+        SpendingPlanAddContent(
+            spendingPlanAddState = incomeAddState,
+            onIncomeTitleChange = onIncomeTitleChange,
+            onIncomeAmountChange = onIncomeAmountChange,
+            onShowIncomeDateBottomSheet = onShowDateBottomSheet,
+            onShowCategoryBottomSheet = onShowCategoryBottomSheet,
+            onApplyType = onApplyType,
+            onAddIncome = onAddIncome
+        )
     }
 }
 

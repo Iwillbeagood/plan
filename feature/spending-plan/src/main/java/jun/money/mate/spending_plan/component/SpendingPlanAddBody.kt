@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -32,6 +31,7 @@ import jun.money.mate.model.spending.SpendingCategory
 import jun.money.mate.model.spending.SpendingCategory.Companion.name
 import jun.money.mate.model.spending.SpendingCategoryType
 import jun.money.mate.model.spending.SpendingType
+import jun.money.mate.ui.AddTitleContent
 
 @Composable
 internal fun SpendingPlanAddBody(
@@ -56,7 +56,7 @@ internal fun SpendingPlanAddBody(
             .verticalScroll(listState)
             .animateContentSize()
     ) {
-        SpendingPlanTitle("지출 카테고리") {
+        AddTitleContent("지출 카테고리") {
             Row {
                 SpendingTypeButton(
                     type = SpendingType.ConsumptionPlan,
@@ -75,7 +75,7 @@ internal fun SpendingPlanAddBody(
                 )
             }
         }
-        SpendingPlanTitle(
+        AddTitleContent(
             "지출 카테고리",
             visible = type == SpendingType.PredictedSpending
         ) {
@@ -92,7 +92,7 @@ internal fun SpendingPlanAddBody(
             )
         }
 
-        SpendingPlanTitle(
+        AddTitleContent(
             "지출 예정 날짜",
             visible = type == SpendingType.PredictedSpending
         ) {
@@ -101,7 +101,7 @@ internal fun SpendingPlanAddBody(
                 onClick = onShowDateBottomSheet
             )
         }
-        SpendingPlanTitle("지출명") {
+        AddTitleContent("지출명") {
             DefaultTextField(
                 value = title,
                 onValueChange = onTitleChange,
@@ -111,7 +111,7 @@ internal fun SpendingPlanAddBody(
                 hint = "지출명을 입력해주세요"
             )
         }
-        SpendingPlanTitle("지출 금액") {
+        AddTitleContent("지출 금액") {
             DefaultTextField(
                 value = amount,
                 onValueChange = onAmountChange,
@@ -135,25 +135,7 @@ internal fun SpendingPlanAddBody(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun SpendingPlanTitle(
-    title: String,
-    visible: Boolean = true,
-    content: @Composable () -> Unit
-) {
-    if (visible) {
-        Column {
-            VerticalSpacer(20.dp)
-            Text(
-                text = title,
-                style = JUNTheme.typography.titleMediumM,
-            )
-            VerticalSpacer(10.dp)
-            content()
-    }
+        VerticalSpacer(30.dp)
     }
 }
 

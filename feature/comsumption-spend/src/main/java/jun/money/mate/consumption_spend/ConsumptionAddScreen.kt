@@ -2,15 +2,12 @@ package jun.money.mate.consumption_spend
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,9 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.consumption_spend.component.SpendingCategoryBottomSheet
 import jun.money.mate.designsystem.component.DefaultTextField
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TextButton
-import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JUNTheme
@@ -36,9 +31,9 @@ import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem_date.datetimepicker.DatePicker
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.model.spending.SpendingCategory
-import jun.money.mate.model.spending.SpendingType
 import jun.money.mate.navigation.argument.AddType
+import jun.money.mate.ui.AddScaffold
+import jun.money.mate.ui.AddTitleContent
 import java.time.LocalDate
 
 @Composable
@@ -56,11 +51,11 @@ internal fun ConsumptionAddRoute(
             is AddType.Edit -> "수정"
             AddType.New -> "추가"
         },
-        incomeAddState = consumptionAddState,
+        consumptionAddState = consumptionAddState,
         onBackClick = onGoBack,
-        onAddIncome = viewModel::addSpendingPlan,
-        onIncomeTitleChange = viewModel::titleValueChange,
-        onIncomeAmountChange = viewModel::amountValueChange,
+        onConsumptionAdd = viewModel::addSpendingPlan,
+        onTitleChange = viewModel::titleValueChange,
+        onAmountChange = viewModel::amountValueChange,
         onShowDateBottomSheet = viewModel::showDatePicker,
         onShowCategoryBottomSheet = viewModel::showCategoryBottomSheet,
     )
@@ -85,58 +80,38 @@ internal fun ConsumptionAddRoute(
 @Composable
 private fun ConsumptionAddScreen(
     title: String,
-    incomeAddState: ConsumptionAddState,
+    consumptionAddState: ConsumptionAddState,
     onBackClick: () -> Unit,
-    onAddIncome: () -> Unit,
-    onIncomeTitleChange: (String) -> Unit,
-    onIncomeAmountChange: (String) -> Unit,
+    onConsumptionAdd: () -> Unit,
+    onTitleChange: (String) -> Unit,
+    onAmountChange: (String) -> Unit,
     onShowDateBottomSheet: () -> Unit,
     onShowCategoryBottomSheet: () -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppbar(
-                title = "계획 소비 $title",
-                onBackEvent = onBackClick
-            )
-        },
-        bottomBar = {
-            RegularButton(
-                text = "${title}하기",
-                color = Red3,
-                onClick = onAddIncome,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 10.dp)
-                    .padding(horizontal = 10.dp),
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.surface,
-        modifier = Modifier.imePadding()
+    AddScaffold(
+        title = "계획 소비 $title",
+        color = Red3,
+        onGoBack = onBackClick,
+        onComplete = onConsumptionAdd,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp)
-                .padding(it)
-        ) {
-            ConsumptionAddContent(
-                consumptionAddState = incomeAddState,
-                onIncomeTitleChange = onIncomeTitleChange,
-                onIncomeAmountChange = onIncomeAmountChange,
-                onShowIncomeDateBottomSheet = onShowDateBottomSheet,
-                onShowCategoryBottomSheet = onShowCategoryBottomSheet,
-            )
-        }
+        ConsumptionAddContent(
+            consumptionAddState = consumptionAddState,
+            onConsumptionAdd = onConsumptionAdd,
+            onTitleChange = onTitleChange,
+            onAmountChange = onAmountChange,
+            onShowDateBottomSheet = onShowDateBottomSheet,
+            onShowCategoryBottomSheet = onShowCategoryBottomSheet,
+        )
     }
 }
 
 @Composable
 private fun ConsumptionAddContent(
     consumptionAddState: ConsumptionAddState,
-    onIncomeTitleChange: (String) -> Unit,
-    onIncomeAmountChange: (String) -> Unit,
-    onShowIncomeDateBottomSheet: () -> Unit,
+    onConsumptionAdd: () -> Unit,
+    onTitleChange: (String) -> Unit,
+    onAmountChange: (String) -> Unit,
+    onShowDateBottomSheet: () -> Unit,
     onShowCategoryBottomSheet: () -> Unit,
 ) {
     FadeAnimatedVisibility(consumptionAddState is ConsumptionAddState.ConsumptionData) {
@@ -147,9 +122,10 @@ private fun ConsumptionAddContent(
                 amountWon = consumptionAddState.amountWon,
                 date = "${consumptionAddState.date.dayOfMonth}일",
                 consumptionCategory = consumptionAddState.planTitle,
-                onTitleChange = onIncomeTitleChange,
-                onAmountChange = onIncomeAmountChange,
-                onShowDateBottomSheet = onShowIncomeDateBottomSheet,
+                onConsumptionAdd = onConsumptionAdd,
+                onTitleChange = onTitleChange,
+                onAmountChange = onAmountChange,
+                onShowDateBottomSheet = onShowDateBottomSheet,
                 onShowCategoryBottomSheet = onShowCategoryBottomSheet,
             )
         }
@@ -163,63 +139,73 @@ private fun ConsumptionAddBody(
     amountWon: String,
     date: String,
     consumptionCategory: String,
+    onConsumptionAdd: () -> Unit,
     onTitleChange: (String) -> Unit,
     onAmountChange: (String) -> Unit,
     onShowDateBottomSheet: () -> Unit,
     onShowCategoryBottomSheet: () -> Unit,
 ) {
+    val listState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .verticalScroll(listState)
             .animateContentSize()
     ) {
-        VerticalSpacer(20.dp)
-        SpendingPlanTitle("소비명")
-        DefaultTextField(
-            value = title,
-            onValueChange = onTitleChange,
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next,
-            ),
-            hint = "소비명을 입력해주세요"
-        )
-
-        VerticalSpacer(20.dp)
-        SpendingPlanTitle("소비 금액")
-        DefaultTextField(
-            value = amount,
-            onValueChange = onAmountChange,
-            hint = "소비 금액을 입력해주세요",
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next,
-                keyboardType = KeyboardType.NumberPassword
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    onShowCategoryBottomSheet()
-                }
-            )
-        )
-        TopToBottomAnimatedVisibility(amount.isNotEmpty()) {
-            Text(
-                text = amountWon,
-                style = JUNTheme.typography.labelLargeM,
-                textAlign = TextAlign.End,
-                modifier = Modifier.fillMaxWidth()
+        AddTitleContent("계획한 지출") {
+            TextButton(
+                text = consumptionCategory,
+                onClick = onShowCategoryBottomSheet
             )
         }
-        VerticalSpacer(20.dp)
-        SpendingPlanTitle("계획한 지출")
-        TextButton(
-            text = consumptionCategory,
-            onClick = onShowCategoryBottomSheet
-        )
-        VerticalSpacer(20.dp)
-        SpendingPlanTitle("소비 날짜")
-        TextButton(
-            text = date,
-            onClick = onShowDateBottomSheet
-        )
+        AddTitleContent("소비 날짜") {
+            TextButton(
+                text = date,
+                onClick = onShowDateBottomSheet
+            )
+        }
+        AddTitleContent(
+            title = "소비명",
+            visible = consumptionCategory.isNotEmpty()
+        ) {
+            DefaultTextField(
+                value = title,
+                onValueChange = onTitleChange,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                ),
+                hint = "소비명을 입력해주세요"
+            )
+        }
+        AddTitleContent(
+            title = "소비 금액",
+            visible = consumptionCategory.isNotEmpty()
+        ) {
+            DefaultTextField(
+                value = amount,
+                onValueChange = onAmountChange,
+                hint = "소비 금액을 입력해주세요",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.NumberPassword
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        onConsumptionAdd()
+                    }
+                )
+            )
+            TopToBottomAnimatedVisibility(amount.isNotEmpty()) {
+                Text(
+                    text = amountWon,
+                    style = JUNTheme.typography.labelLargeM,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+        VerticalSpacer(30.dp)
     }
 }
 
@@ -265,19 +251,19 @@ private fun ConsumptionAddScreenPreview() {
     JunTheme {
         ConsumptionAddScreen(
             title = "추가",
-            incomeAddState = ConsumptionAddState.ConsumptionData(
+            consumptionAddState = ConsumptionAddState.ConsumptionData(
                 id = 0,
                 title = "월급",
                 amount = 1000000,
                 date = LocalDate.now(),
                 planTitle = "",
             ),
-            onIncomeTitleChange = {},
-            onIncomeAmountChange = {},
+            onTitleChange = {},
+            onAmountChange = {},
             onShowDateBottomSheet = {},
             onShowCategoryBottomSheet = {},
             onBackClick = {},
-            onAddIncome = {},
+            onConsumptionAdd = {},
         )
     }
 }
