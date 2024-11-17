@@ -99,7 +99,7 @@ fun TwoBtnDialog(
     contentPadding: Dp = 16.dp,
     button1Text: String = stringResource(id = R.string.btn_no),
     button2Text: String = stringResource(id = R.string.btn_complete),
-    button1Click: () -> Unit,
+    button1Click: () -> Unit = onDismissRequest,
     button2Click: () -> Unit,
     content: @Composable ColumnScope.() -> Unit,
 ) {

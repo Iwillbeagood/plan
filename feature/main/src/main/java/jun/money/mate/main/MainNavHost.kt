@@ -68,6 +68,7 @@ internal fun MainNavHost(
             consumptionNavGraph(
                 onGoBack = navigator::popBackStackIfNotHome,
                 onShowConsumptionAdd = navigator::navigateToConsumptionAdd,
+                onShowSpendingPlanAdd = navigator::navigateToSpendingPlanAdd,
                 onShowConsumptionEdit = navigator::navigateToConsumptionEdit,
                 onShowErrorSnackBar = onShowSnackBar
             )

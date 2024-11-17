@@ -6,7 +6,6 @@ import androidx.room.Upsert
 import jun.money.mate.database.AppDatabase.Companion.SPENDING_PLAN_TABLE_NAME
 import jun.money.mate.database.entity.SpendingPlanEntity
 import kotlinx.coroutines.flow.Flow
-import java.time.LocalDate
 
 @Dao
 interface SpendingPlanDao {

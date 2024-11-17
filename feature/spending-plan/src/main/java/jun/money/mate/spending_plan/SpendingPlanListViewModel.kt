@@ -111,29 +111,26 @@ internal class SpendingPlanListViewModel @Inject constructor(
     }
 
     fun editSpending() {
-        val spendingListState =
-            spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
-        val selectedIncomeId = spendingListState.selectedIncomeId ?: return
+        val spendingListState = spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
+        val selectedId = spendingListState.selectedId ?: return
 
         viewModelScope.launch {
-            _spendingPlanListEffect.emit(SpendingPlanListEffect.EditSpendingPlan(selectedIncomeId))
+            _spendingPlanListEffect.emit(SpendingPlanListEffect.EditSpendingPlan(selectedId))
         }
     }
 
     fun deleteSpending() {
-        val spendingListState =
-            spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
-        val selectedIncomeId = spendingListState.selectedIncomeId ?: return
+        val spendingListState = spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
+        val selectedId = spendingListState.selectedId ?: return
 
         viewModelScope.launch {
-            spendingPlanRepository.deleteById(selectedIncomeId)
+            spendingPlanRepository.deleteById(selectedId)
             showSnackBar(MessageType.Message("지출 계획이 삭제되었습니다"))
         }
     }
 
     fun spendingTabClick(index: Int) {
-        val spendingListState =
-            spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
+        val spendingListState = spendingPlanListState.value as? SpendingPlanListState.SpendingPlanListData ?: return
 
         viewModelScope.launch {
             _spendingPlanListState.update {
@@ -186,7 +183,7 @@ internal sealed interface SpendingPlanListState {
         val filterConsumptionPlan: List<ConsumptionSpend>
             get() = consumptionPlan.filter { selectedSpendingType == SpendingType.ConsumptionPlan || selectedSpendingType == SpendingType.ALL }
 
-        val selectedIncomeId get() = spendingPlanList.spendingPlans.firstOrNull { it.selected }?.id
+        val selectedId get() = spendingPlanList.spendingPlans.firstOrNull { it.selected }?.id
     }
 }
 
