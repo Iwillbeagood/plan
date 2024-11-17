@@ -92,6 +92,7 @@ private fun SpendingListContent(
     FadeAnimatedVisibility(spendingPlanListState is SpendingPlanListState.SpendingPlanListData) {
         if (spendingPlanListState is SpendingPlanListState.SpendingPlanListData) {
             SpendingPlanListBody(
+                realTotalString = spendingPlanListState.realTotalString,
                 totalString = spendingPlanListState.totalString,
                 spendingPlanList = spendingPlanListState.filterSpendingPlanList,
                 consumptionSpend = spendingPlanListState.filterConsumptionPlan,

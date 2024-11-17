@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.ScrollableTab
@@ -30,6 +32,7 @@ import java.time.LocalDate
 @Composable
 internal fun SpendingPlanListBody(
     totalString: String,
+    realTotalString: String,
     spendingPlanList: SpendingPlanList,
     consumptionSpend: List<ConsumptionSpend>,
     spendingTypeTabIndex: Int,
@@ -49,16 +52,35 @@ internal fun SpendingPlanListBody(
                 Column(
                     modifier = Modifier.padding(20.dp),
                 ) {
-                    Text(
-                        text = "예상 전체 지출",
-                        style = JUNTheme.typography.titleLargeM,
-                    )
-                    VerticalSpacer(10.dp)
-                    Text(
-                        text = totalString,
-                        style = JUNTheme.typography.headlineSmallB,
-                    )
+                    Row {
+                        Text(
+                            text = "실제 전체 지출",
+                            style = JUNTheme.typography.titleLargeM,
+                        )
+                        Text(
+                            text = realTotalString,
+                            style = JUNTheme.typography.headlineSmallB,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    Row {
+                        Text(
+                            text = "예상 전체 지출",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = JUNTheme.typography.titleMediumM,
+                        )
+                        Text(
+                            text = totalString,
+                            style = JUNTheme.typography.titleNormalM,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+
                 }
+
             }
         }
 
@@ -99,7 +121,7 @@ internal fun SpendingPlanListBody(
         }
 
         item {
-             VerticalSpacer(100.dp)
+            VerticalSpacer(100.dp)
         }
     }
 }
@@ -109,6 +131,7 @@ internal fun SpendingPlanListBody(
 private fun SpendingPlanListBodyPreview() {
     JunTheme {
         SpendingPlanListBody(
+            realTotalString = "50,000원",
             totalString = "100,000원",
             spendingPlanList = SpendingPlanList(
                 spendingPlans = listOf(

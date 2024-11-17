@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.SpendingPlanRepository
 import jun.money.mate.domain.GetSpendingPlanUsecase
+import jun.money.mate.model.Utils
 import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.ConsumptionSpend
@@ -168,7 +169,10 @@ internal sealed interface SpendingPlanListState {
 
         private val selectedSpendingType: SpendingType get() = SpendingType.entries[spendingTypeTabIndex]
 
+        private val consumptionTotal get() = consumptionPlan.sumOf { it.consumptionTotal }
+        private val realTotal get() = spendingPlanList.predictTotal + consumptionTotal
         val totalString get() = spendingPlanList.totalString
+        val realTotalString get() = Utils.formatAmountWon(realTotal)
 
         val filterSpendingPlanList: SpendingPlanList
             get() = spendingPlanList.copy(
