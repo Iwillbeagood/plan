@@ -46,6 +46,7 @@ class MainNavigator(
 
         when (menuItem) {
             MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
+            MainBottomNavItem.Income -> navController.navigateToIncomeList()
             MainBottomNavItem.ConsumptionSpend -> navController.navigateToConsumptionList(navOptions)
             MainBottomNavItem.SavingPlan -> TODO()
             MainBottomNavItem.SpendingPlan -> navController.navigateToSpendingPlanList(navOptions)

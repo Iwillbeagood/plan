@@ -2,6 +2,7 @@ package jun.money.mate.main.component
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCard
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Home
@@ -27,9 +28,14 @@ enum class MainBottomNavItem(
         icon = Icons.Default.CalendarToday,
         route = MainTabRoute.SpendingPlan.List
     ),
+    Income(
+        titleRes = R.string.tab_income,
+        icon = Icons.Default.AttachMoney,
+        route = MainTabRoute.Income.List
+    ),
     ConsumptionSpend(
         titleRes = R.string.tab_spending_list,
-        icon = Icons.Default.AttachMoney,
+        icon = Icons.Default.AddCard,
         route = MainTabRoute.ConsumptionSpend.List
     ),
     SavingPlan(

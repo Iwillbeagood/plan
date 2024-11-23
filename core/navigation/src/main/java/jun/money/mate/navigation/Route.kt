@@ -8,8 +8,16 @@ sealed interface Route {
     @Serializable
     data object Splash : Route
 
+}
+
+sealed interface MainTabRoute : Route {
+
     @Serializable
-    sealed interface Income : Route {
+    data object Home : MainTabRoute
+
+
+    @Serializable
+    sealed interface Income : MainTabRoute {
 
         @Serializable
         data object List : Income
@@ -17,12 +25,6 @@ sealed interface Route {
         @Serializable
         data class Add(val addType: AddType) : Income
     }
-}
-
-sealed interface MainTabRoute : Route {
-
-    @Serializable
-    data object Home : MainTabRoute
 
     @Serializable
     sealed interface ConsumptionSpend : MainTabRoute {

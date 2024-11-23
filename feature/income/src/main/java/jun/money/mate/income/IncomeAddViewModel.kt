@@ -10,6 +10,7 @@ import jun.money.mate.data_api.database.IncomeRepository
 import jun.money.mate.domain.AddIncomeUsecase
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.IncomeType
+import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.navigation.utils.toRouteType
@@ -34,7 +35,7 @@ internal class IncomeAddViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val addType = savedStateHandle.toRouteType<Route.Income.Add, AddType>().addType
+    private val addType = savedStateHandle.toRouteType<MainTabRoute.Income.Add, AddType>().addType
 
     private val _incomeAddState = MutableStateFlow<IncomeAddState>(IncomeAddState.Loading)
     val incomeAddState: StateFlow<IncomeAddState> = _incomeAddState.onStart {

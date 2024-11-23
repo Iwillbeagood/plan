@@ -8,6 +8,7 @@
     <string name="app_copyright2">이 프로그램의 저작권은 머니 메이트에 있습니다.\n이 프로그램은 저작권법과 프로그램 보호법에 의해 보호받고 있으며\n무단 개작, 복사, 재배포 등을 금지합니다.</string>
 
     <string name="tab_home">홈</string>
+    <string name="tab_income">수입</string>
     <string name="tab_spending_list">소비</string>
     <string name="tab_saving_plan">저금계획</string>
     <string name="tab_spending_plan">지출계획</string>
