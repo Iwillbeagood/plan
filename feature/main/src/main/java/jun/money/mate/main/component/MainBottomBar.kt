@@ -62,8 +62,8 @@ internal fun MainBottomBar(
                             )
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = main,
-                            selectedTextColor = main,
+                            selectedIconColor = item.color,
+                            selectedTextColor = item.color,
                             indicatorColor = Color.Transparent,
                             unselectedIconColor = Gray,
                             unselectedTextColor = Gray,
