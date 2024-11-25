@@ -46,7 +46,7 @@ include(
 
     ":feature:home",
     ":feature:income",
-    ":feature:saving-plan",
+    ":feature:save",
     ":feature:spending-plan",
     ":feature:comsumption-spend",
 )

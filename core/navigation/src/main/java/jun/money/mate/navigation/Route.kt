@@ -12,6 +12,7 @@ sealed interface Route {
 
 sealed interface MainTabRoute : Route {
 
+
     @Serializable
     data object Home : MainTabRoute
 
@@ -37,7 +38,14 @@ sealed interface MainTabRoute : Route {
     }
 
     @Serializable
-    data object SavingPlan : MainTabRoute
+    sealed interface Save : MainTabRoute {
+
+        @Serializable
+        data object List : Save
+
+        @Serializable
+        data class Add(val addType: AddType) : Save
+    }
 
     @Serializable
     sealed interface SpendingPlan : MainTabRoute {

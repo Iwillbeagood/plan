@@ -10,7 +10,7 @@
     <string name="tab_home">홈</string>
     <string name="tab_income">수입</string>
     <string name="tab_spending_list">소비</string>
-    <string name="tab_saving_plan">저금계획</string>
+    <string name="tab_save">저금</string>
     <string name="tab_spending_plan">지출계획</string>
 
     <string name="btn_complete">확인</string>

@@ -34,7 +34,7 @@ class SpendingPlanRepositoryImpl @Inject constructor(
                     id = spendingPlan.id,
                     title = spendingPlan.title,
                     type = spendingPlan.type,
-                    spendingCategoryName = spendingPlan.spendingCategoryName,
+                    spendingCategory = spendingPlan.spendingCategory,
                     amount = spendingPlan.amount,
                     planDay = spendingPlan.planDay,
                     isApply = spendingPlan.isApply,

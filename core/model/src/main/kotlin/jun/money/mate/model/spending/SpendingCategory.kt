@@ -8,6 +8,9 @@ sealed interface SpendingCategory {
 
     companion object {
 
+        const val NOT_SELECTED = "NotSelected"
+        val ETC = CategoryType(SpendingCategoryType.기타)
+
         fun SpendingCategory.name(): String {
             return when (this) {
                 is CategoryType -> type.name

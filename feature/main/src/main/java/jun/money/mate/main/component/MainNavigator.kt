@@ -17,6 +17,8 @@ import jun.money.mate.income.navigation.navigateToIncomeList
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 import jun.money.mate.navigation.argument.AddType
+import jun.money.mate.save.navigation.navigateToSaveAdd
+import jun.money.mate.save.navigation.navigateToSaveList
 import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanAdd
 import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanList
 
@@ -48,7 +50,7 @@ class MainNavigator(
             MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
             MainBottomNavItem.Income -> navController.navigateToIncomeList()
             MainBottomNavItem.ConsumptionSpend -> navController.navigateToConsumptionList(navOptions)
-            MainBottomNavItem.SavingPlan -> TODO()
+            MainBottomNavItem.Save -> navController.navigateToSaveList(navOptions)
             MainBottomNavItem.SpendingPlan -> navController.navigateToSpendingPlanList(navOptions)
         }
     };
@@ -80,6 +82,14 @@ class MainNavigator(
 
     fun navigateToSpendingPlanEdit(id: Long) {
         navController.navigateToSpendingPlanAdd(AddType.Edit(id))
+    }
+
+    fun navigateToSavingAdd() {
+        navController.navigateToSaveAdd(AddType.New)
+    }
+
+    fun navigateToSavingEdit(id: Long) {
+        navController.navigateToSaveAdd(AddType.Edit(id))
     }
 
     fun popBackStackIfNotHome(): Boolean {

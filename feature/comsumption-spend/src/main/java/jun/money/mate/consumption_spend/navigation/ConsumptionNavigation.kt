@@ -20,14 +20,12 @@ fun NavController.navigateToConsumptionAdd(addType: AddType) {
     navigate(MainTabRoute.ConsumptionSpend.Add(addType))
 }
 
-
-
 fun NavGraphBuilder.consumptionNavGraph(
     onGoBack: () -> Unit,
-    onShowConsumptionAdd: () -> Unit,
     onShowSpendingPlanAdd: () -> Unit,
+    onShowConsumptionAdd: () -> Unit,
     onShowConsumptionEdit: (id: Long) -> Unit,
-    onShowErrorSnackBar: (MessageType) -> Unit
+    onShowSnackBar: (MessageType) -> Unit
 ) {
     composable<MainTabRoute.ConsumptionSpend.List> {
         ConsumptionListRoute(
@@ -35,7 +33,7 @@ fun NavGraphBuilder.consumptionNavGraph(
             onShowConsumptionAdd = onShowConsumptionAdd,
             onShowSpendingPlanAdd = onShowSpendingPlanAdd,
             onShowConsumptionEdit = onShowConsumptionEdit,
-            onShowSnackBar = onShowErrorSnackBar
+            onShowSnackBar = onShowSnackBar
         )
     }
 
@@ -45,7 +43,7 @@ fun NavGraphBuilder.consumptionNavGraph(
         ConsumptionAddRoute(
             addType = addType,
             onGoBack = onGoBack,
-            onShowSnackBar = onShowErrorSnackBar
+            onShowSnackBar = onShowSnackBar
         )
     }
 }

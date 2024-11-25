@@ -18,6 +18,7 @@ import jun.money.mate.income.navigation.incomeNavGraph
 import jun.money.mate.main.component.MainBottomNavItem
 import jun.money.mate.main.component.MainNavigator
 import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.save.navigation.saveNavGraph
 import jun.money.mate.spending_plan.navigation.spendingPlanNavGraph
 import jun.money.mate.splash.navigation.splashNavGraph
 
@@ -70,7 +71,13 @@ internal fun MainNavHost(
                 onShowConsumptionAdd = navigator::navigateToConsumptionAdd,
                 onShowSpendingPlanAdd = navigator::navigateToSpendingPlanAdd,
                 onShowConsumptionEdit = navigator::navigateToConsumptionEdit,
-                onShowErrorSnackBar = onShowSnackBar
+                onShowSnackBar = onShowSnackBar
+            )
+            saveNavGraph(
+                onGoBack = navigator::popBackStackIfNotHome,
+                onShowSavingAdd = navigator::navigateToSavingAdd,
+                onShowSavingEdit = navigator::navigateToSavingEdit,
+                onShowSnackBar = onShowSnackBar
             )
         }
     }

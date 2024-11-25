@@ -5,6 +5,8 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import jun.money.mate.database.AppDatabase
 import jun.money.mate.database.util.generateInsertQuery
+import jun.money.mate.model.spending.SpendingCategory
+import jun.money.mate.model.spending.SpendingCategoryType
 import jun.money.mate.model.spending.SpendingType
 
 @Entity(
@@ -15,7 +17,7 @@ data class SpendingPlanEntity(
     @PrimaryKey val id: Long,
     val title: String,
     val type: SpendingType,
-    val spendingCategoryName: String,
+    val spendingCategory: SpendingCategory,
     val amount: Long,
     val planDay: Int,
     val isApply: Boolean = false
@@ -26,7 +28,7 @@ data class SpendingPlanEntity(
             id = System.currentTimeMillis(),
             title = "생활비",
             type = SpendingType.ConsumptionPlan,
-            spendingCategoryName = "",
+            spendingCategory = SpendingCategory.ETC,
             amount = 0,
             planDay = 1,
             isApply = false

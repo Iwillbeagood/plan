@@ -1,13 +1,14 @@
 package jun.money.mate.model.spending
 
 import jun.money.mate.model.Utils
+import jun.money.mate.model.spending.SpendingCategory.Companion.name
 import java.time.LocalDate
 
 data class SpendingPlan(
     val id: Long,
     val title: String,
     val type: SpendingType,
-    val spendingCategoryName: String,
+    val spendingCategory: SpendingCategory,
     val amount: Long,
     val planDay: Int,
     val isApply: Boolean,
@@ -18,9 +19,7 @@ data class SpendingPlan(
 
     val dateString: String get() = "${planDay}일"
 
-    val spendingCategory get() = SpendingCategory.find(spendingCategoryName)
-
-    val titleString get() = "${spendingCategory.type.name} | $title"
+    val titleString get() = "${spendingCategory.name()} | $title"
 }
 
 data class SpendingPlanList(

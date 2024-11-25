@@ -8,7 +8,7 @@ fun SpendingPlanEntity.toSpendingPlan(): SpendingPlan {
         id = id,
         title = title,
         type = type,
-        spendingCategoryName = spendingCategoryName,
+        spendingCategory = spendingCategory,
         amount = amount,
         planDay = planDay,
         isApply = isApply,

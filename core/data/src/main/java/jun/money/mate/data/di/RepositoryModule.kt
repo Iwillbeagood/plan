@@ -6,11 +6,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import jun.money.mate.data.resository.ConsumptionRepositoryImpl
 import jun.money.mate.data.resository.IncomeRepositoryImpl
-import jun.money.mate.data.resository.SavingPlanRepositoryImpl
+import jun.money.mate.data.resository.SaveRepositoryImpl
 import jun.money.mate.data.resository.SpendingPlanRepositoryImpl
 import jun.money.mate.data_api.database.ConsumptionRepository
 import jun.money.mate.data_api.database.IncomeRepository
-import jun.money.mate.data_api.database.SavingPlanRepository
+import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.data_api.database.SpendingPlanRepository
 
 @InstallIn(SingletonComponent::class)
@@ -24,8 +24,8 @@ internal abstract class RepositoryModule {
 
     @Binds
     abstract fun bindsSavingPlanRepository(
-        repository: SavingPlanRepositoryImpl
-    ): SavingPlanRepository
+        repository: SaveRepositoryImpl
+    ): SaveRepository
 
     @Binds
     abstract fun bindsSpendingPlanRepository(

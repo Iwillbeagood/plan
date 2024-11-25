@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import jun.money.mate.designsystem.theme.Black
+import jun.money.mate.designsystem.theme.Orange1
 import jun.money.mate.designsystem.theme.Red3
-import jun.money.mate.designsystem.theme.Yellow1
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
@@ -48,11 +48,11 @@ enum class MainBottomNavItem(
         route = MainTabRoute.ConsumptionSpend.List,
         color = Red3
     ),
-    SavingPlan(
-        titleRes = R.string.tab_saving_plan,
+    Save(
+        titleRes = R.string.tab_save,
         icon = Icons.Default.Savings,
-        route = MainTabRoute.SavingPlan.List,
-        color = Yellow1
+        route = MainTabRoute.Save.List,
+        color = Orange1
     ),
     ;
 

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    setNamespace("saving_plan")
+    setNamespace("save")
 }
 
 dependencies {

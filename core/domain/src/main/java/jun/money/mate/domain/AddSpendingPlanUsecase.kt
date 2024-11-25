@@ -38,7 +38,7 @@ class AddSpendingPlanUsecase @Inject constructor(
                 title = title,
                 amount = amount,
                 type = type,
-                spendingCategoryName = category.name(),
+                spendingCategory = category,
                 planDay = day,
                 isApply = true,
             ),

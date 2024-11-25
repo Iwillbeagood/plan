@@ -7,11 +7,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.ehsannarmani.compose_charts.models.Pie
 import jun.money.mate.data_api.database.IncomeRepository
-import jun.money.mate.data_api.database.SavingPlanRepository
+import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.data_api.database.SpendingPlanRepository
 import jun.money.mate.designsystem.theme.Yellow1
 import jun.money.mate.model.income.IncomeList
-import jun.money.mate.model.saving.SavingPlanList
+import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.model.spending.SpendingPlanList
 import jun.money.mate.utils.currency.CurrencyFormatter
 import kotlinx.coroutines.Job
@@ -28,18 +28,18 @@ import javax.inject.Inject
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
     incomeRepository: IncomeRepository,
-    savingPlanRepository: SavingPlanRepository,
+    saveRepository: SaveRepository,
     spendingPlanRepository: SpendingPlanRepository
 ) : ViewModel() {
 
     val homeState: StateFlow<HomeState> = combine(
         incomeRepository.getIncomesByMonth(),
-        savingPlanRepository.getSavingPlansByMonth(),
+        saveRepository.getSavingPlansByMonth(),
         spendingPlanRepository.getSpendingPlanFlow()
     ) { incomes, savingPlans, spendingPlans ->
         HomeState.HomeData(
             incomeList = incomes,
-            savingPlanList = savingPlans,
+            savePlanList = savingPlans,
             spendingPlanList = spendingPlans
         )
     }.stateIn(
@@ -87,7 +87,7 @@ internal sealed interface HomeState {
     @Immutable
     data class HomeData(
         val incomeList: IncomeList,
-        val savingPlanList: SavingPlanList,
+        val savePlanList: SavePlanList,
         val spendingPlanList: SpendingPlanList
     ) : HomeState {
 
