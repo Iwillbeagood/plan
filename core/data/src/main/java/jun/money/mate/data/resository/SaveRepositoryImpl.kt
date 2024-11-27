@@ -2,6 +2,7 @@ package jun.money.mate.data.resository
 
 import jun.money.mate.data.mapper.toSaveEntity
 import jun.money.mate.data.mapper.toSaveList
+import jun.money.mate.data.mapper.toSavePlan
 import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.database.dao.SaveDao
 import jun.money.mate.model.save.SavePlan
@@ -31,6 +32,10 @@ class SaveRepositoryImpl @Inject constructor(
         }.catch {
             Logger.e("getSavePlanListFlow error: $it")
         }
+    }
+
+    override suspend fun getSavePlan(id: Long): SavePlan {
+        return saveDao.get(id).toSavePlan()
     }
 
     override suspend fun updateExecuteState(id: Long, isExecuted: Boolean) {

@@ -88,18 +88,18 @@ internal class SavingListViewModel @Inject constructor(
         }
     }
 
-    fun editSpending() {
-        val spendingListState = savingListState.value as? SavingListState.SavingListData ?: return
-        val selectedId = spendingListState.selectedId ?: return
+    fun editSave() {
+        val uiState = savingListState.value as? SavingListState.SavingListData ?: return
+        val selectedId = uiState.selectedId ?: return
 
         viewModelScope.launch {
             _savingListEffect.emit(SavingListEffect.EditSpendingPlan(selectedId))
         }
     }
 
-    fun deleteSpending() {
-        val spendingListState = savingListState.value as? SavingListState.SavingListData ?: return
-        val selectedId = spendingListState.selectedId ?: return
+    fun deleteSave() {
+        val uiState = savingListState.value as? SavingListState.SavingListData ?: return
+        val selectedId = uiState.selectedId ?: return
 
         viewModelScope.launch {
             saveRepository.deleteById(selectedId)

@@ -6,6 +6,7 @@ import androidx.room.TypeConverters
 import jun.money.mate.database.converter.IncomeTypeConverter
 import jun.money.mate.database.converter.LocalDateConverter
 import jun.money.mate.database.converter.LocalDateTimeConverter
+import jun.money.mate.database.converter.SaveCategoryConverter
 import jun.money.mate.database.converter.SpendingCategoryConverter
 import jun.money.mate.database.converter.SpendingTypeConverter
 import jun.money.mate.database.dao.ConsumptionDao
@@ -33,7 +34,8 @@ import jun.money.mate.database.entity.SpendingPlanEntity
         LocalDateConverter::class,
         SpendingTypeConverter::class,
         IncomeTypeConverter::class,
-        SpendingCategoryConverter::class
+        SpendingCategoryConverter::class,
+        SaveCategoryConverter::class,
     ]
 )
 internal abstract class AppDatabase : RoomDatabase() {

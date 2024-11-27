@@ -9,6 +9,7 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.navigation.utils.composableType
+import jun.money.mate.save.SaveAddRoute
 import jun.money.mate.save.SaveListRoute
 
 fun NavController.navigateToSaveList(navOptions: NavOptions) {
@@ -37,5 +38,10 @@ fun NavGraphBuilder.saveNavGraph(
     composableType<MainTabRoute.Save.Add, AddType> { backStackEntry ->
         val addType = backStackEntry.toRoute<MainTabRoute.ConsumptionSpend.Add>().addType
 
+        SaveAddRoute(
+            addType = addType,
+            onGoBack = onGoBack,
+            onShowSnackBar = onShowSnackBar
+        )
     }
 }

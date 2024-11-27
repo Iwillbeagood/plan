@@ -149,14 +149,13 @@ private fun SpendingTypeButton(
 ) {
     TextButton(
         text = type.title,
-        text2 = hint,
+        hint = hint,
         onClick = onApplyType,
         color = if (isType) Red3 else MaterialTheme.colorScheme.surfaceDim,
         textColor = if (isType) White1 else MaterialTheme.colorScheme.onSurface,
         modifier = modifier
     )
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -167,7 +166,7 @@ private fun SpendingAddBodyPreview() {
             amount = "10000",
             amountWon = "10,000원",
             date = "1일",
-            type = SpendingType.ConsumptionPlan,
+            type = SpendingType.PredictedSpending,
             spendingCategory = SpendingCategory.CategoryType(SpendingCategoryType.교통비),
             onTitleChange = {},
             onAmountChange = {},

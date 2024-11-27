@@ -7,6 +7,7 @@ data class SavePlan(
     val title: String,
     val amount: Long,
     val planDay: Int,
+    val saveCategory: SaveCategory,
     val executeMonth: Int,
     val executed: Boolean,
     val selected: Boolean
@@ -32,4 +33,21 @@ data class SavePlanList(
 enum class SaveState {
     저금완료,
     저금예정
+}
+
+
+enum class SaveCategory {
+    예금,
+    적금,
+    청약저축,
+    투자,
+    보험,
+    입출금통장,
+    연금저축,
+    기타
+    ;
+
+    companion object {
+
+    }
 }

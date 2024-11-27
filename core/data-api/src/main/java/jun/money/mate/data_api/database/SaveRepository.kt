@@ -11,6 +11,8 @@ interface SaveRepository {
 
     fun getSavePlanListFlow(): Flow<SavePlanList>
 
+    suspend fun getSavePlan(id: Long): SavePlan
+
     suspend fun updateExecuteState(id: Long, isExecuted: Boolean)
 
     suspend fun deleteById(id: Long)

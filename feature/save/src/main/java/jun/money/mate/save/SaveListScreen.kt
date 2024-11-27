@@ -14,7 +14,6 @@ import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
-import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.save.component.SaveListBody
 import jun.money.mate.ui.DefaultScaffold
 
@@ -33,10 +32,10 @@ internal fun SaveListRoute(
         savingListState = savingListState,
         viewMode = viewMode,
         onGoBack = onGoBack,
-        onSavePlanClick = {  },
+        onSavePlanClick = viewModel::changeSavePlanSelected,
         onSavingAdd = onShowSavingAdd,
-        onSavingEdit = viewModel::editSpending,
-        onSavingDelete = viewModel::deleteSpending,
+        onSavingEdit = viewModel::editSave,
+        onSavingDelete = viewModel::deleteSave,
         onExecuteChange = viewModel::executeChange,
     )
 

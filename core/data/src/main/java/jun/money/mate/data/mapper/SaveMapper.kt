@@ -10,6 +10,7 @@ fun SavePlan.toSaveEntity() = SaveEntity(
     title = title,
     amount = amount,
     planDay = planDay,
+    saveCategory = saveCategory,
     executeMonth = executeMonth,
     executed = false
 )
@@ -19,6 +20,7 @@ fun SaveEntity.toSavePlan() = SavePlan(
     title = title,
     amount = amount,
     planDay = planDay,
+    saveCategory = saveCategory,
     executeMonth = executeMonth,
     executed = if (executeMonth == LocalDate.now().monthValue) {
         executed

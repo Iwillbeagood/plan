@@ -138,7 +138,7 @@ fun TextButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    text2: String = "",
+    hint: String = "",
     color: Color = MaterialTheme.colorScheme.surfaceDim,
     textStyle: TextStyle = JUNTheme.typography.titleMediumM,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
@@ -172,9 +172,9 @@ fun TextButton(
                         textAlign = TextAlign.Center,
                         color = textColor
                     )
-                    if (text2.isNotEmpty()) {
+                    if (hint.isNotEmpty()) {
                         Text(
-                            text = text2,
+                            text = hint,
                             style = JUNTheme.typography.labelLargeR,
                             textAlign = TextAlign.Center,
                             color = textColor

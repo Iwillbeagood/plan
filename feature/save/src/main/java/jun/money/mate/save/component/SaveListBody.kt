@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.model.save.SaveCategory
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.model.spending.SpendingPlan
@@ -112,6 +113,7 @@ private fun SaveListBodyPreview() {
                         amount = 500000,
                         planDay = 10,
                         executeMonth = 1,
+                        saveCategory = SaveCategory.투자,
                         executed = false,
                         selected = false
                     ),
@@ -120,6 +122,7 @@ private fun SaveListBodyPreview() {
                         title = "예금",
                         amount = 10000,
                         planDay = 10,
+                        saveCategory = SaveCategory.연금저축,
                         executeMonth = 1,
                         executed = true,
                         selected = false

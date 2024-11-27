@@ -23,6 +23,7 @@ import jun.money.mate.designsystem.theme.Gray5
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.main
+import jun.money.mate.model.save.SaveCategory
 import jun.money.mate.model.save.SavePlan
 
 @Composable
@@ -96,6 +97,7 @@ private fun SaveListItemPreview() {
                 amount = 10000,
                 planDay = 1,
                 executeMonth = 1,
+                saveCategory = SaveCategory.투자,
                 executed = false,
                 selected = false
             ),
