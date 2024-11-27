@@ -10,17 +10,17 @@ import jun.money.mate.database.converter.SpendingCategoryConverter
 import jun.money.mate.database.converter.SpendingTypeConverter
 import jun.money.mate.database.dao.ConsumptionDao
 import jun.money.mate.database.dao.IncomeDao
-import jun.money.mate.database.dao.SavingPlanDao
+import jun.money.mate.database.dao.SaveDao
 import jun.money.mate.database.dao.SpendingPlanDao
 import jun.money.mate.database.entity.ConsumptionEntity
 import jun.money.mate.database.entity.IncomeEntity
-import jun.money.mate.database.entity.SavingPlanEntity
+import jun.money.mate.database.entity.SaveEntity
 import jun.money.mate.database.entity.SpendingPlanEntity
 
 @Database(
     entities = [
         SpendingPlanEntity::class,
-        SavingPlanEntity::class,
+        SaveEntity::class,
         IncomeEntity::class,
         ConsumptionEntity::class
     ],
@@ -39,7 +39,7 @@ import jun.money.mate.database.entity.SpendingPlanEntity
 internal abstract class AppDatabase : RoomDatabase() {
 
     abstract fun spendingPlanDao(): SpendingPlanDao
-    abstract fun savingPlanDao(): SavingPlanDao
+    abstract fun savingPlanDao(): SaveDao
     abstract fun incomeDao(): IncomeDao
     abstract fun consumptionDao(): ConsumptionDao
 

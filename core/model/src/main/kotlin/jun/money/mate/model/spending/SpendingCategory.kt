@@ -18,6 +18,13 @@ sealed interface SpendingCategory {
             }
         }
 
+        fun SpendingCategory.type(): SpendingCategoryType {
+            return when (this) {
+                is CategoryType -> type
+                NotSelected -> SpendingCategoryType.기타
+            }
+        }
+
         fun find(name: String): CategoryType {
             val categoryType = SpendingCategoryType.entries.find { it.name == name } ?: SpendingCategoryType.기타
             return CategoryType(categoryType)

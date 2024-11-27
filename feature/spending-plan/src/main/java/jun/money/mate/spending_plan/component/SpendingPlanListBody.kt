@@ -23,10 +23,10 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.model.spending.ConsumptionSpend
+import jun.money.mate.model.spending.SpendingCategory
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingPlanList
 import jun.money.mate.model.spending.SpendingType
-import java.time.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -78,9 +78,7 @@ internal fun SpendingPlanListBody(
                             modifier = Modifier.weight(1f)
                         )
                     }
-
                 }
-
             }
         }
 
@@ -139,7 +137,7 @@ private fun SpendingPlanListBodyPreview() {
                         id = 3,
                         title = "식비",
                         amount = 10000,
-                        spendingCategoryName = "식비",
+                        spendingCategory = SpendingCategory.ETC,
                         planDay = 11,
                         type = SpendingType.PredictedSpending,
                         isApply = false,
@@ -148,7 +146,7 @@ private fun SpendingPlanListBodyPreview() {
                         id = 4,
                         title = "식비",
                         amount = 10000,
-                        spendingCategoryName = "식비",
+                        spendingCategory = SpendingCategory.ETC,
                         planDay = 11,
                         type = SpendingType.PredictedSpending,
                         isApply = false,
@@ -157,7 +155,7 @@ private fun SpendingPlanListBodyPreview() {
                         id = 5,
                         title = "식비",
                         amount = 10000,
-                        spendingCategoryName = "식비",
+                        spendingCategory = SpendingCategory.ETC,
                         planDay = 11,
                         type = SpendingType.PredictedSpending,
                         isApply = false,
@@ -166,7 +164,7 @@ private fun SpendingPlanListBodyPreview() {
                         id = 6,
                         title = "식비",
                         amount = 10000,
-                        spendingCategoryName = "식비",
+                        spendingCategory = SpendingCategory.ETC,
                         planDay = 11,
                         type = SpendingType.PredictedSpending,
                         isApply = false,
@@ -179,7 +177,7 @@ private fun SpendingPlanListBodyPreview() {
                         id = 1,
                         title = "식비",
                         amount = 10000,
-                        spendingCategoryName = "식비",
+                        spendingCategory = SpendingCategory.ETC,
                         planDay = 11,
                         type = SpendingType.ConsumptionPlan,
                         isApply = false,

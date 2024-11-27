@@ -1,14 +1,10 @@
 package jun.money.mate.spending_plan.component
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,14 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.Gray5
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.model.spending.ConsumptionSpend
+import jun.money.mate.model.spending.SpendingCategory
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.model.spending.SpendingType
-import java.time.LocalDate
 
 @Composable
 internal fun ConsumptionPlanItem(
@@ -117,7 +112,7 @@ private fun ConsumptionPlanItemPreview() {
                     id = 1,
                     title = "식비",
                     amount = 10000,
-                    spendingCategoryName = "식비",
+                    spendingCategory = SpendingCategory.ETC,
                     planDay = 12,
                     type = SpendingType.ConsumptionPlan,
                     isApply = false,

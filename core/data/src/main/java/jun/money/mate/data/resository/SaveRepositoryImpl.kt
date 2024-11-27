@@ -8,6 +8,7 @@ import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import javax.inject.Inject
@@ -18,9 +19,7 @@ class SaveRepositoryImpl @Inject constructor(
 
     override suspend fun upsertSavePlan(savePlan: SavePlan) {
         try {
-            saveDao.upsert(
-               savePlan.toSaveEntity()
-            )
+            saveDao.upsert(savePlan.toSaveEntity())
         } catch (e: Exception) {
             Logger.e("upsertSavePlan error: $e")
         }
@@ -29,12 +28,14 @@ class SaveRepositoryImpl @Inject constructor(
     override fun getSavePlanListFlow(): Flow<SavePlanList> {
         return saveDao.getFlow().map { list ->
            list.toSaveList()
+        }.catch {
+            Logger.e("getSavePlanListFlow error: $it")
         }
     }
 
-    override suspend fun updateExecuteState(id: Long, executeDate: LocalDate, isExecuted: Boolean) {
+    override suspend fun updateExecuteState(id: Long, isExecuted: Boolean) {
         try {
-            saveDao.updateExecuteState(id, executeDate, isExecuted)
+            saveDao.updateExecuteState(id, LocalDate.now().monthValue, isExecuted)
         } catch (e: Exception) {
             Logger.e("updateExecuteState error: $e")
         }

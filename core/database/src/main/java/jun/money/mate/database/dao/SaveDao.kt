@@ -17,8 +17,8 @@ interface SaveDao {
     @Query("SELECT * FROM $SAVING_PLAN_TABLE_NAME")
     fun getFlow(): Flow<List<SaveEntity>>
 
-    @Query("UPDATE $SAVING_PLAN_TABLE_NAME SET executeMonth = :executeDate, executed = :isExecuted WHERE id = :id")
-    suspend fun updateExecuteState(id: Long, executeDate: LocalDate, isExecuted: Boolean)
+    @Query("UPDATE $SAVING_PLAN_TABLE_NAME SET executeMonth = :executeMonth, executed = :isExecuted WHERE id = :id")
+    suspend fun updateExecuteState(id: Long, executeMonth: Int, isExecuted: Boolean)
 
     @Query("DELETE FROM $SAVING_PLAN_TABLE_NAME WHERE id = :id")
     suspend fun deleteById(id: Long)

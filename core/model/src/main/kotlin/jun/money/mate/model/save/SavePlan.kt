@@ -9,15 +9,27 @@ data class SavePlan(
     val planDay: Int,
     val executeMonth: Int,
     val executed: Boolean,
+    val selected: Boolean
 ) {
     val amountString: String get() = Utils.formatAmountWon(amount)
+    val dateString get() = "매월 ${planDay}일"
+
+    val saveState get() = if (executed) SaveState.저금완료 else SaveState.저금예정
 }
 
 data class SavePlanList(
     val savePlans: List<SavePlan>
 ) {
 
-    val total get() = savePlans.sumOf { it.amount }
+    private val executedTotal get() = savePlans.filter { it.executed }.sumOf { it.amount }
+    val executedTotalString get() = Utils.formatAmountWon(executedTotal)
+
+    private val total get() = savePlans.sumOf { it.amount }
     val totalString get() = Utils.formatAmountWon(total)
     val isEmpty get() = savePlans.isEmpty()
+}
+
+enum class SaveState {
+    저금완료,
+    저금예정
 }
