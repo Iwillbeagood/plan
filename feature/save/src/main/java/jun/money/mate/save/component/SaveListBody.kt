@@ -1,7 +1,6 @@
 package jun.money.mate.save.component
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,13 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jun.money.mate.designsystem.component.HorizontalDivider
+import jun.money.mate.designsystem.component.ScrollableTab
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.model.save.SaveCategory
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
-import jun.money.mate.model.spending.SpendingPlan
+import jun.money.mate.model.save.SaveType
 
 /***
  * 저금 목표 금액과 실제 저금 금액이 나타날 것. - 해당 여부 금액은 실행되었는지, 실행되지 않았는지로 판단함
@@ -35,67 +35,78 @@ import jun.money.mate.model.spending.SpendingPlan
  */
 @Composable
 internal fun SaveListBody(
+    selectedSaveType: SaveType,
     savePlanList: SavePlanList,
     onSavePlanClick: (SavePlan) -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
+    onTabClick: (Int) -> Unit,
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceDim)
-    ) {
-        item {
-            Surface(
-                color = MaterialTheme.colorScheme.surfaceDim,
-                modifier = Modifier.fillMaxWidth()
+    Column {
+        VerticalSpacer(20.dp)
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceDim,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier.padding(20.dp),
             ) {
-                Column(
-                    modifier = Modifier.padding(20.dp),
-                ) {
-                    Row {
-                        Text(
-                            text = "저금 계획",
-                            style = JUNTheme.typography.titleLargeM,
-                        )
-                        Text(
-                            text = savePlanList.totalString,
-                            style = JUNTheme.typography.headlineSmallB,
-                            textAlign = TextAlign.End,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-                    Row {
-                        Text(
-                            text = "실천 금액",
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = JUNTheme.typography.titleMediumM,
-                        )
-                        Text(
-                            text = savePlanList.executedTotalString,
-                            style = JUNTheme.typography.titleNormalM,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.End,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
+                Row {
+                    Text(
+                        text = "저금 계획",
+                        style = JUNTheme.typography.titleLargeM,
+                    )
+                    Text(
+                        text = savePlanList.totalString,
+                        style = JUNTheme.typography.headlineSmallB,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                Row {
+                    Text(
+                        text = "실천 금액",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = JUNTheme.typography.titleMediumM,
+                    )
+                    Text(
+                        text = savePlanList.executedTotalString,
+                        style = JUNTheme.typography.titleNormalM,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
         }
+        HorizontalDivider(thickness = 8.dp)
+        VerticalSpacer(20.dp)
 
-        item {
-            VerticalSpacer(10.dp)
-        }
+        ScrollableTab(
+            tabs = SaveType.entries.map { it.title },
+            selectedTabIndex = selectedSaveType.ordinal,
+            onTabClick = onTabClick,
+            modifier = Modifier.padding(bottom = 20.dp)
+        )
 
-        items(savePlanList.savePlans) { savePlan ->
-            SaveListItem(
-                savePlan = savePlan,
-                onClick = { onSavePlanClick(savePlan) },
-                onExecuteChange = { onExecuteChange(it, savePlan.id) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .animateContentSize()
-                    .padding(16.dp),
-            )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            items(
+                when (selectedSaveType) {
+                    SaveType.PlaningSave -> savePlanList.planingPlans
+                    SaveType.ContinueSave -> savePlanList.continuePlans
+                }
+            ) { savePlan ->
+                SaveListItem(
+                    savePlan = savePlan,
+                    onExecuteChange = { onExecuteChange(it, savePlan.id) },
+                    modifier = Modifier
+                        .clickable {
+                            onSavePlanClick(savePlan)
+                        },
+                )
+            }
         }
     }
 }
@@ -105,32 +116,11 @@ internal fun SaveListBody(
 private fun SaveListBodyPreview() {
     JunTheme {
         SaveListBody(
-            savePlanList = SavePlanList(
-                savePlans = listOf(
-                    SavePlan(
-                        id = 3,
-                        title = "주식",
-                        amount = 500000,
-                        planDay = 10,
-                        executeMonth = 1,
-                        saveCategory = SaveCategory.투자,
-                        executed = false,
-                        selected = false
-                    ),
-                    SavePlan(
-                        id = 3,
-                        title = "예금",
-                        amount = 10000,
-                        planDay = 10,
-                        saveCategory = SaveCategory.연금저축,
-                        executeMonth = 1,
-                        executed = true,
-                        selected = false
-                    )
-                )
-            ),
+            selectedSaveType = SaveType.ContinueSave,
+            savePlanList = SavePlanList.sample,
             onSavePlanClick = {},
             onExecuteChange = { _, _ -> },
+            onTabClick = {},
         )
     }
 }

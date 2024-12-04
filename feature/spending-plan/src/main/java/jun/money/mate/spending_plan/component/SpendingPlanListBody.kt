@@ -39,87 +39,87 @@ internal fun SpendingPlanListBody(
     onSpendingPlanClick: (SpendingPlan) -> Unit,
     onSpendingTabClick: (Int) -> Unit,
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceDim)
-    ) {
-        item {
-            Surface(
-                color = MaterialTheme.colorScheme.surfaceDim,
-                modifier = Modifier.fillMaxWidth()
+    Column {
+        VerticalSpacer(20.dp)
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceDim,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier.padding(20.dp),
             ) {
-                Column(
-                    modifier = Modifier.padding(20.dp),
-                ) {
-                    Row {
-                        Text(
-                            text = "실제 전체 지출",
-                            style = JUNTheme.typography.titleLargeM,
-                        )
-                        Text(
-                            text = realTotalString,
-                            style = JUNTheme.typography.headlineSmallB,
-                            textAlign = TextAlign.End,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-                    Row {
-                        Text(
-                            text = "예상 전체 지출",
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = JUNTheme.typography.titleMediumM,
-                        )
-                        Text(
-                            text = totalString,
-                            style = JUNTheme.typography.titleNormalM,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.End,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
+                Row {
+                    Text(
+                        text = "실제 전체 지출",
+                        style = JUNTheme.typography.titleLargeM,
+                    )
+                    Text(
+                        text = realTotalString,
+                        style = JUNTheme.typography.headlineSmallB,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                Row {
+                    Text(
+                        text = "예상 전체 지출",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = JUNTheme.typography.titleMediumM,
+                    )
+                    Text(
+                        text = totalString,
+                        style = JUNTheme.typography.titleNormalM,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
         }
-
-        stickyHeader {
-            ScrollableTab(
-                tabs = SpendingType.entries.map { it.title },
-                selectedTabIndex = spendingTypeTabIndex,
-                onTabClick = onSpendingTabClick,
-                modifier = Modifier.padding(bottom = 20.dp)
-            )
-        }
-
-        items(consumptionSpend) {
-            ConsumptionPlanItem(
-                consumptionSpend = it,
-                onIncomeClick = { onSpendingPlanClick(it.spendingPlan) },
-                modifier = Modifier.animateContentSize()
-            )
-        }
-
-        spendingPlanList.predictPlanGroup.forEach { (date, spendingPlans) ->
-            item {
-                Text(
-                    text = "매월 $date",
-                    style = JUNTheme.typography.titleSmallR,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surfaceDim)
+        ) {
+            stickyHeader {
+                ScrollableTab(
+                    tabs = SpendingType.entries.map { it.title },
+                    selectedTabIndex = spendingTypeTabIndex,
+                    onTabClick = onSpendingTabClick,
+                    modifier = Modifier.padding(bottom = 20.dp)
                 )
             }
 
-            items(spendingPlans) { spendingPlan ->
-                PredictedSpendingItem(
-                    spendingPlan = spendingPlan,
-                    onIncomeClick = { onSpendingPlanClick(spendingPlan) },
+            items(consumptionSpend) {
+                ConsumptionPlanItem(
+                    consumptionSpend = it,
+                    onIncomeClick = { onSpendingPlanClick(it.spendingPlan) },
                     modifier = Modifier.animateContentSize()
                 )
             }
-        }
 
-        item {
-            VerticalSpacer(100.dp)
+            spendingPlanList.predictPlanGroup.forEach { (date, spendingPlans) ->
+                item {
+                    Text(
+                        text = "매월 $date",
+                        style = JUNTheme.typography.titleSmallR,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp)
+                    )
+                }
+
+                items(spendingPlans) { spendingPlan ->
+                    PredictedSpendingItem(
+                        spendingPlan = spendingPlan,
+                        onIncomeClick = { onSpendingPlanClick(spendingPlan) },
+                        modifier = Modifier.animateContentSize()
+                    )
+                }
+            }
+
+            item {
+                VerticalSpacer(100.dp)
+            }
         }
     }
 }

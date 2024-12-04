@@ -60,6 +60,7 @@ internal class SaveAddViewModel @Inject constructor(
                         id = System.currentTimeMillis(),
                         title = "",
                         amount = 0,
+                        amountGoal = 0,
                         day = LocalDate.now().dayOfMonth,
                         type = SaveType.PlaningSave,
                         category = null
@@ -71,8 +72,9 @@ internal class SaveAddViewModel @Inject constructor(
                                 id = it.id,
                                 title = it.title,
                                 amount = it.amount,
+                                amountGoal = it.amountGoal,
                                 day = it.planDay,
-                                type = SaveType.PlaningSave,
+                                type = it.saveType,
                                 category = it.saveCategory
                             )
                         }
@@ -88,7 +90,9 @@ internal class SaveAddViewModel @Inject constructor(
             addSaveUsecase(
                 id = state.id,
                 title = state.title,
+                saveType = state.type,
                 amount = state.amount,
+                amountGoal = state.amountGoal,
                 planDay = state.day,
                 category = state.category,
                 onSuccess = {
@@ -127,6 +131,16 @@ internal class SaveAddViewModel @Inject constructor(
         }
     }
 
+    fun onAmountGoalValueChange(value: String) {
+        val state = _saveAddState.value as? SaveAddState.SaveData ?: return
+
+        _saveAddState.update {
+            state.copy(
+                amountGoal = value.toLongOrNull() ?: 0
+            )
+        }
+    }
+
     fun onSaveTypeSelect(type: SaveType) {
         val state = _saveAddState.value as? SaveAddState.SaveData ?: return
         _saveAddState.update {
@@ -143,10 +157,17 @@ internal class SaveAddViewModel @Inject constructor(
         onAddSave()
     }
 
-    fun onShowDatePicker() {
+    fun showDatePicker() {
         val state = _saveAddState.value as? SaveAddState.SaveData ?: return
 
         _saveModalEffect.update { SaveModalEffect.ShowDatePicker(LocalDate.now().withDayOfMonth(state.day)) }
+    }
+
+    fun categorySelected(category: SaveCategory) {
+        val state = _saveAddState.value as? SaveAddState.SaveData ?: return
+        _saveAddState.update { state.copy(category = category) }
+
+        showDatePicker()
     }
 
     fun showCategoryBottomSheet() {
@@ -155,6 +176,12 @@ internal class SaveAddViewModel @Inject constructor(
 
     fun onDismiss() {
         _saveModalEffect.update { SaveModalEffect.Idle }
+    }
+
+    fun scrollToBottom() {
+        viewModelScope.launch {
+            _saveAddEffect.emit(SaveAddEffect.ScrollToBottom)
+        }
     }
 
     private fun showSnackBar(messageType: MessageType) {
@@ -181,6 +208,7 @@ internal sealed interface SaveAddState {
         val id: Long,
         val title: String,
         val amount: Long,
+        val amountGoal: Long,
         val day: Int,
         val type: SaveType,
         val category: SaveCategory?
@@ -188,6 +216,9 @@ internal sealed interface SaveAddState {
 
         val amountString get() = if (amount > 0) amount.toString() else ""
         val amountWon get() = if (amount > 0) CurrencyFormatter.formatAmountWon(amount) else ""
+
+        val amountGoalString get() = if (amountGoal > 0) amountGoal.toString() else ""
+        val amountGoalWon get() = if (amountGoal > 0) CurrencyFormatter.formatAmountWon(amountGoal) else ""
     }
 }
 
@@ -199,6 +230,9 @@ internal sealed interface SaveAddEffect {
 
     @Immutable
     data object SaveAddComplete : SaveAddEffect
+
+    @Immutable
+    data object ScrollToBottom : SaveAddEffect
 }
 
 @Stable

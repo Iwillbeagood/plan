@@ -30,7 +30,6 @@ fun NavGraphBuilder.spendingPlanNavGraph(
 ) {
     composable<MainTabRoute.SpendingPlan.List> {
         SpendingPlanListRoute(
-            onGoBack = onGoBack,
             onShowSpendingPlanAdd = onShowSpendingPlanAdd,
             onShowSpendingPlanEdit = onShowSpendingPlanEdit,
             onShowSnackBar = onShowErrorSnackBar

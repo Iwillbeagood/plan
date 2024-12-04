@@ -32,8 +32,8 @@ import jun.money.mate.model.save.SaveCategory
 @Composable
 internal fun SaveCategoryBottomSheet(
     onDismiss: () -> Unit,
+    onCategorySelected: (SaveCategory) -> Unit,
     sheetState: SheetState = rememberModalBottomSheetState(true),
-    onCategorySelected: (SaveCategory) -> Unit
 ) {
     DefaultBottomSheet(
         sheetState = sheetState,
@@ -59,7 +59,7 @@ internal fun SaveCategoryBottomSheet(
                         .clickable {
                             onCategorySelected(category)
                         }
-                        .padding(vertical = 10.dp)
+                        .padding(vertical = 20.dp)
                     ,
                 )
             }

@@ -22,13 +22,6 @@ class SpendingPlanRepositoryImpl @Inject constructor(
         onSuccess: () -> Unit
     ) {
         try {
-            spendingPlanDao.getSpendingPlan().forEach {
-                if (it.title == spendingPlan.title) {
-                    onError(MessageType.Message("이미 존재하는 지출 계획입니다."))
-                    return
-                }
-            }
-
             spendingPlanDao.upsertSpendingPlan(
                 SpendingPlanEntity(
                     id = spendingPlan.id,

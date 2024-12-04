@@ -1,9 +1,9 @@
 package jun.money.mate.save
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -15,7 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -27,6 +29,7 @@ import jun.money.mate.designsystem.component.DefaultTextField
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.TextButton
+import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
@@ -37,6 +40,7 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SaveCategory
 import jun.money.mate.model.save.SaveType
 import jun.money.mate.navigation.argument.AddType
+import jun.money.mate.save.component.SaveCategoryBottomSheet
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.AddTitleContent
 import java.time.LocalDate
@@ -50,8 +54,10 @@ internal fun SaveAddRoute(
 ) {
     val saveAddState by viewModel.saveAddState.collectAsStateWithLifecycle()
     val saveModalEffect by viewModel.saveModalEffect.collectAsStateWithLifecycle()
+    val listState = rememberScrollState()
 
     SaveAddScreen(
+        listState = listState,
         title = when (addType) {
             is AddType.Edit -> "수정"
             AddType.New -> "추가"
@@ -61,15 +67,18 @@ internal fun SaveAddRoute(
         onAddSave = viewModel::onAddSave,
         onTitleValueChange = viewModel::onTitleValueChange,
         onAmountValueChange = viewModel::onAmountValueChange,
-        onShowDateBottomSheet = viewModel::onShowDatePicker,
+        onAmountGoalChange = viewModel::onAmountGoalValueChange,
+        onShowDateBottomSheet = viewModel::showDatePicker,
         onShowCategoryBottomSheet = viewModel::showCategoryBottomSheet,
         onApplyType = viewModel::onSaveTypeSelect,
+        onScrollToBottom = viewModel::scrollToBottom
     )
 
     IncomeModalContent(
         saveModalEffect = saveModalEffect,
         onDateSelect = viewModel::onDateSelected,
-        onDismissRequest = viewModel::onDismiss
+        onDismissRequest = viewModel::onDismiss,
+        onCategorySelected = viewModel::categorySelected,
     )
 
     LaunchedEffect(true) {
@@ -77,6 +86,9 @@ internal fun SaveAddRoute(
             when (it) {
                 is SaveAddEffect.ShowSnackBar -> onShowSnackBar(it.messageType)
                 SaveAddEffect.SaveAddComplete -> onGoBack()
+                SaveAddEffect.ScrollToBottom -> {
+                    listState.animateScrollTo(listState.maxValue)
+                }
             }
         }
     }
@@ -84,15 +96,18 @@ internal fun SaveAddRoute(
 
 @Composable
 private fun SaveAddScreen(
+    listState: ScrollState,
     title: String,
     saveAddState: SaveAddState,
     onBackClick: () -> Unit,
     onAddSave: () -> Unit,
     onTitleValueChange: (String) -> Unit,
     onAmountValueChange: (String) -> Unit,
+    onAmountGoalChange: (String) -> Unit,
     onShowDateBottomSheet: () -> Unit,
     onShowCategoryBottomSheet: () -> Unit,
     onApplyType: (SaveType) -> Unit,
+    onScrollToBottom: () -> Unit
 ) {
     AddScaffold(
         title = "저금 $title",
@@ -101,42 +116,50 @@ private fun SaveAddScreen(
         onComplete = onAddSave,
     ) {
         SaveAddContent(
+            listState = listState,
             saveAddState = saveAddState,
-            onAddIncome = onAddSave,
-            onIncomeTitleChange = onTitleValueChange,
-            onIncomeAmountChange = onAmountValueChange,
+            onTitleValueChange = onTitleValueChange,
+            onAmountValueChange = onAmountValueChange,
+            onAmountGoalChange = onAmountGoalChange,
             onShowDateBottomSheet = onShowDateBottomSheet,
             onShowCategoryBottomSheet = onShowCategoryBottomSheet,
             onApplyType = onApplyType,
+            onScrollToBottom = onScrollToBottom
         )
     }
 }
 
 @Composable
 private fun SaveAddContent(
+    listState: ScrollState,
     saveAddState: SaveAddState,
-    onAddIncome: () -> Unit,
-    onIncomeTitleChange: (String) -> Unit,
-    onIncomeAmountChange: (String) -> Unit,
+    onTitleValueChange: (String) -> Unit,
+    onAmountValueChange: (String) -> Unit,
+    onAmountGoalChange: (String) -> Unit,
     onShowDateBottomSheet: () -> Unit,
     onShowCategoryBottomSheet: () -> Unit,
     onApplyType: (SaveType) -> Unit,
+    onScrollToBottom: () -> Unit
 ) {
     FadeAnimatedVisibility(saveAddState is SaveAddState.SaveData) {
         if (saveAddState is SaveAddState.SaveData) {
             SaveAddBody(
+                listState = listState,
                 type = saveAddState.type,
                 saveCategory = saveAddState.category,
                 title = saveAddState.title,
                 amount = saveAddState.amountString,
                 amountWon = saveAddState.amountWon,
+                amountGoal = saveAddState.amountGoalString,
+                amountGoalWon = saveAddState.amountGoalWon,
                 date = saveAddState.day.toString(),
-                onAdd = onAddIncome,
-                onTitleChange = onIncomeTitleChange,
-                onAmountChange = onIncomeAmountChange,
+                onTitleChange = onTitleValueChange,
+                onAmountChange = onAmountValueChange,
+                onAmountGoalChange = onAmountGoalChange,
                 onShowDateBottomSheet = onShowDateBottomSheet,
                 onShowCategoryBottomSheet = onShowCategoryBottomSheet,
                 onApplyType = onApplyType,
+                onScrollToBottom = onScrollToBottom
             )
         }
     }
@@ -144,28 +167,30 @@ private fun SaveAddContent(
 
 @Composable
 private fun SaveAddBody(
+    listState: ScrollState,
     type: SaveType,
     saveCategory: SaveCategory?,
     title: String,
     amount: String,
     amountWon: String,
+    amountGoal: String,
+    amountGoalWon: String,
     date: String,
-    onAdd: () -> Unit,
     onTitleChange: (String) -> Unit,
     onAmountChange: (String) -> Unit,
+    onAmountGoalChange: (String) -> Unit,
     onShowDateBottomSheet: () -> Unit,
     onShowCategoryBottomSheet: () -> Unit,
     onApplyType: (SaveType) -> Unit,
+    onScrollToBottom: () -> Unit
 ) {
-    val listState = rememberScrollState()
-
+    val focusRequester1 = remember { FocusRequester() }
     Column(
         modifier = Modifier
-            .fillMaxSize()
             .verticalScroll(listState)
             .animateContentSize()
     ) {
-        AddTitleContent("지출 카테고리") {
+        AddTitleContent("카테고리") {
             Row {
                 SaveTypeButton(
                     type = SaveType.PlaningSave,
@@ -184,17 +209,44 @@ private fun SaveAddBody(
                 )
             }
         }
+        AddTitleContent(
+            "목표 저금 금액",
+            visible = type == SaveType.PlaningSave
+        ) {
+            DefaultTextField(
+                value = amountGoal,
+                onValueChange = onAmountGoalChange,
+                hint = "저금 금액을 입력해주세요",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.NumberPassword
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        onScrollToBottom()
+                        focusRequester1.requestFocus()
+                    }
+                )
+            )
+            Text(
+                text = amountGoalWon,
+                style = JUNTheme.typography.labelLargeM,
+                textAlign = TextAlign.End,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
         AddTitleContent("저금 계획명") {
             DefaultTextField(
                 value = title,
                 onValueChange = onTitleChange,
+                focusRequester = focusRequester1,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next,
                 ),
                 hint = "저금 계획을 입력해주세요"
             )
         }
-        AddTitleContent("저금 금액") {
+        AddTitleContent("매월 저금할 금액") {
             DefaultTextField(
                 value = amount,
                 onValueChange = onAmountChange,
@@ -205,16 +257,18 @@ private fun SaveAddBody(
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        onAdd()
+                        onShowCategoryBottomSheet()
                     }
                 )
             )
-            Text(
-                text = amountWon,
-                style = JUNTheme.typography.labelLargeM,
-                textAlign = TextAlign.End,
-                modifier = Modifier.fillMaxWidth()
-            )
+            TopToBottomAnimatedVisibility(amountWon.isNotEmpty()) {
+                Text(
+                    text = amountWon,
+                    style = JUNTheme.typography.labelLargeM,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
         AddTitleContent(
             "저금 카테고리",
@@ -225,7 +279,7 @@ private fun SaveAddBody(
                 onClick = onShowCategoryBottomSheet
             )
         }
-        AddTitleContent("저금 발생 날짜") {
+        AddTitleContent("저금 날짜") {
             TextButton(
                 text = "${date}일",
                 onClick = onShowDateBottomSheet
@@ -241,6 +295,7 @@ private fun IncomeModalContent(
     saveModalEffect: SaveModalEffect,
     onDateSelect: (LocalDate) -> Unit,
     onDismissRequest: () -> Unit,
+    onCategorySelected: (SaveCategory) -> Unit,
 ) {
     when (saveModalEffect) {
         SaveModalEffect.Idle -> {}
@@ -251,9 +306,15 @@ private fun IncomeModalContent(
             )
         }
 
-        SaveModalEffect.ShowCategoryBottomSheet -> TODO()
+        SaveModalEffect.ShowCategoryBottomSheet -> {
+            SaveCategoryBottomSheet(
+                onDismiss = onDismissRequest,
+                onCategorySelected = onCategorySelected
+            )
+        }
     }
 }
+
 @Composable
 private fun SaveTypeButton(
     type: SaveType,
@@ -277,22 +338,26 @@ private fun SaveTypeButton(
 private fun IncomeAddScreenPreview() {
     JunTheme {
         SaveAddScreen(
+            listState = rememberScrollState(),
             title = "추가",
             saveAddState = SaveAddState.SaveData(
                 id = 0,
                 title = "월급",
                 amount = 1000000,
-                type = SaveType.PlaningSave,
+                amountGoal = 10000000,
+                type = SaveType.ContinueSave,
                 category = SaveCategory.예금,
                 day = 1,
             ),
             onTitleValueChange = {},
             onAmountValueChange = {},
+            onAmountGoalChange = {},
             onShowDateBottomSheet = {},
             onShowCategoryBottomSheet = {},
             onBackClick = {},
             onAddSave = {},
-            onApplyType = {}
+            onApplyType = {},
+            onScrollToBottom = {}
         )
     }
 }

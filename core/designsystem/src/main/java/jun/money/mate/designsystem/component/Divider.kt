@@ -10,12 +10,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.Gray8
-import jun.money.mate.designsystem.theme.LightBlue1
+import jun.money.mate.designsystem.theme.Gray9
 
 @Composable
 fun HorizontalDivider(
     modifier: Modifier = Modifier,
-    lineColor: Color = Gray8,
+    lineColor: Color = Gray9,
     thickness: Dp = 1.dp
 ) {
     HorizontalDivider(
@@ -28,12 +28,13 @@ fun HorizontalDivider(
 @Composable
 fun VerticalDivider(
     modifier: Modifier = Modifier,
-    lineColor: Color = Gray8
+    lineColor: Color = Gray9,
+    thickness: Dp = 1.dp
 ) {
     VerticalDivider(
         modifier = modifier,
         color = lineColor,
-        thickness = 1.dp
+        thickness = thickness
     )
 }
 

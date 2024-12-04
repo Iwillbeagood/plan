@@ -7,6 +7,7 @@ import jun.money.mate.database.converter.IncomeTypeConverter
 import jun.money.mate.database.converter.LocalDateConverter
 import jun.money.mate.database.converter.LocalDateTimeConverter
 import jun.money.mate.database.converter.SaveCategoryConverter
+import jun.money.mate.database.converter.SaveTypeConverter
 import jun.money.mate.database.converter.SpendingCategoryConverter
 import jun.money.mate.database.converter.SpendingTypeConverter
 import jun.money.mate.database.dao.ConsumptionDao
@@ -36,6 +37,7 @@ import jun.money.mate.database.entity.SpendingPlanEntity
         IncomeTypeConverter::class,
         SpendingCategoryConverter::class,
         SaveCategoryConverter::class,
+        SaveTypeConverter::class,
     ]
 )
 internal abstract class AppDatabase : RoomDatabase() {

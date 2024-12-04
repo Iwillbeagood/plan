@@ -33,7 +33,6 @@ internal fun IncomeListRoute(
         incomeListState = incomeListState,
         incomeListViewMode = incomeListViewMode,
         selectedDate = selectedDate,
-        onGoBack = onGoBack,
         onIncomeClick = viewModel::changeIncomeSelected,
         onIncomeAdd = onShowIncomeAdd,
         onIncomeEdit = viewModel::editIncome,
@@ -56,7 +55,6 @@ private fun IncomeListScreen(
     incomeListState: IncomeListState,
     incomeListViewMode: ViewMode,
     selectedDate: LocalDate,
-    onGoBack: () -> Unit,
     onIncomeClick: (Income) -> Unit,
     onIncomeAdd: () -> Unit,
     onIncomeEdit: () -> Unit,
@@ -64,7 +62,6 @@ private fun IncomeListScreen(
     onDateSelect: (LocalDate) -> Unit,
 ) {
     DateScaffold(
-        title = "수입 내역",
         color = main,
         bottomBarVisible = incomeListViewMode == ViewMode.EDIT,
         addButtonVisible = incomeListViewMode == ViewMode.LIST,
@@ -73,7 +70,6 @@ private fun IncomeListScreen(
         onAdd = onIncomeAdd,
         onEdit = onIncomeEdit,
         onDelete = onIncomeDelete,
-        onGoBack = onGoBack,
     ) {
         IncomeListContent(
             incomeListState = incomeListState,
@@ -109,7 +105,6 @@ private fun IncomeListScreenPreview() {
         IncomeListScreen(
             incomeListState = IncomeListState.Loading,
             selectedDate = LocalDate.now(),
-            onGoBack = {},
             onDateSelect = {},
             onIncomeAdd = {},
             onIncomeClick = {},

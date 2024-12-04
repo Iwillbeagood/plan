@@ -28,7 +28,6 @@ fun NavGraphBuilder.saveNavGraph(
 ) {
     composable<MainTabRoute.Save.List> {
         SaveListRoute(
-            onGoBack = onGoBack,
             onShowSavingAdd = onShowSavingAdd,
             onShowSavingEdit = onShowSavingEdit,
             onShowSnackBar = onShowSnackBar

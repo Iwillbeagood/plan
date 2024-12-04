@@ -110,7 +110,7 @@ fun ScrollableTab(
     ScrollableTabRow(
         modifier = modifier.fillMaxWidth(),
         selectedTabIndex = selectedTabIndex,
-        containerColor = MaterialTheme.colorScheme.surfaceDim,
+        containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface,
         edgePadding = 0.dp,
         indicator = { tabPositions ->

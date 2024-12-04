@@ -5,33 +5,29 @@ import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.model.save.SavePlan
 import java.time.LocalDate
 
-fun SavePlan.toSaveEntity() = SaveEntity(
+internal fun SavePlan.toSaveEntity() = SaveEntity(
     id = id,
     title = title,
     amount = amount,
+    amountGoal = amountGoal,
     planDay = planDay,
+    saveType = saveType,
     saveCategory = saveCategory,
     executeMonth = executeMonth,
-    executed = false
+    executed = false,
+    executeCount = executeCount
 )
 
-fun SaveEntity.toSavePlan() = SavePlan(
+internal fun SaveEntity.toSavePlan() = SavePlan(
     id = id,
     title = title,
     amount = amount,
+    amountGoal = amountGoal,
     planDay = planDay,
+    saveType = saveType,
     saveCategory = saveCategory,
     executeMonth = executeMonth,
-    executed = if (executeMonth == LocalDate.now().monthValue) {
-        executed
-    } else {
-        false
-    },
-    selected = false
-)
-
-fun List<SaveEntity>.toSaveList() = SavePlanList(
-    savePlans = map {
-        it.toSavePlan()
-    }
+    executed = executed,
+    selected = false,
+    executeCount = executeCount
 )

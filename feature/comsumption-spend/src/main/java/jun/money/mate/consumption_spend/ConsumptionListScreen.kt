@@ -48,7 +48,6 @@ internal fun ConsumptionListRoute(
         filterValue = filterValue.selectedFilter().planTitle,
         consumptionListViewMode = consumptionListViewMode,
         selectedDate = selectedDate,
-        onGoBack = onGoBack,
         onSpendingPlanEdit = viewModel::editSpending,
         onSpendingPlanDelete = viewModel::deleteSpending,
         onDateSelect = viewModel::dateSelected,
@@ -81,7 +80,6 @@ private fun ConsumptionListScreen(
     filterValue: String,
     consumptionListViewMode: ViewMode,
     selectedDate: LocalDate,
-    onGoBack: () -> Unit,
     onSpendingPlanEdit: () -> Unit,
     onSpendingPlanDelete: () -> Unit,
     onDateSelect: (LocalDate) -> Unit,
@@ -90,7 +88,6 @@ private fun ConsumptionListScreen(
     onConsumptionClick: (Consumption) -> Unit,
 ) {
     DateScaffold(
-        title = "소비",
         color = Red3,
         bottomBarVisible = consumptionListViewMode == ViewMode.EDIT,
         addButtonVisible = false,
@@ -99,7 +96,6 @@ private fun ConsumptionListScreen(
         onAdd = onConsumptionAdd,
         onEdit = onSpendingPlanEdit,
         onDelete = onSpendingPlanDelete,
-        onGoBack = onGoBack,
     ) {
         SpendingListContent(
             consumptionListState = consumptionListState,
@@ -185,7 +181,6 @@ private fun SpendingListScreenPreview() {
             consumptionListState = ConsumptionListState.Loading,
             filterValue = "전체",
             selectedDate = LocalDate.now(),
-            onGoBack = {},
             onDateSelect = {},
             onSpendingPlanEdit = {},
             onSpendingPlanDelete = {},

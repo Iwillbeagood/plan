@@ -1,108 +1,96 @@
 package jun.money.mate.save.component
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.TextSwitch
-import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.Gray5
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.designsystem.theme.main
-import jun.money.mate.model.save.SaveCategory
+import jun.money.mate.designsystem.theme.Orange1
 import jun.money.mate.model.save.SavePlan
+import jun.money.mate.model.save.SaveType
 
 @Composable
 internal fun SaveListItem(
     savePlan: SavePlan,
-    onClick: () -> Unit,
     onExecuteChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(
-        shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = if (savePlan.selected) main else Gray5
-        ),
-        color = MaterialTheme.colorScheme.surfaceDim,
-        onClick = onClick,
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        modifier = modifier,
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .animateContentSize()
-        ) {
+        Row {
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = savePlan.dateString,
-                    style = JUNTheme.typography.titleSmallB
-                )
-                Text(
                     text = savePlan.title,
-                    style = JUNTheme.typography.titleSmallR,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth()
+                    style = JUNTheme.typography.titleNormalM
                 )
                 Text(
-                    text = savePlan.amountString,
-                    style = JUNTheme.typography.titleNormalB,
-                    textAlign = TextAlign.End,
+                    text = savePlan.dateString + " | "+ savePlan.amountString,
+                    style = JUNTheme.typography.titleSmallM,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.fillMaxWidth()
                 )
-                VerticalSpacer(8.dp)
-                Row {
-                    Spacer(modifier = Modifier.weight(1f))
-                    TextSwitch(
-                        text = savePlan.saveState.name,
-                        style = JUNTheme.typography.titleSmallB,
-                        checked = savePlan.executed,
-                        onCheckedChange = onExecuteChange
-                    )
-                }
-
             }
+            TextSwitch(
+                text = savePlan.saveState.name,
+                style = JUNTheme.typography.titleSmallB,
+                checkedColor = Orange1,
+                checked = savePlan.executed,
+                onCheckedChange = onExecuteChange
+            )
+        }
+        if (savePlan.saveType == SaveType.PlaningSave) {
+            Text(
+                text = savePlan.amountGoalString,
+                style = JUNTheme.typography.titleNormalM,
+                modifier = Modifier.align(Alignment.End)
+            )
+
+            Text(
+                text = savePlan.dateString + " | "+ savePlan.amountString,
+                style = JUNTheme.typography.titleSmallM,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.align(Alignment.End)
+            )
         }
     }
 }
+/**
+ * 목표서 타입일 경우에는 목표를 보여주고 추가적으로 남은 달을 보여줄 것.
+ * */
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun SaveListItemPreview() {
+private fun ContinueSaveListItemPreview() {
     JunTheme {
         SaveListItem(
-            savePlan = SavePlan(
-                id = 0,
-                title = "title",
-                amount = 10000,
-                planDay = 1,
-                executeMonth = 1,
-                saveCategory = SaveCategory.투자,
-                executed = false,
-                selected = false
-            ),
+            savePlan = SavePlan.sample,
             onExecuteChange = {},
-            onClick = {}
+        )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun PlanSaveListItemPreview() {
+    JunTheme {
+        SaveListItem(
+            savePlan = SavePlan.sample2,
+            onExecuteChange = {},
         )
     }
 }

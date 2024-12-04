@@ -30,7 +30,7 @@ import jun.money.mate.res.R
 fun YearMonthPickerScaffold(
     selection: CalendarSelection,
     config: CalendarConfig,
-    topBar: @Composable (() -> Unit),
+    topBar: @Composable (() -> Unit) = {},
     bottomBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     content: @Composable () -> Unit

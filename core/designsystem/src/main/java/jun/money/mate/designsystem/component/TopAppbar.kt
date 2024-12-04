@@ -31,7 +31,7 @@ fun TopAppbar(
     modifier: Modifier = Modifier,
     title: String = "",
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
-    navigationType: HmTopAppbarType = HmTopAppbarType.Default,
+    navigationType: TopAppbarType = TopAppbarType.Default,
     onBackEvent: () -> Unit = {}
 ) {
     Box(
@@ -46,7 +46,7 @@ fun TopAppbar(
             modifier = modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (navigationType == HmTopAppbarType.Default) {
+            if (navigationType == TopAppbarType.Default) {
                 Box(
                     modifier = Modifier
                         .size(50.dp)
@@ -68,8 +68,8 @@ fun TopAppbar(
             Spacer(modifier = Modifier.weight(1f))
 
             when (navigationType) {
-                HmTopAppbarType.Default -> {}
-                is HmTopAppbarType.Custom -> {
+                TopAppbarType.Default -> {}
+                is TopAppbarType.Custom -> {
                     navigationType.content()
                 }
             }
@@ -91,9 +91,9 @@ fun TopAppbarIcon(
     )
 }
 
-sealed interface HmTopAppbarType {
-    data object Default : HmTopAppbarType
-    data class Custom(val content: @Composable () -> Unit) : HmTopAppbarType
+sealed interface TopAppbarType {
+    data object Default : TopAppbarType
+    data class Custom(val content: @Composable () -> Unit) : TopAppbarType
 }
 
 @Preview(showBackground = true)
@@ -112,7 +112,7 @@ fun CustomTopAppbarPreview() {
     JunTheme {
         TopAppbar(
             title = "정산",
-            navigationType = HmTopAppbarType.Custom {
+            navigationType = TopAppbarType.Custom {
                 Text(
                     modifier = Modifier
                         .padding(end = 5.dp),

@@ -31,7 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ir.ehsannarmani.compose_charts.models.Pie
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.HmTopAppbarType
+import jun.money.mate.designsystem.component.TopAppbarType
 import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.VerticalSpacer
@@ -46,7 +46,6 @@ import jun.money.mate.designsystem.theme.Yellow1
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.home.component.HomePieChart
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.ui.SplashScreen
 import jun.money.mate.utils.currency.CurrencyFormatter
 import java.time.LocalDate
 
@@ -127,7 +126,7 @@ private fun HomeScreen(
         topBar = {
             TopAppbar(
                 title = "${LocalDate.now().monthValue}월의 머니 메이트",
-                navigationType = HmTopAppbarType.Custom {
+                navigationType = TopAppbarType.Custom {
                     Row(
                         modifier = Modifier.fillMaxHeight(),
                     ) {
@@ -313,7 +312,7 @@ private fun HomeTitle(title: String) {
     VerticalSpacer(10.dp)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
     JunTheme {

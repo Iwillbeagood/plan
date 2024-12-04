@@ -42,9 +42,6 @@ internal fun MainNavHost(
             enterTransition = { fadeIn(animationSpec = tween(300)) },
             exitTransition = { fadeOut(animationSpec = tween(300)) }
         ) {
-            splashNavGraph(
-                onShowHomeScreen = { navigator.navigateTo(MainBottomNavItem.Home) },
-            )
             homeNavGraph(
                 onShowMenu = { },
                 onShowNotification = { },

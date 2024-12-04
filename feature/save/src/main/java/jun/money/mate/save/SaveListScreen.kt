@@ -14,12 +14,12 @@ import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
+import jun.money.mate.model.save.SaveType
 import jun.money.mate.save.component.SaveListBody
 import jun.money.mate.ui.DefaultScaffold
 
 @Composable
 internal fun SaveListRoute(
-    onGoBack: () -> Unit,
     onShowSavingAdd: () -> Unit,
     onShowSavingEdit: (id: Long) -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
@@ -27,16 +27,18 @@ internal fun SaveListRoute(
 ) {
     val savingListState by viewModel.savingListState.collectAsStateWithLifecycle()
     val viewMode by viewModel.savingViewMode.collectAsStateWithLifecycle()
+    val saveType by viewModel.saveType.collectAsStateWithLifecycle()
 
     SavingListScreen(
         savingListState = savingListState,
         viewMode = viewMode,
-        onGoBack = onGoBack,
+        saveType = saveType,
         onSavePlanClick = viewModel::changeSavePlanSelected,
         onSavingAdd = onShowSavingAdd,
         onSavingEdit = viewModel::editSave,
         onSavingDelete = viewModel::deleteSave,
         onExecuteChange = viewModel::executeChange,
+        onTabClick = viewModel::tabClick,
     )
 
     LaunchedEffect(Unit) {
@@ -53,36 +55,39 @@ internal fun SaveListRoute(
 private fun SavingListScreen(
     savingListState: SavingListState,
     viewMode: ViewMode,
-    onGoBack: () -> Unit,
+    saveType: SaveType,
     onSavePlanClick: (SavePlan) -> Unit,
     onSavingAdd: () -> Unit,
     onSavingEdit: () -> Unit,
     onSavingDelete: () -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
+    onTabClick: (Int) -> Unit,
 ) {
     DefaultScaffold(
-        title = "저금",
         color = Orange1,
         bottomBarVisible = viewMode == ViewMode.EDIT,
         addButtonVisible = viewMode == ViewMode.LIST,
         onAdd = onSavingAdd,
         onEdit = onSavingEdit,
         onDelete = onSavingDelete,
-        onGoBack = onGoBack,
     ) {
         SavingListContent(
+            saveType = saveType,
             savingListState = savingListState,
             onSavePlanClick = onSavePlanClick,
             onExecuteChange = onExecuteChange,
+            onTabClick = onTabClick,
         )
     }
 }
 
 @Composable
 private fun SavingListContent(
+    saveType: SaveType,
     savingListState: SavingListState,
     onSavePlanClick: (SavePlan) -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
+    onTabClick: (Int) -> Unit,
 ) {
     FadeAnimatedVisibility(savingListState is SavingListState.Empty) {
         if (savingListState is SavingListState.Empty) {
@@ -93,9 +98,11 @@ private fun SavingListContent(
     FadeAnimatedVisibility(savingListState is SavingListState.SavingListData) {
         if (savingListState is SavingListState.SavingListData) {
             SaveListBody(
-                savePlanList = SavePlanList(emptyList()),
+                selectedSaveType = saveType,
+                savePlanList = savingListState.savePlanList,
                 onSavePlanClick = onSavePlanClick,
                 onExecuteChange = onExecuteChange,
+                onTabClick = onTabClick,
             )
         }
     }
@@ -106,13 +113,14 @@ private fun SavingListContent(
 private fun SpendingListScreenPreview() {
     JunTheme {
         SavingListScreen(
-            savingListState = SavingListState.Loading,
-            onGoBack = {},
+            saveType = SaveType.ContinueSave,
+            savingListState = SavingListState.SavingListData(SavePlanList.sample),
             onSavingAdd = {},
             onSavingEdit = {},
             onSavingDelete = {},
             onSavePlanClick = {},
             onExecuteChange = { _, _ -> },
+            onTabClick = {},
             viewMode = ViewMode.EDIT
         )
     }

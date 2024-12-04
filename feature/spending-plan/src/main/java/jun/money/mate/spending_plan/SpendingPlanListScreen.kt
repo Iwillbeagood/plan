@@ -18,7 +18,6 @@ import jun.money.mate.ui.DefaultScaffold
 
 @Composable
 internal fun SpendingPlanListRoute(
-    onGoBack: () -> Unit,
     onShowSpendingPlanAdd: () -> Unit,
     onShowSpendingPlanEdit: (id: Long) -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
@@ -30,7 +29,6 @@ internal fun SpendingPlanListRoute(
     SpendingListScreen(
         spendingPlanListState = spendingPlanListState,
         spendingListViewMode = spendingListViewMode,
-        onGoBack = onGoBack,
         onSpendingPlanClick = viewModel::changeSpendingSelected,
         onSpendingPlanAdd = onShowSpendingPlanAdd,
         onSpendingPlanEdit = viewModel::editSpending,
@@ -52,7 +50,6 @@ internal fun SpendingPlanListRoute(
 private fun SpendingListScreen(
     spendingPlanListState: SpendingPlanListState,
     spendingListViewMode: ViewMode,
-    onGoBack: () -> Unit,
     onSpendingPlanClick: (SpendingPlan) -> Unit,
     onSpendingPlanAdd: () -> Unit,
     onSpendingPlanEdit: () -> Unit,
@@ -60,14 +57,12 @@ private fun SpendingListScreen(
     onSpendingTabClick: (Int) -> Unit,
 ) {
     DefaultScaffold(
-        title = "지출 계획",
         color = Red3,
         bottomBarVisible = spendingListViewMode == ViewMode.EDIT,
         addButtonVisible = spendingListViewMode == ViewMode.LIST,
         onAdd = onSpendingPlanAdd,
         onEdit = onSpendingPlanEdit,
         onDelete = onSpendingPlanDelete,
-        onGoBack = onGoBack,
     ) {
         SpendingListContent(
             spendingPlanListState = spendingPlanListState,
@@ -110,7 +105,6 @@ private fun SpendingListScreenPreview() {
     JunTheme {
         SpendingListScreen(
             spendingPlanListState = SpendingPlanListState.Loading,
-            onGoBack = {},
             onSpendingPlanAdd = {},
             onSpendingPlanClick = {},
             onSpendingPlanEdit = {},
