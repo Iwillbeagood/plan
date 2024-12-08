@@ -17,10 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import jun.money.mate.main.component.MainBottomBar
-import jun.money.mate.main.component.MainBottomNavItem
 import jun.money.mate.main.component.MainNavigator
 import jun.money.mate.model.etc.ConnectionState
 import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.network.connectivityState
 import kotlinx.collections.immutable.toPersistentList
 

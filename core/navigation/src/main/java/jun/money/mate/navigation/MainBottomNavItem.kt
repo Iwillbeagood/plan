@@ -1,4 +1,4 @@
-package jun.money.mate.main.component
+package jun.money.mate.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -14,8 +14,6 @@ import jun.money.mate.designsystem.theme.Black
 import jun.money.mate.designsystem.theme.Orange1
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem.theme.main
-import jun.money.mate.navigation.MainTabRoute
-import jun.money.mate.navigation.Route
 import jun.money.mate.res.R
 
 enum class MainBottomNavItem(
@@ -30,17 +28,17 @@ enum class MainBottomNavItem(
         route = MainTabRoute.Home,
         color = Black
     ),
-    SpendingPlan(
-        titleRes = R.string.tab_spending_plan,
-        icon = Icons.Default.CalendarToday,
-        route = MainTabRoute.SpendingPlan.List,
-        color = Red3
-    ),
     Income(
         titleRes = R.string.tab_income,
         icon = Icons.Default.AttachMoney,
         route = MainTabRoute.Income.List,
         color = main
+    ),
+    SpendingPlan(
+        titleRes = R.string.tab_spending_plan,
+        icon = Icons.Default.CalendarToday,
+        route = MainTabRoute.SpendingPlan.List,
+        color = Red3
     ),
     ConsumptionSpend(
         titleRes = R.string.tab_spending_list,

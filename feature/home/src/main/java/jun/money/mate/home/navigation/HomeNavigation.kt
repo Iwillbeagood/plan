@@ -6,6 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import jun.money.mate.home.HomeRoute
 import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.MainTabRoute
 
 fun NavController.navigateToHome(navOptions: NavOptions) {
@@ -15,10 +16,11 @@ fun NavController.navigateToHome(navOptions: NavOptions) {
 fun NavGraphBuilder.homeNavGraph(
     onShowMenu: () -> Unit,
     onShowNotification: () -> Unit,
-    onShowIncomeList: () -> Unit,
+    onShowMainNavScreen: (MainBottomNavItem) -> Unit,
     onShowIncomeAdd: () -> Unit,
-    onShowSpendingList: () -> Unit,
     onShowSpendingAdd: () -> Unit,
+    onShowSaveAdd: () -> Unit,
+    onShowConsumptionAdd: () -> Unit,
     onShowSnackBar: (MessageType) -> Unit
 ) {
     composable<MainTabRoute.Home> {
@@ -26,10 +28,11 @@ fun NavGraphBuilder.homeNavGraph(
             onShowMenu = onShowMenu,
             onShowNotification = onShowNotification,
             onShowSnackBar = onShowSnackBar,
-            onShowIncomeList = onShowIncomeList,
+            onShowMainNavScreen = onShowMainNavScreen,
             onShowIncomeAdd = onShowIncomeAdd,
-            onShowSpendingList = onShowSpendingList,
-            onShowSpendingAdd = onShowSpendingAdd
+            onShowSpendingAdd = onShowSpendingAdd,
+            onShowSaveAdd = onShowSaveAdd,
+            onShowConsumptionAdd = onShowConsumptionAdd
         )
     }
 }

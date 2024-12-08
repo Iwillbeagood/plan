@@ -96,7 +96,7 @@ fun RegularButton(
             contentColor = textColor,
             disabledContainerColor = inActiveColor
         ),
-        contentPadding = PaddingValues(vertical = verticalPadding, horizontal = 4.dp),
+        contentPadding = PaddingValues(vertical = verticalPadding, horizontal = 10.dp),
         enabled = enabled,
         onClick = {
             if (isPreventMultipleClicks) {

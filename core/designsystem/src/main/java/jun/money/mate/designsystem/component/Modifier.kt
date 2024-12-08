@@ -9,11 +9,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.theme.Gray6
+import jun.money.mate.designsystem.theme.Gray7
 
 @Stable
 fun Modifier.circleBackground(
-    color: Color = Gray6,
+    color: Color = Gray7,
     padding: Dp = 5.dp
 ): Modifier {
     return this

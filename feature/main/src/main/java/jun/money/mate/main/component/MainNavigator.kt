@@ -14,6 +14,7 @@ import jun.money.mate.consumption_spend.navigation.navigateToConsumptionList
 import jun.money.mate.home.navigation.navigateToHome
 import jun.money.mate.income.navigation.navigateToIncomeAdd
 import jun.money.mate.income.navigation.navigateToIncomeList
+import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 import jun.money.mate.navigation.argument.AddType
@@ -48,19 +49,14 @@ class MainNavigator(
 
         when (menuItem) {
             MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
-            MainBottomNavItem.Income -> navController.navigateToIncomeList()
+            MainBottomNavItem.Income ->  navController.navigateToIncomeList(navOptions)
             MainBottomNavItem.ConsumptionSpend -> navController.navigateToConsumptionList(navOptions)
             MainBottomNavItem.Save -> navController.navigateToSaveList(navOptions)
             MainBottomNavItem.SpendingPlan -> navController.navigateToSpendingPlanList(navOptions)
         }
     };
 
-    fun navigateToIncomeList() {
-        navController.navigateToIncomeList()
-    }
-
     fun navigateToIncomeAdd() {
-        navigateToIncomeList()
         navController.navigateToIncomeAdd(AddType.New)
     }
 

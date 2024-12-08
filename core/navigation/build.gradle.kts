@@ -14,4 +14,7 @@ android {
 dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.compose.navigation)
+    implementation(libs.androidx.compose.material.icon)
+    implementation(projects.core.res)
+    implementation(projects.core.designsystem)
 }

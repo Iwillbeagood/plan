@@ -15,12 +15,10 @@ import androidx.navigation.compose.NavHost
 import jun.money.mate.consumption_spend.navigation.consumptionNavGraph
 import jun.money.mate.home.navigation.homeNavGraph
 import jun.money.mate.income.navigation.incomeNavGraph
-import jun.money.mate.main.component.MainBottomNavItem
 import jun.money.mate.main.component.MainNavigator
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.save.navigation.saveNavGraph
 import jun.money.mate.spending_plan.navigation.spendingPlanNavGraph
-import jun.money.mate.splash.navigation.splashNavGraph
 
 @Composable
 internal fun MainNavHost(
@@ -45,10 +43,11 @@ internal fun MainNavHost(
             homeNavGraph(
                 onShowMenu = { },
                 onShowNotification = { },
-                onShowIncomeList = navigator::navigateToIncomeList,
+                onShowMainNavScreen = navigator::navigateTo,
                 onShowIncomeAdd = navigator::navigateToIncomeAdd,
-                onShowSpendingList = { },
-                onShowSpendingAdd = { },
+                onShowSpendingAdd = navigator::navigateToSpendingPlanAdd,
+                onShowSaveAdd = navigator::navigateToSavingAdd,
+                onShowConsumptionAdd = navigator::navigateToConsumptionAdd,
                 onShowSnackBar = onShowSnackBar,
             )
             incomeNavGraph(

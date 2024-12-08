@@ -11,6 +11,4 @@ android {
 dependencies {
     implementation(projects.core.utils)
     implementation(projects.core.dataApi)
-    implementation(libs.compose.charts)
-
 }

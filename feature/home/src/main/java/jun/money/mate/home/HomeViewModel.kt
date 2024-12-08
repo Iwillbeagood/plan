@@ -5,14 +5,12 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.ehsannarmani.compose_charts.models.Pie
-import jun.money.mate.data_api.database.IncomeRepository
-import jun.money.mate.data_api.database.SaveRepository
-import jun.money.mate.data_api.database.SpendingPlanRepository
-import jun.money.mate.designsystem.theme.Yellow1
+import jun.money.mate.domain.GetHomeDataUsecase
+import jun.money.mate.model.consumption.ConsumptionList
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.model.spending.SpendingPlanList
+import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.utils.currency.CurrencyFormatter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,27 +18,22 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
-    incomeRepository: IncomeRepository,
-    saveRepository: SaveRepository,
-    spendingPlanRepository: SpendingPlanRepository
+    getHomeDataUsecase: GetHomeDataUsecase
 ) : ViewModel() {
 
-    val homeState: StateFlow<HomeState> = combine(
-        incomeRepository.getIncomesByMonth(),
-        saveRepository.getSavePlanListFlow(),
-        spendingPlanRepository.getSpendingPlanFlow()
-    ) { incomes, savingPlans, spendingPlans ->
+    val homeState: StateFlow<HomeState> = getHomeDataUsecase().map {
         HomeState.HomeData(
-            incomeList = incomes,
-            savePlanList = savingPlans,
-            spendingPlanList = spendingPlans
+            incomeList = it.incomeList,
+            savePlanList = it.savePlanList,
+            spendingPlanList = it.spendingPlanList,
+            consumptionList = it.consumptionList
         )
     }.stateIn(
         scope = viewModelScope,
@@ -53,26 +46,25 @@ internal class HomeViewModel @Inject constructor(
 
     private var contentJob: Job? = null
 
-    fun showIncomeScreen() {
-        val state = homeState.value as? HomeState.HomeData ?: return
-
+    fun navigateTo(navItem: MainBottomNavItem) {
         viewModelScope.launch {
-            if (state.incomeList.incomes.isEmpty()) {
-                _homeEffect.emit(HomeEffect.ShowIncomeAddScreen)
-            } else {
-                _homeEffect.emit(HomeEffect.ShowIncomeListScreen)
-            }
+            _homeEffect.emit(HomeEffect.ShowMainNavScreen(navItem))
         }
     }
 
-    fun showSpendingScreen() {
-        val state = homeState.value as? HomeState.HomeData ?: return
+    fun navigateToAdd(navItem: MainBottomNavItem) {
+        navigateTo(navItem)
 
-        viewModelScope.launch {
-            if (state.spendingPlanList.spendingPlans.isEmpty()) {
-                _homeEffect.emit(HomeEffect.ShowSpendingAddScreen)
-            } else {
-                _homeEffect.emit(HomeEffect.ShowSpendingListScreen)
+        val effect = when (navItem) {
+            MainBottomNavItem.Income -> HomeEffect.ShowIncomeAddScreen
+            MainBottomNavItem.SpendingPlan -> HomeEffect.ShowSpendingAddScreen
+            MainBottomNavItem.Save -> HomeEffect.ShowSaveAddScreen
+            MainBottomNavItem.ConsumptionSpend -> HomeEffect.ShowConsumptionAddScreen
+            MainBottomNavItem.Home -> null
+        }
+        if (effect != null) {
+            viewModelScope.launch {
+                _homeEffect.emit(effect)
             }
         }
     }
@@ -88,18 +80,39 @@ internal sealed interface HomeState {
     data class HomeData(
         val incomeList: IncomeList,
         val savePlanList: SavePlanList,
-        val spendingPlanList: SpendingPlanList
+        val spendingPlanList: SpendingPlanList,
+        val consumptionList: ConsumptionList
     ) : HomeState {
 
-        val balance get() =  incomeList.total - spendingPlanList.total
+        val homeList
+            get() = listOf(
+                HomeList(
+                    value = incomeList.totalString,
+                    type = MainBottomNavItem.Income
+                ),
+                HomeList(
+                    value = spendingPlanList.totalString,
+                    type = MainBottomNavItem.SpendingPlan
+                ),
+                HomeList(
+                    value = savePlanList.totalString,
+                    type = MainBottomNavItem.Save
+                ),
+                HomeList(
+                    value = savePlanList.totalString,
+                    type = MainBottomNavItem.ConsumptionSpend
+                ),
+            )
+
+
+        val balance get() = incomeList.total - spendingPlanList.total
         val balanceString get() = CurrencyFormatter.formatAmountWon(balance)
 
-        val isShowPieChart get() = spendingPlanList.total > 0
 
-        val pieList: List<Pie>
-            get() = listOf(
-                Pie(label = "정기 지출", data = spendingPlanList.predictTotal.toDouble(), color = Yellow1),
-            )
+        data class HomeList(
+            val value: String,
+            val type: MainBottomNavItem
+        )
     }
 }
 
@@ -107,17 +120,18 @@ internal sealed interface HomeState {
 internal sealed interface HomeEffect {
 
     @Immutable
-    data object ShowIncomeListScreen : HomeEffect
+    data class ShowMainNavScreen(val navItem: MainBottomNavItem) : HomeEffect
 
     @Immutable
     data object ShowIncomeAddScreen : HomeEffect
 
     @Immutable
-    data object ShowSpendingPlanListScreen : HomeEffect
-
-    @Immutable
-    data object ShowSpendingListScreen : HomeEffect
+    data object ShowConsumptionAddScreen : HomeEffect
 
     @Immutable
     data object ShowSpendingAddScreen : HomeEffect
+
+    @Immutable
+    data object ShowSaveAddScreen : HomeEffect
+
 }

@@ -2,6 +2,7 @@ package jun.money.mate.income.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import jun.money.mate.income.IncomeAddRoute
@@ -12,8 +13,8 @@ import jun.money.mate.navigation.Route
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.navigation.utils.composableType
 
-fun NavController.navigateToIncomeList() {
-    navigate(MainTabRoute.Income.List)
+fun NavController.navigateToIncomeList(navOptions: NavOptions) {
+    navigate(MainTabRoute.Income.List, navOptions)
 }
 
 fun NavController.navigateToIncomeAdd(addType: AddType) {
