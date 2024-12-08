@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +34,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.etc.BooleanProvider
+import jun.money.mate.designsystem.etc.MultipleEventsCutter
+import jun.money.mate.designsystem.etc.get
 import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
@@ -75,12 +78,17 @@ fun RegularButton(
     modifier: Modifier = Modifier,
     text: String = stringResource(id = R.string.btn_complete),
     color: Color = MaterialTheme.colorScheme.primary,
+    style: TextStyle = JUNTheme.typography.titleNormalB,
     inActiveColor: Color = Gray6,
     textColor: Color = White1,
     isActive: Boolean = true,
     enabled: Boolean = true,
+    isPreventMultipleClicks: Boolean = true,
     borderStroke: Dp = 8.dp,
+    verticalPadding: Dp = 10.dp,
 ) {
+    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+
     Button(
         shape = RoundedCornerShape(borderStroke),
         colors = ButtonDefaults.buttonColors(
@@ -88,14 +96,20 @@ fun RegularButton(
             contentColor = textColor,
             disabledContainerColor = inActiveColor
         ),
-        contentPadding = PaddingValues(vertical = 10.dp, horizontal = 4.dp),
+        contentPadding = PaddingValues(vertical = verticalPadding, horizontal = 4.dp),
         enabled = enabled,
-        onClick = onClick,
+        onClick = {
+            if (isPreventMultipleClicks) {
+                multipleEventsCutter.processEvent(onClick)
+            } else {
+                onClick()
+            }
+        },
         modifier = modifier
     ) {
         Text(
             text = text,
-            style = JUNTheme.typography.titleNormalB,
+            style = style,
             color = textColor
         )
     }

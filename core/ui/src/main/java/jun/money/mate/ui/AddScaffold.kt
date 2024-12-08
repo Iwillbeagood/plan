@@ -16,10 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import jun.money.mate.designsystem.component.BottomToTopSlideFadeAnimatedVisibility
 import jun.money.mate.designsystem.component.CircleButton
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbar
+import jun.money.mate.designsystem.theme.main
 
 @Composable
 fun AddScaffold(
@@ -27,6 +29,28 @@ fun AddScaffold(
     color: Color,
     onGoBack: () -> Unit,
     onComplete: () -> Unit,
+    buttonVisible: Boolean = true,
+    content: @Composable () -> Unit,
+) {
+    AddScaffold(
+        title = "수입 $title",
+        buttonText = "${title}하기",
+        color = color,
+        onGoBack = onGoBack,
+        onComplete = onComplete,
+        buttonVisible = buttonVisible,
+        content = content
+    )
+}
+
+@Composable
+fun AddScaffold(
+    title: String,
+    buttonText: String,
+    color: Color,
+    onGoBack: () -> Unit,
+    onComplete: () -> Unit,
+    buttonVisible: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     Scaffold(
@@ -37,15 +61,19 @@ fun AddScaffold(
             )
         },
         bottomBar = {
-            RegularButton(
-                text = "${title}하기",
-                color = color,
-                onClick = onComplete,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 10.dp)
-                    .padding(horizontal = 10.dp),
-            )
+            BottomToTopSlideFadeAnimatedVisibility(
+                visible = buttonVisible
+            ) {
+                RegularButton(
+                    text = buttonText,
+                    color = color,
+                    onClick = onComplete,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp)
+                        .padding(horizontal = 10.dp),
+                )
+            }
         },
         containerColor = MaterialTheme.colorScheme.surface,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),

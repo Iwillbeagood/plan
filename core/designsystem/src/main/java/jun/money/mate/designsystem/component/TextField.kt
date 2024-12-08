@@ -11,12 +11,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -63,7 +62,8 @@ fun DefaultTextField(
         singleLine = true,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
             .focusRequester(requester)
             .onFocusChanged {
                 isFocus = it.isFocused
@@ -168,15 +168,16 @@ fun PasswordTextField(
 @Composable
 fun UnderlineTextField(
     value: String,
-    onValueChange: (String) -> Unit,
+    onValueChange: (String) -> Unit ,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = JUNTheme.typography.titleMediumB,
+    focus: Boolean = false,
+    readOnly: Boolean = false,
     hint: String = "",
     focusRequester: FocusRequester = FocusRequester(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
-    val requester by remember { mutableStateOf(focusRequester) }
     var isFocus by remember { mutableStateOf(false) }
 
     BasicTextField(
@@ -187,8 +188,9 @@ fun UnderlineTextField(
         onValueChange = onValueChange,
         cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
         maxLines = 1,
+        readOnly = readOnly,
         modifier = modifier
-            .focusRequester(requester)
+            .focusRequester(focusRequester)
             .onFocusChanged {
                 isFocus = it.isFocused
             },
@@ -214,6 +216,12 @@ fun UnderlineTextField(
                 }
             }
             HorizontalDivider()
+        }
+    }
+
+    LaunchedEffect(focus) {
+        if (focus) {
+            focusRequester.requestFocus()
         }
     }
 }

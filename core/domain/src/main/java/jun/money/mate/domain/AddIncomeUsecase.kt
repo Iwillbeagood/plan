@@ -15,7 +15,7 @@ class AddIncomeUsecase @Inject constructor(
         id: Long,
         title: String,
         amount: Long,
-        type: IncomeType,
+        type: IncomeType?,
         incomeDate: LocalDate,
         onSuccess: () -> Unit,
         onError: (MessageType) -> Unit
@@ -27,6 +27,11 @@ class AddIncomeUsecase @Inject constructor(
 
         if (amount <= 0) {
             onError(MessageType.Message("수입액을 입력해 주세요"))
+            return
+        }
+
+        if (type == null) {
+            onError(MessageType.Message("수입 타입을 선택해 주세요"))
             return
         }
 

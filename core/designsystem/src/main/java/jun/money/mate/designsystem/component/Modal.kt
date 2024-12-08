@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -143,8 +144,7 @@ fun DefaultBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
         containerColor = MaterialTheme.colorScheme.surfaceDim,
-        shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp),
-        dragHandle = null,
+        shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
         properties = ModalBottomSheetProperties(shouldDismissOnBackPress = false)
     ) {
         BackHandler(onBack = onDismissRequest)
@@ -152,13 +152,14 @@ fun DefaultBottomSheet(
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.surfaceDim)
-                .padding(horizontal = 16.dp, vertical = 20.dp)
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 20.dp)
                 .navigationBarsPadding()
         ) {
             if (sheetTitle.isNotEmpty()) {
                 Text(
                     text = sheetTitle,
-                    style = JUNTheme.typography.headlineMediumB,
+                    style = JUNTheme.typography.headlineSmallB,
                     color = sheetTitleColor
                 )
                 Spacer(modifier = Modifier.height(sheetContentSpace))

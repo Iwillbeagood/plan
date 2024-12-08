@@ -15,7 +15,7 @@ import jun.money.mate.designsystem.theme.Gray9
 @Composable
 fun HorizontalDivider(
     modifier: Modifier = Modifier,
-    lineColor: Color = Gray9,
+    lineColor: Color = Gray8,
     thickness: Dp = 1.dp
 ) {
     HorizontalDivider(
