@@ -23,7 +23,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.CircleIcon
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
+import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.TopAppbarType
@@ -41,6 +41,7 @@ import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.Gray9
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.home.HomeState.HomeData.HomeList
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainBottomNavItem
@@ -67,7 +68,7 @@ internal fun HomeRoute(
         onShowMenu = onShowMenu,
         onShowNotification = onShowNotification,
         onHomeListClick = viewModel::navigateTo,
-        onShowAddScreen = viewModel::navigateTo,
+        onShowAddScreen = viewModel::navigateToAdd,
     )
 
     LaunchedEffect(Unit) {
@@ -97,6 +98,8 @@ private fun HomeContent(
         if (homeState is HomeState.HomeData) {
             HomeScreen(
                 balance = homeState.balanceString,
+                predictedSpend = homeState.predictedSpendString,
+                realSpend = homeState.realSpendString,
                 homeList = homeState.homeList,
                 onShowMenu = onShowMenu,
                 onShowNotification = onShowNotification,
@@ -110,6 +113,8 @@ private fun HomeContent(
 @Composable
 private fun HomeScreen(
     balance: String,
+    predictedSpend: String,
+    realSpend: String,
     homeList: List<HomeList>,
     onHomeListClick: (MainBottomNavItem) -> Unit,
     onShowAddScreen: (MainBottomNavItem) -> Unit,
@@ -119,7 +124,7 @@ private fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppbar(
-                title = "${LocalDate.now().monthValue}월의 머니 메이트",
+                title = "${LocalDate.now().monthValue}월의 " + stringResource(jun.money.mate.res.R.string.app_name),
                 navigationType = TopAppbarType.Custom {
                     Row(
                         modifier = Modifier.fillMaxHeight(),
@@ -160,22 +165,39 @@ private fun HomeScreen(
                     modifier = Modifier.padding(14.dp)
                 ) {
                     Text(
-                        text = "남은 금액",
-                        style = JUNTheme.typography.titleLargeM,
+                        text = "예상 잔액",
+                        style = JUNTheme.typography.titleMediumM,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    VerticalSpacer(10.dp)
+                    VerticalSpacer(6.dp)
                     Text(
                         text = balance,
                         style = JUNTheme.typography.headlineSmallB,
                     )
                 }
             }
+            VerticalSpacer(10.dp)
+            HomeContentBox {
+                Column(
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    Row {
+                        Text(
+                            text = "실제 지출",
+                            style = JUNTheme.typography.titleMediumM,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = realSpend,
+                            style = JUNTheme.typography.titleMediumB,
+                            color = Red3
+                        )
+                    }
+                }
+            }
             VerticalSpacer(30.dp)
-            HomeTitle(
-                title = "월간 내역",
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-
+            HomeTitle(title = "월간 내역")
             HomeContentBox {
                 Column {
                     homeList.forEach { data ->
@@ -222,41 +244,46 @@ private fun HomeItem(
     onClick: () -> Unit,
     onAdd: () -> Unit,
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(MaterialTheme.shapes.medium)
-            .padding(10.dp)
-            .clickable(onClick = onClick),
+    Surface(
+        onClick = onClick,
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceDim,
+        contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
-        CircleIcon(
-            icon = type.icon,
-            tint = type.color,
-        )
-        Column(
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 16.dp)
+                .fillMaxWidth()
+                .padding(10.dp)
         ) {
-            Text(
-                text = value,
-                style = JUNTheme.typography.titleNormalM,
-                textAlign = TextAlign.End,
+            CircleIcon(
+                icon = type.icon,
+                tint = type.color,
             )
-            Text(
-                text = title,
-                style = JUNTheme.typography.titleSmallM,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text(
+                    text = value,
+                    style = JUNTheme.typography.titleNormalB,
+                    textAlign = TextAlign.End,
+                )
+                Text(
+                    text = title,
+                    style = JUNTheme.typography.titleSmallM,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            RegularButton(
+                onClick = onAdd,
+                text = "추가",
+                textColor = Black,
+                color = Gray9,
+                style = JUNTheme.typography.labelLargeM,
             )
         }
-        RegularButton(
-            onClick = onAdd,
-            text = "추가",
-            textColor = Black,
-            color = Gray9,
-            style = JUNTheme.typography.labelLargeM,
-        )
     }
 }
 
@@ -268,7 +295,7 @@ private fun HomeTitle(
     Text(
         text = title,
         style = JUNTheme.typography.titleNormalM,
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = 20.dp),
     )
     VerticalSpacer(10.dp)
 }
@@ -279,6 +306,8 @@ private fun HomeScreenPreview() {
     JunTheme {
         HomeScreen(
             balance = "100,000원",
+            predictedSpend = "200,000원",
+            realSpend = "150,000원",
             onShowMenu = {},
             onShowNotification = {},
             homeList = listOf(

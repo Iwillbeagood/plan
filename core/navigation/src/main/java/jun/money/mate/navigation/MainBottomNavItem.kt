@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import jun.money.mate.designsystem.theme.Black
 import jun.money.mate.designsystem.theme.Orange1
+import jun.money.mate.designsystem.theme.Purple1
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.res.R
@@ -44,7 +45,7 @@ enum class MainBottomNavItem(
         titleRes = R.string.tab_spending_list,
         icon = Icons.Default.AddCard,
         route = MainTabRoute.ConsumptionSpend.List,
-        color = Red3
+        color = Purple1
     ),
     Save(
         titleRes = R.string.tab_save,

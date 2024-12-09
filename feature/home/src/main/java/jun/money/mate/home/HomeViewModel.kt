@@ -44,8 +44,6 @@ internal class HomeViewModel @Inject constructor(
     private val _homeEffect = MutableSharedFlow<HomeEffect>()
     val homeEffect: SharedFlow<HomeEffect> get() = _homeEffect.asSharedFlow()
 
-    private var contentJob: Job? = null
-
     fun navigateTo(navItem: MainBottomNavItem) {
         viewModelScope.launch {
             _homeEffect.emit(HomeEffect.ShowMainNavScreen(navItem))
@@ -95,19 +93,22 @@ internal sealed interface HomeState {
                     type = MainBottomNavItem.SpendingPlan
                 ),
                 HomeList(
-                    value = savePlanList.totalString,
-                    type = MainBottomNavItem.Save
+                    value = consumptionList.totalString,
+                    type = MainBottomNavItem.ConsumptionSpend
                 ),
                 HomeList(
                     value = savePlanList.totalString,
-                    type = MainBottomNavItem.ConsumptionSpend
+                    type = MainBottomNavItem.Save
                 ),
             )
 
+        private val predictedSpend get() = savePlanList.total + spendingPlanList.total
+        val predictedSpendString get() = CurrencyFormatter.formatAmountWon(predictedSpend)
+        private val realSpend get() = savePlanList.executedTotal + spendingPlanList.predictTotal + consumptionList.total
+        val realSpendString get() = CurrencyFormatter.formatAmountWon(realSpend)
 
-        val balance get() = incomeList.total - spendingPlanList.total
+        val balance get() = incomeList.total - predictedSpend
         val balanceString get() = CurrencyFormatter.formatAmountWon(balance)
-
 
         data class HomeList(
             val value: String,

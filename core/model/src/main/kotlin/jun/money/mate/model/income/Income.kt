@@ -47,7 +47,7 @@ data class IncomeList(
     val total get() = incomes.sumOf { it.amount }
     val isEmpty get() = total > 0
 
-    val totalString get() = if (isEmpty) Utils.formatAmountWon(total) else "내역이 존재하지 않습니다"
+    val totalString get() = Utils.formatAmountWon(total)
 
     val regularIncomes get() = incomes.filter { it.type == IncomeType.REGULAR }
 

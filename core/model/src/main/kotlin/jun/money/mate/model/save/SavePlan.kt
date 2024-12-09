@@ -57,10 +57,10 @@ data class SavePlanList(
     val continuePlans get() = savePlans.filter { it.saveType == SaveType.ContinueSave }
     val planingPlans get() = savePlans.filter { it.saveType == SaveType.PlaningSave }
 
-    private val executedTotal get() = savePlans.filter { it.executed }.sumOf { it.amount }
+    val executedTotal get() = savePlans.filter { it.executed }.sumOf { it.amount }
     val executedTotalString get() = Utils.formatAmountWon(executedTotal)
 
-    private val total get() = savePlans.sumOf { it.amount }
+    val total get() = savePlans.sumOf { it.amount }
     val totalString get() = Utils.formatAmountWon(total)
     val isEmpty get() = savePlans.isEmpty()
 
