@@ -1,27 +1,38 @@
 package jun.money.mate.home.navigation
 
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.navOptions
-import jun.money.mate.model.error.MessageType
-import jun.money.mate.navigation.Route
+import jun.money.mate.home.HomeRoute
+import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.navigation.MainBottomNavItem
+import jun.money.mate.navigation.MainTabRoute
 
-fun NavController.navigateToHome() {
-    val navOptions = navOptions {
-        restoreState = true
-        popUpTo(graph.findStartDestination().id) {
-            inclusive = true
-        }
-    }
-
-    navigate(Route.Home, navOptions)
+fun NavController.navigateToHome(navOptions: NavOptions) {
+    navigate(MainTabRoute.Home, navOptions)
 }
 
 fun NavGraphBuilder.homeNavGraph(
-    onShowErrorSnackBar: (MessageType) -> Unit
+    onShowMenu: () -> Unit,
+    onShowNotification: () -> Unit,
+    onShowMainNavScreen: (MainBottomNavItem) -> Unit,
+    onShowIncomeAdd: () -> Unit,
+    onShowSpendingAdd: () -> Unit,
+    onShowSaveAdd: () -> Unit,
+    onShowConsumptionAdd: () -> Unit,
+    onShowSnackBar: (MessageType) -> Unit
 ) {
-    composable<Route.Home> {
+    composable<MainTabRoute.Home> {
+        HomeRoute(
+            onShowMenu = onShowMenu,
+            onShowNotification = onShowNotification,
+            onShowSnackBar = onShowSnackBar,
+            onShowMainNavScreen = onShowMainNavScreen,
+            onShowIncomeAdd = onShowIncomeAdd,
+            onShowSpendingAdd = onShowSpendingAdd,
+            onShowSaveAdd = onShowSaveAdd,
+            onShowConsumptionAdd = onShowConsumptionAdd
+        )
     }
 }

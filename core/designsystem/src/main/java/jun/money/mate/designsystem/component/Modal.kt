@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -36,13 +37,13 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.JUNTheme
-import jun.money.mate.stringres.R
+import jun.money.mate.res.R
 
 @Composable
 fun DefaultDialog(
     title: String = "",
     onDismissRequest: () -> Unit = {},
-    contentSpace: Dp = 20.dp,
+    contentSpace: Dp = 30.dp,
     contentPadding: Dp = 16.dp,
     button1: @Composable RowScope.() -> Unit = {},
     button2: (@Composable RowScope.() -> Unit)? = null,
@@ -65,12 +66,11 @@ fun DefaultDialog(
                     Text(
                         text = title,
                         style = JUNTheme.typography.titleLargeM,
-                        textAlign = TextAlign.Center,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 10.dp)
+                            .padding(horizontal = 20.dp)
+                            .padding(top = 10.dp)
                     )
-                    HorizontalDivider()
                     Spacer(modifier = Modifier.height(contentSpace))
                 }
                 Column(
@@ -100,7 +100,7 @@ fun TwoBtnDialog(
     contentPadding: Dp = 16.dp,
     button1Text: String = stringResource(id = R.string.btn_no),
     button2Text: String = stringResource(id = R.string.btn_complete),
-    button1Click: () -> Unit,
+    button1Click: () -> Unit = onDismissRequest,
     button2Click: () -> Unit,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -136,16 +136,15 @@ fun DefaultBottomSheet(
     sheetTitle: String = "",
     sheetTitleColor: Color = MaterialTheme.colorScheme.onSurface,
     sheetContentSpace: Dp = 20.dp,
-    sheetContent: @Composable () -> Unit = {},
     sheetButton1: (@Composable RowScope.() -> Unit)? = null,
     sheetButton2: (@Composable RowScope.() -> Unit)? = null,
+    sheetContent: @Composable () -> Unit = {},
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
         containerColor = MaterialTheme.colorScheme.surfaceDim,
-        shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp),
-        dragHandle = null,
+        shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
         properties = ModalBottomSheetProperties(shouldDismissOnBackPress = false)
     ) {
         BackHandler(onBack = onDismissRequest)
@@ -153,13 +152,14 @@ fun DefaultBottomSheet(
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.surfaceDim)
-                .padding(horizontal = 16.dp, vertical = 20.dp)
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 20.dp)
                 .navigationBarsPadding()
         ) {
             if (sheetTitle.isNotEmpty()) {
                 Text(
                     text = sheetTitle,
-                    style = JUNTheme.typography.headlineMediumB,
+                    style = JUNTheme.typography.headlineSmallB,
                     color = sheetTitleColor
                 )
                 Spacer(modifier = Modifier.height(sheetContentSpace))
@@ -180,28 +180,69 @@ fun DefaultBottomSheet(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TwoButtonBottomSheet(
+    onDismissRequest: () -> Unit,
+    sheetState: SheetState = rememberModalBottomSheetState(true),
+    sheetTitle: String = "",
+    sheetTitleColor: Color = MaterialTheme.colorScheme.onSurface,
+    sheetContentSpace: Dp = 20.dp,
+    button1Text: String = stringResource(id = R.string.btn_no),
+    button2Text: String = stringResource(id = R.string.btn_complete),
+    button1Click: () -> Unit = onDismissRequest,
+    button2Click: () -> Unit = {},
+    sheetContent: @Composable () -> Unit = {},
+) {
+    DefaultBottomSheet(
+        sheetState = sheetState,
+        onDismissRequest = onDismissRequest,
+        sheetTitle = sheetTitle,
+        sheetTitleColor = sheetTitleColor,
+        sheetContentSpace = sheetContentSpace,
+        sheetContent = sheetContent,
+        sheetButton1 = {
+            RegularButton(
+                text = button1Text,
+                modifier = Modifier.weight(3f),
+                isActive = false,
+                onClick = button1Click
+            )
+        },
+        sheetButton2 = {
+            RegularButton(
+                text = button2Text,
+                modifier = Modifier.weight(7f),
+                onClick = button2Click
+            )
+        },
+    )
+}
+
 @Preview
 @Composable
 private fun TextDialogPreview() {
     JunTheme {
         DefaultDialog(
-            title = "배차요청",
+            title = "요청",
             content = {
-                Text(text = "배차요청을 하시겠습니까?")
+                Text(text = "요청을 하시겠습니까?")
             },
             button1 = {
                 RegularButton(
                     text = "아니요",
                     modifier = Modifier.weight(3f),
-                    isActive = false
-                ) {}
+                    isActive = false,
+                    onClick = {}
+                )
             },
             button2 = {
                 RegularButton(
                     text = "예",
-                    modifier = Modifier.weight(7f)
-                ) {
-                }
+                    modifier = Modifier.weight(7f),
+                    onClick = {},
+                )
+
             },
             onDismissRequest = {}
         )
@@ -215,10 +256,10 @@ private fun BottomScaffoldPreview() {
     JunTheme {
         DefaultBottomSheet(
             sheetState = SheetState(true, Density(1f), SheetValue.Expanded, { true }, false),
-            sheetTitle = "화물등록",
+            sheetTitle = "등록",
             sheetContent = {
                 Text(
-                    text = "화물 등록을 하시겠습니까?",
+                    text = "등록을 하시겠습니까?",
                     style = JUNTheme.typography.titleLargeM,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -227,15 +268,16 @@ private fun BottomScaffoldPreview() {
                 RegularButton(
                     text = "아니요",
                     modifier = Modifier.weight(3f),
-                    isActive = false
-                ) {}
+                    isActive = false,
+                    onClick = {}
+                )
             },
             sheetButton2 = {
                 RegularButton(
                     text = "예",
-                    modifier = Modifier.weight(7f)
-                ) {
-                }
+                    modifier = Modifier.weight(7f),
+                    onClick = {},
+                )
             },
             onDismissRequest = { /*TODO*/ }
         )

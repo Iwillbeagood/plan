@@ -19,7 +19,7 @@ import java.time.LocalDate
 fun DatePicker(
     sheetState: SheetState = rememberModalBottomSheetState(true),
     selectedDate: LocalDate = LocalDate.now(),
-    timeBoundary: ClosedRange<LocalDate> = LocalDate.now().let { now -> now..now.plusYears(1) },
+    timeBoundary: ClosedRange<LocalDate> = LocalDate.now().let { now -> now.withDayOfMonth(1)..now.withDayOfMonth(now.lengthOfMonth()) },
     onDismissRequest: () -> Unit,
     onDateSelect: (LocalDate) -> Unit,
 ) {

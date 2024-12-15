@@ -21,7 +21,6 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.network)
     implementation(projects.core.utils)
-    implementation(projects.core.navigation)
 
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)

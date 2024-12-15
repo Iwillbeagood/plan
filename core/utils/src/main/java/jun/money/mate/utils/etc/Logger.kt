@@ -1,8 +1,8 @@
 package kic.owner2.utils.etc
 
 import android.util.Log
+import jun.money.mate.utils.BuildConfig
 import jun.money.mate.utils.etc.AndroidLogger
-import kic.owner2.utils.BuildConfig
 import java.lang.StringBuilder
 
 object Logger : AndroidLogger {

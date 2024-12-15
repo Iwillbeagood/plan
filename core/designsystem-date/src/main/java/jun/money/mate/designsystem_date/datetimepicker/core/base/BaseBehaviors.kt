@@ -1,7 +1,7 @@
 package jun.money.mate.designsystem_date.datetimepicker.core.base
 
-import kic.owner2.designsystem_date.datetimepicker.core.util.BaseConstants
-import kic.owner2.designsystem_date.datetimepicker.models.BaseSelection
+import jun.money.mate.designsystem_date.datetimepicker.core.util.BaseConstants
+import jun.money.mate.designsystem_date.datetimepicker.models.BaseSelection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

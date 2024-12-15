@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -16,26 +17,27 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.etc.BooleanProvider
+import jun.money.mate.designsystem.theme.Black
 import jun.money.mate.designsystem.theme.Gray5
-import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultSwitch(
     checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     checkedColor: Color = main,
     uncheckedColor: Color = Gray5,
-    onCheckedChange: ((Boolean) -> Unit)?,
 ) {
-    CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+    CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
         Switch(
             checked = checked,
             colors = SwitchDefaults.colors(
@@ -65,17 +67,21 @@ fun DefaultSwitch(
 fun TextSwitch(
     text: String,
     checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    textColor: Color = White1,
+    style: TextStyle = JUNTheme.typography.titleNormalB,
     checkedColor: Color = main,
     uncheckedColor: Color = Gray5,
-    onCheckedChange: ((Boolean) -> Unit)?,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
-        Text(text = text, color = textColor, style = JUNTheme.typography.titleNormalB)
+        Text(
+            text = text,
+            color = if (checked) Black else Gray5,
+            style = style
+        )
         Spacer(modifier = Modifier.width(6.dp))
         DefaultSwitch(
             checked = checked,
@@ -96,10 +102,11 @@ private fun SwitchPreview(
     JunTheme {
         Column {
             DefaultSwitch(
-                checked = checked
-            ) {
+                checked = checked,
+                onCheckedChange = {
 
-            }
+                }
+            )
         }
     }
 }
@@ -114,9 +121,10 @@ private fun TextSwitchPreview(
             TextSwitch(
                 text = "자동",
                 checked = checked,
-            ) {
+                onCheckedChange = {
 
-            }
+                }
+            )
         }
     }
 }

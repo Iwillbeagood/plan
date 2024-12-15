@@ -1,5 +1,8 @@
 package jun.money.mate.database.util
 
+import jun.money.mate.model.spending.SpendingType
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import kotlin.reflect.KProperty1
 
 fun <T : Any> generateInsertQuery(entity: T, tableName: String): String {
@@ -22,6 +25,8 @@ private fun formatValue(value: Any?): String {
     return when (value) {
         is String -> "'$value'"
         is Boolean -> if (value) "1" else "0"
+        is SpendingType -> "'${value.name}'"
+        is LocalDate -> "'${value.format(DateTimeFormatter.ISO_LOCAL_DATE)}'"
         else -> value.toString()
     }
 }

@@ -1,6 +1,6 @@
 package jun.money.mate.data.util.apiResult
 
-import jun.money.mate.model.error.NoticeErrorType
+import jun.money.mate.model.etc.error.NoticeErrorType
 import kic.owner2.utils.etc.Logger
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind

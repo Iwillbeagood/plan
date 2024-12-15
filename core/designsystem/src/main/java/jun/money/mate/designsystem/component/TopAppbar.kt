@@ -25,15 +25,13 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.R
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.JUNTheme
-import jun.money.mate.designsystem.theme.LightBlue2
 
 @Composable
 fun TopAppbar(
     modifier: Modifier = Modifier,
     title: String = "",
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceDim,
-    lineColor: Color = LightBlue2,
-    navigationType: HmTopAppbarType = HmTopAppbarType.Default,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    navigationType: TopAppbarType = TopAppbarType.Default,
     onBackEvent: () -> Unit = {}
 ) {
     Box(
@@ -42,41 +40,40 @@ fun TopAppbar(
             .height(50.dp)
             .background(backgroundColor)
             .statusBarsPadding()
+            .padding(end = 10.dp)
     ) {
         Row(
             modifier = modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clickable(onClick = onBackEvent)
-            ) {
-                TopAppbarIcon(
-                    modifier = Modifier.align(Alignment.Center),
-                    tint = MaterialTheme.colorScheme.onSurface,
-                    iconId = R.drawable.ic_back
-                )
+            if (navigationType == TopAppbarType.Default) {
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clickable(onClick = onBackEvent)
+                ) {
+                    TopAppbarIcon(
+                        iconId = R.drawable.ic_back,
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
+            } else {
+                HorizontalSpacer(20.dp)
             }
             Text(
                 text = title,
-                style = JUNTheme.typography.titleMediumM
+                style = JUNTheme.typography.titleNormalB
             )
             Spacer(modifier = Modifier.weight(1f))
 
             when (navigationType) {
-                HmTopAppbarType.Default -> {}
-                is HmTopAppbarType.Custom -> {
+                TopAppbarType.Default -> {}
+                is TopAppbarType.Custom -> {
                     navigationType.content()
                 }
             }
         }
-        HorizontalDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
-            lineColor = lineColor
-        )
     }
 }
 
@@ -94,9 +91,9 @@ fun TopAppbarIcon(
     )
 }
 
-sealed interface HmTopAppbarType {
-    data object Default : HmTopAppbarType
-    data class Custom(val content: @Composable () -> Unit) : HmTopAppbarType
+sealed interface TopAppbarType {
+    data object Default : TopAppbarType
+    data class Custom(val content: @Composable () -> Unit) : TopAppbarType
 }
 
 @Preview(showBackground = true)
@@ -104,7 +101,7 @@ sealed interface HmTopAppbarType {
 fun BasicTopAppbarPreview() {
     JunTheme {
         TopAppbar(
-            title = "화물등록"
+            title = "등록"
         )
     }
 }
@@ -115,7 +112,7 @@ fun CustomTopAppbarPreview() {
     JunTheme {
         TopAppbar(
             title = "정산",
-            navigationType = HmTopAppbarType.Custom {
+            navigationType = TopAppbarType.Custom {
                 Text(
                     modifier = Modifier
                         .padding(end = 5.dp),

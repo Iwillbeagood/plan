@@ -33,7 +33,7 @@ include(
     ":core:model",
     ":core:navigation",
     ":core:network",
-    ":core:stringRes",
+    ":core:res",
     ":core:testing",
     ":core:ui",
     ":core:utils"
@@ -42,5 +42,11 @@ include(
 // feature
 include(
     ":feature:main",
+    ":feature:splash",
+
     ":feature:home",
+    ":feature:income",
+    ":feature:save",
+    ":feature:spending-plan",
+    ":feature:comsumption-spend",
 )

@@ -36,7 +36,7 @@ internal fun CalendarHeaderItemComponent(
             text = label,
             style = headerTextStyle,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.surfaceVariant
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }

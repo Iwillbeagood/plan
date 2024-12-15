@@ -1,10 +1,10 @@
 package jun.money.mate.designsystem_date.datetimepicker.core.util
 
-import android.R
 import androidx.compose.ui.unit.dp
-import kic.owner2.designsystem_date.datetimepicker.models.LibOrientation
-import kic.owner2.designsystem_date.datetimepicker.models.ButtonStyle
-import kic.owner2.designsystem_date.datetimepicker.views.SelectionButton
+import android.R
+import jun.money.mate.designsystem_date.datetimepicker.models.ButtonStyle
+import jun.money.mate.designsystem_date.datetimepicker.models.LibOrientation
+import jun.money.mate.designsystem_date.datetimepicker.views.SelectionButton
 
 object BaseConstants {
 

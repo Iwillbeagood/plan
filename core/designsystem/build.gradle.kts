@@ -18,6 +18,6 @@ dependencies {
     implementation(libs.landscapist.coil)
     implementation(libs.landscapist.animation)
 
-    implementation(projects.core.stringRes)
+    implementation(projects.core.res)
     implementation(libs.androidx.activity.compose)
 }

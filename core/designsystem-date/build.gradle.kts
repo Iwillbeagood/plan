@@ -16,6 +16,6 @@ dependencies {
     implementation(libs.snapper)
     implementation(libs.kotlinx.immutable)
 
-    implementation(projects.core.stringRes)
+    implementation(projects.core.res)
     implementation(projects.core.designsystem)
 }

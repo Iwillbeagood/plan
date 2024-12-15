@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">머니 메이트</string>
+    <string name="main_title">Money Mate</string>
+
+    <string name="app_copyright">Copyright 머니 메이트 All Right Reserved</string>
+    <string name="app_copyright2">이 프로그램의 저작권은 머니 메이트에 있습니다.\n이 프로그램은 저작권법과 프로그램 보호법에 의해 보호받고 있으며\n무단 개작, 복사, 재배포 등을 금지합니다.</string>
+
+    <string name="tab_home">홈</string>
+    <string name="tab_income">수입</string>
+    <string name="tab_spending_list">소비</string>
+    <string name="tab_save">저금</string>
+    <string name="tab_spending_plan">지출계획</string>
+
+    <string name="btn_complete">확인</string>
+    <string name="btn_setting">설정</string>
+    <string name="btn_update">업데이트</string>
+    <string name="btn_select_complete">선택완료</string>
+    <string name="btn_yes">예</string>
+    <string name="btn_no">아니요</string>
+    <string name="btn_exit">종료</string>
+    <string name="btn_login">로그인</string>
+    <string name="btn_register">등록</string>
+    <string name="btn_register2">등록하기</string>
+    <string name="btn_dispatch">배차</string>
+    <string name="btn_open">열기</string>
+    <string name="btn_close">닫기</string>
+    <string name="btn_cancel">취소</string>
+    <string name="btn_close_today">하루동안 이 창을 열지 않음</string>
+    <string name="btn_auto_login">자동 로그인</string>
+    <string name="btn_phone_call">전화 연결</string>
+    <string name="btn_show_all">전체보기</string>
+    <string name="btn_change">변경</string>
+    <string name="btn_changing">변경하기</string>
+    <string name="btn_agree">동의</string>
+    <string name="btn_refusal">거절</string>
+    <string name="btn_reject">거부</string>
+    <string name="btn_select">선택</string>
+    <string name="btn_refresh">새로고침</string>
+    <string name="btn_search">검색하기</string>
+    <string name="btn_delete">삭제</string>
+    <string name="btn_delete_all">전체 삭제</string>
+
+</resources>

@@ -6,7 +6,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import kic.owner2.designsystem_date.datetimepicker.core.util.ExperimentalAnimationGraphicsApi
+import jun.money.mate.designsystem_date.datetimepicker.core.util.ExperimentalAnimationGraphicsApi
 import org.xmlpull.v1.XmlPullParserException
 
 /**

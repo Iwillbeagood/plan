@@ -1,5 +1,6 @@
 package jun.money.mate.navigation
 
+import jun.money.mate.navigation.argument.AddType
 import kotlinx.serialization.Serializable
 
 sealed interface Route {
@@ -7,45 +8,53 @@ sealed interface Route {
     @Serializable
     data object Splash : Route
 
-    @Serializable
-    data object CargoRegistration : Route
-
-    @Serializable
-    data object Login : Route
-
-    @Serializable
-    data object Home : Route
-
-    @Serializable
-    data object Push : Route
-
-    @Serializable
-    data object MyInfo : Route
-
-    @Serializable
-    data class CargoDetail(val cargoId: String) : Route
 }
 
-sealed interface MainMenuRoute : Route {
+sealed interface MainTabRoute : Route {
+
 
     @Serializable
-    data object CustomerService : MainMenuRoute
-    @Serializable
-    data object MyList : MainMenuRoute
-    @Serializable
-    data object Settlement : MainMenuRoute
-    @Serializable
-    data object Deposit : MainMenuRoute
-    @Serializable
-    data object Mileage : MainMenuRoute
-    @Serializable
-    data object Notice : MainMenuRoute
+    data object Home : MainTabRoute
+
 
     @Serializable
-    sealed interface Setting : MainMenuRoute {
+    sealed interface Income : MainTabRoute {
+
         @Serializable
-        data object Main : Setting
+        data object List : Income
+
         @Serializable
-        data object Push : Setting
+        data class Add(val addType: AddType) : Income
+    }
+
+    @Serializable
+    sealed interface ConsumptionSpend : MainTabRoute {
+
+        @Serializable
+        data object List : ConsumptionSpend
+
+        @Serializable
+        data class Add(val addType: AddType) : ConsumptionSpend
+    }
+
+    @Serializable
+    sealed interface Save : MainTabRoute {
+
+        @Serializable
+        data object List : Save
+
+        @Serializable
+        data class Add(val addType: AddType) : Save
+    }
+
+    @Serializable
+    sealed interface SpendingPlan : MainTabRoute {
+
+        @Serializable
+        data object List : SpendingPlan
+
+        @Serializable
+        data class Add(val addType: AddType) : SpendingPlan
     }
 }
+

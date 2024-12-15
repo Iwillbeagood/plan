@@ -2,7 +2,7 @@ package jun.money.mate.designsystem_date.datetimepicker.models
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import kic.owner2.designsystem_date.datetimepicker.core.util.IconSource
+import jun.money.mate.designsystem_date.datetimepicker.core.util.IconSource
 
 abstract class Header {
 

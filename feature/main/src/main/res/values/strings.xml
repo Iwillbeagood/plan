@@ -6,7 +6,7 @@
 
     <string name="update_dialog_title">업데이트 요청</string>
 
-    <string name="app_close_dialog_title">화물맨 앱 종료</string>
-    <string name="app_close_dialog_content">화물맨 앱을 종료하시겠습니까?\n[예]를 선택하시면 앱이 종료됩니다.</string>
+    <string name="app_close_dialog_title">머니 메이트 앱 종료</string>
+    <string name="app_close_dialog_content">머니 메이트 앱을 종료하시겠습니까?\n[예]를 선택하시면 앱이 종료됩니다.</string>
 
 </resources>
