@@ -45,9 +45,8 @@
 
 ### Data Layer
 
-**TripGuide**는 data layer에 Repository pattern을 사용하여 데이터 저장소(로컬 데이터베이스, API)에 대한 접근을 추상화합니다. data layer에 집중된 관심사를 분리하기 위해, 로컬 데이터베이스(Room)와 Repository Interface를 별도의 모듈로 분리하여 관리합니다.
+**MoneyMate**는 data layer에 Repository pattern을 사용하여 데이터 저장소에 대한 접근을 추상화합니다. data layer에 집중된 관심사를 분리하기 위해, 로컬 데이터베이스(Room)와 Repository Interface를 별도의 모듈로 분리하여 관리합니다.
 
+### Dependency Graph
 
-## Open API
-
-**TripGuide**는 한국관광공사의 Open API와 주소 검색을 위한 카카오 주소 검색 API를 사용하고 있습니다.
+![Dependency Graph](./dependencyGraph.png)
