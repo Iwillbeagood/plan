@@ -50,3 +50,11 @@
 ### Dependency Graph
 
 ![Dependency Graph](./dependencyGraph.png)
+
+### Features Overview
+<div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/cbfb71b1-4182-40ff-aef6-cca42d94eb64" alt="전체" width="300">
+  <img src="https://github.com/user-attachments/assets/d52ea667-8f38-407d-934f-c0fc79262a58" alt="수입" width="300">
+</div>
+
+
