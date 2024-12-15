@@ -3,7 +3,7 @@
 <h1 align="center">MoneyMate</h1>
 
 <p align="center">  
-🗡️ MoneyMate는 돈과 관련된 월간 계획을 세워 지출 흐름을 관리할 수 있는 애플리케이션 입니다. 
+🗡️ MoneyMate는 매달의 지출, 소비, 저축 계획을 간단하게 세우고, 계획이 제대로 이행되고 있는지 추적할 수 있도록 도와줍니다.
 </p>
 
 
