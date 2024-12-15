@@ -130,28 +130,28 @@ private fun HomeScreen(
             TopAppbar(
                 title = "${LocalDate.now().monthValue}월의 " + stringResource(jun.money.mate.res.R.string.app_name),
                 navigationType = TopAppbarType.Custom {
-                    Row(
-                        modifier = Modifier.fillMaxHeight(),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Notifications,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .clickable(onClick = onShowNotification)
-                                .padding(horizontal = 5.dp),
-                        )
-                        Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .clickable(onClick = onShowMenu)
-                                .padding(horizontal = 5.dp),
-                        )
-                    }
+//                    Row(
+//                        modifier = Modifier.fillMaxHeight(),
+//                    ) {
+//                        Icon(
+//                            imageVector = Icons.Default.Notifications,
+//                            contentDescription = null,
+//                            tint = MaterialTheme.colorScheme.onSurface,
+//                            modifier = Modifier
+//                                .fillMaxHeight()
+//                                .clickable(onClick = onShowNotification)
+//                                .padding(horizontal = 5.dp),
+//                        )
+//                        Icon(
+//                            imageVector = Icons.Default.Menu,
+//                            contentDescription = null,
+//                            tint = MaterialTheme.colorScheme.onSurface,
+//                            modifier = Modifier
+//                                .fillMaxHeight()
+//                                .clickable(onClick = onShowMenu)
+//                                .padding(horizontal = 5.dp),
+//                        )
+//                    }
                 }
             )
         },
