@@ -5,6 +5,7 @@ import jun.money.mate.database.dao.IncomeDao
 import jun.money.mate.database.entity.IncomeEntity
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
+import jun.money.mate.model.income.IncomeType
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -63,10 +64,16 @@ class IncomeRepositoryImpl @Inject constructor(
     }
 
     override fun getIncomesByMonth(data: LocalDate): Flow<IncomeList> {
-        return incomeDao.getIncomesByMonth(
-            year = data.year.toString(),
-            month = data.monthValue.toString()
-        ).map { list ->
+        return incomeDao.getIncomeFlow().map {
+            it.filter {
+                when (it.type) {
+                    IncomeType.REGULAR -> true
+                    IncomeType.VARIABLE -> {
+                        it.incomeDate.monthValue == data.monthValue
+                    }
+                }
+            }
+        }.map { list ->
             IncomeList(
                 list.map {
                     Income(
