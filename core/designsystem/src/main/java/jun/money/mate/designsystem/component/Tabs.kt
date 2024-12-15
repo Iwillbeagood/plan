@@ -98,7 +98,7 @@ fun ScrollableTab(
     onTabClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     style: TextStyle = JUNTheme.typography.titleMediumM,
-    containerColor: Color = MaterialTheme.colorScheme.surface
+    containerColor: Color = MaterialTheme.colorScheme.surfaceDim
 ) {
     val density = LocalDensity.current
     val tabWidths = remember {
