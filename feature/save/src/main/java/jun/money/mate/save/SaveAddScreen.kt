@@ -161,6 +161,20 @@ private fun SaveAddBody(
             .verticalScroll(listState)
             .animateContentSize()
     ) {
+        AddTitleContent(
+            "저금 카테고리",
+        ) {
+            TextButton(
+                text = saveCategory?.name ?: "카테고리를 선택해주세요",
+                onClick = onShowCategoryBottomSheet
+            )
+        }
+        AddTitleContent("저금 날짜") {
+            TextButton(
+                text = "${date}일",
+                onClick = onShowDateBottomSheet
+            )
+        }
         AddTitleContent("저금 계획명") {
             DefaultTextField(
                 value = title,
@@ -195,20 +209,6 @@ private fun SaveAddBody(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-        }
-        AddTitleContent(
-            "저금 카테고리",
-        ) {
-            TextButton(
-                text = saveCategory?.name ?: "카테고리를 선택해주세요",
-                onClick = onShowCategoryBottomSheet
-            )
-        }
-        AddTitleContent("저금 날짜") {
-            TextButton(
-                text = "${date}일",
-                onClick = onShowDateBottomSheet
-            )
         }
         VerticalSpacer(30.dp)
     }
