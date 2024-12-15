@@ -10,11 +10,11 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.model)
-    implementation(projects.core.res)
-    implementation(projects.core.designsystem)
-    implementation(projects.core.designsystemDate)
-    implementation(projects.core.utils)
+    api(projects.core.model)
+    api(projects.core.res)
+    api(projects.core.designsystem)
+    api(projects.core.utils)
+    api(libs.androidx.compose.material.icon)
 
-    implementation(libs.androidx.compose.material.icon)
+    implementation(projects.core.designsystemDate)
 }

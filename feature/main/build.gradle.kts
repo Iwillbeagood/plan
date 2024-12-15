@@ -17,5 +17,4 @@ dependencies {
     implementation(projects.feature.save)
 
     implementation(projects.core.network)
-    implementation(projects.core.utils)
 }

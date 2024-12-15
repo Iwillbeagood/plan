@@ -9,7 +9,5 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.dataApi)
     implementation(projects.core.designsystemDate)
-    implementation(project(":feature:income"))
 }

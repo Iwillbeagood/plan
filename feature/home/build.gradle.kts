@@ -7,8 +7,3 @@ plugins {
 android {
     setNamespace("home")
 }
-
-dependencies {
-    implementation(projects.core.utils)
-    implementation(projects.core.dataApi)
-}
