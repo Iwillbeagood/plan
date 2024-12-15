@@ -33,8 +33,8 @@ private enum class PriceButton(
 ) {
     PRICE_1000(1000, "+ 1천원"),
     PRICE_10000(10000, "+ 1만원"),
-    PRICE_50000(50000, "+ 5만원"),
     PRICE_100000(100000, "+ 10만원"),
+    PRICE_1000000(1000000, "+ 100만원"),
 }
 
 @Composable
