@@ -32,6 +32,7 @@ fun DefaultScaffold(
     onAdd: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
+    containerColor: Color = MaterialTheme.colorScheme.surface,
     content: @Composable () -> Unit,
 ) {
     Scaffold(
@@ -81,7 +82,7 @@ fun DefaultScaffold(
                 )
             }
         },
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = containerColor
     ) {
         Box(
             modifier = Modifier.padding(it)

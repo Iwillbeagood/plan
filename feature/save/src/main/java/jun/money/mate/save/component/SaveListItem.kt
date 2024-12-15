@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -16,7 +15,6 @@ import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Orange1
 import jun.money.mate.model.save.SavePlan
-import jun.money.mate.model.save.SaveType
 
 @Composable
 internal fun SaveListItem(
@@ -50,20 +48,6 @@ internal fun SaveListItem(
                 checkedColor = Orange1,
                 checked = savePlan.executed,
                 onCheckedChange = onExecuteChange
-            )
-        }
-        if (savePlan.saveType == SaveType.PlaningSave) {
-            Text(
-                text = savePlan.amountGoalString,
-                style = JUNTheme.typography.titleNormalM,
-                modifier = Modifier.align(Alignment.End)
-            )
-
-            Text(
-                text = savePlan.dateString + " | "+ savePlan.amountString,
-                style = JUNTheme.typography.titleSmallM,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.align(Alignment.End)
             )
         }
     }

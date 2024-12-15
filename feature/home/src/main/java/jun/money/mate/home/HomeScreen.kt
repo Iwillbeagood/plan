@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.CircleIcon
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
+import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbar
@@ -42,6 +43,7 @@ import jun.money.mate.designsystem.theme.Gray9
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
+import jun.money.mate.designsystem.theme.main
 import jun.money.mate.home.HomeState.HomeData.HomeList
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainBottomNavItem
@@ -98,8 +100,9 @@ private fun HomeContent(
         if (homeState is HomeState.HomeData) {
             HomeScreen(
                 balance = homeState.balanceString,
-                predictedSpend = homeState.predictedSpendString,
-                realSpend = homeState.realSpendString,
+                incomeTotal = homeState.incomeList.totalString,
+                spendTotal = homeState.spendingPlanList.totalString,
+                saveTotal = homeState.savePlanList.totalString,
                 homeList = homeState.homeList,
                 onShowMenu = onShowMenu,
                 onShowNotification = onShowNotification,
@@ -113,8 +116,9 @@ private fun HomeContent(
 @Composable
 private fun HomeScreen(
     balance: String,
-    predictedSpend: String,
-    realSpend: String,
+    incomeTotal: String,
+    spendTotal: String,
+    saveTotal: String,
     homeList: List<HomeList>,
     onHomeListClick: (MainBottomNavItem) -> Unit,
     onShowAddScreen: (MainBottomNavItem) -> Unit,
@@ -160,20 +164,50 @@ private fun HomeScreen(
                 .padding(it)
         ) {
             VerticalSpacer(20.dp)
+            HomeTitle(title = "월간 계획")
             HomeContentBox {
                 Column(
                     modifier = Modifier.padding(14.dp)
                 ) {
-                    Text(
-                        text = "예상 잔액",
-                        style = JUNTheme.typography.titleMediumM,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    VerticalSpacer(6.dp)
-                    Text(
-                        text = balance,
-                        style = JUNTheme.typography.headlineSmallB,
-                    )
+                    Row {
+                        Text(
+                            text = "예상 수입",
+                            style = JUNTheme.typography.titleMediumM,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = "+ $incomeTotal",
+                            style = JUNTheme.typography.titleMediumB,
+                            color = main
+                        )
+                    }
+                    Row {
+                        Text(
+                            text = "지출 계획",
+                            style = JUNTheme.typography.titleMediumM,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = "- $spendTotal",
+                            style = JUNTheme.typography.titleMediumB,
+                            color = Red3
+                        )
+                    }
+                    Row {
+                        Text(
+                            text = "저금 계획",
+                            style = JUNTheme.typography.titleMediumM,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = "- $saveTotal",
+                            style = JUNTheme.typography.titleMediumB,
+                            color = Red3
+                        )
+                    }
                 }
             }
             VerticalSpacer(10.dp)
@@ -183,15 +217,13 @@ private fun HomeScreen(
                 ) {
                     Row {
                         Text(
-                            text = "실제 지출",
+                            text = "잔액",
                             style = JUNTheme.typography.titleMediumM,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f)
                         )
                         Text(
-                            text = realSpend,
+                            text = balance,
                             style = JUNTheme.typography.titleMediumB,
-                            color = Red3
                         )
                     }
                 }
@@ -305,9 +337,10 @@ private fun HomeTitle(
 private fun HomeScreenPreview() {
     JunTheme {
         HomeScreen(
-            balance = "100,000원",
-            predictedSpend = "200,000원",
-            realSpend = "150,000원",
+            balance = "300,000원",
+            incomeTotal = "2,000,000원",
+            spendTotal = "1,000,000원",
+            saveTotal = "700,000원",
             onShowMenu = {},
             onShowNotification = {},
             homeList = listOf(

@@ -10,7 +10,6 @@ import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
-import jun.money.mate.model.save.SaveType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -52,9 +51,6 @@ internal class SavingListViewModel @Inject constructor(
         initialValue = ViewMode.LIST
     )
 
-    var saveType = MutableStateFlow(SaveType.PlaningSave)
-        private set
-
     private val _savingListEffect = MutableSharedFlow<SavingListEffect>()
     val savingListEffect: SharedFlow<SavingListEffect> get() = _savingListEffect.asSharedFlow()
 
@@ -89,12 +85,6 @@ internal class SavingListViewModel @Inject constructor(
     fun executeChange(executed: Boolean, id: Long) {
         viewModelScope.launch {
             saveRepository.updateExecuteState(id, executed)
-        }
-    }
-
-    fun tabClick(index: Int) {
-        saveType.update {
-            SaveType.entries[index]
         }
     }
 

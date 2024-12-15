@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.text.TextStyle
@@ -96,7 +97,8 @@ fun ScrollableTab(
     selectedTabIndex: Int,
     onTabClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    style: TextStyle = JUNTheme.typography.titleMediumM
+    style: TextStyle = JUNTheme.typography.titleMediumM,
+    containerColor: Color = MaterialTheme.colorScheme.surface
 ) {
     val density = LocalDensity.current
     val tabWidths = remember {
@@ -110,7 +112,7 @@ fun ScrollableTab(
     ScrollableTabRow(
         modifier = modifier.fillMaxWidth(),
         selectedTabIndex = selectedTabIndex,
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = containerColor,
         contentColor = MaterialTheme.colorScheme.onSurface,
         edgePadding = 0.dp,
         indicator = { tabPositions ->

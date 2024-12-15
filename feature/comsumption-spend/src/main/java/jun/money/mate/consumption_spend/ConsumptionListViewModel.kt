@@ -45,7 +45,7 @@ internal class ConsumptionListViewModel @Inject constructor(
         loadSpending()
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.WhileSubscribed(1000),
         initialValue = ConsumptionListState.Loading
     )
 

@@ -40,13 +40,14 @@ internal fun SpendingPlanListBody(
     onSpendingTabClick: (Int) -> Unit,
 ) {
     Column {
-        VerticalSpacer(20.dp)
         Surface(
             color = MaterialTheme.colorScheme.surfaceDim,
+            shadowElevation = 4.dp,
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier.padding(20.dp),
+                modifier = Modifier
+                    .padding(horizontal = 20.dp, vertical = 40.dp),
             ) {
                 Row {
                     Text(
@@ -79,7 +80,7 @@ internal fun SpendingPlanListBody(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surfaceDim)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             stickyHeader {
                 ScrollableTab(

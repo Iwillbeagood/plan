@@ -7,18 +7,12 @@ data class SavePlan(
     val title: String,
     val amount: Long,
     val planDay: Int,
-    val saveType: SaveType,
     val saveCategory: SaveCategory,
     val executeMonth: Int,
     val executed: Boolean,
     val selected: Boolean,
-    val amountGoal: Long = 0,
-    val executeCount: Int = 0,
 ) {
     val amountString: String get() = Utils.formatAmountWon(amount)
-    val amountGoalString: String get() = Utils.formatAmountWon(amountGoal)
-
-    val goalMonth get() = amountGoal / amount
 
     val dateString get() = "매월 ${planDay}일"
 
@@ -32,7 +26,6 @@ data class SavePlan(
             planDay = 1,
             executeMonth = 1,
             saveCategory = SaveCategory.투자,
-            saveType = SaveType.ContinueSave,
             executed = false,
             selected = false
         )
@@ -44,7 +37,6 @@ data class SavePlan(
             planDay = 1,
             executeMonth = 1,
             saveCategory = SaveCategory.투자,
-            saveType = SaveType.PlaningSave,
             executed = false,
             selected = false
         )
@@ -54,8 +46,6 @@ data class SavePlan(
 data class SavePlanList(
     val savePlans: List<SavePlan>
 ) {
-    val continuePlans get() = savePlans.filter { it.saveType == SaveType.ContinueSave }
-    val planingPlans get() = savePlans.filter { it.saveType == SaveType.PlaningSave }
 
     val executedTotal get() = savePlans.filter { it.executed }.sumOf { it.amount }
     val executedTotalString get() = Utils.formatAmountWon(executedTotal)
@@ -72,7 +62,6 @@ data class SavePlanList(
                     title = "주식",
                     amount = 500000,
                     planDay = 10,
-                    saveType = SaveType.ContinueSave,
                     saveCategory = SaveCategory.투자,
                     executeMonth = 1,
                     executed = false,
@@ -83,7 +72,6 @@ data class SavePlanList(
                     title = "예금",
                     amount = 10000,
                     planDay = 10,
-                    saveType = SaveType.PlaningSave,
                     saveCategory = SaveCategory.연금저축,
                     executeMonth = 1,
                     executed = true,

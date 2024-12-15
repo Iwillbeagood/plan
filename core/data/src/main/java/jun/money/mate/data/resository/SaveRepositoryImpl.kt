@@ -27,18 +27,6 @@ internal class SaveRepositoryImpl @Inject constructor(
 
     override fun getSavePlanListFlow(): Flow<SavePlanList> {
         return saveDao.getFlow().map { list ->
-            // 현재 월이 아닌 경우 실행 여부를 false로 변경하고 실행 횟수를 증가시킴
-            val savePlans = list.map { it.toSavePlan() }
-            savePlans.map { savePlan ->
-                if (savePlan.executeMonth != LocalDate.now().monthValue) {
-                    savePlan.copy(
-                        executed = false,
-                        executeCount = if (savePlan.executed) savePlan.executeCount + 1 else savePlan.executeCount
-                    )
-                } else {
-                    savePlan
-                }
-            }
             SavePlanList(savePlans = list.map { it.toSavePlan() })
         }.catch {
             Logger.e("getSavePlanListFlow error: $it")

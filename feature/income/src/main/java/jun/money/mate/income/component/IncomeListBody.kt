@@ -44,7 +44,6 @@ internal fun IncomeListBody(
             shadowElevation = 4.dp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 10.dp)
         ) {
             Column(
                 modifier = Modifier.padding(20.dp),
@@ -65,7 +64,7 @@ internal fun IncomeListBody(
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
-                .background(MaterialTheme.colorScheme.surfaceDim)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             incomeList.groupedIncomes.forEach { (type, incomes) ->
                 if (incomes.isNotEmpty()) {
@@ -106,7 +105,7 @@ private fun IncomeItem(
         modifier = modifier
             .fillMaxWidth()
             .animateContentSize()
-            .padding(16.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

@@ -12,7 +12,6 @@ import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.model.spending.SpendingPlanList
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.utils.currency.CurrencyFormatter
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -102,12 +101,7 @@ internal sealed interface HomeState {
                 ),
             )
 
-        private val predictedSpend get() = savePlanList.total + spendingPlanList.total
-        val predictedSpendString get() = CurrencyFormatter.formatAmountWon(predictedSpend)
-        private val realSpend get() = savePlanList.executedTotal + spendingPlanList.predictTotal + consumptionList.total
-        val realSpendString get() = CurrencyFormatter.formatAmountWon(realSpend)
-
-        val balance get() = incomeList.total - predictedSpend
+        val balance get() = incomeList.total - savePlanList.total - spendingPlanList.total
         val balanceString get() = CurrencyFormatter.formatAmountWon(balance)
 
         data class HomeList(

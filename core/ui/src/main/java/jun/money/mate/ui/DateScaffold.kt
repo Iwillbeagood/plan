@@ -102,9 +102,7 @@ fun DateScaffold(
             }
         },
     ) {
-        Box(
-            modifier = Modifier.padding(top = 10.dp)
-        ) {
+        Box{
             content()
         }
     }

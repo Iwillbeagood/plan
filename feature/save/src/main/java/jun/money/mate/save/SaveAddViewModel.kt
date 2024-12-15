@@ -10,7 +10,6 @@ import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.domain.AddSaveUsecase
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SaveCategory
-import jun.money.mate.model.save.SaveType
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.navigation.utils.toRouteType
@@ -60,9 +59,7 @@ internal class SaveAddViewModel @Inject constructor(
                         id = System.currentTimeMillis(),
                         title = "",
                         amount = 0,
-                        amountGoal = 0,
                         day = LocalDate.now().dayOfMonth,
-                        type = SaveType.PlaningSave,
                         category = null
                     )
 
@@ -72,9 +69,7 @@ internal class SaveAddViewModel @Inject constructor(
                                 id = it.id,
                                 title = it.title,
                                 amount = it.amount,
-                                amountGoal = it.amountGoal,
                                 day = it.planDay,
-                                type = it.saveType,
                                 category = it.saveCategory
                             )
                         }
@@ -90,9 +85,7 @@ internal class SaveAddViewModel @Inject constructor(
             addSaveUsecase(
                 id = state.id,
                 title = state.title,
-                saveType = state.type,
                 amount = state.amount,
-                amountGoal = state.amountGoal,
                 planDay = state.day,
                 category = state.category,
                 onSuccess = {
@@ -128,23 +121,6 @@ internal class SaveAddViewModel @Inject constructor(
             state.copy(
                 amount = value.toLongOrNull() ?: 0
             )
-        }
-    }
-
-    fun onAmountGoalValueChange(value: String) {
-        val state = _saveAddState.value as? SaveAddState.SaveData ?: return
-
-        _saveAddState.update {
-            state.copy(
-                amountGoal = value.toLongOrNull() ?: 0
-            )
-        }
-    }
-
-    fun onSaveTypeSelect(type: SaveType) {
-        val state = _saveAddState.value as? SaveAddState.SaveData ?: return
-        _saveAddState.update {
-            state.copy(type = type)
         }
     }
 
@@ -208,17 +184,12 @@ internal sealed interface SaveAddState {
         val id: Long,
         val title: String,
         val amount: Long,
-        val amountGoal: Long,
         val day: Int,
-        val type: SaveType,
         val category: SaveCategory?
     ) : SaveAddState {
 
         val amountString get() = if (amount > 0) amount.toString() else ""
         val amountWon get() = if (amount > 0) CurrencyFormatter.formatAmountWon(amount) else ""
-
-        val amountGoalString get() = if (amountGoal > 0) amountGoal.toString() else ""
-        val amountGoalWon get() = if (amountGoal > 0) CurrencyFormatter.formatAmountWon(amountGoal) else ""
     }
 }
 
