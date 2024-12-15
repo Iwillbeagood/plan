@@ -1,21 +1,15 @@
 package jun.money.mate.main
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import jun.money.mate.main.component.MainBottomBar
 import jun.money.mate.main.component.MainNavigator
 import jun.money.mate.model.etc.ConnectionState
@@ -55,16 +49,6 @@ private fun MainScreenContent(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding(),
-        topBar = {
-            if (connection != ConnectionState.Available) {
-                Text(
-                    text = "network disconnected", modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.Red)
-                        .padding(vertical = 20.dp)
-                )
-            }
-        },
         bottomBar = {
             MainBottomBar(
                 visible = navigator.shouldShowBottomBar(),
