@@ -171,7 +171,7 @@ private fun HomeScreen(
                 ) {
                     Row {
                         Text(
-                            text = "예상 수입",
+                            text = "수입",
                             style = JUNTheme.typography.titleMediumM,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f)
@@ -184,7 +184,7 @@ private fun HomeScreen(
                     }
                     Row {
                         Text(
-                            text = "지출 계획",
+                            text = "지출",
                             style = JUNTheme.typography.titleMediumM,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f)
@@ -197,7 +197,7 @@ private fun HomeScreen(
                     }
                     Row {
                         Text(
-                            text = "저금 계획",
+                            text = "저금",
                             style = JUNTheme.typography.titleMediumM,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f)

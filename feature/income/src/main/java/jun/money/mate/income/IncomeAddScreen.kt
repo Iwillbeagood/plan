@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -70,14 +71,13 @@ internal fun IncomeAddRoute(
     val incomeAddState by viewModel.incomeAddState.collectAsStateWithLifecycle()
     val incomeModalEffect by viewModel.incomeModalEffect.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
-    val titleFocusRequester by remember { mutableStateOf(FocusRequester()) }
+    val focusManager = LocalFocusManager.current
 
     IncomeAddScreen(
         title = when (addType) {
             is AddType.Edit -> "수정"
             AddType.New -> "추가"
         },
-        titleFocusRequester = titleFocusRequester,
         incomeAddState = incomeAddState,
         onBackClick = onGoBack,
         onNextStep = viewModel::nextStep,
@@ -102,7 +102,7 @@ internal fun IncomeAddRoute(
                 is IncomeAddEffect.ShowSnackBar -> onShowSnackBar(it.messageType)
                 IncomeAddEffect.IncomeAddComplete -> onGoBack()
                 IncomeAddEffect.DismissKeyboard -> keyboardController?.hide()
-                IncomeAddEffect.RemoveTitleFocus -> titleFocusRequester.freeFocus()
+                IncomeAddEffect.RemoveTitleFocus -> focusManager.clearFocus()
             }
         }
     }
@@ -112,7 +112,6 @@ internal fun IncomeAddRoute(
 private fun IncomeAddScreen(
     title: String,
     incomeAddState: IncomeAddState,
-    titleFocusRequester: FocusRequester,
     onBackClick: () -> Unit,
     onNextStep: () -> Unit,
     onIncomeTitleChange: (String) -> Unit,
@@ -139,7 +138,6 @@ private fun IncomeAddScreen(
     ) {
         IncomeAddContent(
             incomeAddState = incomeAddState,
-            titleFocusRequester = titleFocusRequester,
             onNextStep = onNextStep,
             onIncomeTitleChange = onIncomeTitleChange,
             onShowNumberBottomSheet = onShowNumberBottomSheet,
@@ -152,7 +150,6 @@ private fun IncomeAddScreen(
 @Composable
 private fun IncomeAddContent(
     incomeAddState: IncomeAddState,
-    titleFocusRequester: FocusRequester,
     onNextStep: () -> Unit,
     onIncomeTitleChange: (String) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
@@ -163,7 +160,6 @@ private fun IncomeAddContent(
         if (incomeAddState is IncomeAddState.IncomeData) {
             IncomeAddBody(
                 uiState = incomeAddState,
-                titleFocusRequester = titleFocusRequester,
                 onNextStep = onNextStep,
                 onIncomeTitleChange = onIncomeTitleChange,
                 onShowNumberBottomSheet = onShowNumberBottomSheet,
@@ -177,7 +173,6 @@ private fun IncomeAddContent(
 @Composable
 private fun IncomeAddBody(
     uiState: IncomeAddState.IncomeData,
-    titleFocusRequester: FocusRequester,
     onNextStep: () -> Unit,
     onIncomeTitleChange: (String) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
@@ -200,7 +195,6 @@ private fun IncomeAddBody(
         VerticalSpacer(20.dp)
         IncomeAddStepContent(
             uiState = uiState,
-            titleFocusRequester = titleFocusRequester,
             onNextStep = onNextStep,
             onIncomeTitleChange = onIncomeTitleChange,
             onShowNumberBottomSheet = onShowNumberBottomSheet,
@@ -213,7 +207,6 @@ private fun IncomeAddBody(
 @Composable
 private fun IncomeAddStepContent(
     uiState: IncomeAddState.IncomeData,
-    titleFocusRequester: FocusRequester,
     onNextStep: () -> Unit,
     onIncomeTitleChange: (String) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
@@ -268,7 +261,6 @@ private fun IncomeAddStepContent(
                 value = uiState.title,
                 onValueChange = onIncomeTitleChange,
                 hint = "수입 제목",
-                focusRequester = titleFocusRequester,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next,
                 ),
@@ -356,7 +348,6 @@ private fun IncomeAddScreenPreview() {
     JunTheme {
         IncomeAddScreen(
             title = "추가",
-            titleFocusRequester = FocusRequester(),
             incomeAddState = IncomeAddState.IncomeData(
                 id = 0,
                 title = "월급",

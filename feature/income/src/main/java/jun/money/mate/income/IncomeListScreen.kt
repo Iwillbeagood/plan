@@ -19,7 +19,6 @@ import java.time.LocalDate
 
 @Composable
 internal fun IncomeListRoute(
-    onGoBack: () -> Unit,
     onShowIncomeAdd: () -> Unit,
     onShowIncomeEdit: (id: Long) -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
