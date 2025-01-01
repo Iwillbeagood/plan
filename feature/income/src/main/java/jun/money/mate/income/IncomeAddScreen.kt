@@ -14,10 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -36,6 +33,7 @@ import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.designsystem_date.datetimepicker.DatePicker
+import jun.money.mate.income.IncomeAddState.Companion.buttonText
 import jun.money.mate.income.component.IncomeTypeBottomSheet
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.IncomeType
@@ -54,6 +52,9 @@ internal enum class IncomeAddStep(
     Date("수입이 발생한 날짜를 선택해 주세요");
 
     companion object {
+        val startStep = Type
+        val endStep = Date
+
         fun IncomeAddStep.nextStep(): IncomeAddStep = entries.toTypedArray().let {
             val nextIndex = it.indexOf(this) + 1
             if (nextIndex < it.size) it[nextIndex] else it.last()
@@ -119,19 +120,9 @@ private fun IncomeAddScreen(
     onShowIncomeTypeBottomSheet: () -> Unit,
     onShowIncomeDateBottomSheet: () -> Unit,
 ) {
-    val buttonText = when (incomeAddState) {
-        is IncomeAddState.IncomeData -> {
-            when(incomeAddState.currentStep) {
-                IncomeAddStep.Date -> "완료"
-                else -> "다음"
-            }
-        }
-        IncomeAddState.Loading -> "다음"
-    }
-
     AddScaffold(
         title = "수입 $title",
-        buttonText = buttonText,
+        buttonText = incomeAddState.buttonText(),
         color = main,
         onGoBack = onBackClick,
         onComplete = onNextStep
@@ -156,8 +147,8 @@ private fun IncomeAddContent(
     onShowIncomeDateBottomSheet: () -> Unit,
     onShowIncomeTypeBottomSheet: () -> Unit,
 ) {
-    FadeAnimatedVisibility(incomeAddState is IncomeAddState.IncomeData) {
-        if (incomeAddState is IncomeAddState.IncomeData) {
+    FadeAnimatedVisibility(incomeAddState is IncomeAddState.UiData) {
+        if (incomeAddState is IncomeAddState.UiData) {
             IncomeAddBody(
                 uiState = incomeAddState,
                 onNextStep = onNextStep,
@@ -172,7 +163,7 @@ private fun IncomeAddContent(
 
 @Composable
 private fun IncomeAddBody(
-    uiState: IncomeAddState.IncomeData,
+    uiState: IncomeAddState.UiData,
     onNextStep: () -> Unit,
     onIncomeTitleChange: (String) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
@@ -187,7 +178,7 @@ private fun IncomeAddBody(
             .verticalScroll(listState)
             .animateContentSize()
     ) {
-        VerticalSpacer(60.dp)
+        VerticalSpacer(50.dp)
         Text(
             text = uiState.currentStep.message,
             style = JUNTheme.typography.titleLargeM,
@@ -206,7 +197,7 @@ private fun IncomeAddBody(
 
 @Composable
 private fun IncomeAddStepContent(
-    uiState: IncomeAddState.IncomeData,
+    uiState: IncomeAddState.UiData,
     onNextStep: () -> Unit,
     onIncomeTitleChange: (String) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
@@ -216,73 +207,71 @@ private fun IncomeAddStepContent(
     val steps = uiState.incomeAddSteps
     val currentStep = uiState.currentStep
 
-    Column {
-        IncomeAddStepContent(
-            step = IncomeAddStep.Date,
-            steps = steps,
-            currentStep = currentStep,
-            title = "수입 날짜",
-        ) {
+    IncomeAddStepContent(
+        step = IncomeAddStep.Date,
+        steps = steps,
+        currentStep = currentStep,
+        title = "수입 날짜",
+    ) {
+        UnderLineText(
+            value = uiState.date.toString(),
+            modifier = Modifier.clickable(onClick = onShowIncomeDateBottomSheet),
+        )
+    }
+    IncomeAddStepContent(
+        step = IncomeAddStep.Amount,
+        steps = steps,
+        currentStep = currentStep,
+        title = "수입 금액",
+    ) {
+        Column {
             UnderLineText(
-                value = uiState.date.toString(),
-                modifier = Modifier.clickable(onClick = onShowIncomeDateBottomSheet),
-            )
-        }
-        IncomeAddStepContent(
-            step = IncomeAddStep.Amount,
-            steps = steps,
-            currentStep = currentStep,
-            title = "수입 금액",
-        ) {
-            Column {
-                UnderLineText(
-                    value = uiState.amountString,
-                    hint = "선택",
-                    modifier = Modifier.clickable(onClick = onShowNumberBottomSheet),
-                )
-                TopToBottomAnimatedVisibility(uiState.amount != 0L) {
-                    Text(
-                        text = uiState.amountWon,
-                        style = JUNTheme.typography.labelLargeM,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-            }
-        }
-        IncomeAddStepContent(
-            step = IncomeAddStep.Title,
-            steps = steps,
-            currentStep = currentStep,
-            title = "수입 제목",
-        ) {
-            UnderlineTextField(
-                value = uiState.title,
-                onValueChange = onIncomeTitleChange,
-                hint = "수입 제목",
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                ),
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        onNextStep()
-                    }
-                )
-            )
-        }
-        IncomeAddStepContent(
-            step = IncomeAddStep.Type,
-            steps = steps,
-            currentStep = currentStep,
-            title = "수입 유형",
-        ) {
-            UnderLineText(
-                value = uiState.type?.title ?: "",
+                value = uiState.amountString,
                 hint = "선택",
-                modifier = Modifier.clickable(onClick = onShowIncomeTypeBottomSheet),
+                modifier = Modifier.clickable(onClick = onShowNumberBottomSheet),
             )
+            TopToBottomAnimatedVisibility(uiState.amount != 0L) {
+                Text(
+                    text = uiState.amountWon,
+                    style = JUNTheme.typography.labelLargeM,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
         }
+    }
+    IncomeAddStepContent(
+        step = IncomeAddStep.Title,
+        steps = steps,
+        currentStep = currentStep,
+        title = "수입 제목",
+    ) {
+        UnderlineTextField(
+            value = uiState.title,
+            onValueChange = onIncomeTitleChange,
+            hint = "수입 제목",
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next,
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    onNextStep()
+                }
+            )
+        )
+    }
+    IncomeAddStepContent(
+        step = IncomeAddStep.Type,
+        steps = steps,
+        currentStep = currentStep,
+        title = "수입 유형",
+    ) {
+        UnderLineText(
+            value = uiState.type?.title ?: "",
+            hint = "선택",
+            modifier = Modifier.clickable(onClick = onShowIncomeTypeBottomSheet),
+        )
     }
 }
 
@@ -348,13 +337,13 @@ private fun IncomeAddScreenPreview() {
     JunTheme {
         IncomeAddScreen(
             title = "추가",
-            incomeAddState = IncomeAddState.IncomeData(
+            incomeAddState = IncomeAddState.UiData(
                 id = 0,
                 title = "월급",
                 amount = 1000000,
                 date = LocalDate.now(),
                 type = IncomeType.REGULAR,
-                incomeAddSteps = listOf(IncomeAddStep.Date),
+                incomeAddSteps = IncomeAddStep.entries,
             ),
             onIncomeTitleChange = {},
             onShowIncomeDateBottomSheet = {},

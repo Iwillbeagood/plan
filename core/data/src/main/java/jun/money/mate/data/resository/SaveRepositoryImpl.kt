@@ -45,6 +45,14 @@ internal class SaveRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun resetExecuteState() {
+        try {
+            saveDao.resetExecutedState(LocalDate.now().monthValue)
+        } catch (e: Exception) {
+            Logger.e("resetExecuteState error: $e")
+        }
+    }
+
     override suspend fun deleteById(id: Long) {
         try {
             saveDao.deleteById(id)

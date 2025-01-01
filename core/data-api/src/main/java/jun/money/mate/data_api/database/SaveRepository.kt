@@ -15,5 +15,7 @@ interface SaveRepository {
 
     suspend fun updateExecuteState(id: Long, isExecuted: Boolean)
 
+    suspend fun resetExecuteState()
+
     suspend fun deleteById(id: Long)
 }

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.IncomeRepository
 import jun.money.mate.domain.AddIncomeUsecase
+import jun.money.mate.income.IncomeAddState.Companion.uiValue
 import jun.money.mate.income.IncomeAddStep.Companion.nextStep
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.IncomeType
@@ -58,7 +59,7 @@ internal class IncomeAddViewModel @Inject constructor(
         viewModelScope.launch {
             _incomeAddState.update {
                 when (addType) {
-                    AddType.New -> IncomeAddState.IncomeData(
+                    AddType.New -> IncomeAddState.UiData(
                         id = System.currentTimeMillis(),
                         title = "",
                         amount = 0,
@@ -68,13 +69,13 @@ internal class IncomeAddViewModel @Inject constructor(
 
                     is AddType.Edit -> {
                         incomeRepository.getIncomeById(addType.id).let {
-                            IncomeAddState.IncomeData(
+                            IncomeAddState.UiData(
                                 id = it.id,
                                 title = it.title,
                                 amount = it.amount,
                                 date = it.incomeDate,
                                 type = it.type,
-                                currentStep = IncomeAddStep.Date,
+                                currentStep = IncomeAddStep.endStep,
                                 incomeAddSteps = IncomeAddStep.entries
                             )
                         }
@@ -84,8 +85,8 @@ internal class IncomeAddViewModel @Inject constructor(
         }
     }
 
-    fun onAddIncome() {
-        val state = _incomeAddState.value as? IncomeAddState.IncomeData ?: return
+    private fun onAddIncome() {
+        val state = _incomeAddState.uiValue ?: return
         viewModelScope.launch {
             addIncomeUsecase(
                 id = state.id,
@@ -111,56 +112,24 @@ internal class IncomeAddViewModel @Inject constructor(
         }
     }
 
-    fun onTitleValueChange(value: String) {
-        val state = _incomeAddState.value as? IncomeAddState.IncomeData ?: return
-
-        _incomeAddState.update {
-            state.copy(title = value)
-        }
-    }
-
-    fun amountValueChange(value: ValueState) {
-        val state = _incomeAddState.value as? IncomeAddState.IncomeData ?: return
-
-        _incomeAddState.update {
-            state.copy(
-                amount = value.value(state.amountString).toLongOrNull() ?: 0
-            )
-        }
-    }
-
-    fun onDateSelected(date: LocalDate) {
-        val state = _incomeAddState.value as? IncomeAddState.IncomeData ?: return
-        _incomeAddState.update {
-            state.copy(date = date)
-        }
-
-        onAddIncome()
-    }
-
-    fun incomeTypeSelected(incomeType: IncomeType) {
-        val state = _incomeAddState.value as? IncomeAddState.IncomeData ?: return
-        _incomeAddState.update {
-            state.copy(type = incomeType)
-        }
-
-        dismiss()
-        nextStep()
-    }
-
     fun nextStep() {
-        val state = _incomeAddState.value as? IncomeAddState.IncomeData ?: return
+        if (addType is AddType.Edit) {
+            onAddIncome()
+            return
+        }
+
+        val state = _incomeAddState.uiValue ?: return
         when (state.currentStep) {
             IncomeAddStep.Type -> {
                 if (state.type == null) {
-                    showSnackBar(MessageType.Message("수입 유형을 선택해주세요."))
+                    showSnackBar(MessageType.Message(state.currentStep.message))
                     return
                 }
                 stepUpdateToNext()
             }
             IncomeAddStep.Title -> {
                 if (state.title.isBlank()) {
-                    showSnackBar(MessageType.Message("수입 제목을 입력해주세요."))
+                    showSnackBar(MessageType.Message(state.currentStep.message))
                     return
                 }
                 stepUpdateToNext()
@@ -170,7 +139,7 @@ internal class IncomeAddViewModel @Inject constructor(
             }
             IncomeAddStep.Amount -> {
                 if (state.amount <= 0) {
-                    showSnackBar(MessageType.Message("수입 금액을 입력해주세요."))
+                    showSnackBar(MessageType.Message(state.currentStep.message))
                     showNumberKeyboard()
                     return
                 }
@@ -184,7 +153,7 @@ internal class IncomeAddViewModel @Inject constructor(
     }
 
     private fun stepUpdateToNext() {
-        val state = _incomeAddState.value as? IncomeAddState.IncomeData ?: return
+        val state = _incomeAddState.uiValue ?: return
         val nextStep = state.currentStep.nextStep()
         _incomeAddState.update {
             state.copy(
@@ -194,8 +163,48 @@ internal class IncomeAddViewModel @Inject constructor(
         }
     }
 
+
+    fun onTitleValueChange(value: String) {
+        val state = _incomeAddState.uiValue ?: return
+
+        _incomeAddState.update {
+            state.copy(title = value)
+        }
+    }
+
+    fun amountValueChange(value: ValueState) {
+        val state = _incomeAddState.uiValue ?: return
+
+        _incomeAddState.update {
+            state.copy(
+                amount = value.value(state.amountString).toLongOrNull() ?: 0
+            )
+        }
+    }
+
+    fun onDateSelected(date: LocalDate) {
+        val state = _incomeAddState.uiValue ?: return
+
+        _incomeAddState.update {
+            state.copy(date = date)
+        }
+
+        nextStep()
+    }
+
+    fun incomeTypeSelected(incomeType: IncomeType) {
+        val state = _incomeAddState.uiValue ?: return
+
+        _incomeAddState.update {
+            state.copy(type = incomeType)
+        }
+
+        dismiss()
+        nextStep()
+    }
+
     fun showDatePicker() {
-        val state = _incomeAddState.value as? IncomeAddState.IncomeData ?: return
+        val state = _incomeAddState.uiValue ?: return
 
         _incomeModalEffect.update { IncomeModalEffect.ShowDatePicker(state.date) }
     }
@@ -248,19 +257,35 @@ internal sealed interface IncomeAddState {
     @Immutable
     data object Loading : IncomeAddState
 
+
     @Immutable
-    data class IncomeData(
+    data class UiData(
         val id: Long,
         val title: String,
         val amount: Long,
         val date: LocalDate,
         val type: IncomeType?,
-        val currentStep : IncomeAddStep = IncomeAddStep.Type,
-        val incomeAddSteps: List<IncomeAddStep> = listOf(IncomeAddStep.Type)
+        val currentStep : IncomeAddStep = IncomeAddStep.startStep,
+        val incomeAddSteps: List<IncomeAddStep> = listOf(IncomeAddStep.startStep)
     ) : IncomeAddState {
 
         val amountString get() = if (amount > 0) amount.toString() else ""
         val amountWon get() = if (amount > 0) CurrencyFormatter.formatAmountWon(amount) else ""
+    }
+
+    companion object {
+
+        val MutableStateFlow<IncomeAddState>.uiValue get() = this.value as? UiData
+
+        fun IncomeAddState.buttonText() = when (this) {
+            is UiData -> {
+                when(this.currentStep) {
+                    IncomeAddStep.Date -> "완료"
+                    else -> "다음"
+                }
+            }
+            Loading -> "다음"
+        }
     }
 }
 

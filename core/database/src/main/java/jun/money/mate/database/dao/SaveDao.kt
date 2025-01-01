@@ -6,7 +6,6 @@ import androidx.room.Upsert
 import jun.money.mate.database.AppDatabase.Companion.SAVING_PLAN_TABLE_NAME
 import jun.money.mate.database.entity.SaveEntity
 import kotlinx.coroutines.flow.Flow
-import java.time.LocalDate
 
 @Dao
 interface SaveDao {
@@ -22,6 +21,15 @@ interface SaveDao {
 
     @Query("UPDATE $SAVING_PLAN_TABLE_NAME SET executeMonth = :executeMonth, executed = :isExecuted WHERE id = :id")
     suspend fun updateExecuteState(id: Long, executeMonth: Int, isExecuted: Boolean)
+
+    @Query(
+        """
+        UPDATE $SAVING_PLAN_TABLE_NAME
+        SET executed = 0
+        WHERE executeMonth != :currentMonth
+    """
+    )
+    suspend fun resetExecutedState(currentMonth: Int)
 
     @Query("DELETE FROM $SAVING_PLAN_TABLE_NAME WHERE id = :id")
     suspend fun deleteById(id: Long)

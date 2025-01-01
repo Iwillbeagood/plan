@@ -13,6 +13,10 @@ import jun.money.mate.model.save.SaveCategory
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.navigation.utils.toRouteType
+import jun.money.mate.save.SaveAddState.Companion.uiValue
+import jun.money.mate.save.SaveAddStep.Companion.nextStep
+import jun.money.mate.ui.number.ValueState
+import jun.money.mate.ui.number.ValueState.Companion.value
 import jun.money.mate.utils.currency.CurrencyFormatter
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +38,7 @@ internal class SaveAddViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val addType = savedStateHandle.toRouteType<MainTabRoute.Income.Add, AddType>().addType
+    private val addType = savedStateHandle.toRouteType<MainTabRoute.Save.Add, AddType>().addType
 
     private val _saveAddState = MutableStateFlow<SaveAddState>(SaveAddState.Loading)
     val saveAddState: StateFlow<SaveAddState> = _saveAddState.onStart {
@@ -51,11 +55,17 @@ internal class SaveAddViewModel @Inject constructor(
     private val _saveAddEffect = MutableSharedFlow<SaveAddEffect>()
     val saveAddEffect: SharedFlow<SaveAddEffect> get() = _saveAddEffect.asSharedFlow()
 
+    init {
+        viewModelScope.launch {
+            saveRepository.resetExecuteState()
+        }
+    }
+
     private fun init() {
         viewModelScope.launch {
             _saveAddState.update {
                 when (addType) {
-                    AddType.New -> SaveAddState.SaveData(
+                    AddType.New -> SaveAddState.UiData(
                         id = System.currentTimeMillis(),
                         title = "",
                         amount = 0,
@@ -65,12 +75,14 @@ internal class SaveAddViewModel @Inject constructor(
 
                     is AddType.Edit -> {
                         saveRepository.getSavePlan(addType.id).let {
-                            SaveAddState.SaveData(
+                            SaveAddState.UiData(
                                 id = it.id,
                                 title = it.title,
                                 amount = it.amount,
                                 day = it.planDay,
-                                category = it.saveCategory
+                                category = it.saveCategory,
+                                currentStep = SaveAddStep.endStep,
+                                steps = SaveAddStep.entries
                             )
                         }
                     }
@@ -79,8 +91,62 @@ internal class SaveAddViewModel @Inject constructor(
         }
     }
 
-    fun onAddSave() {
-        val state = _saveAddState.value as? SaveAddState.SaveData ?: return
+    fun nextStep() {
+        if (addType is AddType.Edit) {
+            onAddSave()
+            return
+        }
+
+        val state = _saveAddState.uiValue ?: return
+        when (state.currentStep) {
+            SaveAddStep.Category -> {
+                if (state.category == null) {
+                    showSnackBar(MessageType.Message(state.currentStep.message))
+                    return
+                }
+                updateToNext()
+                showDatePicker()
+            }
+
+            SaveAddStep.Date -> {
+                updateToNext()
+            }
+
+            SaveAddStep.Title -> {
+                if (state.title.isBlank()) {
+                    showSnackBar(MessageType.Message(state.currentStep.message))
+                    return
+                }
+                updateToNext()
+                dismissKeyboard()
+                showNumberKeyboard()
+                removeTextFocus()
+            }
+
+            SaveAddStep.Amount -> {
+                if (state.amount <= 0) {
+                    showSnackBar(MessageType.Message(state.currentStep.message))
+                    showNumberKeyboard()
+                    return
+                }
+                onAddSave()
+            }
+        }
+    }
+
+    private fun updateToNext() {
+        val state = _saveAddState.uiValue ?: return
+        val nextStep = state.currentStep.nextStep()
+        _saveAddState.update {
+            state.copy(
+                currentStep = nextStep,
+                steps = state.steps + listOf(nextStep)
+            )
+        }
+    }
+
+    private fun onAddSave() {
+        val state = _saveAddState.uiValue ?: return
         viewModelScope.launch {
             addSaveUsecase(
                 id = state.id,
@@ -107,57 +173,77 @@ internal class SaveAddViewModel @Inject constructor(
     }
 
     fun onTitleValueChange(value: String) {
-        val state = _saveAddState.value as? SaveAddState.SaveData ?: return
+        val state = _saveAddState.uiValue ?: return
 
         _saveAddState.update {
             state.copy(title = value)
         }
     }
 
-    fun onAmountValueChange(value: String) {
-        val state = _saveAddState.value as? SaveAddState.SaveData ?: return
+    fun amountValueChange(value: ValueState) {
+        val state = _saveAddState.uiValue ?: return
 
         _saveAddState.update {
             state.copy(
-                amount = value.toLongOrNull() ?: 0
+                amount = value.value(state.amountString).toLongOrNull() ?: 0
             )
         }
     }
 
     fun onDateSelected(date: LocalDate) {
-        val state = _saveAddState.value as? SaveAddState.SaveData ?: return
+        val state = _saveAddState.uiValue ?: return
         _saveAddState.update {
             state.copy(day = date.dayOfMonth)
         }
 
-        onAddSave()
+        nextStep()
     }
 
     fun showDatePicker() {
-        val state = _saveAddState.value as? SaveAddState.SaveData ?: return
+        val state = _saveAddState.uiValue ?: return
 
-        _saveModalEffect.update { SaveModalEffect.ShowDatePicker(LocalDate.now().withDayOfMonth(state.day)) }
+        _saveModalEffect.update {
+            SaveModalEffect.ShowDatePicker(
+                LocalDate.now().withDayOfMonth(state.day)
+            )
+        }
     }
 
     fun categorySelected(category: SaveCategory) {
-        val state = _saveAddState.value as? SaveAddState.SaveData ?: return
+        val state = _saveAddState.uiValue ?: return
         _saveAddState.update { state.copy(category = category) }
 
-        showDatePicker()
+        dismiss()
+        nextStep()
     }
 
     fun showCategoryBottomSheet() {
         _saveModalEffect.update { SaveModalEffect.ShowCategoryBottomSheet }
     }
 
-    fun onDismiss() {
+    fun showNumberKeyboard() {
+        _saveModalEffect.update { SaveModalEffect.ShowNumberKeyboard }
+    }
+
+    fun dismiss() {
         _saveModalEffect.update { SaveModalEffect.Idle }
     }
 
-    fun scrollToBottom() {
+    private fun dismissKeyboard() {
         viewModelScope.launch {
-            _saveAddEffect.emit(SaveAddEffect.ScrollToBottom)
+            _saveAddEffect.emit(SaveAddEffect.DismissKeyboard)
         }
+    }
+
+    private fun removeTextFocus() {
+        viewModelScope.launch {
+            _saveAddEffect.emit(SaveAddEffect.RemoveTextFocus)
+        }
+    }
+
+    fun numberKeyboardDismiss() {
+        nextStep()
+        _saveModalEffect.update { SaveModalEffect.Idle }
     }
 
     private fun showSnackBar(messageType: MessageType) {
@@ -180,16 +266,34 @@ internal sealed interface SaveAddState {
     data object Loading : SaveAddState
 
     @Immutable
-    data class SaveData(
+    data class UiData(
         val id: Long,
         val title: String,
         val amount: Long,
         val day: Int,
-        val category: SaveCategory?
+        val category: SaveCategory?,
+        val currentStep: SaveAddStep = SaveAddStep.startStep,
+        val steps: List<SaveAddStep> = listOf(SaveAddStep.startStep)
     ) : SaveAddState {
 
         val amountString get() = if (amount > 0) amount.toString() else ""
         val amountWon get() = if (amount > 0) CurrencyFormatter.formatAmountWon(amount) else ""
+    }
+
+    companion object {
+
+        val MutableStateFlow<SaveAddState>.uiValue get() = this.value as? UiData
+
+        fun SaveAddState.buttonText() = when (this) {
+            is UiData -> {
+                when (this.currentStep) {
+                    SaveAddStep.Date -> "완료"
+                    else -> "다음"
+                }
+            }
+
+            Loading -> "다음"
+        }
     }
 }
 
@@ -203,7 +307,10 @@ internal sealed interface SaveAddEffect {
     data object SaveAddComplete : SaveAddEffect
 
     @Immutable
-    data object ScrollToBottom : SaveAddEffect
+    data object DismissKeyboard : SaveAddEffect
+
+    @Immutable
+    data object RemoveTextFocus : SaveAddEffect
 }
 
 @Stable
@@ -217,4 +324,7 @@ internal sealed interface SaveModalEffect {
 
     @Immutable
     data object ShowCategoryBottomSheet : SaveModalEffect
+
+    @Immutable
+    data object ShowNumberKeyboard : SaveModalEffect
 }

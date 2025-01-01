@@ -87,8 +87,8 @@ private fun IncomeListContent(
             EmptyMessage("수입 내역이 없습니다.")
         }
     }
-    FadeAnimatedVisibility(incomeListState is IncomeListState.IncomeListData) {
-        if (incomeListState is IncomeListState.IncomeListData) {
+    FadeAnimatedVisibility(incomeListState is IncomeListState.UiData) {
+        if (incomeListState is IncomeListState.UiData) {
             IncomeListBody(
                 incomeList = incomeListState.incomeList,
                 onIncomeClick = onIncomeClick

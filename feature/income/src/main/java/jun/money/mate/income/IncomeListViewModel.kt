@@ -45,7 +45,7 @@ internal class IncomeListViewModel @Inject constructor(
     val incomeListViewMode: StateFlow<ViewMode> = incomeListState.flatMapLatest {
         flowOf(
             when (it) {
-                is IncomeListState.IncomeListData -> it.incomeListViewMode
+                is IncomeListState.UiData -> it.incomeListViewMode
                 else -> ViewMode.LIST
             }
         )
@@ -66,14 +66,14 @@ internal class IncomeListViewModel @Inject constructor(
                 _incomeListState.value = if (it.incomes.isEmpty()) {
                     IncomeListState.Empty
                 } else {
-                    IncomeListState.IncomeListData(it)
+                    IncomeListState.UiData(it)
                 }
             }
         }
     }
 
     fun changeIncomeSelected(income: Income) {
-        val incomeState = incomeListState.value as? IncomeListState.IncomeListData ?: return
+        val incomeState = incomeListState.value as? IncomeListState.UiData ?: return
 
         viewModelScope.launch {
             _incomeListState.update {
@@ -93,7 +93,7 @@ internal class IncomeListViewModel @Inject constructor(
     }
 
     fun editIncome() {
-        val incomeState = incomeListState.value as? IncomeListState.IncomeListData ?: return
+        val incomeState = incomeListState.value as? IncomeListState.UiData ?: return
         val selectedIncomeId = incomeState.selectedIncomeId ?: return
 
         viewModelScope.launch {
@@ -102,7 +102,7 @@ internal class IncomeListViewModel @Inject constructor(
     }
 
     fun deleteIncome() {
-        val incomeState = incomeListState.value as? IncomeListState.IncomeListData ?: return
+        val incomeState = incomeListState.value as? IncomeListState.UiData ?: return
         val selectedIncomeId = incomeState.selectedIncomeId ?: return
 
         viewModelScope.launch {
@@ -132,7 +132,7 @@ internal sealed interface IncomeListState {
     data object Empty : IncomeListState
 
     @Immutable
-    data class IncomeListData(
+    data class UiData(
         val incomeList: IncomeList,
     ) : IncomeListState {
 
