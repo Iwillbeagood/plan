@@ -82,7 +82,6 @@ internal class ConsumptionListViewModel @Inject constructor(
 
     private fun loadSpending() {
         viewModelScope.launch {
-
             combine(
                 dateState,
                 consumptionFilter

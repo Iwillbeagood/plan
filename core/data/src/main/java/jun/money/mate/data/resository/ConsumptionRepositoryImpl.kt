@@ -52,7 +52,7 @@ class ConsumptionRepositoryImpl @Inject constructor(
     override fun getConsumptionByMonth(data: LocalDate): Flow<ConsumptionList> {
         return consumptionDao.getConsumptionByMonth(
             year = data.year.toString(),
-            month = data.monthValue.toString()
+            month = data.monthValue.toString().padStart(2, '0')
         ).map { list ->
             ConsumptionList(
                 list.map { it.toConsumption() }
