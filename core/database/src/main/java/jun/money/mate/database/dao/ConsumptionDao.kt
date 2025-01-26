@@ -4,9 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
 import jun.money.mate.database.AppDatabase.Companion.CONSUMPTION_TABLE_NAME
-import jun.money.mate.database.AppDatabase.Companion.INCOME_TABLE_NAME
 import jun.money.mate.database.entity.ConsumptionEntity
-import jun.money.mate.database.entity.IncomeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

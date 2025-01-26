@@ -11,6 +11,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -33,9 +36,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.icon.MyIconPack
-import jun.money.mate.designsystem.icon.myiconpack.Visibility
-import jun.money.mate.designsystem.icon.myiconpack.VisibilityOff
 import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
@@ -151,8 +151,7 @@ fun PasswordTextField(
                     innerTextField()
                 }
 
-                val icon =
-                    if (passwordVisibility) MyIconPack.Visibility else MyIconPack.VisibilityOff
+                val icon = if (passwordVisibility) Icons.Default.VisibilityOff else Icons.Default.Visibility
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
