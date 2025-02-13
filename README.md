@@ -16,7 +16,6 @@
   - ViewModel: Manages UI-related data and is lifecycle-aware, ensuring data survival through configuration changes.
   - Navigation: Facilitates screen navigation, complemented by [Hilt Navigation Compose](https://developer.android.com/jetpack/compose/libraries#hilt) for dependency injection.
   - Room: Constructs a database with an SQLite abstraction layer for seamless database access.
-  - DataStore: A modern data storage solution designed to store key-value pairs or typed objects securely and asynchronously using Kotlin coroutines and Flow.
   - [Hilt](https://dagger.dev/hilt/): Facilitates dependency injection.
 - Architecture:
   - MVVM Architecture (View - ViewModel - Model): Facilitates separation of concerns and promotes maintainability.
@@ -24,6 +23,7 @@
 - [Retrofit2 & OkHttp3](https://github.com/square/retrofit): Constructs REST APIs and facilitates paging network data retrieval.
 - [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization): Kotlin multiplatform / multi-format reflectionless serialization.
 - [ksp](https://github.com/google/ksp): Kotlin Symbol Processing API for code generation and analysis.
+- Build-Logic
 
 ## Technical Blog
 
