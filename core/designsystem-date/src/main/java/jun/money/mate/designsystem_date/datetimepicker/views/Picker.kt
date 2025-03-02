@@ -36,7 +36,7 @@ import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalSnapperApi::class)
 @Composable
-internal fun HmPicker(
+internal fun Picker(
     modifier: Modifier = Modifier,
     timeFormat: TimeFormat = TimeFormat.HOUR,
     texts: ImmutableList<String>,
@@ -118,6 +118,7 @@ internal fun HmPicker(
                             text = when (timeFormat) {
                                 TimeFormat.HOUR -> "시"
                                 TimeFormat.MINUTE -> "분"
+                                TimeFormat.DAY -> "일"
                             },
                             style = JUNTheme.typography.titleNormalB,
                             color = if (isScrollInProgress) main else MaterialTheme.colorScheme.onSurface,

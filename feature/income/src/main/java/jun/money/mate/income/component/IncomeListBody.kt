@@ -1,13 +1,12 @@
 package jun.money.mate.income.component
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,68 +19,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.component.CheckBox
-import jun.money.mate.designsystem.component.LeftToRightSlideFadeAnimatedVisibility
+import jun.money.mate.designsystem.component.CheckIcon
+import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.Gray5
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.designsystem.theme.main
+import jun.money.mate.model.etc.DateType
+import jun.money.mate.model.etc.DateType.Companion.toDateString
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
-import jun.money.mate.model.income.IncomeType
-import java.time.LocalDate
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun IncomeListBody(
     incomeList: IncomeList,
-    onIncomeClick: (Income) -> Unit
+    onIncomeClick: (Income) -> Unit,
+    modifier : Modifier = Modifier
 ) {
-    Column {
-        Surface(
-            color = MaterialTheme.colorScheme.surfaceDim,
-            shadowElevation = 4.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier.padding(20.dp),
-            ) {
-                Text(
-                    text = "전체 수입",
-                    style = JUNTheme.typography.titleLargeM,
-                )
-                VerticalSpacer(10.dp)
-                Text(
-                    text = incomeList.totalString,
-                    color = main,
-                    style = JUNTheme.typography.headlineSmallB,
-                )
-            }
-        }
 
+    Surface(
+        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+        color = MaterialTheme.colorScheme.surfaceDim,
+        shadowElevation = 2.dp,
+        modifier = modifier.fillMaxWidth()
+    ) {
         LazyColumn(
             modifier = Modifier
-                .weight(1f)
-                .background(MaterialTheme.colorScheme.surface)
+                .fillMaxSize()
         ) {
-            incomeList.groupedIncomes.forEach { (type, incomes) ->
-                if (incomes.isNotEmpty()) {
-                    stickyHeader {
-                        IncomeStickyHeader(
-                            title = type.title,
-                        )
-                    }
-                }
-
-                items(incomes) { income ->
-                    IncomeItem(
-                        income = income,
-                        onIncomeClick = { onIncomeClick(income) },
-                        modifier = Modifier.animateContentSize()
-                    )
-                }
+            item {
+                VerticalSpacer(20.dp)
+            }
+            items(incomeList.incomes) { income ->
+                IncomeItem(
+                    income = income,
+                    onIncomeClick = { onIncomeClick(income) },
+                    modifier = Modifier.animateContentSize()
+                )
             }
         }
     }
@@ -95,74 +68,56 @@ private fun IncomeItem(
 ) {
     Surface(
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = if (income.selected) main else Gray5
-        ),
+        shadowElevation = 2.dp,
         color = MaterialTheme.colorScheme.surfaceDim,
         onClick = onIncomeClick,
         contentColor = MaterialTheme.colorScheme.onSurface,
         modifier = modifier
             .fillMaxWidth()
             .animateContentSize()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 10.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .animateContentSize()
         ) {
-            LeftToRightSlideFadeAnimatedVisibility(
-                visible = income.selected
-            ) {
-                CheckBox(
-                    checked = income.selected,
-                    onCheckedChange = {
-                        onIncomeClick()
-                    },
-                    modifier = Modifier.padding(end = 16.dp),
-                )
-            }
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = income.dateString,
-                    style = JUNTheme.typography.titleSmallB,
-                )
-                Text(
-                    text = income.title,
-                    style = JUNTheme.typography.titleSmallR,
-                    textAlign = TextAlign.End,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = income.amountString,
-                    style = JUNTheme.typography.titleNormalB,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                ) {
+                    if (income.isSelected) {
+                        CheckIcon()
+                    } else {
+                        LeafIcon(
+                            isRed = income.dateType is DateType.Specific,
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
+                    HorizontalSpacer(6.dp)
+                    Column {
+                        Text(
+                            text = income.title,
+                            style = JUNTheme.typography.titleMediumM,
+                        )
+                        Text(
+                            text = income.dateType.toDateString(),
+                            style = JUNTheme.typography.titleSmallR,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
             }
+            Text(
+                text = income.amountString,
+                style = JUNTheme.typography.titleNormalB,
+                textAlign = TextAlign.End
+            )
         }
-    }
-}
-
-@Composable
-private fun IncomeStickyHeader(
-    title: String,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, top = 20.dp)
-    ) {
-        Text(
-            text = title,
-            style = JUNTheme.typography.titleNormalM,
-        )
     }
 }
 
@@ -191,9 +146,7 @@ private fun IncomeItemPreview() {
                 id = 1,
                 title = "Title",
                 amount = 1000,
-                type = IncomeType.REGULAR,
-                incomeDate = LocalDate.now(),
-                selected = true
+                dateType = DateType.Monthly(1),
             ),
             onIncomeClick = {}
         )

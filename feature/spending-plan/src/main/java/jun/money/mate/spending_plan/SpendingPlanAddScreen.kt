@@ -10,7 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
-import jun.money.mate.designsystem_date.datetimepicker.DatePicker
+import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.SpendingCategory
 import jun.money.mate.model.spending.SpendingCategoryType
@@ -76,7 +76,6 @@ private fun SpendingPlanAddScreen(
     onApplyType: (SpendingType) -> Unit,
 ) {
     AddScaffold(
-        title = "지출 계획 $title",
         color = Red3,
         onGoBack = onBackClick,
         onComplete = onAddIncome,
@@ -134,7 +133,7 @@ private fun SpendingPlanModalContent(
     when (incomeModalEffect) {
         SpendingPlanModalEffect.Idle -> {}
         is SpendingPlanModalEffect.ShowDatePicker -> {
-            DatePicker(
+            DatePickerSheet(
                 onDateSelect = onDateSelect,
                 onDismissRequest = onDismissRequest,
             )

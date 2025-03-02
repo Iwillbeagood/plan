@@ -1,22 +1,30 @@
 package jun.money.mate.designsystem_date.datetimepicker
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
+import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem_date.datetimepicker.models.CalendarConfig
 import jun.money.mate.designsystem_date.datetimepicker.models.CalendarSelection
 import jun.money.mate.designsystem_date.datetimepicker.models.CalendarStyle
 import jun.money.mate.designsystem_date.datetimepicker.views.CalendarBottomSheet
+import jun.money.mate.designsystem_date.datetimepicker.views.CalendarView
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePicker(
+fun DatePickerSheet(
     sheetState: SheetState = rememberModalBottomSheetState(true),
     selectedDate: LocalDate = LocalDate.now(),
     timeBoundary: ClosedRange<LocalDate> = LocalDate.now().let { now -> now.withDayOfMonth(1)..now.withDayOfMonth(now.lengthOfMonth()) },
@@ -41,14 +49,57 @@ fun DatePicker(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DatePicker(
+    onDateSelect: (LocalDate) -> Unit,
+    timeBoundary: ClosedRange<LocalDate> = LocalDate.now().let { now -> now.withDayOfMonth(1)..now.withDayOfMonth(now.lengthOfMonth()) },
+) {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        shadowElevation = 4.dp,
+        border = BorderStroke(1.dp, Gray6),
+        modifier = Modifier.height(430.dp)
+    ) {
+        Box(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            CalendarView(
+                config = CalendarConfig(
+                    yearSelection = true,
+                    monthSelection = true,
+                    style = CalendarStyle.MONTH,
+                    boundary = timeBoundary
+                ),
+                onDisMissRequest = {  },
+                selection = CalendarSelection.Date(
+                    withButtonView = false,
+                ) { newDates ->
+                    onDateSelect(newDates)
+                },
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-private fun HmDatePickerPreview() {
+private fun DatePickerSheetPreview() {
     JunTheme {
-        DatePicker(
+        DatePickerSheet(
             sheetState = SheetState(true, Density(0f), SheetValue.Expanded, { true }, false),
             onDateSelect = {},
             onDismissRequest = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun DatePickerPreview() {
+    JunTheme {
+        DatePicker(
+            onDateSelect = {}
         )
     }
 }

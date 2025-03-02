@@ -1,21 +1,44 @@
 package jun.money.mate.income
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import jun.money.mate.designsystem.component.CrossfadeWithSlide
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.etc.EmptyMessage
+import jun.money.mate.designsystem.component.HorizontalSpacer
+import jun.money.mate.designsystem.component.RegularButton
+import jun.money.mate.designsystem.component.TwoBtnDialog
+import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.designsystem.theme.main
+import jun.money.mate.designsystem.theme.White1
+import jun.money.mate.designsystem.theme.main20
 import jun.money.mate.income.component.IncomeListBody
-import jun.money.mate.model.etc.ViewMode
+import jun.money.mate.income.component.LeavesBox
+import jun.money.mate.income.contract.IncomeListEffect
+import jun.money.mate.income.contract.IncomeListModalEffect
+import jun.money.mate.income.contract.IncomeListState
+import jun.money.mate.model.LeafOrder
+import jun.money.mate.model.etc.EditMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
-import jun.money.mate.ui.DateScaffold
-import java.time.LocalDate
+import jun.money.mate.model.income.IncomeList
 
 @Composable
 internal fun IncomeListRoute(
@@ -25,18 +48,21 @@ internal fun IncomeListRoute(
     viewModel: IncomeListViewModel = hiltViewModel()
 ) {
     val incomeListState by viewModel.incomeListState.collectAsStateWithLifecycle()
-    val incomeListViewMode by viewModel.incomeListViewMode.collectAsStateWithLifecycle()
-    val selectedDate by viewModel.dateState.collectAsStateWithLifecycle()
+    val modalEffect by viewModel.modalEffect.collectAsStateWithLifecycle()
+    val leaves by viewModel.leaves.collectAsStateWithLifecycle()
 
     IncomeListScreen(
+        leaves = leaves,
         incomeListState = incomeListState,
-        incomeListViewMode = incomeListViewMode,
-        selectedDate = selectedDate,
-        onIncomeClick = viewModel::changeIncomeSelected,
-        onIncomeAdd = onShowIncomeAdd,
-        onIncomeEdit = viewModel::editIncome,
-        onIncomeDelete = viewModel::deleteIncome,
-        onDateSelect = viewModel::onDateSelected
+        onShowIncomeAdd = onShowIncomeAdd,
+        onIncomeClick = viewModel::selectIncome,
+        onDeleteSelectedIncome = viewModel::showDeleteDialog,
+        onEditSelectedIncome = viewModel::editIncome,
+    )
+
+    IncomeListModalContent(
+        modalEffect = modalEffect,
+        viewModel = viewModel
     )
 
     LaunchedEffect(Unit) {
@@ -51,29 +77,123 @@ internal fun IncomeListRoute(
 
 @Composable
 private fun IncomeListScreen(
+    leaves: List<LeafOrder>,
     incomeListState: IncomeListState,
-    incomeListViewMode: ViewMode,
-    selectedDate: LocalDate,
+    onShowIncomeAdd: () -> Unit,
     onIncomeClick: (Income) -> Unit,
-    onIncomeAdd: () -> Unit,
-    onIncomeEdit: () -> Unit,
-    onIncomeDelete: () -> Unit,
-    onDateSelect: (LocalDate) -> Unit,
+    onDeleteSelectedIncome: () -> Unit,
+    onEditSelectedIncome: () -> Unit,
 ) {
-    DateScaffold(
-        color = main,
-        bottomBarVisible = incomeListViewMode == ViewMode.EDIT,
-        addButtonVisible = incomeListViewMode == ViewMode.LIST,
-        selectedDate = selectedDate,
-        onDateSelect = onDateSelect,
-        onAdd = onIncomeAdd,
-        onEdit = onIncomeEdit,
-        onDelete = onIncomeDelete,
+    Scaffold(
+        bottomBar = {
+            IncomeListButton(
+                editMode = (incomeListState as? IncomeListState.UiData)?.editMode ?: EditMode.LIST,
+                onShowIncomeAdd = onShowIncomeAdd,
+                onDeleteSelectedIncome = onDeleteSelectedIncome,
+                onEditSelectedIncome = onEditSelectedIncome,
+            )
+        },
+        containerColor = main20
     ) {
-        IncomeListContent(
-            incomeListState = incomeListState,
-            onIncomeClick = onIncomeClick,
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it)
+            ) {
+                LeavesBox(
+                    leaves = leaves,
+                    modifier = Modifier.weight(1f)
+                )
+                IncomeListContent(
+                    incomeListState = incomeListState,
+                    onIncomeClick = onIncomeClick,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            FadeAnimatedVisibility(
+                visible = incomeListState is IncomeListState.UiData,
+                modifier = Modifier.align(Alignment.TopStart)
+            ) {
+                if (incomeListState is IncomeListState.UiData) {
+                    Column(
+                        modifier = Modifier.padding(30.dp)
+                    ) {
+                        Text(
+                            text = "전체 수입",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = JUNTheme.typography.headlineSmallM,
+                        )
+                        Text(
+                            text = incomeListState.incomeList.totalString,
+                            style = JUNTheme.typography.displaySmallB,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun IncomeListButton(
+    editMode: EditMode,
+    onShowIncomeAdd: () -> Unit,
+    onDeleteSelectedIncome: () -> Unit,
+    onEditSelectedIncome: () -> Unit,
+) {
+    Box(
+        modifier = Modifier.background(White1)
+    ) {
+        CrossfadeWithSlide(
+            targetState = editMode,
+        ) {
+            when (it) {
+                EditMode.LIST -> {
+                    RegularButton(
+                        text = "수입 추가",
+                        onClick = onShowIncomeAdd,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    )
+                }
+                EditMode.EDIT -> {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        RegularButton(
+                            text = "삭제",
+                            onClick = onDeleteSelectedIncome,
+                            isActive = false,
+                            modifier = Modifier.weight(1f)
+                        )
+                        HorizontalSpacer(10.dp)
+                        RegularButton(
+                            text = "수정",
+                            onClick = onEditSelectedIncome,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
+                EditMode.DELETE_ONLY -> {
+                    RegularButton(
+                        text = "삭제",
+                        onClick = onDeleteSelectedIncome,
+                        isActive = false,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -81,17 +201,39 @@ private fun IncomeListScreen(
 private fun IncomeListContent(
     incomeListState: IncomeListState,
     onIncomeClick: (Income) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    FadeAnimatedVisibility(incomeListState is IncomeListState.Empty) {
-        if (incomeListState is IncomeListState.Empty) {
-            EmptyMessage("수입 내역이 없습니다.")
-        }
-    }
-    FadeAnimatedVisibility(incomeListState is IncomeListState.UiData) {
+    FadeAnimatedVisibility(
+        visible = incomeListState is IncomeListState.UiData,
+        modifier = modifier
+    ) {
         if (incomeListState is IncomeListState.UiData) {
             IncomeListBody(
                 incomeList = incomeListState.incomeList,
                 onIncomeClick = onIncomeClick
+            )
+        }
+    }
+}
+
+@Composable
+private fun IncomeListModalContent(
+    modalEffect: IncomeListModalEffect,
+    viewModel: IncomeListViewModel
+) {
+    when (modalEffect) {
+        IncomeListModalEffect.Hidden -> {}
+        IncomeListModalEffect.ShowDeleteConfirmDialog -> {
+            TwoBtnDialog(
+                onDismissRequest = viewModel::hideModal,
+                button2Text = stringResource(id = jun.money.mate.res.R.string.btn_yes),
+                button2Click = viewModel::deleteIncome,
+                content = {
+                    Text(
+                        text = "선택한 수입을 삭제하시겠습니까?",
+                        style = JUNTheme.typography.titleMediumM
+                    )
+                }
             )
         }
     }
@@ -102,14 +244,14 @@ private fun IncomeListContent(
 private fun IncomeListScreenPreview() {
     JunTheme {
         IncomeListScreen(
-            incomeListState = IncomeListState.Loading,
-            selectedDate = LocalDate.now(),
-            onDateSelect = {},
-            onIncomeAdd = {},
+            leaves = List(5) { LeafOrder(isRed = it % 2 == 0) },
+            incomeListState = IncomeListState.UiData(
+                incomeList = IncomeList.sample
+            ),
+            onShowIncomeAdd = {},
             onIncomeClick = {},
-            onIncomeEdit = {},
-            onIncomeDelete = {},
-            incomeListViewMode = ViewMode.EDIT
+            onDeleteSelectedIncome = {},
+            onEditSelectedIncome = {},
         )
     }
 }

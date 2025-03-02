@@ -1,8 +1,14 @@
 package jun.money.mate.designsystem.component
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -11,8 +17,12 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.with
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 
 @Composable
 fun FadeAnimatedVisibility(
@@ -45,6 +55,7 @@ fun ExpandAnimatedVisibility(
 @Composable
 fun LeftToRightSlideFadeAnimatedVisibility(
     visible: Boolean = true,
+    modifier: Modifier = Modifier,
     content: @Composable AnimatedVisibilityScope.() -> Unit
 ) {
     AnimatedVisibility(
@@ -57,6 +68,7 @@ fun LeftToRightSlideFadeAnimatedVisibility(
             targetOffsetX = { fullWidth -> -fullWidth },
             animationSpec = tween(300)
         ) + fadeOut(animationSpec = tween(300)),
+        modifier = modifier,
         content = content
     )
 }
@@ -64,6 +76,7 @@ fun LeftToRightSlideFadeAnimatedVisibility(
 @Composable
 fun BottomToTopAnimatedVisibility(
     visible: Boolean,
+    modifier: Modifier = Modifier,
     content: @Composable() AnimatedVisibilityScope.() -> Unit
 ) {
     AnimatedVisibility(
@@ -76,6 +89,7 @@ fun BottomToTopAnimatedVisibility(
             targetOffsetY = { fullHeight -> fullHeight },
             animationSpec = tween(300)
         ),
+        modifier = modifier,
         content = content
     )
 }
@@ -83,6 +97,7 @@ fun BottomToTopAnimatedVisibility(
 @Composable
 fun BottomToTopSlideFadeAnimatedVisibility(
     visible: Boolean = true,
+    modifier: Modifier = Modifier,
     content: @Composable AnimatedVisibilityScope.() -> Unit
 ) {
     AnimatedVisibility(
@@ -95,6 +110,7 @@ fun BottomToTopSlideFadeAnimatedVisibility(
             targetOffsetY = { fullHeight -> fullHeight },
             animationSpec = tween(300)
         ) + fadeOut(animationSpec = tween(300)),
+        modifier = modifier,
         content = content
     )
 }
@@ -103,6 +119,7 @@ fun BottomToTopSlideFadeAnimatedVisibility(
 @Composable
 fun TopToBottomAnimatedVisibility(
     visible: Boolean,
+    modifier: Modifier = Modifier,
     content: @Composable AnimatedVisibilityScope.() -> Unit
 ) {
     AnimatedVisibility(
@@ -115,8 +132,30 @@ fun TopToBottomAnimatedVisibility(
             targetOffsetY = { fullHeight -> -fullHeight },
             animationSpec = tween(300)
         ),
+        modifier = modifier,
         content = content
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun <T> CrossfadeWithSlide(
+    targetState: T,
+    modifier: Modifier = Modifier,
+    animationSpec: FiniteAnimationSpec<Float> = tween(durationMillis = 500),
+    label: String = "CrossfadeWithSlide",
+    content: @Composable (T) -> Unit
+) {
+    AnimatedContent(
+        targetState = targetState,
+        transitionSpec = {
+            fadeIn(animationSpec) + slideInVertically { fullHeight -> fullHeight / 2 } with
+                    fadeOut(animationSpec) + slideOutVertically { fullHeight -> fullHeight / 2 }
+        },
+        modifier = modifier,
+        label = label
+    ) { state ->
+        content(state)
+    }
+}
 

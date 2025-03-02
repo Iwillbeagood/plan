@@ -27,12 +27,12 @@ import jun.money.mate.designsystem.component.TopAppbar
 @Composable
 fun DefaultScaffold(
     color: Color,
-    bottomBarVisible: Boolean,
-    addButtonVisible: Boolean,
     onAdd: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
     containerColor: Color = MaterialTheme.colorScheme.surface,
+    addButtonVisible: Boolean = true,
+    bottomBarVisible: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     Scaffold(

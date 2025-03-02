@@ -3,7 +3,7 @@ package jun.money.mate.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import jun.money.mate.database.converter.IncomeTypeConverter
+import jun.money.mate.database.converter.DateTypeConverter
 import jun.money.mate.database.converter.LocalDateConverter
 import jun.money.mate.database.converter.LocalDateTimeConverter
 import jun.money.mate.database.converter.SaveCategoryConverter
@@ -33,9 +33,9 @@ import jun.money.mate.database.entity.SpendingPlanEntity
         LocalDateTimeConverter::class,
         LocalDateConverter::class,
         SpendingTypeConverter::class,
-        IncomeTypeConverter::class,
         SpendingCategoryConverter::class,
         SaveCategoryConverter::class,
+        DateTypeConverter::class
     ]
 )
 internal abstract class AppDatabase : RoomDatabase() {

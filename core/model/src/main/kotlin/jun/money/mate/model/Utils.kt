@@ -31,7 +31,7 @@ object Utils {
     }
 
     fun formatDateToKorean(date: LocalDate): String {
-        val formatter = DateTimeFormatter.ofPattern("MM월 dd일")
+        val formatter = DateTimeFormatter.ofPattern("M월 d일")
         return date.format(formatter)
     }
 

@@ -17,8 +17,11 @@ import jun.money.mate.home.navigation.homeNavGraph
 import jun.money.mate.income.navigation.incomeNavGraph
 import jun.money.mate.main.component.MainNavigator
 import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.navigation.MainBottomNavItem
+import jun.money.mate.navigation.Route
 import jun.money.mate.save.navigation.saveNavGraph
 import jun.money.mate.spending_plan.navigation.spendingPlanNavGraph
+import jun.money.mate.splash.navigation.splashNavGraph
 
 @Composable
 internal fun MainNavHost(
@@ -36,7 +39,7 @@ internal fun MainNavHost(
     ) {
         NavHost(
             navController = navigator.navController,
-            startDestination = navigator.startDestination,
+            startDestination = Route.Splash,
             enterTransition = { fadeIn(animationSpec = tween(300)) },
             exitTransition = { fadeOut(animationSpec = tween(300)) }
         ) {
@@ -74,6 +77,11 @@ internal fun MainNavHost(
                 onShowSavingAdd = navigator::navigateToSavingAdd,
                 onShowSavingEdit = navigator::navigateToSavingEdit,
                 onShowSnackBar = onShowSnackBar
+            )
+            splashNavGraph(
+                onShowHomeScreen = {
+                    navigator.navigateTo(MainBottomNavItem.Home)
+                }
             )
         }
     }

@@ -4,21 +4,22 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import jun.money.mate.income.IncomeAddRoute
+import jun.money.mate.income.IncomeEditRoute
 import jun.money.mate.income.IncomeListRoute
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
-import jun.money.mate.navigation.Route
-import jun.money.mate.navigation.argument.AddType
-import jun.money.mate.navigation.utils.composableType
 
 fun NavController.navigateToIncomeList(navOptions: NavOptions) {
     navigate(MainTabRoute.Income.List, navOptions)
 }
 
-fun NavController.navigateToIncomeAdd(addType: AddType) {
-    navigate(MainTabRoute.Income.Add(addType))
+fun NavController.navigateToIncomeAdd() {
+    navigate(MainTabRoute.Income.Add)
+}
+
+fun NavController.navigateToIncomeEdit(id: Long) {
+    navigate(MainTabRoute.Income.Edit(id))
 }
 
 fun NavGraphBuilder.incomeNavGraph(
@@ -36,11 +37,15 @@ fun NavGraphBuilder.incomeNavGraph(
         )
     }
 
-    composableType<MainTabRoute.Income.Add, AddType> { backStackEntry ->
-        val addType = backStackEntry.toRoute<MainTabRoute.Income.Add>().addType
-
+    composable<MainTabRoute.Income.Add> { backStackEntry ->
         IncomeAddRoute(
-            addType = addType,
+            onGoBack = onGoBack,
+            onShowSnackBar = onShowSnackBar
+        )
+    }
+
+    composable<MainTabRoute.Income.Edit> { backStackEntry ->
+        IncomeEditRoute(
             onGoBack = onGoBack,
             onShowSnackBar = onShowSnackBar
         )

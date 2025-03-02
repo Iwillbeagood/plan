@@ -71,9 +71,6 @@ fun NumberKeyboard(
                 RegularButton(
                     text = "닫기",
                     color = main,
-                    style = JUNTheme.typography.titleSmallM,
-                    borderStroke = 8.dp,
-                    verticalPadding = 4.dp,
                     onClick = onDismissRequest,
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
                 )

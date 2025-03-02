@@ -50,7 +50,6 @@ fun DefaultDialog(
     content: @Composable ColumnScope.() -> Unit = {},
 ) {
     Dialog(
-        properties = DialogProperties(dismissOnClickOutside = false),
         onDismissRequest = onDismissRequest,
     ) {
         Surface(
@@ -71,8 +70,8 @@ fun DefaultDialog(
                             .padding(horizontal = 20.dp)
                             .padding(top = 10.dp)
                     )
-                    Spacer(modifier = Modifier.height(contentSpace))
                 }
+                Spacer(modifier = Modifier.height(contentSpace))
                 Column(
                     modifier = Modifier
                         .padding(horizontal = contentPadding)
@@ -145,7 +144,7 @@ fun DefaultBottomSheet(
         onDismissRequest = onDismissRequest,
         containerColor = MaterialTheme.colorScheme.surfaceDim,
         shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-        properties = ModalBottomSheetProperties(shouldDismissOnBackPress = false)
+        properties = ModalBottomSheetProperties()
     ) {
         BackHandler(onBack = onDismissRequest)
         

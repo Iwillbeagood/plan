@@ -18,4 +18,5 @@ dependencies {
 
     implementation(projects.core.res)
     implementation(projects.core.designsystem)
+    implementation(libs.material)
 }

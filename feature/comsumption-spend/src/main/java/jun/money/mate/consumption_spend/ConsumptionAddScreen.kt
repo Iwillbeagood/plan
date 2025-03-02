@@ -29,7 +29,7 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
-import jun.money.mate.designsystem_date.datetimepicker.DatePicker
+import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.ui.AddScaffold
@@ -229,7 +229,7 @@ private fun SpendingPlanModalContent(
     when (modalEffect) {
         ConsumptionModalEffect.Idle -> {}
         is ConsumptionModalEffect.ShowDatePicker -> {
-            DatePicker(
+            DatePickerSheet(
                 onDateSelect = onDateSelect,
                 onDismissRequest = onDismissRequest,
             )

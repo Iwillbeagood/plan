@@ -28,9 +28,9 @@ val TextStyle.nonScaledSp
     )
 
 val notosanKr = FontFamily(
-    Font(R.font.notosanscjkkr_bold, FontWeight.Bold),
-    Font(R.font.notosanscjkkr_medium, FontWeight.Medium),
-    Font(R.font.notosanscjkkr_regular, FontWeight.Normal)
+    Font(R.font.pretendard_bold, FontWeight.Bold),
+    Font(R.font.pretendard_medium, FontWeight.Medium),
+    Font(R.font.pretendard_reqular, FontWeight.Normal)
 )
 
 private val notoanskrStyle = TextStyle(

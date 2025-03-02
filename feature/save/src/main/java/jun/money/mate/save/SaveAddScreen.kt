@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -16,14 +15,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.BottomToTopAnimatedVisibility
-import jun.money.mate.designsystem.component.DefaultTextField
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.TextButton
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
@@ -32,7 +29,7 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Orange1
-import jun.money.mate.designsystem_date.datetimepicker.DatePicker
+import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SaveCategory
 import jun.money.mate.navigation.argument.AddType
@@ -250,7 +247,7 @@ private fun SaveModalContent(
     when (saveModalEffect) {
         SaveModalEffect.Idle -> {}
         is SaveModalEffect.ShowDatePicker -> {
-            DatePicker(
+            DatePickerSheet(
                 onDateSelect = onDateSelect,
                 onDismissRequest = onDismissRequest,
             )

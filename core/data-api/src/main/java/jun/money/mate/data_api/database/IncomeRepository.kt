@@ -20,4 +20,6 @@ interface IncomeRepository {
     ): Flow<IncomeList>
 
     suspend fun deleteById(id: Long)
+
+    suspend fun deleteByIds(ids: List<Long>)
 }

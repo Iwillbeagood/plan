@@ -2,14 +2,9 @@ package jun.money.mate.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
-val main = Color(0xFF5FAFFF)
-val main20 = Color(0x335FAFFF)
-val mainBackground = Color(0xFFF2F3F6)
-
-
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val main = Color(0xFFEE945A)
+val main20 = Color(0x33EE945A)
+val mainBackground = Color(0xFFFCFCFC)
 
 val Purple1 = Color(0xFF7030A0)
 val PurpleGrey40 = Color(0xFF625b71)
@@ -32,7 +27,7 @@ val Gray11 = Color(0xFF777777)
 val Gray12 = Color(0xFF909090)
 val Gray14 = Color(0xFF8D8D8D)
 
-val Black = Color(0xFF000000)
+val Black = Color(0xFF030303)
 val Black2 = Color(0xFF1F1F1F)
 val Black3 = Color(0xFF2D2D2D)
 
@@ -54,3 +49,5 @@ val Red3 = Color(0xFFFF6F6F)
 
 val Green1 = Color(0xFF999900)
 val Green2 = Color(0xFF4CAF50)
+
+val Brawn = Color(0xFF8B4513)

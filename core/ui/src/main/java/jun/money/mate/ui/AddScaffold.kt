@@ -25,16 +25,15 @@ import jun.money.mate.designsystem.theme.main
 
 @Composable
 fun AddScaffold(
-    title: String,
     color: Color,
     onGoBack: () -> Unit,
     onComplete: () -> Unit,
+    title: String = "",
     buttonVisible: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     AddScaffold(
-        title = "수입 $title",
-        buttonText = "${title}하기",
+        buttonText = "추가하기",
         color = color,
         onGoBack = onGoBack,
         onComplete = onComplete,
@@ -45,7 +44,7 @@ fun AddScaffold(
 
 @Composable
 fun AddScaffold(
-    title: String,
+    title: String = "",
     buttonText: String,
     color: Color,
     onGoBack: () -> Unit,

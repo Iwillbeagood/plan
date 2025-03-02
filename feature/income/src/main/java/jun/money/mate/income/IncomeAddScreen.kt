@@ -1,19 +1,23 @@
 package jun.money.mate.income
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -23,8 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.designsystem.component.BottomToTopAnimatedVisibility
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
+import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderLineText
 import jun.money.mate.designsystem.component.UnderlineTextField
@@ -33,195 +36,148 @@ import jun.money.mate.designsystem.theme.JUNTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.designsystem_date.datetimepicker.DatePicker
-import jun.money.mate.income.IncomeAddState.Companion.buttonText
-import jun.money.mate.income.component.IncomeTypeBottomSheet
+import jun.money.mate.designsystem_date.datetimepicker.DayPicker
+import jun.money.mate.designsystem_date.datetimepicker.TimeBoundaries
+import jun.money.mate.income.component.TypeButton
+import jun.money.mate.income.contract.IncomeEffect
+import jun.money.mate.income.contract.IncomeModalEffect
+import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.model.income.IncomeType
-import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.number.NumberKeyboard
-import jun.money.mate.ui.number.ValueState
 import java.time.LocalDate
 
 internal enum class IncomeAddStep(
     val message: String
 ) {
-    Type("먼저 수입 유형을 선택해 주세요"),
     Title("어떤 수입인지 설명해 주세요"),
     Amount("수입이 얼마나 발생됐는지 금액을 입력해 주세요"),
-    Date("수입이 발생한 날짜를 선택해 주세요");
-
-    companion object {
-        val startStep = Type
-        val endStep = Date
-
-        fun IncomeAddStep.nextStep(): IncomeAddStep = entries.toTypedArray().let {
-            val nextIndex = it.indexOf(this) + 1
-            if (nextIndex < it.size) it[nextIndex] else it.last()
-        }
-    }
+    Type("수입이 발생한 날짜를 선택해 주세요");
 }
 
 @Composable
 internal fun IncomeAddRoute(
-    addType: AddType,
     onGoBack: () -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: IncomeAddViewModel = hiltViewModel()
 ) {
     val incomeAddState by viewModel.incomeAddState.collectAsStateWithLifecycle()
     val incomeModalEffect by viewModel.incomeModalEffect.collectAsStateWithLifecycle()
+
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
-    IncomeAddScreen(
-        title = when (addType) {
-            is AddType.Edit -> "수정"
-            AddType.New -> "추가"
+    AddScaffold(
+        buttonText = when (viewModel.addStep.value) {
+            IncomeAddStep.Title -> "다음"
+            IncomeAddStep.Amount -> "다음"
+            IncomeAddStep.Type -> "추가"
         },
-        incomeAddState = incomeAddState,
-        onBackClick = onGoBack,
-        onNextStep = viewModel::nextStep,
-        onIncomeTitleChange = viewModel::onTitleValueChange,
-        onShowNumberBottomSheet = viewModel::showNumberKeyboard,
-        onShowIncomeDateBottomSheet = viewModel::showDatePicker,
-        onShowIncomeTypeBottomSheet = viewModel::showTypePicker,
-    )
+        color = main,
+        onGoBack = onGoBack,
+        onComplete = viewModel::nextStep
+    ) {
+        IncomeAddContent(
+            addStep = viewModel.addStep.value,
+            addSteps = viewModel.addSteps.value,
+            incomeAddState = incomeAddState,
+            viewModel = viewModel
+        )
+    }
 
     IncomeModalContent(
         incomeModalEffect = incomeModalEffect,
-        onDateSelect = viewModel::onDateSelected,
-        onDismissRequest = viewModel::dismiss,
-        onTypeSelected = viewModel::incomeTypeSelected,
-        onAmountChange = viewModel::amountValueChange,
-        onNumberDismissRequest = viewModel::numberKeyboardDismiss,
+        viewModel = viewModel
     )
 
     LaunchedEffect(true) {
-        viewModel.incomeAddEffect.collect {
+        viewModel.incomeEffect.collect {
             when (it) {
-                is IncomeAddEffect.ShowSnackBar -> onShowSnackBar(it.messageType)
-                IncomeAddEffect.IncomeAddComplete -> onGoBack()
-                IncomeAddEffect.DismissKeyboard -> keyboardController?.hide()
-                IncomeAddEffect.RemoveTitleFocus -> focusManager.clearFocus()
+                is IncomeEffect.ShowSnackBar -> onShowSnackBar(it.messageType)
+                IncomeEffect.IncomeComplete -> onGoBack()
+                IncomeEffect.DismissKeyboard -> keyboardController?.hide()
+                IncomeEffect.RemoveTitleFocus -> focusManager.clearFocus()
             }
         }
     }
 }
 
 @Composable
-private fun IncomeAddScreen(
-    title: String,
-    incomeAddState: IncomeAddState,
-    onBackClick: () -> Unit,
-    onNextStep: () -> Unit,
-    onIncomeTitleChange: (String) -> Unit,
-    onShowNumberBottomSheet: () -> Unit,
-    onShowIncomeTypeBottomSheet: () -> Unit,
-    onShowIncomeDateBottomSheet: () -> Unit,
-) {
-    AddScaffold(
-        title = "수입 $title",
-        buttonText = incomeAddState.buttonText(),
-        color = main,
-        onGoBack = onBackClick,
-        onComplete = onNextStep
-    ) {
-        IncomeAddContent(
-            incomeAddState = incomeAddState,
-            onNextStep = onNextStep,
-            onIncomeTitleChange = onIncomeTitleChange,
-            onShowNumberBottomSheet = onShowNumberBottomSheet,
-            onShowIncomeDateBottomSheet = onShowIncomeDateBottomSheet,
-            onShowIncomeTypeBottomSheet = onShowIncomeTypeBottomSheet,
-        )
-    }
-}
-
-@Composable
 private fun IncomeAddContent(
+    addStep: IncomeAddStep,
+    addSteps: List<IncomeAddStep>,
     incomeAddState: IncomeAddState,
-    onNextStep: () -> Unit,
-    onIncomeTitleChange: (String) -> Unit,
-    onShowNumberBottomSheet: () -> Unit,
-    onShowIncomeDateBottomSheet: () -> Unit,
-    onShowIncomeTypeBottomSheet: () -> Unit,
+    viewModel: IncomeAddViewModel
 ) {
-    FadeAnimatedVisibility(incomeAddState is IncomeAddState.UiData) {
-        if (incomeAddState is IncomeAddState.UiData) {
-            IncomeAddBody(
-                uiState = incomeAddState,
-                onNextStep = onNextStep,
-                onIncomeTitleChange = onIncomeTitleChange,
-                onShowNumberBottomSheet = onShowNumberBottomSheet,
-                onShowIncomeDateBottomSheet = onShowIncomeDateBottomSheet,
-                onShowIncomeTypeBottomSheet = onShowIncomeTypeBottomSheet,
-            )
-        }
-    }
+    IncomeAddScreen(
+        addStep = addStep,
+        addSteps = addSteps,
+        uiState = incomeAddState,
+        onNextStep = viewModel::nextStep,
+        onIncomeTitleChange = viewModel::titleValueChange,
+        onShowNumberBottomSheet = viewModel::showNumberKeyboard,
+        onDaySelected = viewModel::daySelected,
+        onDateSelected = viewModel::dateSelected,
+    )
 }
 
 @Composable
-private fun IncomeAddBody(
-    uiState: IncomeAddState.UiData,
+private fun IncomeAddScreen(
+    addStep: IncomeAddStep,
+    addSteps: List<IncomeAddStep>,
+    uiState: IncomeAddState,
     onNextStep: () -> Unit,
     onIncomeTitleChange: (String) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
-    onShowIncomeDateBottomSheet: () -> Unit,
-    onShowIncomeTypeBottomSheet: () -> Unit,
+    onDaySelected: (String) -> Unit,
+    onDateSelected: (LocalDate) -> Unit,
 ) {
-    val listState = rememberScrollState()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(listState)
+            .verticalScroll(rememberScrollState())
             .animateContentSize()
     ) {
         VerticalSpacer(50.dp)
         Text(
-            text = uiState.currentStep.message,
+            text = addStep.message,
             style = JUNTheme.typography.titleLargeM,
         )
-        VerticalSpacer(20.dp)
-        IncomeAddStepContent(
+        VerticalSpacer(50.dp)
+        IncomeAddBlock(
+            addSteps = addSteps,
             uiState = uiState,
             onNextStep = onNextStep,
             onIncomeTitleChange = onIncomeTitleChange,
             onShowNumberBottomSheet = onShowNumberBottomSheet,
-            onShowIncomeDateBottomSheet = onShowIncomeDateBottomSheet,
-            onShowIncomeTypeBottomSheet = onShowIncomeTypeBottomSheet,
+            onDaySelected = onDaySelected,
+            onDateSelected = onDateSelected,
         )
+        VerticalSpacer(400.dp)
     }
 }
 
 @Composable
-private fun IncomeAddStepContent(
-    uiState: IncomeAddState.UiData,
+private fun IncomeAddBlock(
+    addSteps: List<IncomeAddStep>,
+    uiState: IncomeAddState,
     onNextStep: () -> Unit,
     onIncomeTitleChange: (String) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
-    onShowIncomeDateBottomSheet: () -> Unit,
-    onShowIncomeTypeBottomSheet: () -> Unit,
+    onDaySelected: (String) -> Unit,
+    onDateSelected: (LocalDate) -> Unit,
 ) {
-    val steps = uiState.incomeAddSteps
-    val currentStep = uiState.currentStep
-
-    IncomeAddStepContent(
-        step = IncomeAddStep.Date,
-        steps = steps,
-        currentStep = currentStep,
-        title = "수입 날짜",
+    IncomeAddBlock(
+        visible = IncomeAddStep.Type in addSteps,
+        title = "날짜",
     ) {
-        UnderLineText(
-            value = uiState.date.toString(),
-            modifier = Modifier.clickable(onClick = onShowIncomeDateBottomSheet),
+        DateAdd(
+            onDaySelected = onDaySelected,
+            onDateSelected = onDateSelected,
         )
     }
-    IncomeAddStepContent(
-        step = IncomeAddStep.Amount,
-        steps = steps,
-        currentStep = currentStep,
+    IncomeAddBlock(
+        visible = IncomeAddStep.Amount in addSteps,
         title = "수입 금액",
     ) {
         Column {
@@ -231,20 +187,21 @@ private fun IncomeAddStepContent(
                 modifier = Modifier.clickable(onClick = onShowNumberBottomSheet),
             )
             TopToBottomAnimatedVisibility(uiState.amount != 0L) {
-                Text(
-                    text = uiState.amountWon,
-                    style = JUNTheme.typography.labelLargeM,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                Column {
+                    VerticalSpacer(4.dp)
+                    Text(
+                        text = uiState.amountWon,
+                        style = JUNTheme.typography.labelLargeM,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
 
         }
     }
-    IncomeAddStepContent(
-        step = IncomeAddStep.Title,
-        steps = steps,
-        currentStep = currentStep,
+    IncomeAddBlock(
+        visible = IncomeAddStep.Title in addSteps,
         title = "수입 제목",
     ) {
         UnderlineTextField(
@@ -261,71 +218,99 @@ private fun IncomeAddStepContent(
             )
         )
     }
-    IncomeAddStepContent(
-        step = IncomeAddStep.Type,
-        steps = steps,
-        currentStep = currentStep,
-        title = "수입 유형",
-    ) {
-        UnderLineText(
-            value = uiState.type?.title ?: "",
-            hint = "선택",
-            modifier = Modifier.clickable(onClick = onShowIncomeTypeBottomSheet),
-        )
-    }
 }
 
 @Composable
-private fun IncomeAddStepContent(
-    step: IncomeAddStep,
-    steps: List<IncomeAddStep>,
-    currentStep: IncomeAddStep,
+private fun DateAdd(
+    onDaySelected: (String) -> Unit,
+    onDateSelected: (LocalDate) -> Unit
+) {
+    var isMonthly by remember { mutableStateOf<Boolean?>(null) }
+
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            TypeButton(
+                text = "정기 수익",
+                isType = isMonthly == true,
+                onApplyType = {
+                    isMonthly = true
+                },
+                modifier = Modifier.weight(1f)
+            )
+            HorizontalSpacer(10.dp)
+            TypeButton(
+                text = "단기 수익",
+                isType = isMonthly == false,
+                onApplyType = {
+                    isMonthly = false
+                },
+                modifier = Modifier.weight(1f)
+            )
+        }
+        VerticalSpacer(16.dp)
+        Crossfade(
+            isMonthly
+        ) {
+            when (it) {
+                true -> {
+                    DayPicker(
+                        onDaySelected = onDaySelected,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                false -> {
+                    DatePicker(
+                        timeBoundary = TimeBoundaries.lastMonthToThisMonth,
+                        onDateSelect = onDateSelected,
+                    )
+                }
+
+                null -> {}
+            }
+        }
+    }
+}
+
+
+@Composable
+private fun IncomeAddBlock(
+    visible: Boolean,
     title: String,
     content: @Composable () -> Unit,
 ) {
-    TopToBottomAnimatedVisibility(step in steps) {
+    TopToBottomAnimatedVisibility(visible) {
         Column {
-            BottomToTopAnimatedVisibility(currentStep != step) {
-                Text(
-                    text = title,
-                    style = JUNTheme.typography.labelLargeM,
-                )
-            }
+            Text(
+                text = title,
+                style = JUNTheme.typography.labelLargeM,
+            )
+            VerticalSpacer(10.dp)
             content()
-            VerticalSpacer(30.dp)
+            VerticalSpacer(40.dp)
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun IncomeModalContent(
     incomeModalEffect: IncomeModalEffect,
-    onNumberDismissRequest: () -> Unit,
-    onAmountChange: (ValueState) -> Unit,
-    onTypeSelected: (IncomeType) -> Unit,
-    onDateSelect: (LocalDate) -> Unit,
-    onDismissRequest: () -> Unit,
+    viewModel: IncomeAddViewModel
 ) {
     when (incomeModalEffect) {
         IncomeModalEffect.Idle -> {}
-        IncomeModalEffect.ShowTypePicker -> {
-            IncomeTypeBottomSheet(
-                onDismiss = onDismissRequest,
-                onTypeSelected = onTypeSelected,
-            )
-        }
-        is IncomeModalEffect.ShowDatePicker -> {
-            DatePicker(
-                onDateSelect = onDateSelect,
-                onDismissRequest = onDismissRequest,
-            )
-        }
         IncomeModalEffect.ShowNumberKeyboard -> {
             NumberKeyboard(
                 visible = true,
-                onChangeNumber = onAmountChange,
-                onDismissRequest = onNumberDismissRequest,
+                onChangeNumber = viewModel::amountValueChange,
+                onDismissRequest = {
+                    viewModel.dismiss()
+                    viewModel.nextStep()
+                },
             )
         }
     }
@@ -336,21 +321,18 @@ private fun IncomeModalContent(
 private fun IncomeAddScreenPreview() {
     JunTheme {
         IncomeAddScreen(
-            title = "추가",
-            incomeAddState = IncomeAddState.UiData(
-                id = 0,
+            addStep = IncomeAddStep.Type,
+            addSteps = listOf(IncomeAddStep.Title, IncomeAddStep.Amount, IncomeAddStep.Type),
+            uiState = IncomeAddState(
                 title = "월급",
                 amount = 1000000,
-                date = LocalDate.now(),
-                type = IncomeType.REGULAR,
-                incomeAddSteps = IncomeAddStep.entries,
+                dateType = DateType.Monthly(1),
             ),
             onIncomeTitleChange = {},
-            onShowIncomeDateBottomSheet = {},
-            onShowIncomeTypeBottomSheet = {},
             onShowNumberBottomSheet = {},
-            onBackClick = {},
             onNextStep = {},
+            onDaySelected = {},
+            onDateSelected = {},
         )
     }
 }

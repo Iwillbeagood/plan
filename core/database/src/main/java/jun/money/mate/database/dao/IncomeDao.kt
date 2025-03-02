@@ -21,4 +21,7 @@ interface IncomeDao {
 
     @Query("DELETE FROM $INCOME_TABLE_NAME WHERE id = :id")
     suspend fun deleteById(id: Long)
+
+    @Query("DELETE FROM $INCOME_TABLE_NAME WHERE id IN (:ids)")
+    suspend fun deleteByIds(ids: List<Long>)
 }

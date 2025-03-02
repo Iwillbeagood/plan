@@ -13,6 +13,7 @@ import jun.money.mate.consumption_spend.navigation.navigateToConsumptionAdd
 import jun.money.mate.consumption_spend.navigation.navigateToConsumptionList
 import jun.money.mate.home.navigation.navigateToHome
 import jun.money.mate.income.navigation.navigateToIncomeAdd
+import jun.money.mate.income.navigation.navigateToIncomeEdit
 import jun.money.mate.income.navigation.navigateToIncomeList
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.MainTabRoute
@@ -29,8 +30,6 @@ class MainNavigator(
     private val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
-
-    val startDestination = MainTabRoute.Home
 
     val currentItem: MainBottomNavItem?
         get() = MainBottomNavItem.find { tab ->
@@ -57,11 +56,11 @@ class MainNavigator(
     };
 
     fun navigateToIncomeAdd() {
-        navController.navigateToIncomeAdd(AddType.New)
+        navController.navigateToIncomeAdd()
     }
 
     fun navigateToIncomeEdit(id: Long) {
-        navController.navigateToIncomeAdd(AddType.Edit(id))
+        navController.navigateToIncomeEdit(id)
     }
 
     fun navigateToSpendingPlanAdd() {

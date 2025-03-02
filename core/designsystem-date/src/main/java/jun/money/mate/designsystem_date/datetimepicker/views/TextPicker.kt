@@ -13,7 +13,7 @@ internal fun HmTextPicker(
     rowCount: Int,
     onItemSelected: (String) -> Unit,
 ) {
-    HmPicker(
+    Picker(
         modifier = modifier,
         startIndex = startIndex,
         count = texts.size,
@@ -25,5 +25,5 @@ internal fun HmTextPicker(
 }
 
 enum class TimeFormat {
-    HOUR, MINUTE
+    HOUR, MINUTE, DAY
 }

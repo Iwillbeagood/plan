@@ -78,14 +78,14 @@ fun RegularButton(
     modifier: Modifier = Modifier,
     text: String = stringResource(id = R.string.btn_complete),
     color: Color = MaterialTheme.colorScheme.primary,
-    style: TextStyle = JUNTheme.typography.titleNormalB,
+    style: TextStyle = JUNTheme.typography.titleMediumB,
     inActiveColor: Color = Gray6,
     textColor: Color = White1,
     isActive: Boolean = true,
     enabled: Boolean = true,
     isPreventMultipleClicks: Boolean = true,
     borderStroke: Dp = 8.dp,
-    verticalPadding: Dp = 10.dp,
+    verticalPadding: Dp = 12.dp,
 ) {
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
@@ -156,13 +156,14 @@ fun TextButton(
     color: Color = MaterialTheme.colorScheme.surfaceDim,
     textStyle: TextStyle = JUNTheme.typography.titleMediumM,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
+    borderColor: Color = Gray6,
     icon: (@Composable () -> Unit)? = null,
 ) {
     Surface(
         shape = RoundedCornerShape(5.dp),
         onClick = onClick,
         color = color,
-        border = BorderStroke(1.dp, Gray6),
+        border = BorderStroke(1.dp, borderColor),
         modifier = modifier
     ) {
         Row(
