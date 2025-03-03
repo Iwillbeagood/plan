@@ -8,18 +8,8 @@ sealed interface Route {
     @Serializable
     data object Splash : Route
 
-}
-
-sealed interface MainTabRoute : Route {
-
     @Serializable
-    data object Home : MainTabRoute
-
-    @Serializable
-    data object Finance : MainTabRoute
-
-    @Serializable
-    sealed interface Income : MainTabRoute {
+    sealed interface Income : Route {
 
         @Serializable
         data object List : Income
@@ -30,6 +20,19 @@ sealed interface MainTabRoute : Route {
         @Serializable
         data class Edit(val id: Long): Income
     }
+}
+
+sealed interface MainTabRoute : Route {
+
+    @Serializable
+    data object Home : MainTabRoute
+
+    @Serializable
+    data object Calendar : MainTabRoute
+
+    @Serializable
+    data object Finance : MainTabRoute
+
 
     @Serializable
     sealed interface ConsumptionSpend : MainTabRoute {

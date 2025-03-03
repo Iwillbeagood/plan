@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -138,6 +142,12 @@ private fun FinanceScreen(
                         LeafIcon(
                             modifier = Modifier.size(14.dp)
                         )
+                        HorizontalSpacer(1f)
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                     VerticalSpacer(30.dp)
                     Text(
@@ -168,6 +178,12 @@ private fun FinanceScreen(
                         SeedIcon(
                             modifier = Modifier.size(18.dp)
                         )
+                        HorizontalSpacer(1f)
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                     VerticalSpacer(30.dp)
                     Text(
@@ -179,6 +195,7 @@ private fun FinanceScreen(
                             .padding(end = 16.dp)
                     )
                     VerticalSpacer(10.dp)
+
                 }
             }
             FinanceBox(

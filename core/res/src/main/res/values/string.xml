@@ -10,7 +10,7 @@
     <string name="tab_home">홈</string>
     <string name="tab_income">수입</string>
     <string name="tab_calendar">캘린더</string>
-    <string name="tab_finance">재정</string>
+    <string name="tab_finance">수입/저금</string>
     <string name="tab_spending_list">소비</string>
     <string name="tab_save">저금</string>
     <string name="tab_budget">가계부</string>

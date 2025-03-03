@@ -13,7 +13,7 @@ import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
 import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.navigation.MainTabRoute
+import jun.money.mate.navigation.Route
 import jun.money.mate.ui.number.ValueState
 import jun.money.mate.ui.number.ValueState.Companion.value
 import jun.money.mate.utils.currency.CurrencyFormatter
@@ -39,7 +39,7 @@ internal class IncomeEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val originId = savedStateHandle.toRoute<MainTabRoute.Income.Edit>().id
+    private val originId = savedStateHandle.toRoute<Route.Income.Edit>().id
 
     private val _editState = MutableStateFlow<EditState>(EditState.Loading)
     val editState: StateFlow<EditState> = _editState.onStart {

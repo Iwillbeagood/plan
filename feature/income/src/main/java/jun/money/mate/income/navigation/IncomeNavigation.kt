@@ -9,17 +9,18 @@ import jun.money.mate.income.IncomeEditRoute
 import jun.money.mate.income.IncomeListRoute
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
+import jun.money.mate.navigation.Route
 
 fun NavController.navigateToIncomeList() {
-    navigate(MainTabRoute.Income.List)
+    navigate(Route.Income.List)
 }
 
 fun NavController.navigateToIncomeAdd() {
-    navigate(MainTabRoute.Income.Add)
+    navigate(Route.Income.Add)
 }
 
 fun NavController.navigateToIncomeEdit(id: Long) {
-    navigate(MainTabRoute.Income.Edit(id))
+    navigate(Route.Income.Edit(id))
 }
 
 fun NavGraphBuilder.incomeNavGraph(
@@ -29,7 +30,7 @@ fun NavGraphBuilder.incomeNavGraph(
     onShowSnackBar: (MessageType) -> Unit
 ) {
 
-    composable<MainTabRoute.Income.List> {
+    composable<Route.Income.List> {
         IncomeListRoute(
             onShowIncomeAdd = onShowIncomeAdd,
             onShowIncomeEdit = onShowIncomeEdit,
@@ -37,14 +38,14 @@ fun NavGraphBuilder.incomeNavGraph(
         )
     }
 
-    composable<MainTabRoute.Income.Add> { backStackEntry ->
+    composable<Route.Income.Add> { backStackEntry ->
         IncomeAddRoute(
             onGoBack = onGoBack,
             onShowSnackBar = onShowSnackBar
         )
     }
 
-    composable<MainTabRoute.Income.Edit> { backStackEntry ->
+    composable<Route.Income.Edit> { backStackEntry ->
         IncomeEditRoute(
             onGoBack = onGoBack,
             onShowSnackBar = onShowSnackBar

@@ -10,7 +10,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import jun.money.mate.consumption_spend.navigation.navigateToConsumptionAdd
-import jun.money.mate.consumption_spend.navigation.navigateToConsumptionList
 import jun.money.mate.finance.navigation.navigateToFinance
 import jun.money.mate.home.navigation.navigateToHome
 import jun.money.mate.income.navigation.navigateToIncomeAdd
@@ -23,7 +22,6 @@ import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.save.navigation.navigateToSaveAdd
 import jun.money.mate.save.navigation.navigateToSaveList
 import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanAdd
-import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanList
 
 class MainNavigator(
     val navController: NavHostController
