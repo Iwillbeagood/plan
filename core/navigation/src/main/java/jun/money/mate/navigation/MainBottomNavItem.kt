@@ -2,6 +2,7 @@ package jun.money.mate.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.AddCard
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.CalendarToday
@@ -17,43 +18,32 @@ import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.res.R
 
+// 홈, 캘린더, 소비, 수입과 저금
 enum class MainBottomNavItem(
     @StringRes val titleRes: Int,
     val icon: ImageVector,
     val route: MainTabRoute,
-    val color: Color
 ) {
     Home(
         titleRes = R.string.tab_home,
         icon = Icons.Default.Home,
         route = MainTabRoute.Home,
-        color = Black
     ),
-    Income(
-        titleRes = R.string.tab_income,
-        icon = Icons.Default.AttachMoney,
+    Calendar(
+        titleRes = R.string.tab_calendar,
+        icon = Icons.Default.AccountBalanceWallet,
         route = MainTabRoute.Income.List,
-        color = main
     ),
-    SpendingPlan(
-        titleRes = R.string.tab_spending_plan,
-        icon = Icons.Default.CalendarToday,
+    Finance(
+        titleRes = R.string.tab_finance,
+        icon = Icons.Default.AccountBalanceWallet,
+        route = MainTabRoute.Income.List,
+    ),
+    Budget(
+        titleRes = R.string.tab_budget,
+        icon = Icons.Default.AttachMoney,
         route = MainTabRoute.SpendingPlan.List,
-        color = Red3
-    ),
-    ConsumptionSpend(
-        titleRes = R.string.tab_spending_list,
-        icon = Icons.Default.AddCard,
-        route = MainTabRoute.ConsumptionSpend.List,
-        color = Purple1
-    ),
-    Save(
-        titleRes = R.string.tab_save,
-        icon = Icons.Default.Savings,
-        route = MainTabRoute.Save.List,
-        color = Orange1
-    ),
-    ;
+    );
 
     companion object {
         fun find(predicate: (MainTabRoute) -> Boolean): MainBottomNavItem? {

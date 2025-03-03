@@ -1,6 +1,8 @@
 package jun.money.mate.utils.currency
 
 import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.Locale
 
 object CurrencyFormatter {
 
@@ -19,6 +21,12 @@ object CurrencyFormatter {
 
         val formatter = DecimalFormat(DECIMAL_PATTERN)
         return "${formatter.format(amount)}$CURRENCY_UNIT"
+    }
+
+    fun formatToWon(value: Long): String {
+        if (value < 10_000) return "${NumberFormat.getNumberInstance(Locale.KOREA).format(value)}원"
+        val formattedValue = value / 10_000
+        return "${NumberFormat.getNumberInstance(Locale.KOREA).format(formattedValue)}만원"
     }
 
     fun formatAmountWon(amount: Double?): String {

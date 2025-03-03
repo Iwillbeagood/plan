@@ -23,7 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.Black
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main
 import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalTime
@@ -163,7 +163,7 @@ private fun HmAmPmButton(
         Text(
             text = text,
             color = if (isSelected) Color.White else Black,
-            style = JUNTheme.typography.titleLargeB,
+            style = TypoTheme.typography.titleLargeB,
             modifier = Modifier.padding(10.dp)
         )
     }

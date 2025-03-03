@@ -12,8 +12,8 @@ import jun.money.mate.navigation.utils.composableType
 import jun.money.mate.save.SaveAddRoute
 import jun.money.mate.save.SaveListRoute
 
-fun NavController.navigateToSaveList(navOptions: NavOptions) {
-    navigate(MainTabRoute.Save.List, navOptions)
+fun NavController.navigateToSaveList() {
+    navigate(MainTabRoute.Save.List)
 }
 
 fun NavController.navigateToSaveAdd(addType: AddType) {

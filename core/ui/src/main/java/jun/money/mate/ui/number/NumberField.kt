@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.nonScaledSp
 
@@ -84,7 +84,7 @@ fun NumberField(
     isBack: Boolean = true,
     numberPadding: Dp = 16.dp,
     numbers: List<Int> = (1..9).toList() + 0,
-    style: TextStyle = JUNTheme.typography.headlineSmallB.nonScaledSp,
+    style: TextStyle = TypoTheme.typography.headlineSmallB.nonScaledSp,
 ) {
     val randomNumbers = remember { numbers }
 

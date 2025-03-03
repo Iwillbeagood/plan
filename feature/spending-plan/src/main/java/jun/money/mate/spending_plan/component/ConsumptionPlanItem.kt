@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.model.spending.ConsumptionSpend
@@ -47,7 +47,7 @@ internal fun ConsumptionPlanItem(
             ) {
                 Text(
                     text = spendingPlan.title,
-                    style = JUNTheme.typography.titleLargeM,
+                    style = TypoTheme.typography.titleLargeM,
                 )
                 VerticalSpacer(10.dp)
                 Row(
@@ -55,11 +55,11 @@ internal fun ConsumptionPlanItem(
                 ) {
                     Text(
                         text = "예산",
-                        style = JUNTheme.typography.titleSmallR,
+                        style = TypoTheme.typography.titleSmallR,
                     )
                     Text(
                         text = spendingPlan.amountString,
-                        style = JUNTheme.typography.titleMediumM,
+                        style = TypoTheme.typography.titleMediumM,
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(1f)
                     )
@@ -70,11 +70,11 @@ internal fun ConsumptionPlanItem(
                 ) {
                     Text(
                         text = "이번달 사용금액",
-                        style = JUNTheme.typography.titleSmallR,
+                        style = TypoTheme.typography.titleSmallR,
                     )
                     Text(
                         text = consumptionSpend.totalString,
-                        style = JUNTheme.typography.titleMediumM,
+                        style = TypoTheme.typography.titleMediumM,
                         color = Red3,
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(1f)
@@ -88,11 +88,11 @@ internal fun ConsumptionPlanItem(
                 ) {
                     Text(
                         text = "남은 금액",
-                        style = JUNTheme.typography.titleSmallM,
+                        style = TypoTheme.typography.titleSmallM,
                     )
                     Text(
                         text = consumptionSpend.remainingString,
-                        style = JUNTheme.typography.titleMediumB,
+                        style = TypoTheme.typography.titleMediumB,
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(1f)
                     )

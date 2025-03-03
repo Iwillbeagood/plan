@@ -29,7 +29,7 @@ import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.SnapperLayoutInfo
 import dev.chrisbanes.snapper.rememberLazyListSnapperLayoutInfo
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main
 import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.absoluteValue
@@ -109,7 +109,7 @@ internal fun Picker(
                         Text(
                             text = texts[temp],
                             fontSize = 26.sp,
-                            style = JUNTheme.typography.titleNormalB,
+                            style = TypoTheme.typography.titleNormalB,
                             color = if (isScrollInProgress) main else MaterialTheme.colorScheme.onSurface,
                             maxLines = 1
                         )
@@ -120,7 +120,7 @@ internal fun Picker(
                                 TimeFormat.MINUTE -> "분"
                                 TimeFormat.DAY -> "일"
                             },
-                            style = JUNTheme.typography.titleNormalB,
+                            style = TypoTheme.typography.titleNormalB,
                             color = if (isScrollInProgress) main else MaterialTheme.colorScheme.onSurface,
                             maxLines = 1
                         )

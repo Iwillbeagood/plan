@@ -25,10 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.Gray10
-import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.Gray7
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.model.consumption.Consumption
@@ -60,12 +58,12 @@ internal fun ConsumptionListBody(
                 ) {
                     Text(
                         text = "전체 소비",
-                        style = JUNTheme.typography.titleLargeM,
+                        style = TypoTheme.typography.titleLargeM,
                     )
                     VerticalSpacer(10.dp)
                     Text(
                         text = consumptionList.totalString,
-                        style = JUNTheme.typography.headlineSmallB,
+                        style = TypoTheme.typography.headlineSmallB,
                     )
                 }
             }
@@ -85,7 +83,7 @@ internal fun ConsumptionListBody(
                 ) {
                     Text(
                         text = filterValue,
-                        style = JUNTheme.typography.titleMediumR,
+                        style = TypoTheme.typography.titleMediumR,
                     )
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowDown,
@@ -116,13 +114,13 @@ internal fun ConsumptionListBody(
                     Row {
                         Text(
                             text = consumption.date,
-                            style = JUNTheme.typography.titleSmallR,
+                            style = TypoTheme.typography.titleSmallR,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f)
                         )
                         Text(
                             text = consumption.totalString,
-                            style = JUNTheme.typography.titleSmallR,
+                            style = TypoTheme.typography.titleSmallR,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -163,18 +161,18 @@ private fun ConsumptionItem(
             Row {
                 Text(
                     text = consumption.title,
-                    style = JUNTheme.typography.titleMediumM,
+                    style = TypoTheme.typography.titleMediumM,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = consumption.amountString,
                     color = Red3,
-                    style = JUNTheme.typography.titleMediumB,
+                    style = TypoTheme.typography.titleMediumB,
                 )
             }
             Text(
                 text = consumption.planTitle,
-                style = JUNTheme.typography.titleSmallR,
+                style = TypoTheme.typography.titleSmallR,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

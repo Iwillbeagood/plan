@@ -18,7 +18,7 @@ import jun.money.mate.consumption_spend.component.SpendingCategoryBottomSheet
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.TwoBtnDialog
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.model.consumption.Consumption
@@ -158,12 +158,12 @@ private fun ConsumptionModalContent(
                 content = {
                     Text(
                         text = "소비를 추가하기 위해서는 먼저 이번달에 소비할 지출 계획을 추가해야 합니다.",
-                        style = JUNTheme.typography.titleMediumR
+                        style = TypoTheme.typography.titleMediumR
                     )
                     VerticalSpacer(10.dp)
                     Text(
                         text = "지출 계획 추가 페이지로 이동하시겠습니까?",
-                        style = JUNTheme.typography.titleMediumM,
+                        style = TypoTheme.typography.titleMediumM,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )

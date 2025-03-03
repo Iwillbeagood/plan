@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.R
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 
 @Composable
 fun TopAppbar(
@@ -63,7 +63,7 @@ fun TopAppbar(
             }
             Text(
                 text = title,
-                style = JUNTheme.typography.titleNormalB
+                style = TypoTheme.typography.titleNormalB
             )
             Spacer(modifier = Modifier.weight(1f))
 

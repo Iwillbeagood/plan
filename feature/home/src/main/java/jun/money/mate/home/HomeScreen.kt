@@ -1,19 +1,13 @@
 package jun.money.mate.home
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -31,8 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.CircleIcon
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.HorizontalDivider
-import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.TopAppbarType
@@ -40,7 +32,7 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Black
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.Gray9
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem.theme.main
@@ -103,7 +95,7 @@ private fun HomeContent(
                 incomeTotal = homeState.incomeList.totalString,
                 spendTotal = homeState.spendingPlanList.totalString,
                 saveTotal = homeState.savePlanList.totalString,
-                homeList = homeState.homeList,
+                homeList = emptyList(),
                 onShowMenu = onShowMenu,
                 onShowNotification = onShowNotification,
                 onHomeListClick = onHomeListClick,
@@ -172,39 +164,39 @@ private fun HomeScreen(
                     Row {
                         Text(
                             text = "수입",
-                            style = JUNTheme.typography.titleMediumM,
+                            style = TypoTheme.typography.titleMediumM,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f)
                         )
                         Text(
                             text = "+ $incomeTotal",
-                            style = JUNTheme.typography.titleMediumB,
+                            style = TypoTheme.typography.titleMediumB,
                             color = main
                         )
                     }
                     Row {
                         Text(
                             text = "지출",
-                            style = JUNTheme.typography.titleMediumM,
+                            style = TypoTheme.typography.titleMediumM,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f)
                         )
                         Text(
                             text = "- $spendTotal",
-                            style = JUNTheme.typography.titleMediumB,
+                            style = TypoTheme.typography.titleMediumB,
                             color = Red3
                         )
                     }
                     Row {
                         Text(
                             text = "저금",
-                            style = JUNTheme.typography.titleMediumM,
+                            style = TypoTheme.typography.titleMediumM,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f)
                         )
                         Text(
                             text = "- $saveTotal",
-                            style = JUNTheme.typography.titleMediumB,
+                            style = TypoTheme.typography.titleMediumB,
                             color = Red3
                         )
                     }
@@ -218,12 +210,12 @@ private fun HomeScreen(
                     Row {
                         Text(
                             text = "잔액",
-                            style = JUNTheme.typography.titleMediumM,
+                            style = TypoTheme.typography.titleMediumM,
                             modifier = Modifier.weight(1f)
                         )
                         Text(
                             text = balance,
-                            style = JUNTheme.typography.titleMediumB,
+                            style = TypoTheme.typography.titleMediumB,
                         )
                     }
                 }
@@ -288,10 +280,6 @@ private fun HomeItem(
                 .fillMaxWidth()
                 .padding(10.dp)
         ) {
-            CircleIcon(
-                icon = type.icon,
-                tint = type.color,
-            )
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -299,12 +287,12 @@ private fun HomeItem(
             ) {
                 Text(
                     text = value,
-                    style = JUNTheme.typography.titleNormalB,
+                    style = TypoTheme.typography.titleNormalB,
                     textAlign = TextAlign.End,
                 )
                 Text(
                     text = title,
-                    style = JUNTheme.typography.titleSmallM,
+                    style = TypoTheme.typography.titleSmallM,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
@@ -313,7 +301,7 @@ private fun HomeItem(
                 text = "추가",
                 textColor = Black,
                 color = Gray9,
-                style = JUNTheme.typography.labelLargeM,
+                style = TypoTheme.typography.labelLargeM,
             )
         }
     }
@@ -326,7 +314,7 @@ private fun HomeTitle(
 ) {
     Text(
         text = title,
-        style = JUNTheme.typography.titleNormalM,
+        style = TypoTheme.typography.titleNormalM,
         modifier = modifier.padding(horizontal = 20.dp),
     )
     VerticalSpacer(10.dp)
@@ -344,22 +332,6 @@ private fun HomeScreenPreview() {
             onShowMenu = {},
             onShowNotification = {},
             homeList = listOf(
-                HomeList(
-                    value = "100,000원",
-                    type = MainBottomNavItem.Income
-                ),
-                HomeList(
-                    value = "100,000원",
-                    type = MainBottomNavItem.SpendingPlan
-                ),
-                HomeList(
-                    value = "100,000원",
-                    type = MainBottomNavItem.Save
-                ),
-                HomeList(
-                    value = "100,000원",
-                    type = MainBottomNavItem.ConsumptionSpend
-                ),
             ),
             onHomeListClick = {},
             onShowAddScreen = {},

@@ -41,7 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.nonScaledSp
 import jun.money.mate.designsystem_date.R
 import jun.money.mate.designsystem_date.datetimepicker.core.animation.AnimatedImageVector
@@ -155,7 +155,7 @@ internal fun CalendarTopComponent(
                 Text(
                     modifier = selectableItemModifier,
                     text = cameraDate.format(DateTimeFormatter.ofPattern("yyyy")),
-                    style = JUNTheme.typography.titleLargeB.nonScaledSp,
+                    style = TypoTheme.typography.titleLargeB.nonScaledSp,
                     textAlign = TextAlign.Center
                 )
                 if (config.yearSelection && yearSelectionEnabled) {
@@ -180,7 +180,7 @@ internal fun CalendarTopComponent(
                 Text(
                     modifier = selectableItemModifier,
                     text = cameraDate.format(DateTimeFormatter.ofPattern("MMM")),
-                    style = JUNTheme.typography.titleLargeB.nonScaledSp,
+                    style = TypoTheme.typography.titleLargeB.nonScaledSp,
                     textAlign = TextAlign.Center
                 )
                 if (config.monthSelection && monthSelectionEnabled) {

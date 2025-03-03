@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 
 @Composable
 fun UnderLineText(
     value: String,
     hint: String = "",
-    textStyle: TextStyle = JUNTheme.typography.titleMediumB,
+    textStyle: TextStyle = TypoTheme.typography.titleMediumB,
     modifier: Modifier = Modifier
 ) {
     Column(

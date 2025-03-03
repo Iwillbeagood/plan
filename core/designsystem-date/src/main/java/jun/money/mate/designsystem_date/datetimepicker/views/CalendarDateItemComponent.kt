@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.designsystem.theme.nonScaledSp
@@ -71,12 +71,12 @@ internal fun CalendarDateItemComponent(
 
     val textStyle =
         when {
-            data.disabledPassively -> JUNTheme.typography.titleLargeM.copy(
+            data.disabledPassively -> TypoTheme.typography.titleLargeM.copy(
                 MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
             )
-            data.selectedBetween || data.selected -> JUNTheme.typography.titleLargeM.copy(White1)
-            today -> JUNTheme.typography.titleLargeM.copy(main)
-            else -> JUNTheme.typography.titleLargeM
+            data.selectedBetween || data.selected -> TypoTheme.typography.titleLargeM.copy(White1)
+            today -> TypoTheme.typography.titleLargeM.copy(main)
+            else -> TypoTheme.typography.titleLargeM
         }
 
     val parentModifier = Modifier.padding(2.dp)

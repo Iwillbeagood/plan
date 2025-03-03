@@ -16,6 +16,9 @@ sealed interface MainTabRoute : Route {
     data object Home : MainTabRoute
 
     @Serializable
+    data object Finance : MainTabRoute
+
+    @Serializable
     sealed interface Income : MainTabRoute {
 
         @Serializable

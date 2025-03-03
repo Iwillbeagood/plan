@@ -37,7 +37,7 @@ import jun.money.mate.designsystem.etc.BooleanProvider
 import jun.money.mate.designsystem.etc.MultipleEventsCutter
 import jun.money.mate.designsystem.etc.get
 import jun.money.mate.designsystem.theme.Gray6
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
@@ -67,7 +67,7 @@ fun LargeButton(
         modifier = modifier.fillMaxWidth()
     ) {
         Text(
-            text = text, style = JUNTheme.typography.titleLargeB
+            text = text, style = TypoTheme.typography.titleLargeB
         )
     }
 }
@@ -78,7 +78,7 @@ fun RegularButton(
     modifier: Modifier = Modifier,
     text: String = stringResource(id = R.string.btn_complete),
     color: Color = MaterialTheme.colorScheme.primary,
-    style: TextStyle = JUNTheme.typography.titleMediumB,
+    style: TextStyle = TypoTheme.typography.titleMediumB,
     inActiveColor: Color = Gray6,
     textColor: Color = White1,
     isActive: Boolean = true,
@@ -154,7 +154,7 @@ fun TextButton(
     modifier: Modifier = Modifier,
     hint: String = "",
     color: Color = MaterialTheme.colorScheme.surfaceDim,
-    textStyle: TextStyle = JUNTheme.typography.titleMediumM,
+    textStyle: TextStyle = TypoTheme.typography.titleMediumM,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
     borderColor: Color = Gray6,
     icon: (@Composable () -> Unit)? = null,
@@ -190,7 +190,7 @@ fun TextButton(
                     if (hint.isNotEmpty()) {
                         Text(
                             text = hint,
-                            style = JUNTheme.typography.labelLargeR,
+                            style = TypoTheme.typography.labelLargeR,
                             textAlign = TextAlign.Center,
                             color = textColor
                         )
@@ -218,7 +218,7 @@ fun IconButton(
         )
         Text(
             text = text,
-            style = JUNTheme.typography.titleSmallM
+            style = TypoTheme.typography.titleSmallM
         )
     }
 }

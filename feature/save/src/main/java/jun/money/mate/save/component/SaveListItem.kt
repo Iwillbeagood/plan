@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.TextSwitch
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Orange1
 import jun.money.mate.model.save.SavePlan
@@ -33,18 +33,18 @@ internal fun SaveListItem(
             ) {
                 Text(
                     text = savePlan.title,
-                    style = JUNTheme.typography.titleNormalM
+                    style = TypoTheme.typography.titleNormalM
                 )
                 Text(
                     text = savePlan.dateString + " | "+ savePlan.amountString,
-                    style = JUNTheme.typography.titleSmallM,
+                    style = TypoTheme.typography.titleSmallM,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
             TextSwitch(
                 text = savePlan.saveState.name,
-                style = JUNTheme.typography.titleSmallB,
+                style = TypoTheme.typography.titleSmallB,
                 checkedColor = Orange1,
                 checked = savePlan.executed,
                 onCheckedChange = onExecuteChange

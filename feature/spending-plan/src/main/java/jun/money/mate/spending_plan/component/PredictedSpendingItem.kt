@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.circleBackground
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.model.spending.SpendingCategory
@@ -51,14 +51,14 @@ internal fun PredictedSpendingItem(
             ) {
                 Text(
                     text = "-" + spendingPlan.amountString,
-                    style = JUNTheme.typography.titleNormalB,
+                    style = TypoTheme.typography.titleNormalB,
                     color = Red3,
                     textAlign = TextAlign.End,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
                     text = spendingPlan.titleString,
-                    style = JUNTheme.typography.titleSmallR,
+                    style = TypoTheme.typography.titleSmallR,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.End,
                     modifier = Modifier.fillMaxWidth()

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.model.Leaf
 import jun.money.mate.model.LeafOrder
+import jun.money.mate.ui.LeafIcon
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 

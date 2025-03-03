@@ -32,7 +32,7 @@ val Black2 = Color(0xFF1F1F1F)
 val Black3 = Color(0xFF2D2D2D)
 
 // Line Color
-val LightBlue1 = Color(0xFF7ac1ff)
+val LightBlue1 = Color(0xFFA7C7E7)
 val LightBlue2 = Color(0xFFdee0e4)
 val ThickBlue1 = Color(0xFF016acb)
 
@@ -49,5 +49,6 @@ val Red3 = Color(0xFFFF6F6F)
 
 val Green1 = Color(0xFF999900)
 val Green2 = Color(0xFF4CAF50)
+val Green3 = Color(0xFFEEA700)
 
 val Brawn = Color(0xFF8B4513)

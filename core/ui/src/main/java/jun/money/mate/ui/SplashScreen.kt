@@ -25,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.nonScaledSp
 import jun.money.mate.res.R
@@ -56,7 +56,7 @@ fun SplashScreen() {
             Text(
                 text = stringResource(id = R.string.app_name),
                 color = White1,
-                style = JUNTheme.typography.displayLargeB.nonScaledSp,
+                style = TypoTheme.typography.displayLargeB.nonScaledSp,
             )
             AnimatedVisibility(
                 visible = visible,
@@ -65,14 +65,14 @@ fun SplashScreen() {
                 Text(
                     text = "나의 가장 좋은 지출관리 친구",
                     color = White1,
-                    style = JUNTheme.typography.headlineMediumB.nonScaledSp
+                    style = TypoTheme.typography.headlineMediumB.nonScaledSp
                 )
             }
         }
         Text(
             text = stringResource(id = R.string.app_copyright),
             color = White1,
-            style = JUNTheme.typography.titleSmallR.nonScaledSp,
+            style = TypoTheme.typography.titleSmallR.nonScaledSp,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 20.dp)

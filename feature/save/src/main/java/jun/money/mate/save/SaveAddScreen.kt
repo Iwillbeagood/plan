@@ -26,7 +26,7 @@ import jun.money.mate.designsystem.component.TextButton
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderLineText
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Orange1
 import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
@@ -175,7 +175,7 @@ private fun SaveAddBody(
         VerticalSpacer(50.dp)
         Text(
             text = uiState.currentStep.message,
-            style = JUNTheme.typography.titleLargeM,
+            style = TypoTheme.typography.titleLargeM,
         )
         VerticalSpacer(20.dp)
         SaveAddStepColumn(
@@ -192,7 +192,7 @@ private fun SaveAddBody(
             TopToBottomAnimatedVisibility(uiState.amountWon.isNotEmpty()) {
                 Text(
                     text = uiState.amountWon,
-                    style = JUNTheme.typography.labelLargeM,
+                    style = TypoTheme.typography.labelLargeM,
                     textAlign = TextAlign.End,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -281,7 +281,7 @@ private fun SaveAddStepColumn(
             BottomToTopAnimatedVisibility(currentStep != step) {
                 Text(
                     text = title,
-                    style = JUNTheme.typography.labelLargeM,
+                    style = TypoTheme.typography.labelLargeM,
                 )
             }
             content()

@@ -22,7 +22,7 @@ import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray1
 import jun.money.mate.designsystem.theme.Gray10
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.designsystem.theme.nonScaledSp
@@ -93,7 +93,7 @@ private fun PriceButtonRow(
                 text = price.title,
                 color = Gray10,
                 textColor = Gray1,
-                style = JUNTheme.typography.titleSmallM.nonScaledSp,
+                style = TypoTheme.typography.titleSmallM.nonScaledSp,
                 isPreventMultipleClicks = false,
                 onClick = {
                     onChangeNumber(ValueState.Plus(price.price))

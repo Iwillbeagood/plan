@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 
 @Composable
 fun EmptyMessage(
@@ -21,7 +21,7 @@ fun EmptyMessage(
     ) {
         Text(
             text = text,
-            style = JUNTheme.typography.titleMediumR,
+            style = TypoTheme.typography.titleMediumR,
             modifier = Modifier.align(Alignment.Center)
         )
     }

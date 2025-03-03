@@ -28,7 +28,7 @@ import jun.money.mate.designsystem.etc.BooleanProvider
 import jun.money.mate.designsystem.etc.ComponentItem
 import jun.money.mate.designsystem.etc.ComponentItem.Companion.toComponentItems
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
 
@@ -119,7 +119,7 @@ fun RadioButton(
             text = text,
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
-            style = if (selected) JUNTheme.typography.titleNormalM else JUNTheme.typography.titleNormalR
+            style = if (selected) TypoTheme.typography.titleNormalM else TypoTheme.typography.titleNormalR
         )
     }
 }

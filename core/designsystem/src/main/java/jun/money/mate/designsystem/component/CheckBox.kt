@@ -13,7 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.Gray8
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.White1
 
@@ -21,7 +21,7 @@ import jun.money.mate.designsystem.theme.White1
 fun TextCheckBox(
     modifier: Modifier = Modifier,
     text: String = "",
-    textStyle: TextStyle = JUNTheme.typography.titleNormalM,
+    textStyle: TextStyle = TypoTheme.typography.titleNormalM,
     checked: Boolean = false,
     enabled: Boolean = true,
     onCheckedChange: (Boolean) -> Unit

@@ -17,7 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import jun.money.mate.designsystem.component.TwoBtnDialog
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.main.component.MainNavigator
 import jun.money.mate.main.component.rememberMainNavigator
@@ -99,7 +99,7 @@ private fun DialogContent(
                 content = {
                     Text(
                         text = stringResource(id = R.string.app_close_dialog_content),
-                        style = JUNTheme.typography.titleMediumR
+                        style = TypoTheme.typography.titleMediumR
                     )
                 }
             )

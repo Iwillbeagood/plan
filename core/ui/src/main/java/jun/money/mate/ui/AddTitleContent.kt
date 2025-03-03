@@ -5,7 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 
 @Composable
 fun AddTitleContent(
@@ -18,7 +18,7 @@ fun AddTitleContent(
             VerticalSpacer(20.dp)
             Text(
                 text = title,
-                style = JUNTheme.typography.titleMediumM,
+                style = TypoTheme.typography.titleMediumM,
             )
             VerticalSpacer(10.dp)
             content()

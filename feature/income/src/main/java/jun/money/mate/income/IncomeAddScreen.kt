@@ -32,7 +32,7 @@ import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderLineText
 import jun.money.mate.designsystem.component.UnderlineTextField
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.designsystem_date.datetimepicker.DatePicker
@@ -141,7 +141,7 @@ private fun IncomeAddScreen(
         VerticalSpacer(50.dp)
         Text(
             text = addStep.message,
-            style = JUNTheme.typography.titleLargeM,
+            style = TypoTheme.typography.titleLargeM,
         )
         VerticalSpacer(50.dp)
         IncomeAddBlock(
@@ -191,7 +191,7 @@ private fun IncomeAddBlock(
                     VerticalSpacer(4.dp)
                     Text(
                         text = uiState.amountWon,
-                        style = JUNTheme.typography.labelLargeM,
+                        style = TypoTheme.typography.labelLargeM,
                         textAlign = TextAlign.End,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -287,7 +287,7 @@ private fun IncomeAddBlock(
         Column {
             Text(
                 text = title,
-                style = JUNTheme.typography.labelLargeM,
+                style = TypoTheme.typography.labelLargeM,
             )
             VerticalSpacer(10.dp)
             content()

@@ -17,7 +17,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -31,10 +30,9 @@ import jun.money.mate.designsystem.component.DefaultBottomSheet
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.ScrollableTab
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.model.spending.SpendingCategoryType
-import jun.money.mate.model.spending.SpendingType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,7 +96,7 @@ private fun CategoryItem(
         VerticalSpacer(3.dp)
         Text(
             text = category.name,
-            style = JUNTheme.typography.titleSmallR,
+            style = TypoTheme.typography.titleSmallR,
             textAlign = TextAlign.Center,
         )
     }

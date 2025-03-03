@@ -10,6 +10,7 @@ androidxActivity = "1.9.0"
 composeCharts = "0.0.14"
 coreTesting = "2.2.0"
 gradleDependencyGraphGeneratorPlugin = "0.8.0"
+mpandroidchart = "v3.1.0"
 room = "2.6.1"
 googleService = "4.4.2"
 
@@ -124,6 +125,7 @@ compose-compiler-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compil
 constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayout" }
 
 # Room
+mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
 room-runtime = {module = "androidx.room:room-runtime",version.ref ="room"}
 room-ktx = {module="androidx.room:room-ktx", version.ref ="room"}
 room-compiler ={module="androidx.room:room-compiler",version.ref ="room"}

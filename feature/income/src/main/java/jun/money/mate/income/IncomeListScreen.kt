@@ -25,7 +25,7 @@ import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TwoBtnDialog
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main20
@@ -126,11 +126,11 @@ private fun IncomeListScreen(
                         Text(
                             text = "전체 수입",
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = JUNTheme.typography.headlineSmallM,
+                            style = TypoTheme.typography.headlineSmallM,
                         )
                         Text(
                             text = incomeListState.incomeList.totalString,
-                            style = JUNTheme.typography.displaySmallB,
+                            style = TypoTheme.typography.displaySmallB,
                         )
                     }
                 }
@@ -231,7 +231,7 @@ private fun IncomeListModalContent(
                 content = {
                     Text(
                         text = "선택한 수입을 삭제하시겠습니까?",
-                        style = JUNTheme.typography.titleMediumM
+                        style = TypoTheme.typography.titleMediumM
                     )
                 }
             )

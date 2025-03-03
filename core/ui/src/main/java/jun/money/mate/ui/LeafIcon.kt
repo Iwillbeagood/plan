@@ -1,4 +1,4 @@
-package jun.money.mate.income.component
+package jun.money.mate.ui
 
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -9,8 +9,8 @@ import jun.money.mate.res.R
 
 @Composable
 fun LeafIcon(
-    isRed: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isRed: Boolean = false,
 ) {
     Icon(
         painter = painterResource(id = if (isRed) R.drawable.ic_red_leaf else R.drawable.ic_leaf),

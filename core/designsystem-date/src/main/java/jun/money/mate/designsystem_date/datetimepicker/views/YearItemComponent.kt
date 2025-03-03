@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
 
@@ -35,9 +35,9 @@ internal fun YearItemComponent(
 ) {
     val textStyle =
         when {
-            selected -> JUNTheme.typography.titleLargeM.copy(White1)
-            thisYear -> JUNTheme.typography.titleLargeM.copy(MaterialTheme.colorScheme.primary)
-            else -> JUNTheme.typography.titleLargeM
+            selected -> TypoTheme.typography.titleLargeM.copy(White1)
+            thisYear -> TypoTheme.typography.titleLargeM.copy(MaterialTheme.colorScheme.primary)
+            else -> TypoTheme.typography.titleLargeM
         }
 
     val baseModifier = Modifier

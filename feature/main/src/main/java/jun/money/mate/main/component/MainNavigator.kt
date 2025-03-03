@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import jun.money.mate.consumption_spend.navigation.navigateToConsumptionAdd
 import jun.money.mate.consumption_spend.navigation.navigateToConsumptionList
+import jun.money.mate.finance.navigation.navigateToFinance
 import jun.money.mate.home.navigation.navigateToHome
 import jun.money.mate.income.navigation.navigateToIncomeAdd
 import jun.money.mate.income.navigation.navigateToIncomeEdit
@@ -48,12 +49,19 @@ class MainNavigator(
 
         when (menuItem) {
             MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
-            MainBottomNavItem.Income ->  navController.navigateToIncomeList(navOptions)
-            MainBottomNavItem.ConsumptionSpend -> navController.navigateToConsumptionList(navOptions)
-            MainBottomNavItem.Save -> navController.navigateToSaveList(navOptions)
-            MainBottomNavItem.SpendingPlan -> navController.navigateToSpendingPlanList(navOptions)
+            MainBottomNavItem.Finance -> navController.navigateToFinance(navOptions)
+            MainBottomNavItem.Calendar -> TODO()
+            MainBottomNavItem.Budget -> TODO()
         }
-    };
+    }
+
+    fun navigateToIncomeList() {
+        navController.navigateToIncomeList()
+    }
+
+    fun navigateToSaveList() {
+        navController.navigateToSaveList()
+    }
 
     fun navigateToIncomeAdd() {
         navController.navigateToIncomeAdd()

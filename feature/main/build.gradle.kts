@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.feature.spendingPlan)
     implementation(projects.feature.comsumptionSpend)
     implementation(projects.feature.save)
+    implementation(projects.feature.finance)
 
     implementation(projects.core.network)
 }

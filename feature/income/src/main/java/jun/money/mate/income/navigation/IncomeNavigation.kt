@@ -10,8 +10,8 @@ import jun.money.mate.income.IncomeListRoute
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
 
-fun NavController.navigateToIncomeList(navOptions: NavOptions) {
-    navigate(MainTabRoute.Income.List, navOptions)
+fun NavController.navigateToIncomeList() {
+    navigate(MainTabRoute.Income.List)
 }
 
 fun NavController.navigateToIncomeAdd() {

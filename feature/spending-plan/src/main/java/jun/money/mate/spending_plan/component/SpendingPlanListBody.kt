@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.ScrollableTab
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.model.spending.ConsumptionSpend
 import jun.money.mate.model.spending.SpendingCategory
@@ -52,11 +52,11 @@ internal fun SpendingPlanListBody(
                 Row {
                     Text(
                         text = "실제 전체 지출",
-                        style = JUNTheme.typography.titleLargeM,
+                        style = TypoTheme.typography.titleLargeM,
                     )
                     Text(
                         text = realTotalString,
-                        style = JUNTheme.typography.headlineSmallB,
+                        style = TypoTheme.typography.headlineSmallB,
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(1f)
                     )
@@ -65,11 +65,11 @@ internal fun SpendingPlanListBody(
                     Text(
                         text = "예상 전체 지출",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = JUNTheme.typography.titleMediumM,
+                        style = TypoTheme.typography.titleMediumM,
                     )
                     Text(
                         text = totalString,
-                        style = JUNTheme.typography.titleNormalM,
+                        style = TypoTheme.typography.titleNormalM,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(1f)
@@ -103,7 +103,7 @@ internal fun SpendingPlanListBody(
                 item {
                     Text(
                         text = "매월 $date",
-                        style = JUNTheme.typography.titleSmallR,
+                        style = TypoTheme.typography.titleSmallR,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp)
                     )

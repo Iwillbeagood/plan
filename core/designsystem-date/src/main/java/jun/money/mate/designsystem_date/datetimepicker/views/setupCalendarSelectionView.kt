@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem_date.datetimepicker.core.util.calcCalendarDateData
 import jun.money.mate.designsystem_date.datetimepicker.models.CalendarConfig
 import jun.money.mate.designsystem_date.datetimepicker.models.CalendarData
@@ -46,7 +46,7 @@ internal fun LazyGridScope.setupCalendarSelectionView(
     val offset = if (config.displayCalendarWeeks) 1 else 0
     items(cells) { cell ->
         val label = dayOfWeekLabels.values.toList().getOrNull(cell - offset)
-        label?.let { CalendarHeaderItemComponent(label, JUNTheme.typography.titleLargeB) } ?: CalendarWeekHeaderItemComponent()
+        label?.let { CalendarHeaderItemComponent(label, TypoTheme.typography.titleLargeB) } ?: CalendarWeekHeaderItemComponent()
     }
     item(span = { GridItemSpan(cells) }) { Spacer(modifier = Modifier.height(4.dp)) }
 

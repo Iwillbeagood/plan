@@ -52,18 +52,6 @@ internal class HomeViewModel @Inject constructor(
     fun navigateToAdd(navItem: MainBottomNavItem) {
         navigateTo(navItem)
 
-        val effect = when (navItem) {
-            MainBottomNavItem.Income -> HomeEffect.ShowIncomeAddScreen
-            MainBottomNavItem.SpendingPlan -> HomeEffect.ShowSpendingAddScreen
-            MainBottomNavItem.Save -> HomeEffect.ShowSaveAddScreen
-            MainBottomNavItem.ConsumptionSpend -> HomeEffect.ShowConsumptionAddScreen
-            MainBottomNavItem.Home -> null
-        }
-        if (effect != null) {
-            viewModelScope.launch {
-                _homeEffect.emit(effect)
-            }
-        }
     }
 }
 
@@ -81,25 +69,6 @@ internal sealed interface HomeState {
         val consumptionList: ConsumptionList
     ) : HomeState {
 
-        val homeList
-            get() = listOf(
-                HomeList(
-                    value = incomeList.totalString,
-                    type = MainBottomNavItem.Income
-                ),
-                HomeList(
-                    value = spendingPlanList.totalString,
-                    type = MainBottomNavItem.SpendingPlan
-                ),
-                HomeList(
-                    value = consumptionList.totalString,
-                    type = MainBottomNavItem.ConsumptionSpend
-                ),
-                HomeList(
-                    value = savePlanList.totalString,
-                    type = MainBottomNavItem.Save
-                ),
-            )
 
         val balance get() = incomeList.total - savePlanList.total - spendingPlanList.total
         val balanceString get() = CurrencyFormatter.formatAmountWon(balance)

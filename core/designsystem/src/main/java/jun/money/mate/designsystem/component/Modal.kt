@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
@@ -28,15 +26,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.res.R
 
 @Composable
@@ -64,7 +60,7 @@ fun DefaultDialog(
                 if (title.isNotEmpty()) {
                     Text(
                         text = title,
-                        style = JUNTheme.typography.titleLargeM,
+                        style = TypoTheme.typography.titleLargeM,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp)
@@ -158,7 +154,7 @@ fun DefaultBottomSheet(
             if (sheetTitle.isNotEmpty()) {
                 Text(
                     text = sheetTitle,
-                    style = JUNTheme.typography.headlineSmallB,
+                    style = TypoTheme.typography.headlineSmallB,
                     color = sheetTitleColor
                 )
                 Spacer(modifier = Modifier.height(sheetContentSpace))
@@ -259,7 +255,7 @@ private fun BottomScaffoldPreview() {
             sheetContent = {
                 Text(
                     text = "등록을 하시겠습니까?",
-                    style = JUNTheme.typography.titleLargeM,
+                    style = TypoTheme.typography.titleLargeM,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             },

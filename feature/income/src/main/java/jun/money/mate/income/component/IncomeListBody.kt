@@ -22,12 +22,13 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.CheckIcon
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.DateType.Companion.toDateString
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
+import jun.money.mate.ui.LeafIcon
 
 @Composable
 internal fun IncomeListBody(
@@ -102,11 +103,11 @@ private fun IncomeItem(
                     Column {
                         Text(
                             text = income.title,
-                            style = JUNTheme.typography.titleMediumM,
+                            style = TypoTheme.typography.titleMediumM,
                         )
                         Text(
                             text = income.dateType.toDateString(),
-                            style = JUNTheme.typography.titleSmallR,
+                            style = TypoTheme.typography.titleSmallR,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -114,7 +115,7 @@ private fun IncomeItem(
             }
             Text(
                 text = income.amountString,
-                style = JUNTheme.typography.titleNormalB,
+                style = TypoTheme.typography.titleNormalB,
                 textAlign = TextAlign.End
             )
         }

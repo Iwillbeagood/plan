@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.Gray6
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 
 @Composable
@@ -48,7 +48,7 @@ fun DefaultTextField(
     focusRequester: FocusRequester = FocusRequester(),
     hint: String = "",
     label: String = "",
-    textStyle: TextStyle = JUNTheme.typography.titleSmallR,
+    textStyle: TextStyle = TypoTheme.typography.titleSmallR,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
@@ -82,7 +82,7 @@ fun DefaultTextField(
                     if (label.isNotEmpty()) {
                         Text(
                             text = label,
-                            style = JUNTheme.typography.labelLargeR,
+                            style = TypoTheme.typography.labelLargeR,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -111,7 +111,7 @@ fun PasswordTextField(
     focusRequester: FocusRequester = FocusRequester(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     hint: String = "",
-    textStyle: TextStyle = JUNTheme.typography.titleMediumB,
+    textStyle: TextStyle = TypoTheme.typography.titleMediumB,
 ) {
     val requester by remember { mutableStateOf(focusRequester) }
     var isFocus by remember { mutableStateOf(false) }
@@ -167,9 +167,9 @@ fun PasswordTextField(
 @Composable
 fun UnderlineTextField(
     value: String,
-    onValueChange: (String) -> Unit ,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = JUNTheme.typography.titleMediumB,
+    textStyle: TextStyle = TypoTheme.typography.titleMediumB,
     focus: Boolean = false,
     readOnly: Boolean = false,
     hint: String = "",

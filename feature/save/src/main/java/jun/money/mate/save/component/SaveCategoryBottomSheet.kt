@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.DefaultBottomSheet
 import jun.money.mate.designsystem.component.RegularButton
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.model.save.SaveCategory
 
@@ -78,7 +78,7 @@ private fun CategoryItem(
     ) {
         Text(
             text = category.name,
-            style = JUNTheme.typography.titleSmallR,
+            style = TypoTheme.typography.titleSmallR,
             textAlign = TextAlign.Center,
         )
     }

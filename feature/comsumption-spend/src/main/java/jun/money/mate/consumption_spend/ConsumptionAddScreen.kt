@@ -26,7 +26,7 @@ import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.TextButton
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
@@ -199,7 +199,7 @@ private fun ConsumptionAddBody(
             TopToBottomAnimatedVisibility(amount.isNotEmpty()) {
                 Text(
                     text = amountWon,
-                    style = JUNTheme.typography.labelLargeM,
+                    style = TypoTheme.typography.labelLargeM,
                     textAlign = TextAlign.End,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -213,7 +213,7 @@ private fun ConsumptionAddBody(
 private fun SpendingPlanTitle(title: String) {
     Text(
         text = title,
-        style = JUNTheme.typography.titleMediumM,
+        style = TypoTheme.typography.titleMediumM,
     )
     VerticalSpacer(10.dp)
 }

@@ -35,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.Gray6
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 
 @Composable
@@ -43,7 +43,7 @@ fun TabRow(
     tabs: List<String>,
     selectedTabIndex: Int,
     onTabClick: (Int) -> Unit,
-    style: TextStyle = JUNTheme.typography.titleMediumM
+    style: TextStyle = TypoTheme.typography.titleMediumM
 ) {
     Box(
         modifier = Modifier.fillMaxWidth(),
@@ -97,7 +97,7 @@ fun ScrollableTab(
     selectedTabIndex: Int,
     onTabClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    style: TextStyle = JUNTheme.typography.titleMediumM,
+    style: TextStyle = TypoTheme.typography.titleMediumM,
     containerColor: Color = MaterialTheme.colorScheme.surfaceDim
 ) {
     val density = LocalDensity.current

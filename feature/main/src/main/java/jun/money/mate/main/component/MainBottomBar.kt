@@ -23,7 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.Black
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.nonScaledSp
 import jun.money.mate.navigation.MainBottomNavItem
@@ -46,7 +47,7 @@ internal fun MainBottomBar(
             HorizontalDivider()
             NavigationBar(
                 containerColor = MaterialTheme.colorScheme.surfaceDim,
-                modifier = Modifier.height(65.dp)
+                modifier = Modifier.height(52.dp)
             ) {
                 bottomItems.forEach { item ->
                     val title = stringResource(item.titleRes)
@@ -60,8 +61,8 @@ internal fun MainBottomBar(
                             )
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = item.color,
-                            selectedTextColor = item.color,
+                            selectedIconColor = Black,
+                            selectedTextColor = Black,
                             indicatorColor = Color.Transparent,
                             unselectedIconColor = Gray,
                             unselectedTextColor = Gray,
@@ -69,7 +70,7 @@ internal fun MainBottomBar(
                         label = {
                             Text(
                                 text = title,
-                                style = JUNTheme.typography.labelLargeM.nonScaledSp
+                                style = TypoTheme.typography.labelMediumM.nonScaledSp
                             )
                         },
                         onClick = { onBottomItemClicked(item) },

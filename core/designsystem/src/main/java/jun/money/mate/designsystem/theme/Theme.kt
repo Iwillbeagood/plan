@@ -87,7 +87,7 @@ fun ChangeStatusBarColor(
     }
 }
 
-object JUNTheme {
+object TypoTheme {
     val typography: JUNTypography
         @Composable
         get() = LocalTypography.current

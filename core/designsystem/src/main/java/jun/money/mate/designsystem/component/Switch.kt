@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -24,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.etc.BooleanProvider
 import jun.money.mate.designsystem.theme.Black
 import jun.money.mate.designsystem.theme.Gray5
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
@@ -69,7 +67,7 @@ fun TextSwitch(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    style: TextStyle = JUNTheme.typography.titleNormalB,
+    style: TextStyle = TypoTheme.typography.titleNormalB,
     checkedColor: Color = main,
     uncheckedColor: Color = Gray5,
 ) {

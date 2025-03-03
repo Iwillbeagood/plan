@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.DefaultBottomSheet
 import jun.money.mate.designsystem.component.RegularButton
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +46,7 @@ internal fun SpendingCategoryBottomSheet(
             items(consumptionPlanTitles) { title ->
                 Text(
                     text = title,
-                    style = JUNTheme.typography.titleMediumR,
+                    style = TypoTheme.typography.titleMediumR,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()

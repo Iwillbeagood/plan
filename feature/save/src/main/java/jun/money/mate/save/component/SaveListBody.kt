@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.JUNTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
@@ -41,11 +41,11 @@ internal fun SaveListBody(
                 Row {
                     Text(
                         text = "저금 계획",
-                        style = JUNTheme.typography.titleLargeM,
+                        style = TypoTheme.typography.titleLargeM,
                     )
                     Text(
                         text = savePlanList.totalString,
-                        style = JUNTheme.typography.headlineSmallB,
+                        style = TypoTheme.typography.headlineSmallB,
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(1f)
                     )
@@ -54,11 +54,11 @@ internal fun SaveListBody(
                     Text(
                         text = "실천 금액",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = JUNTheme.typography.titleMediumM,
+                        style = TypoTheme.typography.titleMediumM,
                     )
                     Text(
                         text = savePlanList.executedTotalString,
-                        style = JUNTheme.typography.titleNormalM,
+                        style = TypoTheme.typography.titleNormalM,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(1f)
