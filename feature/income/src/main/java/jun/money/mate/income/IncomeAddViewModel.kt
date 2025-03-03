@@ -1,18 +1,17 @@
 package jun.money.mate.income
 
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.domain.AddIncomeUsecase
+import jun.money.mate.income.contract.IncomeAddState
 import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
 import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.ui.number.ValueState
 import jun.money.mate.ui.number.ValueState.Companion.value
-import jun.money.mate.utils.currency.CurrencyFormatter
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -158,13 +157,3 @@ internal class IncomeAddViewModel @Inject constructor(
     }
 }
 
-@Immutable
-internal data class IncomeAddState(
-    val title: String = "",
-    val amount: Long = 0,
-    val dateType: DateType? = null,
-) {
-
-    val amountString get() = if (amount > 0) amount.toString() else ""
-    val amountWon get() = if (amount > 0) CurrencyFormatter.formatAmountWon(amount) else ""
-}

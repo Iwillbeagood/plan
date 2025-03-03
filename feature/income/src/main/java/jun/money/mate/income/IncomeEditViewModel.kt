@@ -1,7 +1,5 @@
 package jun.money.mate.income
 
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +7,7 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.IncomeRepository
 import jun.money.mate.domain.EditIncomeUsecase
+import jun.money.mate.income.contract.EditState
 import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
 import jun.money.mate.model.etc.DateType
@@ -16,7 +15,6 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.Route
 import jun.money.mate.ui.number.ValueState
 import jun.money.mate.ui.number.ValueState.Companion.value
-import jun.money.mate.utils.currency.CurrencyFormatter
 import jun.money.mate.utils.flow.updateWithData
 import jun.money.mate.utils.flow.withData
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -65,6 +63,7 @@ internal class IncomeEditViewModel @Inject constructor(
                         title = it.title,
                         amount = it.amount,
                         dateType = it.dateType,
+                        originIncome = it
                     )
                 }
             }
@@ -79,6 +78,7 @@ internal class IncomeEditViewModel @Inject constructor(
                     title = it.title,
                     amount = it.amount,
                     dateType = it.dateType,
+                    originIncome = it.originIncome,
                     onSuccess = {
                         showSnackBar(
                             MessageType.Message("수입이 수정 되었습니다.")
@@ -121,13 +121,6 @@ internal class IncomeEditViewModel @Inject constructor(
         dismiss()
     }
 
-
-    fun dateTypeSelected(isMonthly: Boolean) {
-        _editState.updateWithData<EditState, EditState.UiData> {
-            it.copy(isMonthly = isMonthly)
-        }
-    }
-
     fun showNumberKeyboard() {
         _incomeModalEffect.update { IncomeModalEffect.ShowNumberKeyboard }
     }
@@ -149,24 +142,4 @@ internal class IncomeEditViewModel @Inject constructor(
     }
 }
 
-@Stable
-internal sealed interface EditState {
-
-    @Immutable
-    data object Loading : EditState
-
-
-    @Immutable
-    data class UiData(
-        val id: Long,
-        val title: String,
-        val amount: Long,
-        val isMonthly: Boolean = true,
-        val dateType: DateType,
-    ) : EditState {
-
-        val amountString get() = if (amount > 0) amount.toString() else ""
-        val amountWon get() = if (amount > 0) CurrencyFormatter.formatAmountWon(amount) else ""
-    }
-}
 

@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.IncomeRepository
+import jun.money.mate.domain.DeleteIncomeUsecase
 import jun.money.mate.income.contract.IncomeListEffect
 import jun.money.mate.income.contract.IncomeListModalEffect
 import jun.money.mate.income.contract.IncomeListState
-import jun.money.mate.income.contract.IncomeModalEffect
 import jun.money.mate.model.LeafOrder
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
@@ -32,7 +32,8 @@ import kotlin.math.ceil
 
 @HiltViewModel
 internal class IncomeListViewModel @Inject constructor(
-    private val incomeRepository: IncomeRepository
+    private val incomeRepository: IncomeRepository,
+    private val deleteIncomeUsecase: DeleteIncomeUsecase,
 ) : ViewModel() {
 
     private val _month = MutableStateFlow<LocalDate>(LocalDate.now())
@@ -116,9 +117,10 @@ internal class IncomeListViewModel @Inject constructor(
     fun deleteIncome() {
         viewModelScope.launch {
             incomeListState.withData<IncomeListState.UiData> {
-                val ids = it.selectedIncomes.map(Income::id)
-                incomeRepository.deleteByIds(ids)
-                unselectedIncomes()
+                deleteIncomeUsecase(
+                    incomes = it.selectedIncomes,
+                    onSuccess = ::unselectedIncomes
+                )
             }
         }
     }

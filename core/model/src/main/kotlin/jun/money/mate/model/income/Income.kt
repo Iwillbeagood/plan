@@ -16,14 +16,14 @@ data class Income(
     companion object {
         val regularSample = Income(
             id = 1,
-            title = "정기 지출 제목",
+            title = "정기 수입 제목",
             amount = 1000000,
             dateType = DateType.Monthly(1),
         )
 
         val variableSample = Income(
             id = 2,
-            title = "변동 지출 제목",
+            title = "변동 수입 제목",
             amount = 2000000,
             dateType = DateType.Specific(LocalDate.now()),
 

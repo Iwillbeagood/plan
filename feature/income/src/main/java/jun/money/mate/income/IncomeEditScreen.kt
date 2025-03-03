@@ -3,11 +3,11 @@ package jun.money.mate.income
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,22 +21,24 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderLineText
 import jun.money.mate.designsystem.component.UnderlineTextField
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.TypoTheme
+import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main
-import jun.money.mate.income.component.TypeButton
+import jun.money.mate.income.component.DateAdd
+import jun.money.mate.income.contract.EditState
 import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
 import jun.money.mate.model.etc.DateType
-import jun.money.mate.model.etc.DateType.Companion.toDateString
 import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.model.income.Income
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.number.NumberKeyboard
+import java.time.LocalDate
 
 @Composable
 internal fun IncomeEditRoute(
@@ -44,6 +46,8 @@ internal fun IncomeEditRoute(
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: IncomeEditViewModel = hiltViewModel()
 ) {
+    ChangeStatusBarColor(MaterialTheme.colorScheme.surfaceDim)
+
     val editState by viewModel.editState.collectAsStateWithLifecycle()
     val incomeModalEffect by viewModel.incomeModalEffect.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -85,24 +89,24 @@ private fun IncomeAddContent(
 ) {
     FadeAnimatedVisibility(editState is EditState.UiData) {
         if (editState is EditState.UiData) {
-            IncomeAddBlock(
+            IncomeEditBlock(
                 uiState = editState,
                 onIncomeTitleChange = viewModel::titleValueChange,
                 onShowNumberBottomSheet = viewModel::showNumberKeyboard,
-                onShowDateByType = {  },
-                onDateTypeSelected = viewModel::dateTypeSelected,
+                onDaySelected = viewModel::daySelected,
+                onDateSelected = viewModel::dateSelected,
             )
         }
     }
 }
 
 @Composable
-private fun IncomeAddBlock(
+private fun IncomeEditBlock(
     uiState: EditState.UiData,
     onIncomeTitleChange: (String) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
-    onShowDateByType: () -> Unit,
-    onDateTypeSelected: (Boolean) -> Unit,
+    onDaySelected: (String) -> Unit,
+    onDateSelected: (LocalDate) -> Unit,
 ) {
     val listState = rememberScrollState()
 
@@ -145,36 +149,11 @@ private fun IncomeAddBlock(
         EditContent(
             title = "수입 날짜",
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TypeButton(
-                        text = "정기 수입",
-                        isType = uiState.isMonthly,
-                        onApplyType = {
-                            onDateTypeSelected(true)
-                        },
-                        modifier = Modifier.weight(1f)
-                    )
-                    HorizontalSpacer(10.dp)
-                    TypeButton(
-                        text = "단기 수입",
-                        isType = !uiState.isMonthly,
-                        onApplyType = {
-                            onDateTypeSelected(false)
-                        },
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-                VerticalSpacer(16.dp)
-                UnderLineText(
-                    value = uiState.dateType.toDateString(),
-                    modifier = Modifier.clickable(onClick = onShowDateByType),
-                )
-            }
+            DateAdd(
+                onDaySelected = onDaySelected,
+                onDateSelected = onDateSelected,
+                originIsMonthly = uiState.dateType is DateType.Monthly,
+            )
         }
     }
 }
@@ -215,18 +194,18 @@ private fun IncomeModalContent(
 @Composable
 private fun IncomeAddScreenPreview() {
     JunTheme {
-        IncomeAddBlock(
+        IncomeEditBlock(
             uiState = EditState.UiData(
                 id = 1L,
                 title = "수입 제목",
                 amount = 1000L,
-                isMonthly = false,
                 dateType = DateType.Monthly(1),
+                originIncome = Income.regularSample
             ),
             onIncomeTitleChange = {},
             onShowNumberBottomSheet = {},
-            onShowDateByType = {},
-            onDateTypeSelected = {},
+            onDaySelected = {},
+            onDateSelected = {},
         )
     }
 }

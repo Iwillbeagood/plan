@@ -18,6 +18,9 @@ import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.save.component.SaveListBody
 import jun.money.mate.ui.DefaultScaffold
 
+/**
+ *  저금도 수익과 비슷하게 가야하긴 한데, 저금은 계획을 세운 다음 그게 실제 이뤄졌는지 체크할 수 있어야 할거같음.
+ * */
 @Composable
 internal fun SaveListRoute(
     onShowSavingAdd: () -> Unit,

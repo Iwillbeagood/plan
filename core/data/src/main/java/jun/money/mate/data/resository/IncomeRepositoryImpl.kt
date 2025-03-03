@@ -6,13 +6,12 @@ import jun.money.mate.data.mapper.toIncomeList
 import jun.money.mate.data_api.database.IncomeRepository
 import jun.money.mate.database.dao.IncomeDao
 import jun.money.mate.database.entity.IncomeEntity
-import jun.money.mate.model.etc.DateType
+import jun.money.mate.model.etc.DateType.Companion.isValidForMonth
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import javax.inject.Inject
@@ -47,13 +46,7 @@ class IncomeRepositoryImpl @Inject constructor(
         return incomeDao.getIncomeFlow()
             .map {
                 it.filter { income ->
-                    when (val dateType = income.dateType) {
-                        is DateType.Monthly -> true
-                        is DateType.Specific -> {
-                            val date = dateType.date
-                            date.year == data.year && date.month == data.month
-                        }
-                    }
+                   income.dateType.isValidForMonth(data)
                 }
             }
             .map(List<IncomeEntity>::toIncomeList)
