@@ -234,7 +234,7 @@ private fun DateAdd(
             modifier = Modifier.fillMaxWidth()
         ) {
             TypeButton(
-                text = "정기 수익",
+                text = "정기 수입",
                 isType = isMonthly == true,
                 onApplyType = {
                     isMonthly = true
@@ -243,7 +243,7 @@ private fun DateAdd(
             )
             HorizontalSpacer(10.dp)
             TypeButton(
-                text = "단기 수익",
+                text = "단기 수입",
                 isType = isMonthly == false,
                 onApplyType = {
                     isMonthly = false

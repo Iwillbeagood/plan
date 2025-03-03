@@ -152,7 +152,7 @@ private fun IncomeAddBlock(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TypeButton(
-                        text = "정기 수익",
+                        text = "정기 수입",
                         isType = uiState.isMonthly,
                         onApplyType = {
                             onDateTypeSelected(true)
@@ -161,7 +161,7 @@ private fun IncomeAddBlock(
                     )
                     HorizontalSpacer(10.dp)
                     TypeButton(
-                        text = "단기 수익",
+                        text = "단기 수입",
                         isType = !uiState.isMonthly,
                         onApplyType = {
                             onDateTypeSelected(false)

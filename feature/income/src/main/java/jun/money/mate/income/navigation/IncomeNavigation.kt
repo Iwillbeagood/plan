@@ -32,6 +32,7 @@ fun NavGraphBuilder.incomeNavGraph(
 
     composable<Route.Income.List> {
         IncomeListRoute(
+            onGoBack = onGoBack,
             onShowIncomeAdd = onShowIncomeAdd,
             onShowIncomeEdit = onShowIncomeEdit,
             onShowSnackBar = onShowSnackBar

@@ -1,6 +1,7 @@
 package jun.money.mate.income.component
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,38 +25,51 @@ import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem_date.datetimepicker.MonthBar
 import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.DateType.Companion.toDateString
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.ui.LeafIcon
+import java.time.LocalDate
 
 @Composable
 internal fun IncomeListBody(
     incomeList: IncomeList,
+    month: LocalDate,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
     onIncomeClick: (Income) -> Unit,
     modifier : Modifier = Modifier
 ) {
-
     Surface(
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
         color = MaterialTheme.colorScheme.surfaceDim,
         shadowElevation = 2.dp,
         modifier = modifier.fillMaxWidth()
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            item {
-                VerticalSpacer(20.dp)
-            }
-            items(incomeList.incomes) { income ->
-                IncomeItem(
-                    income = income,
-                    onIncomeClick = { onIncomeClick(income) },
-                    modifier = Modifier.animateContentSize()
-                )
+        Column {
+            VerticalSpacer(20.dp)
+            MonthBar(
+                month = month,
+                onPrev = onPrev,
+                onNext = onNext,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                item {
+                    VerticalSpacer(10.dp)
+                }
+                items(incomeList.incomes) { income ->
+                    IncomeItem(
+                        income = income,
+                        onIncomeClick = { onIncomeClick(income) },
+                        modifier = Modifier.animateContentSize()
+                    )
+                }
             }
         }
     }
@@ -76,7 +90,7 @@ private fun IncomeItem(
         modifier = modifier
             .fillMaxWidth()
             .animateContentSize()
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .padding(horizontal = 16.dp, vertical = 4.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -133,6 +147,9 @@ private fun IncomeListBodyPreview() {
                     Income.variableSample,
                 ),
             ),
+            month = LocalDate.now(),
+            onPrev = {},
+            onNext = {},
             onIncomeClick = {}
         )
     }

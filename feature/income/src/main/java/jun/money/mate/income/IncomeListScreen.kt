@@ -1,12 +1,14 @@
 package jun.money.mate.income
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,13 +22,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import jun.money.mate.designsystem.R
 import jun.money.mate.designsystem.component.CrossfadeWithSlide
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.RegularButton
+import jun.money.mate.designsystem.component.TopAppbarIcon
 import jun.money.mate.designsystem.component.TwoBtnDialog
-import jun.money.mate.designsystem.theme.TypoTheme
+import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main20
 import jun.money.mate.income.component.IncomeListBody
@@ -39,21 +44,30 @@ import jun.money.mate.model.etc.EditMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
+import java.time.LocalDate
 
 @Composable
 internal fun IncomeListRoute(
+    onGoBack: () -> Unit,
     onShowIncomeAdd: () -> Unit,
     onShowIncomeEdit: (id: Long) -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: IncomeListViewModel = hiltViewModel()
 ) {
+    ChangeStatusBarColor(main20)
+
     val incomeListState by viewModel.incomeListState.collectAsStateWithLifecycle()
     val modalEffect by viewModel.modalEffect.collectAsStateWithLifecycle()
     val leaves by viewModel.leaves.collectAsStateWithLifecycle()
+    val month by viewModel.month.collectAsStateWithLifecycle()
 
     IncomeListScreen(
         leaves = leaves,
         incomeListState = incomeListState,
+        month = month,
+        onPrev = viewModel::prevMonth,
+        onNext = viewModel::nextMonth,
+        onGoBack = onGoBack,
         onShowIncomeAdd = onShowIncomeAdd,
         onIncomeClick = viewModel::selectIncome,
         onDeleteSelectedIncome = viewModel::showDeleteDialog,
@@ -79,6 +93,10 @@ internal fun IncomeListRoute(
 private fun IncomeListScreen(
     leaves: List<LeafOrder>,
     incomeListState: IncomeListState,
+    month: LocalDate,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
+    onGoBack: () -> Unit,
     onShowIncomeAdd: () -> Unit,
     onIncomeClick: (Income) -> Unit,
     onDeleteSelectedIncome: () -> Unit,
@@ -106,22 +124,24 @@ private fun IncomeListScreen(
             ) {
                 LeavesBox(
                     leaves = leaves,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(4f)
                 )
                 IncomeListContent(
                     incomeListState = incomeListState,
+                    month = month,
+                    onPrev = onPrev,
+                    onNext = onNext,
                     onIncomeClick = onIncomeClick,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(6f)
                 )
             }
-
             FadeAnimatedVisibility(
                 visible = incomeListState is IncomeListState.UiData,
                 modifier = Modifier.align(Alignment.TopStart)
             ) {
                 if (incomeListState is IncomeListState.UiData) {
                     Column(
-                        modifier = Modifier.padding(30.dp)
+                        modifier = Modifier.padding(start = 30.dp, top = 60.dp)
                     ) {
                         Text(
                             text = "전체 수입",
@@ -135,6 +155,19 @@ private fun IncomeListScreen(
                     }
                 }
             }
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clickable(onClick = onGoBack)
+                    .align(Alignment.TopStart),
+            ) {
+                TopAppbarIcon(
+                    iconId = R.drawable.ic_back,
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+
         }
     }
 }
@@ -200,6 +233,9 @@ private fun IncomeListButton(
 @Composable
 private fun IncomeListContent(
     incomeListState: IncomeListState,
+    month: LocalDate,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
     onIncomeClick: (Income) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -210,6 +246,9 @@ private fun IncomeListContent(
         if (incomeListState is IncomeListState.UiData) {
             IncomeListBody(
                 incomeList = incomeListState.incomeList,
+                month = month,
+                onPrev = onPrev,
+                onNext = onNext,
                 onIncomeClick = onIncomeClick
             )
         }
@@ -248,6 +287,10 @@ private fun IncomeListScreenPreview() {
             incomeListState = IncomeListState.UiData(
                 incomeList = IncomeList.sample
             ),
+            month = LocalDate.now(),
+            onPrev = {},
+            onNext = {},
+            onGoBack = {},
             onShowIncomeAdd = {},
             onIncomeClick = {},
             onDeleteSelectedIncome = {},

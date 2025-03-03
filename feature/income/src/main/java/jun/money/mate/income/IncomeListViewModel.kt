@@ -14,16 +14,19 @@ import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.utils.flow.updateWithData
 import jun.money.mate.utils.flow.withData
+import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 import kotlin.math.ceil
 
@@ -31,6 +34,9 @@ import kotlin.math.ceil
 internal class IncomeListViewModel @Inject constructor(
     private val incomeRepository: IncomeRepository
 ) : ViewModel() {
+
+    private val _month = MutableStateFlow<LocalDate>(LocalDate.now())
+    val month: StateFlow<LocalDate> get() = _month
 
     private val _incomeListState = MutableStateFlow<IncomeListState>(IncomeListState.Loading)
     val incomeListState: StateFlow<IncomeListState> = _incomeListState.onStart {
@@ -52,7 +58,10 @@ internal class IncomeListViewModel @Inject constructor(
 
     private fun loadIncomes() {
         viewModelScope.launch {
-            incomeRepository.getIncomesByMonth().collect { list ->
+            month.flatMapLatest {
+                incomeRepository.getIncomesByMonth(it)
+            }.collect { list ->
+                Logger.d("loadIncomes: $list")
                 _incomeListState.update {
                     makeLeaves(list)
                     IncomeListState.UiData(list)
@@ -123,6 +132,18 @@ internal class IncomeListViewModel @Inject constructor(
                     unselectedIncomes()
                 }
             }
+        }
+    }
+
+    fun prevMonth() {
+        _month.update {
+            it.minusMonths(1)
+        }
+    }
+
+    fun nextMonth() {
+        _month.update {
+            it.plusMonths(1)
         }
     }
 
