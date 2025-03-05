@@ -20,6 +20,7 @@ import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.save.navigation.navigateToSaveAdd
+import jun.money.mate.save.navigation.navigateToSaveEdit
 import jun.money.mate.save.navigation.navigateToSaveList
 import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanAdd
 
@@ -86,11 +87,11 @@ class MainNavigator(
     }
 
     fun navigateToSavingAdd() {
-        navController.navigateToSaveAdd(AddType.New)
+        navController.navigateToSaveAdd()
     }
 
     fun navigateToSavingEdit(id: Long) {
-        navController.navigateToSaveAdd(AddType.Edit(id))
+        navController.navigateToSaveEdit(id)
     }
 
     fun popBackStackIfNotHome(): Boolean {

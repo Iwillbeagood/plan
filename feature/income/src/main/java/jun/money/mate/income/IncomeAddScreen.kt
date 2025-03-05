@@ -29,7 +29,7 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main
-import jun.money.mate.income.component.DateAdd
+import jun.money.mate.ui.DateAdd
 import jun.money.mate.income.contract.IncomeAddState
 import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
@@ -65,15 +65,18 @@ internal fun IncomeAddRoute(
             IncomeAddStep.Amount -> "다음"
             IncomeAddStep.Type -> "추가"
         },
-        color = main,
         onGoBack = onGoBack,
         onComplete = viewModel::nextStep
     ) {
-        IncomeAddContent(
+        IncomeAddScreen(
             addStep = viewModel.addStep.value,
             addSteps = viewModel.addSteps.value,
-            incomeAddState = incomeAddState,
-            viewModel = viewModel
+            uiState = incomeAddState,
+            onNextStep = viewModel::nextStep,
+            onIncomeTitleChange = viewModel::titleValueChange,
+            onShowNumberBottomSheet = viewModel::showNumberKeyboard,
+            onDaySelected = viewModel::daySelected,
+            onDateSelected = viewModel::dateSelected,
         )
     }
 
@@ -92,25 +95,6 @@ internal fun IncomeAddRoute(
             }
         }
     }
-}
-
-@Composable
-private fun IncomeAddContent(
-    addStep: IncomeAddStep,
-    addSteps: List<IncomeAddStep>,
-    incomeAddState: IncomeAddState,
-    viewModel: IncomeAddViewModel
-) {
-    IncomeAddScreen(
-        addStep = addStep,
-        addSteps = addSteps,
-        uiState = incomeAddState,
-        onNextStep = viewModel::nextStep,
-        onIncomeTitleChange = viewModel::titleValueChange,
-        onShowNumberBottomSheet = viewModel::showNumberKeyboard,
-        onDaySelected = viewModel::daySelected,
-        onDateSelected = viewModel::dateSelected,
-    )
 }
 
 @Composable
@@ -136,86 +120,64 @@ private fun IncomeAddScreen(
             style = TypoTheme.typography.titleLargeM,
         )
         VerticalSpacer(50.dp)
-        IncomeAddBlock(
-            addSteps = addSteps,
-            uiState = uiState,
-            onNextStep = onNextStep,
-            onIncomeTitleChange = onIncomeTitleChange,
-            onShowNumberBottomSheet = onShowNumberBottomSheet,
-            onDaySelected = onDaySelected,
-            onDateSelected = onDateSelected,
-        )
+        IncomeAddField(
+            visible = IncomeAddStep.Type in addSteps,
+            title = "날짜",
+        ) {
+            DateAdd(
+                type = "수입",
+                onDaySelected = onDaySelected,
+                onDateSelected = onDateSelected,
+            )
+        }
+        IncomeAddField(
+            visible = IncomeAddStep.Amount in addSteps,
+            title = "금액",
+        ) {
+            Column {
+                UnderLineText(
+                    value = uiState.amountString,
+                    hint = "선택",
+                    modifier = Modifier.clickable(onClick = onShowNumberBottomSheet),
+                )
+                TopToBottomAnimatedVisibility(uiState.amount != 0L) {
+                    Column {
+                        VerticalSpacer(4.dp)
+                        Text(
+                            text = uiState.amountWon,
+                            style = TypoTheme.typography.labelLargeM,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+
+            }
+        }
+        IncomeAddField(
+            visible = IncomeAddStep.Title in addSteps,
+            title = "제목",
+        ) {
+            UnderlineTextField(
+                value = uiState.title,
+                onValueChange = onIncomeTitleChange,
+                hint = "수입 제목",
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        onNextStep()
+                    }
+                )
+            )
+        }
         VerticalSpacer(400.dp)
     }
 }
 
 @Composable
-private fun IncomeAddBlock(
-    addSteps: List<IncomeAddStep>,
-    uiState: IncomeAddState,
-    onNextStep: () -> Unit,
-    onIncomeTitleChange: (String) -> Unit,
-    onShowNumberBottomSheet: () -> Unit,
-    onDaySelected: (String) -> Unit,
-    onDateSelected: (LocalDate) -> Unit,
-) {
-    IncomeAddBlock(
-        visible = IncomeAddStep.Type in addSteps,
-        title = "날짜",
-    ) {
-        DateAdd(
-            onDaySelected = onDaySelected,
-            onDateSelected = onDateSelected,
-        )
-    }
-    IncomeAddBlock(
-        visible = IncomeAddStep.Amount in addSteps,
-        title = "수입 금액",
-    ) {
-        Column {
-            UnderLineText(
-                value = uiState.amountString,
-                hint = "선택",
-                modifier = Modifier.clickable(onClick = onShowNumberBottomSheet),
-            )
-            TopToBottomAnimatedVisibility(uiState.amount != 0L) {
-                Column {
-                    VerticalSpacer(4.dp)
-                    Text(
-                        text = uiState.amountWon,
-                        style = TypoTheme.typography.labelLargeM,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
-
-        }
-    }
-    IncomeAddBlock(
-        visible = IncomeAddStep.Title in addSteps,
-        title = "수입 제목",
-    ) {
-        UnderlineTextField(
-            value = uiState.title,
-            onValueChange = onIncomeTitleChange,
-            hint = "수입 제목",
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next,
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    onNextStep()
-                }
-            )
-        )
-    }
-}
-
-
-
-@Composable
-private fun IncomeAddBlock(
+private fun IncomeAddField(
     visible: Boolean,
     title: String,
     content: @Composable () -> Unit,

@@ -40,6 +40,7 @@ private enum class PriceButton(
 @Composable
 fun NumberKeyboard(
     visible: Boolean,
+    buttonText: String = "닫기",
     onChangeNumber: (ValueState) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
@@ -69,7 +70,7 @@ fun NumberKeyboard(
                 )
                 VerticalSpacer(8.dp)
                 RegularButton(
-                    text = "닫기",
+                    text = buttonText,
                     color = main,
                     onClick = onDismissRequest,
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)

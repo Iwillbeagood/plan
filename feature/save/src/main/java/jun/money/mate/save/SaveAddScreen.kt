@@ -14,28 +14,23 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.designsystem.component.BottomToTopAnimatedVisibility
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.TextButton
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderLineText
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Orange1
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.model.save.SaveCategory
-import jun.money.mate.navigation.argument.AddType
-import jun.money.mate.save.SaveAddState.Companion.buttonText
-import jun.money.mate.save.component.SaveCategoryBottomSheet
+import jun.money.mate.model.save.SavingsType
+import jun.money.mate.save.component.SaveCategories
 import jun.money.mate.ui.AddScaffold
+import jun.money.mate.ui.DateAdd
 import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.ui.number.ValueState
 import java.time.LocalDate
@@ -43,54 +38,49 @@ import java.time.LocalDate
 internal enum class SaveAddStep(
     val message: String
 ) {
-    Category("먼저 저금 유형을 선택해 주세요"),
-    Date("저금할 날짜를 선택해 주세요"),
-    Title("어떤 저금인지 설명해 주세요"),
-    Amount("저금할 금액을 입력해 주세요"),
-    ;
-
-    companion object {
-        val startStep = Category
-        val endStep = Amount
-
-        fun SaveAddStep.nextStep(): SaveAddStep = entries.toTypedArray().let {
-            val nextIndex = it.indexOf(this) + 1
-            if (nextIndex < it.size) it[nextIndex] else it.last()
-        }
-    }
+    Category("먼저 무엇을 저축할지 선택해 주세요"),
+    Amount("저축할 금액을 입력해 주세요"),
+    Type("저축할 날짜를 선택해 주세요");
 }
 
+/**
+ *  저금은 일단, 사용자가 저금을 했는지, 안했는지 선택할 수 있어야 할거 같음. 그래서 기본 방식 그대로 스위치를 추가함
+ *  수익과 동일하게, 타입이 있어야 할듯.
+ * */
 @Composable
 internal fun SaveAddRoute(
-    addType: AddType,
     onGoBack: () -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: SaveAddViewModel = hiltViewModel()
 ) {
     val saveAddState by viewModel.saveAddState.collectAsStateWithLifecycle()
     val saveModalEffect by viewModel.saveModalEffect.collectAsStateWithLifecycle()
-    val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
-    SaveAddScreen(
-        title = when (addType) {
-            is AddType.Edit -> "수정"
-            AddType.New -> "추가"
+    AddScaffold(
+        buttonVisible = viewModel.addStep.value != SaveAddStep.Category,
+        buttonText = when (viewModel.addStep.value) {
+            SaveAddStep.Type -> "추가"
+            else -> "다음"
         },
-        saveAddState = saveAddState,
-        onBackClick = onGoBack,
-        onNextStep = viewModel::nextStep,
-        onTitleValueChange = viewModel::onTitleValueChange,
-        onShowDateBottomSheet = viewModel::showDatePicker,
-        onShowCategoryBottomSheet = viewModel::showCategoryBottomSheet,
-        onShowNumberBottomSheet = viewModel::showNumberKeyboard
-    )
-
+        onGoBack = onGoBack,
+        onComplete = viewModel::nextStep,
+    ) {
+        SaveAddScreen(
+            addStep = viewModel.addStep.value,
+            addSteps = viewModel.addSteps.value,
+            uiState = saveAddState,
+            onShowNumberBottomSheet = viewModel::showNumberKeyboard,
+            onDaySelected = viewModel::daySelected,
+            onDateSelected = viewModel::dateSelected,
+            onCategorySelected = viewModel::categorySelected,
+            selectedCategory = saveAddState.category
+        )
+    }
     SaveModalContent(
         saveModalEffect = saveModalEffect,
         onDateSelect = viewModel::onDateSelected,
         onDismissRequest = viewModel::dismiss,
-        onCategorySelected = viewModel::categorySelected,
         onAmountChange = viewModel::amountValueChange,
         onNumberDismissRequest = viewModel::numberKeyboardDismiss,
     )
@@ -100,7 +90,6 @@ internal fun SaveAddRoute(
             when (it) {
                 is SaveAddEffect.ShowSnackBar -> onShowSnackBar(it.messageType)
                 SaveAddEffect.SaveAddComplete -> onGoBack()
-                SaveAddEffect.DismissKeyboard -> keyboardController?.hide()
                 SaveAddEffect.RemoveTextFocus -> focusManager.clearFocus()
             }
         }
@@ -109,63 +98,15 @@ internal fun SaveAddRoute(
 
 @Composable
 private fun SaveAddScreen(
-    title: String,
-    saveAddState: SaveAddState,
-    onBackClick: () -> Unit,
-    onNextStep: () -> Unit,
-    onTitleValueChange: (String) -> Unit,
-    onShowDateBottomSheet: () -> Unit,
-    onShowCategoryBottomSheet: () -> Unit,
+    addStep: SaveAddStep,
+    addSteps: List<SaveAddStep>,
+    uiState: SaveAddState,
+    onCategorySelected: (SavingsType?) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
+    onDaySelected: (String) -> Unit,
+    onDateSelected: (LocalDate) -> Unit,
+    selectedCategory: SavingsType? = null,
 ) {
-    AddScaffold(
-        title = "저금 $title",
-        buttonText = saveAddState.buttonText(),
-        color = Orange1,
-        onGoBack = onBackClick,
-        onComplete = onNextStep,
-    ) {
-        SaveAddContent(
-            saveAddState = saveAddState,
-            onTitleValueChange = onTitleValueChange,
-            onShowDateBottomSheet = onShowDateBottomSheet,
-            onShowCategoryBottomSheet = onShowCategoryBottomSheet,
-            onShowNumberBottomSheet = onShowNumberBottomSheet,
-        )
-    }
-}
-
-@Composable
-private fun SaveAddContent(
-    saveAddState: SaveAddState,
-    onTitleValueChange: (String) -> Unit,
-    onShowDateBottomSheet: () -> Unit,
-    onShowCategoryBottomSheet: () -> Unit,
-    onShowNumberBottomSheet: () -> Unit,
-) {
-    FadeAnimatedVisibility(saveAddState is SaveAddState.UiData) {
-        if (saveAddState is SaveAddState.UiData) {
-            SaveAddBody(
-                uiState = saveAddState,
-                onTitleChange = onTitleValueChange,
-                onShowDateBottomSheet = onShowDateBottomSheet,
-                onShowCategoryBottomSheet = onShowCategoryBottomSheet,
-                onShowNumberBottomSheet = onShowNumberBottomSheet,
-            )
-        }
-    }
-}
-
-@Composable
-private fun SaveAddBody(
-    uiState: SaveAddState.UiData,
-    onTitleChange: (String) -> Unit,
-    onShowDateBottomSheet: () -> Unit,
-    onShowCategoryBottomSheet: () -> Unit,
-    onShowNumberBottomSheet: () -> Unit,
-) {
-    val steps = uiState.steps
-    val currentStep = uiState.currentStep
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -174,62 +115,72 @@ private fun SaveAddBody(
     ) {
         VerticalSpacer(50.dp)
         Text(
-            text = uiState.currentStep.message,
+            text = addStep.message,
             style = TypoTheme.typography.titleLargeM,
         )
-        VerticalSpacer(20.dp)
-        SaveAddStepColumn(
-            step = SaveAddStep.Amount,
-            steps = steps,
-            currentStep = currentStep,
-            title = "저금할 금액",
+        VerticalSpacer(50.dp)
+        SaveAddField(
+            visible = SaveAddStep.Type in addSteps,
+            title = "날짜",
         ) {
-            UnderLineText(
-                value = uiState.amountString,
-                hint = "선택",
-                modifier = Modifier.clickable(onClick = onShowNumberBottomSheet),
+            DateAdd(
+                type = "저축",
+                onDaySelected = onDaySelected,
+                onDateSelected = onDateSelected,
             )
-            TopToBottomAnimatedVisibility(uiState.amountWon.isNotEmpty()) {
-                Text(
-                    text = uiState.amountWon,
-                    style = TypoTheme.typography.labelLargeM,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth()
+        }
+        SaveAddField(
+            visible = SaveAddStep.Amount in addSteps,
+            title = "수금액",
+        ) {
+            Column {
+                UnderLineText(
+                    value = uiState.amountString,
+                    hint = "선택",
+                    modifier = Modifier.clickable(onClick = onShowNumberBottomSheet),
                 )
+                TopToBottomAnimatedVisibility(uiState.amount != 0L) {
+                    Column {
+                        VerticalSpacer(4.dp)
+                        Text(
+                            text = uiState.amountWon,
+                            style = TypoTheme.typography.labelLargeM,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+
             }
         }
-        SaveAddStepColumn(
-            step = SaveAddStep.Title,
-            steps = steps,
-            currentStep = currentStep,
-            title = "저금 계획명",
+        SaveAddField(
+            visible = SaveAddStep.Category in addSteps,
+            title = "카테고리",
         ) {
-            UnderLineText(
-                value = uiState.title,
-                hint = "저금 계획을 입력해주세요"
+            SaveCategories(
+                selectedCategory = selectedCategory,
+                onCategorySelected = onCategorySelected,
             )
         }
-        SaveAddStepColumn(
-            step = SaveAddStep.Date,
-            steps = steps,
-            currentStep = currentStep,
-            title = "저금 날짜",
-        ) {
-            TextButton(
-                text = "${uiState.day}일",
-                onClick = onShowDateBottomSheet
+        VerticalSpacer(400.dp)
+    }
+}
+
+@Composable
+private fun SaveAddField(
+    visible: Boolean,
+    title: String,
+    content: @Composable () -> Unit,
+) {
+    TopToBottomAnimatedVisibility(visible) {
+        Column {
+            Text(
+                text = title,
+                style = TypoTheme.typography.labelLargeM,
             )
-        }
-        SaveAddStepColumn(
-            step = SaveAddStep.Category,
-            steps = steps,
-            currentStep = currentStep,
-            title = "저금 카테고리",
-        ) {
-            UnderLineText(
-                value = uiState.category?.name ?: "카테고리를 선택해주세요",
-                modifier = Modifier.clickable(onClick = onShowCategoryBottomSheet),
-            )
+            VerticalSpacer(10.dp)
+            content()
+            VerticalSpacer(40.dp)
         }
     }
 }
@@ -241,7 +192,6 @@ private fun SaveModalContent(
     onAmountChange: (ValueState) -> Unit,
     onDateSelect: (LocalDate) -> Unit,
     onDismissRequest: () -> Unit,
-    onCategorySelected: (SaveCategory) -> Unit,
     onNumberDismissRequest: () -> Unit,
 ) {
     when (saveModalEffect) {
@@ -252,40 +202,13 @@ private fun SaveModalContent(
                 onDismissRequest = onDismissRequest,
             )
         }
-        SaveModalEffect.ShowCategoryBottomSheet -> {
-            SaveCategoryBottomSheet(
-                onDismiss = onDismissRequest,
-                onCategorySelected = onCategorySelected
-            )
-        }
         SaveModalEffect.ShowNumberKeyboard -> {
             NumberKeyboard(
                 visible = true,
+                buttonText = "다음",
                 onChangeNumber = onAmountChange,
                 onDismissRequest = onNumberDismissRequest,
             )
-        }
-    }
-}
-
-@Composable
-private fun SaveAddStepColumn(
-    step: SaveAddStep,
-    steps: List<SaveAddStep>,
-    currentStep: SaveAddStep,
-    title: String,
-    content: @Composable () -> Unit,
-) {
-    TopToBottomAnimatedVisibility(step in steps) {
-        Column {
-            BottomToTopAnimatedVisibility(currentStep != step) {
-                Text(
-                    text = title,
-                    style = TypoTheme.typography.labelLargeM,
-                )
-            }
-            content()
-            VerticalSpacer(30.dp)
         }
     }
 }
@@ -295,20 +218,13 @@ private fun SaveAddStepColumn(
 private fun SaveAddScreenPreview() {
     JunTheme {
         SaveAddScreen(
-            title = "추가",
-            saveAddState = SaveAddState.UiData(
-                id = 0,
-                title = "월급",
-                amount = 1000000,
-                category = SaveCategory.예금,
-                day = 1,
-            ),
-            onTitleValueChange = {},
-            onShowDateBottomSheet = {},
-            onShowCategoryBottomSheet = {},
+            addStep = SaveAddStep.Amount,
+            addSteps = SaveAddStep.entries,
+            uiState = SaveAddState(),
+            onCategorySelected = {},
             onShowNumberBottomSheet = {},
-            onBackClick = {},
-            onNextStep = {}
+            onDaySelected = {},
+            onDateSelected = {},
         )
     }
 }

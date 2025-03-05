@@ -2,7 +2,7 @@ package jun.money.mate.domain
 
 import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.model.save.SaveCategory
+import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavePlan
 import java.time.LocalDate
 import javax.inject.Inject
@@ -12,31 +12,24 @@ class AddSaveUsecase @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        id: Long,
-        title: String,
         amount: Long,
-        category: SaveCategory?,
+        category: SavingsType?,
         planDay: Int,
         onSuccess: () -> Unit,
         onError: (MessageType) -> Unit
     ) {
-        if (title.isEmpty()) {
-            onError(MessageType.Message("저금명을 입력해 주세요"))
-            return
-        }
 
         if (amount <= 0) {
-            onError(MessageType.Message("저금 금액을 입력해 주세요"))
+            onError(MessageType.Message("저축 금액을 입력해 주세요"))
             return
         }
 
         saveRepository.upsertSavePlan(
             SavePlan(
-                id = id,
-                title = title,
+                id = System.currentTimeMillis(),
                 amount = amount,
                 planDay = planDay,
-                saveCategory = category ?: SaveCategory.기타,
+                savingsType = category ?: SavingsType.보통예금,
                 executeMonth = LocalDate.now().monthValue,
                 executed = false,
                 selected = false

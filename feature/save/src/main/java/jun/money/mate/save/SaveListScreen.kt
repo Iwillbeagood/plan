@@ -86,7 +86,7 @@ private fun SavingListContent(
 ) {
     FadeAnimatedVisibility(savingListState is SavingListState.Empty) {
         if (savingListState is SavingListState.Empty) {
-            EmptyMessage("저금이 없습니다.")
+            EmptyMessage("저축이 없습니다.")
         }
     }
 

@@ -29,7 +29,7 @@ import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main
-import jun.money.mate.income.component.DateAdd
+import jun.money.mate.ui.DateAdd
 import jun.money.mate.income.contract.EditState
 import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
@@ -55,7 +55,6 @@ internal fun IncomeEditRoute(
 
     AddScaffold(
         buttonText = "수정",
-        color = main,
         onGoBack = onGoBack,
         onComplete = viewModel::editIncome,
     ) {
@@ -150,6 +149,7 @@ private fun IncomeEditBlock(
             title = "수입 날짜",
         ) {
             DateAdd(
+                type = "수입",
                 onDaySelected = onDaySelected,
                 onDateSelected = onDateSelected,
                 originIsMonthly = uiState.dateType is DateType.Monthly,

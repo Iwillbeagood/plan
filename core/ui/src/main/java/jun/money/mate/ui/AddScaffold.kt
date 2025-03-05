@@ -34,7 +34,6 @@ fun AddScaffold(
 ) {
     AddScaffold(
         buttonText = "추가하기",
-        color = color,
         onGoBack = onGoBack,
         onComplete = onComplete,
         buttonVisible = buttonVisible,
@@ -46,7 +45,6 @@ fun AddScaffold(
 fun AddScaffold(
     title: String = "",
     buttonText: String,
-    color: Color,
     onGoBack: () -> Unit,
     onComplete: () -> Unit,
     buttonVisible: Boolean = true,
@@ -65,7 +63,6 @@ fun AddScaffold(
             ) {
                 RegularButton(
                     text = buttonText,
-                    color = color,
                     onClick = onComplete,
                     modifier = Modifier
                         .fillMaxWidth()

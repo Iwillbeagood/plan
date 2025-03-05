@@ -32,7 +32,7 @@ internal fun SaveListItem(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = savePlan.title,
+                    text = "",
                     style = TypoTheme.typography.titleNormalM
                 )
                 Text(

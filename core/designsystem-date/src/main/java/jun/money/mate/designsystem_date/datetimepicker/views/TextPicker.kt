@@ -25,5 +25,5 @@ internal fun HmTextPicker(
 }
 
 enum class TimeFormat {
-    HOUR, MINUTE, DAY
+    HOUR, MINUTE, DAY, YEAR, MONTH
 }

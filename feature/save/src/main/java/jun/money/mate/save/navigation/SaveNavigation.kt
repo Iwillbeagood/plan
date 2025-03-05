@@ -7,17 +7,22 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
+import jun.money.mate.navigation.Route
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.navigation.utils.composableType
 import jun.money.mate.save.SaveAddRoute
 import jun.money.mate.save.SaveListRoute
 
 fun NavController.navigateToSaveList() {
-    navigate(MainTabRoute.Save.List)
+    navigate(Route.Save.List)
 }
 
-fun NavController.navigateToSaveAdd(addType: AddType) {
-    navigate(MainTabRoute.Save.Add(addType))
+fun NavController.navigateToSaveAdd() {
+    navigate(Route.Save.Add)
+}
+
+fun NavController.navigateToSaveEdit(id: Long) {
+    navigate(Route.Save.Edit(id))
 }
 
 fun NavGraphBuilder.saveNavGraph(
@@ -26,7 +31,7 @@ fun NavGraphBuilder.saveNavGraph(
     onShowSavingEdit: (id: Long) -> Unit,
     onShowSnackBar: (MessageType) -> Unit
 ) {
-    composable<MainTabRoute.Save.List> {
+    composable<Route.Save.List> {
         SaveListRoute(
             onShowSavingAdd = onShowSavingAdd,
             onShowSavingEdit = onShowSavingEdit,
@@ -34,13 +39,14 @@ fun NavGraphBuilder.saveNavGraph(
         )
     }
 
-    composableType<MainTabRoute.Save.Add, AddType> { backStackEntry ->
-        val addType = backStackEntry.toRoute<MainTabRoute.ConsumptionSpend.Add>().addType
-
+    composable<Route.Save.Add> {
         SaveAddRoute(
-            addType = addType,
             onGoBack = onGoBack,
             onShowSnackBar = onShowSnackBar
         )
+    }
+
+    composable<Route.Save.Edit> {
+
     }
 }

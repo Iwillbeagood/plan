@@ -20,6 +20,19 @@ sealed interface Route {
         @Serializable
         data class Edit(val id: Long): Income
     }
+
+    @Serializable
+    sealed interface Save : Route {
+
+        @Serializable
+        data object List : Save
+
+        @Serializable
+        data object Add : Save
+
+        @Serializable
+        data class Edit(val id: Long): Save
+    }
 }
 
 sealed interface MainTabRoute : Route {
@@ -44,15 +57,6 @@ sealed interface MainTabRoute : Route {
         data class Add(val addType: AddType) : ConsumptionSpend
     }
 
-    @Serializable
-    sealed interface Save : MainTabRoute {
-
-        @Serializable
-        data object List : Save
-
-        @Serializable
-        data class Add(val addType: AddType) : Save
-    }
 
     @Serializable
     sealed interface SpendingPlan : MainTabRoute {

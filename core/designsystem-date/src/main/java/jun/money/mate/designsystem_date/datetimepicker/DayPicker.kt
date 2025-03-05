@@ -71,6 +71,7 @@ fun DayPickerSheet(
                 rowCount = 5,
                 size = DpSize(100.dp, 150.dp),
                 startIndex = dates.indexOf(selectedDate),
+                timeFormat = TimeFormat.DAY,
                 onItemSelected = { selectedDate = it },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -125,16 +126,13 @@ fun DayPicker(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun DayPickerPreview() {
     JunTheme {
-        DayPickerSheet(
-            sheetState = SheetState(true, Density(0f), SheetValue.Expanded, { true }, false),
-            onDateSelected = {},
-            onDismiss = {},
-            currentMonth = 2
+        DayPicker(
+            onDaySelected = {},
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

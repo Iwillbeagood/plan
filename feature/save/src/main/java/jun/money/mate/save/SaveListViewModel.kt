@@ -103,7 +103,7 @@ internal class SavingListViewModel @Inject constructor(
 
         viewModelScope.launch {
             saveRepository.deleteById(selectedId)
-            showSnackBar(MessageType.Message("저금 계획이 삭제되었습니다"))
+            showSnackBar(MessageType.Message("저축 계획이 삭제되었습니다"))
         }
     }
 

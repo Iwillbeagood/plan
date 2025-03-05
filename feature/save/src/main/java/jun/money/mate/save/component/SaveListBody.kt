@@ -40,7 +40,7 @@ internal fun SaveListBody(
             ) {
                 Row {
                     Text(
-                        text = "저금 계획",
+                        text = "저축 계획",
                         style = TypoTheme.typography.titleLargeM,
                     )
                     Text(

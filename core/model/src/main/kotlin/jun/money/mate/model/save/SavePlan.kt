@@ -4,10 +4,9 @@ import jun.money.mate.model.Utils
 
 data class SavePlan(
     val id: Long,
-    val title: String,
     val amount: Long,
     val planDay: Int,
-    val saveCategory: SaveCategory,
+    val savingsType: SavingsType,
     val executeMonth: Int,
     val executed: Boolean,
     val selected: Boolean,
@@ -16,27 +15,25 @@ data class SavePlan(
 
     val dateString get() = "매월 ${planDay}일"
 
-    val saveState get() = if (executed) SaveState.저금완료 else SaveState.저금예정
+    val saveState get() = if (executed) SaveState.저축완료 else SaveState.저축예정
 
     companion object {
         val sample = SavePlan(
             id = 0,
-            title = "title",
             amount = 10000,
             planDay = 1,
             executeMonth = 1,
-            saveCategory = SaveCategory.투자,
+            savingsType = SavingsType.투자,
             executed = false,
             selected = false
         )
 
         val sample2 = SavePlan(
             id = 0,
-            title = "title",
             amount = 10000,
             planDay = 1,
             executeMonth = 1,
-            saveCategory = SaveCategory.투자,
+            savingsType = SavingsType.투자,
             executed = false,
             selected = false
         )
@@ -59,20 +56,18 @@ data class SavePlanList(
             savePlans = listOf(
                 SavePlan(
                     id = 1,
-                    title = "주식",
                     amount = 500000,
                     planDay = 10,
-                    saveCategory = SaveCategory.투자,
+                    savingsType = SavingsType.투자,
                     executeMonth = 1,
                     executed = false,
                     selected = false
                 ),
                 SavePlan(
                     id = 2,
-                    title = "예금",
                     amount = 10000,
                     planDay = 10,
-                    saveCategory = SaveCategory.연금저축,
+                    savingsType = SavingsType.연금저축,
                     executeMonth = 1,
                     executed = true,
                     selected = false
@@ -83,23 +78,6 @@ data class SavePlanList(
 }
 
 enum class SaveState {
-    저금완료,
-    저금예정
-}
-
-
-enum class SaveCategory {
-    예금,
-    적금,
-    청약저축,
-    투자,
-    보험,
-    입출금통장,
-    연금저축,
-    기타
-    ;
-
-    companion object {
-
-    }
+    저축완료,
+    저축예정
 }

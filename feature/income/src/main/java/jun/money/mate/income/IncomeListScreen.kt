@@ -196,6 +196,7 @@ private fun IncomeListButton(
                         onClick = onShowIncomeAdd,
                         modifier = Modifier
                             .fillMaxWidth()
+
                             .padding(16.dp)
                     )
                 }

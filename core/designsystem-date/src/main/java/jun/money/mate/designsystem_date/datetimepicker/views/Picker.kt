@@ -119,6 +119,8 @@ internal fun Picker(
                                 TimeFormat.HOUR -> "시"
                                 TimeFormat.MINUTE -> "분"
                                 TimeFormat.DAY -> "일"
+                                TimeFormat.YEAR -> "년"
+                                TimeFormat.MONTH -> "월"
                             },
                             style = TypoTheme.typography.titleNormalB,
                             color = if (isScrollInProgress) main else MaterialTheme.colorScheme.onSurface,

@@ -189,7 +189,7 @@ private fun HomeScreen(
                     }
                     Row {
                         Text(
-                            text = "저금",
+                            text = "저축",
                             style = TypoTheme.typography.titleMediumM,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f)
