@@ -38,7 +38,6 @@ import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem_date.datetimepicker.YearMonthPicker
-import jun.money.mate.model.save.SavingsDetails
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavingsType.Companion.title
 import java.time.LocalDate
@@ -202,15 +201,10 @@ private fun CategoryField(
                     onClick = {
                         when (smartSelectedCategory) {
                             SavingsType.보통예금 -> onCategorySelected(SavingsType.보통예금)
-                            is SavingsType.보험저축 -> onCategorySelected(
-                                SavingsType.보험저축(
-                                    interest = interest,
-                                    periodStart = startDate,
-                                    periodEnd = endDate
-                                )
-                            )
-
                             SavingsType.연금저축 -> onCategorySelected(SavingsType.연금저축)
+                            is SavingsType.청약저축 -> onCategorySelected(SavingsType.청약저축(interest))
+                            SavingsType.투자 -> onCategorySelected(SavingsType.투자)
+                            is SavingsType.기타 -> onCategorySelected(SavingsType.기타(etc))
                             is SavingsType.적금 -> onCategorySelected(
                                 SavingsType.적금(
                                     interest = interest,
@@ -218,18 +212,13 @@ private fun CategoryField(
                                     periodEnd = endDate
                                 )
                             )
-
-                            is SavingsType.정기예금 -> onCategorySelected(
-                                SavingsType.정기예금(
+                            is SavingsType.보험저축 -> onCategorySelected(
+                                SavingsType.보험저축(
                                     interest = interest,
                                     periodStart = startDate,
                                     periodEnd = endDate
                                 )
                             )
-
-                            is SavingsType.청약저축 -> onCategorySelected(SavingsType.청약저축(interest))
-                            SavingsType.투자 -> onCategorySelected(SavingsType.투자)
-                            is SavingsType.기타 -> onCategorySelected(SavingsType.기타(etc))
                         }
                     },
                     modifier = Modifier

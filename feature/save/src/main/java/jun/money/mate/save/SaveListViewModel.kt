@@ -1,14 +1,10 @@
 package jun.money.mate.save
 
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.SaveRepository
-import jun.money.mate.model.etc.EditMode
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.save.contract.SaveModalEffect
 import jun.money.mate.save.contract.SavingListEffect
 import jun.money.mate.save.contract.SavingListState
@@ -26,7 +22,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
-import kotlin.math.ceil
 
 @HiltViewModel
 internal class SavingListViewModel @Inject constructor(
@@ -87,6 +82,9 @@ internal class SavingListViewModel @Inject constructor(
         }
     }
 
+    /**
+     *  일단 기간이 정해져있는 save의 경우에는
+     * */
     fun executeChange(executed: Boolean, id: Long) {
         viewModelScope.launch {
             saveRepository.updateExecuteState(id, executed)

@@ -148,7 +148,7 @@ private fun SavingListScreen(
                         modifier = Modifier.padding(start = 30.dp, top = 60.dp)
                     ) {
                         Text(
-                            text = "이번 달의 저축금액",
+                            text = "이번 달 총 납입금액",
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = TypoTheme.typography.headlineSmallM,
                         )

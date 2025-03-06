@@ -28,8 +28,8 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.save.component.SaveCategories
 import jun.money.mate.save.contract.SaveAddEffect
-import jun.money.mate.save.contract.SaveAddState
 import jun.money.mate.save.contract.SaveAddModalEffect
+import jun.money.mate.save.contract.SaveAddState
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.ui.number.ValueState
@@ -38,8 +38,8 @@ internal enum class SaveAddStep(
     val message: String
 ) {
     Category("먼저 무엇을 저축할지 선택해 주세요"),
-    Amount("저축 금액을 입력해 주세요"),
-    Type("저축 날짜를 선택해 주세요");
+    Amount("월 납입할 금액을 입력해 주세요"),
+    Type("납입이 진행되는 날짜를 선택해 주세요");
 }
 
 @Composable
@@ -112,7 +112,7 @@ private fun SaveAddScreen(
         VerticalSpacer(50.dp)
         SaveAddField(
             visible = SaveAddStep.Type in addSteps,
-            title = "날짜",
+            title = "납입날짜",
         ) {
             DayPicker(
                 onDaySelected = onDaySelected,
@@ -121,7 +121,7 @@ private fun SaveAddScreen(
         }
         SaveAddField(
             visible = SaveAddStep.Amount in addSteps,
-            title = "수금액",
+            title = "월 납입금액",
         ) {
             Column {
                 UnderLineText(

@@ -96,28 +96,26 @@ internal fun SaveListItem(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    savePlan.getRemainingPeriod()?.let {
+                    HorizontalSpacer(1f)
+                    val period = savePlan.getRemainingPeriod()
+                    if (period == null) {
+                        DefaultSwitch(
+                            checked = savePlan.executed,
+                            onCheckedChange = onExecuteChange
+                        )
+                    } else {
                         Text(
-                            text = it,
+                            text = period,
                             style = TypoTheme.typography.titleMediumR,
                             color = Red2,
                         )
-                        HorizontalSpacer(1f)
                     }
-                    HorizontalSpacer(1f)
-                    DefaultSwitch(
-                        checked = savePlan.executed,
-                        onCheckedChange = onExecuteChange
-                    )
                 }
             }
         }
     }
 }
 
-/**
- * 목표서 타입일 경우에는 목표를 보여주고 추가적으로 남은 달을 보여줄 것.
- * */
 @Preview(showBackground = true)
 @Composable
 private fun ContinueSaveListItemPreview() {
