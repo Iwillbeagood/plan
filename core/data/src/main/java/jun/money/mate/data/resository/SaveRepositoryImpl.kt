@@ -52,4 +52,12 @@ internal class SaveRepositoryImpl @Inject constructor(
             Logger.e("deleteById error: $e")
         }
     }
+
+    override suspend fun deleteByIds(ids: List<Long>) {
+        try {
+            saveDao.deleteByIds(ids)
+        } catch (e: Exception) {
+            Logger.e("deleteByIds error: $e")
+        }
+    }
 }

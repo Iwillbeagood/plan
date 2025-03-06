@@ -9,7 +9,7 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.save.contract.SaveAddEffect
 import jun.money.mate.save.contract.SaveAddState
-import jun.money.mate.save.contract.SaveModalEffect
+import jun.money.mate.save.contract.SaveAddModalEffect
 import jun.money.mate.ui.number.ValueState
 import jun.money.mate.ui.number.ValueState.Companion.value
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,8 +35,8 @@ internal class SaveAddViewModel @Inject constructor(
     private val _saveAddState = MutableStateFlow(SaveAddState())
     val saveAddState: StateFlow<SaveAddState> get() = _saveAddState
 
-    private val _saveModalEffect = MutableStateFlow<SaveModalEffect>(SaveModalEffect.Idle)
-    val saveModalEffect: StateFlow<SaveModalEffect> get() = _saveModalEffect
+    private val _saveAddModalEffect = MutableStateFlow<SaveAddModalEffect>(SaveAddModalEffect.Idle)
+    val saveAddModalEffect: StateFlow<SaveAddModalEffect> get() = _saveAddModalEffect
 
     private val _saveAddEffect = MutableSharedFlow<SaveAddEffect>()
     val saveAddEffect: SharedFlow<SaveAddEffect> get() = _saveAddEffect.asSharedFlow()
@@ -120,16 +120,16 @@ internal class SaveAddViewModel @Inject constructor(
     }
 
     fun showNumberKeyboard() {
-        _saveModalEffect.update { SaveModalEffect.ShowNumberKeyboard }
+        _saveAddModalEffect.update { SaveAddModalEffect.ShowNumberKeyboard }
     }
 
     private fun dismiss() {
-        _saveModalEffect.update { SaveModalEffect.Idle }
+        _saveAddModalEffect.update { SaveAddModalEffect.Idle }
     }
 
     fun numberKeyboardDismiss() {
         nextStep()
-        _saveModalEffect.update { SaveModalEffect.Idle }
+        _saveAddModalEffect.update { SaveAddModalEffect.Idle }
     }
 
     private fun showSnackBar(messageType: MessageType) {

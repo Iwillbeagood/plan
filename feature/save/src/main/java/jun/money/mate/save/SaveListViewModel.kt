@@ -7,10 +7,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.etc.EditMode
-import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
+import jun.money.mate.save.contract.SaveModalEffect
 import jun.money.mate.utils.flow.updateWithData
 import jun.money.mate.utils.flow.withData
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,8 +18,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -48,6 +45,9 @@ internal class SavingListViewModel @Inject constructor(
 
     private val _savingListEffect = MutableSharedFlow<SavingListEffect>()
     val savingListEffect: SharedFlow<SavingListEffect> get() = _savingListEffect.asSharedFlow()
+
+    private val _modalEffect = MutableStateFlow<SaveModalEffect>(SaveModalEffect.Hidden)
+    val modalEffect: StateFlow<SaveModalEffect> get() = _modalEffect
 
     private fun loadSpending() {
         viewModelScope.launch {
@@ -98,7 +98,16 @@ internal class SavingListViewModel @Inject constructor(
                 _savingListEffect.emit(SavingListEffect.EditSpendingPlan(selectedId))
             }
         }
+    }
 
+    fun deleteSave() {
+        savingListState.withData<SavingListState.SavingListData> {
+            viewModelScope.launch {
+                saveRepository.deleteByIds(it.selectedPlansId)
+                showSnackBar(MessageType.Message("저축 계획이 삭제되었습니다"))
+                hideModal()
+            }
+        }
     }
 
     fun prevMonth() {
@@ -113,13 +122,15 @@ internal class SavingListViewModel @Inject constructor(
         }
     }
 
-    fun deleteSave() {
-        val uiState = savingListState.value as? SavingListState.SavingListData ?: return
-        val selectedId = uiState.selectedId ?: return
-
+    fun showDeleteDialog() {
         viewModelScope.launch {
-            saveRepository.deleteById(selectedId)
-            showSnackBar(MessageType.Message("저축 계획이 삭제되었습니다"))
+            _modalEffect.emit(SaveModalEffect.ShowDeleteConfirmDialog)
+        }
+    }
+
+    fun hideModal() {
+        viewModelScope.launch {
+            _modalEffect.emit(SaveModalEffect.Hidden)
         }
     }
 
@@ -137,9 +148,6 @@ internal sealed interface SavingListState {
     data object Loading : SavingListState
 
     @Immutable
-    data object Empty : SavingListState
-
-    @Immutable
     data class SavingListData(
         val savePlanList: SavePlanList,
     ) : SavingListState {
@@ -155,13 +163,10 @@ internal sealed interface SavingListState {
                 }
             }
 
-        val spendingListViewMode: ViewMode get() = if (savePlanList.savePlans.any { it.selected }) ViewMode.EDIT else ViewMode.LIST
-
-        val totalString get() = savePlanList.totalString
-
         val goldAcornCount: Int get() = (savePlanList.total / 1_000_000).toInt()
         val acornCount: Int get() = ceil((savePlanList.total % 1_000_000).toDouble() / 100_000).toInt()
 
+        val selectedPlansId get() = savePlanList.savePlans.filter { it.selected }.map { it.id }
         val selectedId get() = savePlanList.savePlans.firstOrNull { it.selected }?.id
     }
 }

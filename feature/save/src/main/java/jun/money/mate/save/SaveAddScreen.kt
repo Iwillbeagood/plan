@@ -29,7 +29,7 @@ import jun.money.mate.model.save.SavingsType
 import jun.money.mate.save.component.SaveCategories
 import jun.money.mate.save.contract.SaveAddEffect
 import jun.money.mate.save.contract.SaveAddState
-import jun.money.mate.save.contract.SaveModalEffect
+import jun.money.mate.save.contract.SaveAddModalEffect
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.ui.number.ValueState
@@ -49,7 +49,7 @@ internal fun SaveAddRoute(
     viewModel: SaveAddViewModel = hiltViewModel()
 ) {
     val saveAddState by viewModel.saveAddState.collectAsStateWithLifecycle()
-    val saveModalEffect by viewModel.saveModalEffect.collectAsStateWithLifecycle()
+    val saveModalEffect by viewModel.saveAddModalEffect.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
 
     AddScaffold(
@@ -72,7 +72,7 @@ internal fun SaveAddRoute(
         )
     }
     SaveModalContent(
-        saveModalEffect = saveModalEffect,
+        saveAddModalEffect = saveModalEffect,
         onAmountChange = viewModel::amountValueChange,
         onNumberDismissRequest = viewModel::numberKeyboardDismiss,
     )
@@ -177,13 +177,13 @@ private fun SaveAddField(
 
 @Composable
 private fun SaveModalContent(
-    saveModalEffect: SaveModalEffect,
+    saveAddModalEffect: SaveAddModalEffect,
     onAmountChange: (ValueState) -> Unit,
     onNumberDismissRequest: () -> Unit,
 ) {
-    when (saveModalEffect) {
-        SaveModalEffect.Idle -> {}
-        SaveModalEffect.ShowNumberKeyboard -> {
+    when (saveAddModalEffect) {
+        SaveAddModalEffect.Idle -> {}
+        SaveAddModalEffect.ShowNumberKeyboard -> {
             NumberKeyboard(
                 visible = true,
                 buttonText = "다음",

@@ -83,7 +83,10 @@ internal fun AcornBox(
         }
     }
 
-    LaunchedEffect(count) {
+    LaunchedEffect(count, goldCount) {
+        acorns = emptyList()
+        yOffsetMap.clear()
+
         repeat(count) {
             val randomX = xPositions.random()
             val currentCount = yOffsetMap[randomX] ?: 0
@@ -96,9 +99,7 @@ internal fun AcornBox(
             }
             delay(30L)
         }
-    }
 
-    LaunchedEffect(goldCount) {
         repeat(goldCount) {
             val randomX = xPositions.random()
             val currentCount = yOffsetMap[randomX] ?: 0

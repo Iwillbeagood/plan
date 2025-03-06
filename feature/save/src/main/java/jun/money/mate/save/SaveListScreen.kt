@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,15 +23,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.R
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.TopAppbarIcon
+import jun.money.mate.designsystem.component.TwoBtnDialog
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main10
 import jun.money.mate.model.etc.EditMode
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.save.component.AcornBox
 import jun.money.mate.save.component.SaveListBody
+import jun.money.mate.save.contract.SaveModalEffect
 import jun.money.mate.ui.EditModeButton
 import java.time.LocalDate
 
@@ -43,6 +45,7 @@ internal fun SaveListRoute(
     viewModel: SavingListViewModel = hiltViewModel()
 ) {
     val savingListState by viewModel.savingListState.collectAsStateWithLifecycle()
+    val modalEffect by viewModel.modalEffect.collectAsStateWithLifecycle()
     val month by viewModel.month.collectAsStateWithLifecycle()
 
     SavingListScreen(
@@ -54,9 +57,12 @@ internal fun SaveListRoute(
         onSavePlanClick = viewModel::changeSavePlanSelected,
         onSavingAdd = onShowSavingAdd,
         onSavingEdit = viewModel::editSave,
+        onDelete = viewModel::showDeleteDialog,
         onExecuteChange = viewModel::executeChange,
         onGoBack = onGoBack,
     )
+
+    ModalContent(modalEffect, viewModel)
 
     BackHandler {
         val state = savingListState
@@ -90,6 +96,7 @@ private fun SavingListScreen(
     onSavePlanClick: (Long) -> Unit,
     onSavingAdd: () -> Unit,
     onSavingEdit: () -> Unit,
+    onDelete: () -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
     onGoBack: () -> Unit,
 
@@ -99,7 +106,7 @@ private fun SavingListScreen(
             EditModeButton(
                 editMode = (savingListState as? SavingListState.SavingListData)?.editMode ?: EditMode.LIST,
                 onAdd = onSavingAdd,
-                onDelete = {  },
+                onDelete = onDelete,
                 onEdit = onSavingEdit,
             )
         },
@@ -139,7 +146,7 @@ private fun SavingListScreen(
                         modifier = Modifier.padding(start = 30.dp, top = 60.dp)
                     ) {
                         Text(
-                            text = "${month.monthValue}월",
+                            text = "이번 달의 저축금액",
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = TypoTheme.typography.headlineSmallM,
                         )
@@ -195,6 +202,29 @@ private fun SavingListContent(
     }
 }
 
+@Composable
+private fun ModalContent(
+    modalEffect: SaveModalEffect,
+    viewModel: SavingListViewModel
+) {
+   when (modalEffect) {
+        is SaveModalEffect.Hidden -> {}
+       SaveModalEffect.ShowDeleteConfirmDialog -> {
+           TwoBtnDialog(
+               onDismissRequest = viewModel::hideModal,
+               button2Text = stringResource(id = jun.money.mate.res.R.string.btn_yes),
+               button2Click = viewModel::deleteSave,
+               content = {
+                   Text(
+                       text = "선택한 저축을 삭제하시겠습니까?",
+                       style = TypoTheme.typography.titleMediumM
+                   )
+               }
+           )
+       }
+   }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun SpendingListScreenPreview() {
@@ -209,6 +239,7 @@ private fun SpendingListScreenPreview() {
             onShowDetail = {},
             onSavePlanClick = {},
             onGoBack = {},
+            onDelete = {},
             onExecuteChange = { _, _ -> },
         )
     }

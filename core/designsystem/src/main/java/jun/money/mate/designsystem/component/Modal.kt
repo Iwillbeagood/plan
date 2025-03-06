@@ -104,7 +104,11 @@ fun TwoBtnDialog(
         onDismissRequest = onDismissRequest,
         contentSpace = contentSpace,
         contentPadding = contentPadding,
-        content = content,
+        content = {
+            VerticalSpacer(16.dp)
+            content()
+            VerticalSpacer(16.dp)
+        },
         button1 = {
             RegularButton(
                 text = button1Text,

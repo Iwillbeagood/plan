@@ -3,6 +3,7 @@ package jun.money.mate.database.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import jun.money.mate.database.AppDatabase.Companion.INCOME_TABLE_NAME
 import jun.money.mate.database.AppDatabase.Companion.SAVING_PLAN_TABLE_NAME
 import jun.money.mate.database.entity.SaveEntity
 import kotlinx.coroutines.flow.Flow
@@ -24,4 +25,7 @@ interface SaveDao {
 
     @Query("DELETE FROM $SAVING_PLAN_TABLE_NAME WHERE id = :id")
     suspend fun deleteById(id: Long)
+
+    @Query("DELETE FROM $SAVING_PLAN_TABLE_NAME WHERE id IN (:ids)")
+    suspend fun deleteByIds(ids: List<Long>)
 }

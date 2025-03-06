@@ -7,8 +7,8 @@ import androidx.compose.runtime.Stable
 internal sealed interface SaveModalEffect {
 
     @Immutable
-    data object Idle : SaveModalEffect
+    data object Hidden : SaveModalEffect
 
     @Immutable
-    data object ShowNumberKeyboard : SaveModalEffect
+    data object ShowDeleteConfirmDialog : SaveModalEffect
 }
