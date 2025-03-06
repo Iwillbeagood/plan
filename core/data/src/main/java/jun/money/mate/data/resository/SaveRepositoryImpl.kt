@@ -39,17 +39,9 @@ internal class SaveRepositoryImpl @Inject constructor(
 
     override suspend fun updateExecuteState(id: Long, isExecuted: Boolean) {
         try {
-            saveDao.updateExecuteState(id, LocalDate.now().monthValue, isExecuted)
+            saveDao.updateExecuteState(id, isExecuted)
         } catch (e: Exception) {
             Logger.e("updateExecuteState error: $e")
-        }
-    }
-
-    override suspend fun resetExecuteState() {
-        try {
-            saveDao.resetExecutedState(LocalDate.now().monthValue)
-        } catch (e: Exception) {
-            Logger.e("resetExecuteState error: $e")
         }
     }
 

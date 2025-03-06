@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,30 +22,26 @@ import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderLineText
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.designsystem.theme.Orange1
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
+import jun.money.mate.designsystem_date.datetimepicker.DayPicker
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.save.component.SaveCategories
+import jun.money.mate.save.contract.SaveAddEffect
+import jun.money.mate.save.contract.SaveAddState
+import jun.money.mate.save.contract.SaveModalEffect
 import jun.money.mate.ui.AddScaffold
-import jun.money.mate.ui.DateAdd
 import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.ui.number.ValueState
-import java.time.LocalDate
 
 internal enum class SaveAddStep(
     val message: String
 ) {
     Category("먼저 무엇을 저축할지 선택해 주세요"),
-    Amount("저축할 금액을 입력해 주세요"),
-    Type("저축할 날짜를 선택해 주세요");
+    Amount("저축 금액을 입력해 주세요"),
+    Type("저축 날짜를 선택해 주세요");
 }
 
-/**
- *  저금은 일단, 사용자가 저금을 했는지, 안했는지 선택할 수 있어야 할거 같음. 그래서 기본 방식 그대로 스위치를 추가함
- *  수익과 동일하게, 타입이 있어야 할듯.
- * */
 @Composable
 internal fun SaveAddRoute(
     onGoBack: () -> Unit,
@@ -72,15 +67,12 @@ internal fun SaveAddRoute(
             uiState = saveAddState,
             onShowNumberBottomSheet = viewModel::showNumberKeyboard,
             onDaySelected = viewModel::daySelected,
-            onDateSelected = viewModel::dateSelected,
             onCategorySelected = viewModel::categorySelected,
             selectedCategory = saveAddState.category
         )
     }
     SaveModalContent(
         saveModalEffect = saveModalEffect,
-        onDateSelect = viewModel::onDateSelected,
-        onDismissRequest = viewModel::dismiss,
         onAmountChange = viewModel::amountValueChange,
         onNumberDismissRequest = viewModel::numberKeyboardDismiss,
     )
@@ -104,7 +96,6 @@ private fun SaveAddScreen(
     onCategorySelected: (SavingsType?) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
     onDaySelected: (String) -> Unit,
-    onDateSelected: (LocalDate) -> Unit,
     selectedCategory: SavingsType? = null,
 ) {
     Column(
@@ -123,10 +114,9 @@ private fun SaveAddScreen(
             visible = SaveAddStep.Type in addSteps,
             title = "날짜",
         ) {
-            DateAdd(
-                type = "저축",
+            DayPicker(
                 onDaySelected = onDaySelected,
-                onDateSelected = onDateSelected,
+                modifier = Modifier.fillMaxWidth()
             )
         }
         SaveAddField(
@@ -185,23 +175,14 @@ private fun SaveAddField(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SaveModalContent(
     saveModalEffect: SaveModalEffect,
     onAmountChange: (ValueState) -> Unit,
-    onDateSelect: (LocalDate) -> Unit,
-    onDismissRequest: () -> Unit,
     onNumberDismissRequest: () -> Unit,
 ) {
     when (saveModalEffect) {
         SaveModalEffect.Idle -> {}
-        is SaveModalEffect.ShowDatePicker -> {
-            DatePickerSheet(
-                onDateSelect = onDateSelect,
-                onDismissRequest = onDismissRequest,
-            )
-        }
         SaveModalEffect.ShowNumberKeyboard -> {
             NumberKeyboard(
                 visible = true,
@@ -224,7 +205,6 @@ private fun SaveAddScreenPreview() {
             onCategorySelected = {},
             onShowNumberBottomSheet = {},
             onDaySelected = {},
-            onDateSelected = {},
         )
     }
 }

@@ -6,18 +6,15 @@ import jun.money.mate.model.save.SavePlan
 internal fun SavePlan.toSaveEntity() = SaveEntity(
     id = id,
     amount = amount,
-    planDay = planDay,
+    day = day,
     savingsType = savingsType,
-    executeMonth = executeMonth,
-    executed = false,
+    executed = executed,
 )
 
 internal fun SaveEntity.toSavePlan() = SavePlan(
     id = id,
     amount = amount,
-    planDay = planDay,
+    day = day,
     savingsType = savingsType,
-    executeMonth = executeMonth,
     executed = executed,
-    selected = false,
 )

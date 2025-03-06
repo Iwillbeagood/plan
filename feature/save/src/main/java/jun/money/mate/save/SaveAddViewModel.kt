@@ -1,19 +1,17 @@
 package jun.money.mate.save
 
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.domain.AddSaveUsecase
-import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavingsType
+import jun.money.mate.save.contract.SaveAddEffect
+import jun.money.mate.save.contract.SaveAddState
+import jun.money.mate.save.contract.SaveModalEffect
 import jun.money.mate.ui.number.ValueState
 import jun.money.mate.ui.number.ValueState.Companion.value
-import jun.money.mate.utils.currency.CurrencyFormatter
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -21,13 +19,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 internal class SaveAddViewModel @Inject constructor(
-    private val addSaveUsecase: AddSaveUsecase,
-    private val saveRepository: SaveRepository,
+    private val addSaveUsecase: AddSaveUsecase
 ) : ViewModel() {
 
     var addStep = mutableStateOf(SaveAddStep.entries.first())
@@ -47,7 +43,6 @@ internal class SaveAddViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            saveRepository.resetExecuteState()
         }
     }
 
@@ -74,14 +69,7 @@ internal class SaveAddViewModel @Inject constructor(
                 changeStep(SaveAddStep.Type)
                 dismiss()
             }
-            SaveAddStep.Type -> {
-                if (state.dateType == null) {
-                    showSnackBar(MessageType.Message(step.message))
-                    return
-                }
-                addSave()
-            }
-
+            SaveAddStep.Type -> addSave()
         }
     }
 
@@ -100,8 +88,8 @@ internal class SaveAddViewModel @Inject constructor(
         viewModelScope.launch {
             addSaveUsecase(
                 amount = state.amount,
-                planDay = 1,
-                category = null,
+                day = state.day,
+                category = state.category,
                 onSuccess = {
                     showSnackBar(MessageType.Message("저축 계획이 추가되었습니다."))
                     incomeAddComplete()
@@ -119,23 +107,10 @@ internal class SaveAddViewModel @Inject constructor(
         }
     }
 
-    fun dateSelected(date: LocalDate) {
-        _saveAddState.update {
-            it.copy(dateType = DateType.Specific(date))
-        }
-    }
-
     fun daySelected(day: String) {
         _saveAddState.update {
-            it.copy(dateType = DateType.Monthly(day.toInt()))
+            it.copy(day = day.toInt())
         }
-    }
-
-    fun onDateSelected(date: LocalDate) {
-        nextStep()
-    }
-
-    fun showDatePicker() {
     }
 
     fun categorySelected(savingsType: SavingsType?) {
@@ -148,14 +123,8 @@ internal class SaveAddViewModel @Inject constructor(
         _saveModalEffect.update { SaveModalEffect.ShowNumberKeyboard }
     }
 
-    fun dismiss() {
+    private fun dismiss() {
         _saveModalEffect.update { SaveModalEffect.Idle }
-    }
-
-    private fun removeTextFocus() {
-        viewModelScope.launch {
-            _saveAddEffect.emit(SaveAddEffect.RemoveTextFocus)
-        }
     }
 
     fun numberKeyboardDismiss() {
@@ -176,39 +145,6 @@ internal class SaveAddViewModel @Inject constructor(
     }
 }
 
-@Stable
-internal data class SaveAddState(
-    val amount: Long = 0,
-    val dateType: DateType? = null,
-    val category: SavingsType? = null,
-) {
 
-    val amountString get() = if (amount > 0) amount.toString() else ""
-    val amountWon get() = if (amount > 0) CurrencyFormatter.formatAmountWon(amount) else ""
-}
 
-@Stable
-internal sealed interface SaveAddEffect {
 
-    @Immutable
-    data class ShowSnackBar(val messageType: MessageType) : SaveAddEffect
-
-    @Immutable
-    data object SaveAddComplete : SaveAddEffect
-
-    @Immutable
-    data object RemoveTextFocus : SaveAddEffect
-}
-
-@Stable
-internal sealed interface SaveModalEffect {
-
-    @Immutable
-    data object Idle : SaveModalEffect
-
-    @Immutable
-    data class ShowDatePicker(val date: LocalDate) : SaveModalEffect
-
-    @Immutable
-    data object ShowNumberKeyboard : SaveModalEffect
-}

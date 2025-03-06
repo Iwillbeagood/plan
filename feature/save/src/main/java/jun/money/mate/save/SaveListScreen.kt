@@ -1,45 +1,74 @@
 package jun.money.mate.save
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import jun.money.mate.designsystem.R
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.etc.EmptyMessage
+import jun.money.mate.designsystem.component.TopAppbarIcon
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.designsystem.theme.Orange1
-import jun.money.mate.model.etc.ViewMode
+import jun.money.mate.designsystem.theme.TypoTheme
+import jun.money.mate.designsystem.theme.main10
+import jun.money.mate.model.etc.EditMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
+import jun.money.mate.save.component.AcornBox
 import jun.money.mate.save.component.SaveListBody
-import jun.money.mate.ui.DefaultScaffold
+import jun.money.mate.ui.EditModeButton
+import java.time.LocalDate
 
-/**
- *  저금도 수익과 비슷하게 가야하긴 한데, 저금은 계획을 세운 다음 그게 실제 이뤄졌는지 체크할 수 있어야 할거같음.
- * */
 @Composable
 internal fun SaveListRoute(
+    onGoBack: () -> Unit,
     onShowSavingAdd: () -> Unit,
     onShowSavingEdit: (id: Long) -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: SavingListViewModel = hiltViewModel()
 ) {
     val savingListState by viewModel.savingListState.collectAsStateWithLifecycle()
-    val viewMode by viewModel.savingViewMode.collectAsStateWithLifecycle()
+    val month by viewModel.month.collectAsStateWithLifecycle()
 
     SavingListScreen(
         savingListState = savingListState,
-        viewMode = viewMode,
+        month = month,
+        onPrev = viewModel::prevMonth,
+        onNext = viewModel::nextMonth,
+        onShowDetail = onShowSavingEdit,
         onSavePlanClick = viewModel::changeSavePlanSelected,
         onSavingAdd = onShowSavingAdd,
         onSavingEdit = viewModel::editSave,
-        onSavingDelete = viewModel::deleteSave,
         onExecuteChange = viewModel::executeChange,
+        onGoBack = onGoBack,
     )
+
+    BackHandler {
+        val state = savingListState
+        if (state is SavingListState.SavingListData) {
+            when (state.editMode) {
+                EditMode.LIST -> onGoBack()
+                else -> viewModel.unselectAll()
+            }
+        } else {
+            onGoBack()
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.savingListEffect.collect { effect ->
@@ -54,46 +83,111 @@ internal fun SaveListRoute(
 @Composable
 private fun SavingListScreen(
     savingListState: SavingListState,
-    viewMode: ViewMode,
-    onSavePlanClick: (SavePlan) -> Unit,
+    month: LocalDate,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
+    onShowDetail: (Long) -> Unit,
+    onSavePlanClick: (Long) -> Unit,
     onSavingAdd: () -> Unit,
     onSavingEdit: () -> Unit,
-    onSavingDelete: () -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
+    onGoBack: () -> Unit,
+
 ) {
-    DefaultScaffold(
-        color = Orange1,
-        bottomBarVisible = viewMode == ViewMode.EDIT,
-        addButtonVisible = viewMode == ViewMode.LIST,
-        onAdd = onSavingAdd,
-        onEdit = onSavingEdit,
-        onDelete = onSavingDelete,
-        containerColor = MaterialTheme.colorScheme.surfaceDim
+    Scaffold(
+        bottomBar = {
+            EditModeButton(
+                editMode = (savingListState as? SavingListState.SavingListData)?.editMode ?: EditMode.LIST,
+                onAdd = onSavingAdd,
+                onDelete = {  },
+                onEdit = onSavingEdit,
+            )
+        },
+        containerColor = main10
     ) {
-        SavingListContent(
-            savingListState = savingListState,
-            onSavePlanClick = onSavePlanClick,
-            onExecuteChange = onExecuteChange,
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it)
+            ) {
+                AcornBox(
+                    count = (savingListState as? SavingListState.SavingListData)?.acornCount ?: 0,
+                    goldCount = (savingListState as? SavingListState.SavingListData)?.goldAcornCount ?: 0,
+                    modifier = Modifier.weight(4f)
+                )
+                SavingListContent(
+                    savingListState = savingListState,
+                    month = month,
+                    onPrev = onPrev,
+                    onNext = onNext,
+                    onShowDetail = onShowDetail,
+                    onSavePlanClick = onSavePlanClick,
+                    onExecuteChange = onExecuteChange,
+                    modifier = Modifier.weight(6f)
+                )
+            }
+            FadeAnimatedVisibility(
+                visible = savingListState is SavingListState.SavingListData,
+                modifier = Modifier.align(Alignment.TopStart)
+            ) {
+                if (savingListState is SavingListState.SavingListData) {
+                    Column(
+                        modifier = Modifier.padding(start = 30.dp, top = 60.dp)
+                    ) {
+                        Text(
+                            text = "${month.monthValue}월",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = TypoTheme.typography.headlineSmallM,
+                        )
+                        Text(
+                            text = savingListState.savePlanList.totalString,
+                            style = TypoTheme.typography.displaySmallB,
+                        )
+                    }
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clickable(onClick = onGoBack)
+                    .align(Alignment.TopStart),
+            ) {
+                TopAppbarIcon(
+                    iconId = R.drawable.ic_back,
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+        }
     }
 }
 
 @Composable
 private fun SavingListContent(
     savingListState: SavingListState,
-    onSavePlanClick: (SavePlan) -> Unit,
+    month: LocalDate,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
+    onShowDetail: (Long) -> Unit,
+    onSavePlanClick: (Long) -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    FadeAnimatedVisibility(savingListState is SavingListState.Empty) {
-        if (savingListState is SavingListState.Empty) {
-            EmptyMessage("저축이 없습니다.")
-        }
-    }
-
-    FadeAnimatedVisibility(savingListState is SavingListState.SavingListData) {
+    FadeAnimatedVisibility(
+        savingListState is SavingListState.SavingListData,
+        modifier = modifier
+    ) {
         if (savingListState is SavingListState.SavingListData) {
             SaveListBody(
                 savePlanList = savingListState.savePlanList,
+                month = month,
+                onPrev = onPrev,
+                onNext = onNext,
+                onShowDetail = onShowDetail,
                 onSavePlanClick = onSavePlanClick,
                 onExecuteChange = onExecuteChange,
             )
@@ -107,12 +201,15 @@ private fun SpendingListScreenPreview() {
     JunTheme {
         SavingListScreen(
             savingListState = SavingListState.SavingListData(SavePlanList.sample),
+            month = LocalDate.now(),
+            onPrev = {},
+            onNext = {},
             onSavingAdd = {},
             onSavingEdit = {},
-            onSavingDelete = {},
+            onShowDetail = {},
             onSavePlanClick = {},
+            onGoBack = {},
             onExecuteChange = { _, _ -> },
-            viewMode = ViewMode.EDIT
         )
     }
 }

@@ -1,85 +1,61 @@
 package jun.money.mate.save.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.model.save.SavePlan
+import jun.money.mate.designsystem_date.datetimepicker.MonthBar
 import jun.money.mate.model.save.SavePlanList
+import java.time.LocalDate
 
 @Composable
 internal fun SaveListBody(
     savePlanList: SavePlanList,
-    onSavePlanClick: (SavePlan) -> Unit,
+    month: LocalDate,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
+    onShowDetail: (Long) -> Unit,
+    onSavePlanClick: (Long) -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column {
-        Surface(
-            color = MaterialTheme.colorScheme.surfaceDim,
-            shadowElevation = 4.dp,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp, vertical = 40.dp),
+    Surface(
+        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+        color = MaterialTheme.colorScheme.surfaceDim,
+        shadowElevation = 2.dp,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Column {
+            VerticalSpacer(20.dp)
+            MonthBar(
+                month = month,
+                onPrev = onPrev,
+                onNext = onNext,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            VerticalSpacer(20.dp)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
             ) {
-                Row {
-                    Text(
-                        text = "저축 계획",
-                        style = TypoTheme.typography.titleLargeM,
-                    )
-                    Text(
-                        text = savePlanList.totalString,
-                        style = TypoTheme.typography.headlineSmallB,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier.weight(1f)
+                items(savePlanList.savePlans) { savePlan ->
+                    SaveListItem(
+                        savePlan = savePlan,
+                        onClick = onShowDetail,
+                        onLongClick = onSavePlanClick,
+                        onExecuteChange = { onExecuteChange(it, savePlan.id) },
                     )
                 }
-                Row {
-                    Text(
-                        text = "실천 금액",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = TypoTheme.typography.titleMediumM,
-                    )
-                    Text(
-                        text = savePlanList.executedTotalString,
-                        style = TypoTheme.typography.titleNormalM,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            }
-        }
-        VerticalSpacer(20.dp)
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            items(savePlanList.savePlans) { savePlan ->
-                SaveListItem(
-                    savePlan = savePlan,
-                    onExecuteChange = { onExecuteChange(it, savePlan.id) },
-                    modifier = Modifier
-                        .clickable {
-                            onSavePlanClick(savePlan)
-                        },
-                )
             }
         }
     }
@@ -91,6 +67,10 @@ private fun SaveListBodyPreview() {
     JunTheme {
         SaveListBody(
             savePlanList = SavePlanList.sample,
+            month = LocalDate.now(),
+            onPrev = {},
+            onNext = {},
+            onShowDetail = {},
             onSavePlanClick = {},
             onExecuteChange = { _, _ -> },
         )

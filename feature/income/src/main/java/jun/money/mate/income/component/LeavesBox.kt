@@ -64,11 +64,11 @@ private fun FallingLeaves(
 
             LaunchedEffect(index) {
                 launch {
-                    val endYPosition = Random.nextFloat() * 1000f
+                    val endYPosition = Random.nextFloat() * 900f
                     animatedY.animateTo(
                         targetValue = endYPosition,
                         animationSpec = tween(
-                            durationMillis = 3000,
+                            durationMillis = Random.nextInt(1000, 3000),
                             easing = LinearEasing
                         )
                     )
@@ -103,7 +103,9 @@ private fun FallingLeaves(
 private fun MoneyBoxPreview() {
     JunTheme {
         LeavesBox(
-            leaves = listOf(LeafOrder(false)),
+            leaves = listOf(
+                LeafOrder(false)
+            ),
             modifier = Modifier.fillMaxHeight()
         )
     }

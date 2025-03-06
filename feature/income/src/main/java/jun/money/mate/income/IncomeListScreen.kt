@@ -1,12 +1,9 @@
 package jun.money.mate.income
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -23,17 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.R
-import jun.money.mate.designsystem.component.CrossfadeWithSlide
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.HorizontalSpacer
-import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbarIcon
 import jun.money.mate.designsystem.component.TwoBtnDialog
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem.theme.White1
-import jun.money.mate.designsystem.theme.main20
+import jun.money.mate.designsystem.theme.main10
 import jun.money.mate.income.component.IncomeListBody
 import jun.money.mate.income.component.LeavesBox
 import jun.money.mate.income.contract.IncomeListEffect
@@ -44,6 +37,7 @@ import jun.money.mate.model.etc.EditMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
+import jun.money.mate.ui.EditModeButton
 import java.time.LocalDate
 
 /**
@@ -58,7 +52,7 @@ internal fun IncomeListRoute(
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: IncomeListViewModel = hiltViewModel()
 ) {
-    ChangeStatusBarColor(main20)
+    ChangeStatusBarColor(main10)
 
     val incomeListState by viewModel.incomeListState.collectAsStateWithLifecycle()
     val modalEffect by viewModel.modalEffect.collectAsStateWithLifecycle()
@@ -108,14 +102,14 @@ private fun IncomeListScreen(
 ) {
     Scaffold(
         bottomBar = {
-            IncomeListButton(
+            EditModeButton(
                 editMode = (incomeListState as? IncomeListState.UiData)?.editMode ?: EditMode.LIST,
-                onShowIncomeAdd = onShowIncomeAdd,
-                onDeleteSelectedIncome = onDeleteSelectedIncome,
-                onEditSelectedIncome = onEditSelectedIncome,
+                onAdd = onShowIncomeAdd,
+                onDelete = onDeleteSelectedIncome,
+                onEdit = onEditSelectedIncome,
             )
         },
-        containerColor = main20
+        containerColor = main10
     ) {
         Box(
             modifier = Modifier
@@ -170,66 +164,6 @@ private fun IncomeListScreen(
                     tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.align(Alignment.Center)
                 )
-            }
-
-        }
-    }
-}
-
-@Composable
-private fun IncomeListButton(
-    editMode: EditMode,
-    onShowIncomeAdd: () -> Unit,
-    onDeleteSelectedIncome: () -> Unit,
-    onEditSelectedIncome: () -> Unit,
-) {
-    Box(
-        modifier = Modifier.background(White1)
-    ) {
-        CrossfadeWithSlide(
-            targetState = editMode,
-        ) {
-            when (it) {
-                EditMode.LIST -> {
-                    RegularButton(
-                        text = "수입 추가",
-                        onClick = onShowIncomeAdd,
-                        modifier = Modifier
-                            .fillMaxWidth()
-
-                            .padding(16.dp)
-                    )
-                }
-                EditMode.EDIT -> {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    ) {
-                        RegularButton(
-                            text = "삭제",
-                            onClick = onDeleteSelectedIncome,
-                            isActive = false,
-                            modifier = Modifier.weight(1f)
-                        )
-                        HorizontalSpacer(10.dp)
-                        RegularButton(
-                            text = "수정",
-                            onClick = onEditSelectedIncome,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-                }
-                EditMode.DELETE_ONLY -> {
-                    RegularButton(
-                        text = "삭제",
-                        onClick = onDeleteSelectedIncome,
-                        isActive = false,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    )
-                }
             }
         }
     }

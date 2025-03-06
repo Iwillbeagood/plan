@@ -19,17 +19,8 @@ interface SaveDao {
     @Query("SELECT * FROM $SAVING_PLAN_TABLE_NAME WHERE id = :id")
     suspend fun get(id: Long): SaveEntity
 
-    @Query("UPDATE $SAVING_PLAN_TABLE_NAME SET executeMonth = :executeMonth, executed = :isExecuted WHERE id = :id")
-    suspend fun updateExecuteState(id: Long, executeMonth: Int, isExecuted: Boolean)
-
-    @Query(
-        """
-        UPDATE $SAVING_PLAN_TABLE_NAME
-        SET executed = 0
-        WHERE executeMonth != :currentMonth
-    """
-    )
-    suspend fun resetExecutedState(currentMonth: Int)
+    @Query("UPDATE $SAVING_PLAN_TABLE_NAME SET executed = :isExecuted WHERE id = :id")
+    suspend fun updateExecuteState(id: Long, isExecuted: Boolean)
 
     @Query("DELETE FROM $SAVING_PLAN_TABLE_NAME WHERE id = :id")
     suspend fun deleteById(id: Long)

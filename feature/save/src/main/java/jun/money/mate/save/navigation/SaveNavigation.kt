@@ -33,6 +33,7 @@ fun NavGraphBuilder.saveNavGraph(
 ) {
     composable<Route.Save.List> {
         SaveListRoute(
+            onGoBack = onGoBack,
             onShowSavingAdd = onShowSavingAdd,
             onShowSavingEdit = onShowSavingEdit,
             onShowSnackBar = onShowSnackBar

@@ -4,7 +4,6 @@ import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavePlan
-import java.time.LocalDate
 import javax.inject.Inject
 
 class AddSaveUsecase @Inject constructor(
@@ -13,8 +12,8 @@ class AddSaveUsecase @Inject constructor(
 
     suspend operator fun invoke(
         amount: Long,
+        day: Int,
         category: SavingsType?,
-        planDay: Int,
         onSuccess: () -> Unit,
         onError: (MessageType) -> Unit
     ) {
@@ -24,15 +23,18 @@ class AddSaveUsecase @Inject constructor(
             return
         }
 
+        if (category == null) {
+            onError(MessageType.Message("저축 종류를 선택해 주세요"))
+            return
+        }
+
         saveRepository.upsertSavePlan(
             SavePlan(
                 id = System.currentTimeMillis(),
                 amount = amount,
-                planDay = planDay,
-                savingsType = category ?: SavingsType.보통예금,
-                executeMonth = LocalDate.now().monthValue,
-                executed = false,
-                selected = false
+                day = day,
+                savingsType = category,
+                executed = true
             )
         )
         onSuccess()

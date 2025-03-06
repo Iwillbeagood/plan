@@ -40,6 +40,7 @@ import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem_date.datetimepicker.YearMonthPicker
 import jun.money.mate.model.save.SavingsDetails
 import jun.money.mate.model.save.SavingsType
+import jun.money.mate.model.save.SavingsType.Companion.title
 import java.time.LocalDate
 
 @Composable
@@ -72,7 +73,7 @@ internal fun SaveCategories(
                         Text(
                             text = when (selectedCategory) {
                                 is SavingsType.기타 -> selectedCategory.etc
-                                else -> selectedCategory::class.simpleName ?: ""
+                                else -> selectedCategory.title
                             },
                             style = TypoTheme.typography.titleLargeM,
                             color = MaterialTheme.colorScheme.onSurface,
@@ -96,6 +97,7 @@ private fun CategoryField(
     onCategorySelected: (SavingsType) -> Unit,
 ) {
     var interest by remember { mutableStateOf("") }
+    var startDate by remember { mutableStateOf(LocalDate.now()) }
     var endDate by remember { mutableStateOf(LocalDate.now()) }
     var etc by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf<SavingsType?>(null) }
@@ -157,20 +159,32 @@ private fun CategoryField(
                         hint = "금리을 입력해주세요",
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
+                        ),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = "%",
+                            style = TypoTheme.typography.labelLargeM,
+                            modifier = Modifier
+                                .padding(start = 8.dp)
                         )
-                    )
-                    Text(
-                        text = "%",
-                        style = TypoTheme.typography.labelLargeM,
-                        modifier = Modifier
-                            .padding(start = 8.dp)
-                            .align(Alignment.Bottom)
-                    )
+                    }
+
                 }
             }
             CategoryAdditionalField(
                 visible = smartSelectedCategory in SavingsType.periodTypes,
-                title = "종료 기간",
+                title = "시작일",
+            ) {
+                YearMonthPicker(
+                    onDateSelected = { year, month ->
+                        startDate = LocalDate.of(year, month, 1)
+                    }
+                )
+            }
+            CategoryAdditionalField(
+                visible = smartSelectedCategory in SavingsType.periodTypes,
+                title = "만기일",
             ) {
                 YearMonthPicker(
                     onDateSelected = { year, month ->
@@ -190,23 +204,26 @@ private fun CategoryField(
                             SavingsType.보통예금 -> onCategorySelected(SavingsType.보통예금)
                             is SavingsType.보험저축 -> onCategorySelected(
                                 SavingsType.보험저축(
-                                    interest,
-                                    endDate
+                                    interest = interest,
+                                    periodStart = startDate,
+                                    periodEnd = endDate
                                 )
                             )
 
                             SavingsType.연금저축 -> onCategorySelected(SavingsType.연금저축)
                             is SavingsType.적금 -> onCategorySelected(
                                 SavingsType.적금(
-                                    interest,
-                                    endDate
+                                    interest = interest,
+                                    periodStart = startDate,
+                                    periodEnd = endDate
                                 )
                             )
 
                             is SavingsType.정기예금 -> onCategorySelected(
                                 SavingsType.정기예금(
-                                    interest,
-                                    endDate
+                                    interest = interest,
+                                    periodStart = startDate,
+                                    periodEnd = endDate
                                 )
                             )
 
@@ -263,7 +280,7 @@ private fun CategoryItem(
             modifier = modifier
         ) {
             Text(
-                text = category::class.simpleName ?: "",
+                text = category.title,
                 style = TypoTheme.typography.titleSmallB,
                 color = if (selected) White1 else MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,

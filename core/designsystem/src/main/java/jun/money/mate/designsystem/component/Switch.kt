@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -32,25 +33,23 @@ fun DefaultSwitch(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    checkedColor: Color = main,
+    checkedColor: Color = MaterialTheme.colorScheme.primary,
     uncheckedColor: Color = Gray5,
 ) {
     CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
         Switch(
             checked = checked,
             colors = SwitchDefaults.colors(
-                checkedThumbColor = checkedColor,
-                uncheckedThumbColor = uncheckedColor,
-                checkedTrackColor = White1,
-                uncheckedTrackColor = White1,
+                checkedTrackColor = checkedColor,
+                uncheckedTrackColor = uncheckedColor,
                 checkedBorderColor = checkedColor,
                 uncheckedBorderColor = uncheckedColor
             ),
             thumbContent = {
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     drawCircle(
-                        color = if (checked) checkedColor else uncheckedColor,
-                        radius = 24f,
+                        color = White1,
+                        radius = 37f,
                         center = center
                     )
                 }

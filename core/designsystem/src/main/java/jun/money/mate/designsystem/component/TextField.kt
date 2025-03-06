@@ -176,6 +176,7 @@ fun UnderlineTextField(
     focusRequester: FocusRequester = FocusRequester(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    content: @Composable () -> Unit = {}
 ) {
     var isFocus by remember { mutableStateOf(false) }
 
@@ -213,6 +214,7 @@ fun UnderlineTextField(
                     }
                     innerTextField()
                 }
+                content()
             }
             HorizontalDivider()
         }
