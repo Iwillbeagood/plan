@@ -10,6 +10,8 @@ import jun.money.mate.model.etc.EditMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.save.contract.SaveModalEffect
+import jun.money.mate.save.contract.SavingListEffect
+import jun.money.mate.save.contract.SavingListState
 import jun.money.mate.utils.flow.updateWithData
 import jun.money.mate.utils.flow.withData
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -139,44 +141,4 @@ internal class SavingListViewModel @Inject constructor(
             _savingListEffect.emit(SavingListEffect.ShowSnackBar(messageType))
         }
     }
-}
-
-@Stable
-internal sealed interface SavingListState {
-
-    @Immutable
-    data object Loading : SavingListState
-
-    @Immutable
-    data class SavingListData(
-        val savePlanList: SavePlanList,
-    ) : SavingListState {
-
-        val editMode
-            get() = savePlanList.savePlans.count { it.selected }.let {
-                if (it > 1) {
-                    EditMode.DELETE_ONLY
-                } else if (it == 1) {
-                    EditMode.EDIT
-                } else {
-                    EditMode.LIST
-                }
-            }
-
-        val goldAcornCount: Int get() = (savePlanList.total / 1_000_000).toInt()
-        val acornCount: Int get() = ceil((savePlanList.total % 1_000_000).toDouble() / 100_000).toInt()
-
-        val selectedPlansId get() = savePlanList.savePlans.filter { it.selected }.map { it.id }
-        val selectedId get() = savePlanList.savePlans.firstOrNull { it.selected }?.id
-    }
-}
-
-@Stable
-internal sealed interface SavingListEffect {
-
-    @Immutable
-    data class ShowSnackBar(val messageType: MessageType) : SavingListEffect
-
-    @Immutable
-    data class EditSpendingPlan(val id: Long) : SavingListEffect
 }

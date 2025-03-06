@@ -33,6 +33,8 @@ import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.save.component.AcornBox
 import jun.money.mate.save.component.SaveListBody
 import jun.money.mate.save.contract.SaveModalEffect
+import jun.money.mate.save.contract.SavingListEffect
+import jun.money.mate.save.contract.SavingListState
 import jun.money.mate.ui.EditModeButton
 import java.time.LocalDate
 
