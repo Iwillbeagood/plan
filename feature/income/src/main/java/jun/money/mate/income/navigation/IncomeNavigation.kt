@@ -10,9 +10,10 @@ import jun.money.mate.income.IncomeListRoute
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
+import java.time.LocalDate
 
-fun NavController.navigateToIncomeList() {
-    navigate(Route.Income.List)
+fun NavController.navigateToIncomeList(date: LocalDate) {
+    navigate(Route.Income.List(date.year, date.monthValue))
 }
 
 fun NavController.navigateToIncomeAdd() {

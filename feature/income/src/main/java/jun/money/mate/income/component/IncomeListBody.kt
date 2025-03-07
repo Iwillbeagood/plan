@@ -36,9 +36,6 @@ import java.time.LocalDate
 @Composable
 internal fun IncomeListBody(
     incomeList: IncomeList,
-    month: LocalDate,
-    onPrev: () -> Unit,
-    onNext: () -> Unit,
     onIncomeClick: (Income) -> Unit,
     modifier : Modifier = Modifier
 ) {
@@ -50,12 +47,6 @@ internal fun IncomeListBody(
     ) {
         Column {
             VerticalSpacer(20.dp)
-            MonthBar(
-                month = month,
-                onPrev = onPrev,
-                onNext = onNext,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxSize()
@@ -147,9 +138,6 @@ private fun IncomeListBodyPreview() {
                     Income.variableSample,
                 ),
             ),
-            month = LocalDate.now(),
-            onPrev = {},
-            onNext = {},
             onIncomeClick = {}
         )
     }

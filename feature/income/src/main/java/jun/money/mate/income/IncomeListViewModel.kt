@@ -1,7 +1,9 @@
 package jun.money.mate.income
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.IncomeRepository
 import jun.money.mate.domain.DeleteIncomeUsecase
@@ -12,6 +14,7 @@ import jun.money.mate.model.LeafOrder
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
+import jun.money.mate.navigation.Route
 import jun.money.mate.utils.flow.updateWithData
 import jun.money.mate.utils.flow.withData
 import kic.owner2.utils.etc.Logger
@@ -34,10 +37,11 @@ import kotlin.math.ceil
 internal class IncomeListViewModel @Inject constructor(
     private val incomeRepository: IncomeRepository,
     private val deleteIncomeUsecase: DeleteIncomeUsecase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _month = MutableStateFlow<LocalDate>(LocalDate.now())
-    val month: StateFlow<LocalDate> get() = _month
+    private val listData = savedStateHandle.toRoute<Route.Income.List>()
+    val month: LocalDate = LocalDate.of(listData.year, listData.month, 1)
 
     private val _incomeListState = MutableStateFlow<IncomeListState>(IncomeListState.Loading)
     val incomeListState: StateFlow<IncomeListState> = _incomeListState.onStart {
@@ -59,15 +63,14 @@ internal class IncomeListViewModel @Inject constructor(
 
     private fun loadIncomes() {
         viewModelScope.launch {
-            month.flatMapLatest {
-                incomeRepository.getIncomesByMonth(it)
-            }.collect { list ->
-                Logger.d("loadIncomes: $list")
-                _incomeListState.update {
-                    makeLeaves(list)
-                    IncomeListState.UiData(list)
+            incomeRepository.getIncomesByMonth(month)
+                .collect { list ->
+                    Logger.d("loadIncomes: $list")
+                    _incomeListState.update {
+                        makeLeaves(list)
+                        IncomeListState.UiData(list)
+                    }
                 }
-            }
         }
     }
 
@@ -134,18 +137,6 @@ internal class IncomeListViewModel @Inject constructor(
                     unselectedIncomes()
                 }
             }
-        }
-    }
-
-    fun prevMonth() {
-        _month.update {
-            it.minusMonths(1)
-        }
-    }
-
-    fun nextMonth() {
-        _month.update {
-            it.plusMonths(1)
         }
     }
 

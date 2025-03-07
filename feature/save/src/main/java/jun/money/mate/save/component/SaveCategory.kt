@@ -18,6 +18,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,10 +38,11 @@ import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
+import jun.money.mate.designsystem_date.datetimepicker.PeriodPicker
 import jun.money.mate.designsystem_date.datetimepicker.YearMonthPicker
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavingsType.Companion.title
-import java.time.LocalDate
+import java.time.YearMonth
 
 @Composable
 internal fun SaveCategories(
@@ -96,8 +98,8 @@ private fun CategoryField(
     onCategorySelected: (SavingsType) -> Unit,
 ) {
     var interest by remember { mutableStateOf("") }
-    var startDate by remember { mutableStateOf(LocalDate.now()) }
-    var endDate by remember { mutableStateOf(LocalDate.now()) }
+    var startDate by remember { mutableStateOf(YearMonth.now()) }
+    var period by remember { mutableIntStateOf(0) }
     var etc by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf<SavingsType?>(null) }
 
@@ -177,7 +179,7 @@ private fun CategoryField(
             ) {
                 YearMonthPicker(
                     onDateSelected = { year, month ->
-                        startDate = LocalDate.of(year, month, 1)
+                        startDate = YearMonth.of(year, month)
                     }
                 )
             }
@@ -185,9 +187,9 @@ private fun CategoryField(
                 visible = smartSelectedCategory in SavingsType.periodTypes,
                 title = "만기일",
             ) {
-                YearMonthPicker(
-                    onDateSelected = { year, month ->
-                        endDate = LocalDate.of(year, month, 1)
+                PeriodPicker(
+                    onPeriodSelected = {
+                        period = it
                     }
                 )
             }
@@ -205,20 +207,24 @@ private fun CategoryField(
                             is SavingsType.청약저축 -> onCategorySelected(SavingsType.청약저축(interest))
                             SavingsType.투자 -> onCategorySelected(SavingsType.투자)
                             is SavingsType.기타 -> onCategorySelected(SavingsType.기타(etc))
-                            is SavingsType.적금 -> onCategorySelected(
-                                SavingsType.적금(
-                                    interest = interest,
-                                    periodStart = startDate,
-                                    periodEnd = endDate
+                            is SavingsType.적금 -> {
+                                onCategorySelected(
+                                    SavingsType.적금(
+                                        interest = interest,
+                                        periodStart = startDate,
+                                        periodMonth = period
+                                    )
                                 )
-                            )
-                            is SavingsType.보험저축 -> onCategorySelected(
-                                SavingsType.보험저축(
-                                    interest = interest,
-                                    periodStart = startDate,
-                                    periodEnd = endDate
+                            }
+                            is SavingsType.보험저축 -> {
+                                onCategorySelected(
+                                    SavingsType.보험저축(
+                                        interest = interest,
+                                        periodStart = startDate,
+                                        periodMonth = period
+                                    )
                                 )
-                            )
+                            }
                         }
                     },
                     modifier = Modifier

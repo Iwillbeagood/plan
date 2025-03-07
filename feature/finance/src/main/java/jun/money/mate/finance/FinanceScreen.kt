@@ -44,8 +44,8 @@ import java.time.LocalDate
 
 @Composable
 internal fun FinanceRoute(
-    onShowIncome: () -> Unit,
-    onShowSavings: () -> Unit,
+    onShowIncome: (LocalDate) -> Unit,
+    onShowSavings: (LocalDate) -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: FinanceViewModel = hiltViewModel()
 ) {
@@ -58,8 +58,8 @@ internal fun FinanceRoute(
         financeState = financeState,
         viewModel = viewModel,
         month = month,
-        onShowIncome = onShowIncome,
-        onShowSavings = onShowSavings
+        onShowIncome = { onShowIncome(month) },
+        onShowSavings = { onShowSavings(month) }
     )
 
     LaunchedEffect(Unit) {

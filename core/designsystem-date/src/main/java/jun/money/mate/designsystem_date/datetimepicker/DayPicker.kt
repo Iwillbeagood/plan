@@ -92,8 +92,8 @@ fun DayPickerSheet(
 @Composable
 fun DayPicker(
     onDaySelected: (String) -> Unit,
+    modifier: Modifier = Modifier,
     currentMonth: Int = LocalDate.now().monthValue,
-    modifier: Modifier = Modifier
 ) {
     val today = LocalDate.now()
     val daysInMonth = remember(currentMonth) { YearMonth.of(today.year, currentMonth).lengthOfMonth() }

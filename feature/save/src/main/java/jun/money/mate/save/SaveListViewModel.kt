@@ -1,15 +1,15 @@
 package jun.money.mate.save
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.save.contract.SaveModalEffect
+import jun.money.mate.navigation.Route
 import jun.money.mate.save.contract.SavingListEffect
 import jun.money.mate.save.contract.SavingListState
-import jun.money.mate.utils.flow.updateWithData
-import jun.money.mate.utils.flow.withData
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -18,18 +18,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
 internal class SavingListViewModel @Inject constructor(
-    private val saveRepository: SaveRepository
+    private val saveRepository: SaveRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _month = MutableStateFlow<LocalDate>(LocalDate.now())
-    val month: StateFlow<LocalDate> get() = _month
+    private val listData = savedStateHandle.toRoute<Route.Save.List>()
+    val month: YearMonth = YearMonth.of(listData.year, listData.month)
 
     private val _savingListState = MutableStateFlow<SavingListState>(SavingListState.Loading)
     val savingListState: StateFlow<SavingListState> = _savingListState.onStart {
@@ -43,42 +43,11 @@ internal class SavingListViewModel @Inject constructor(
     private val _savingListEffect = MutableSharedFlow<SavingListEffect>()
     val savingListEffect: SharedFlow<SavingListEffect> get() = _savingListEffect.asSharedFlow()
 
-    private val _modalEffect = MutableStateFlow<SaveModalEffect>(SaveModalEffect.Hidden)
-    val modalEffect: StateFlow<SaveModalEffect> get() = _modalEffect
-
     private fun loadSpending() {
         viewModelScope.launch {
-            saveRepository.getSavePlanListFlow().collect { savePlan ->
+            saveRepository.getSavingFlow(month).collect { savePlan ->
                 _savingListState.value = SavingListState.SavingListData(savePlan)
             }
-        }
-    }
-
-    fun changeSavePlanSelected(id: Long) {
-        _savingListState.updateWithData<SavingListState, SavingListState.SavingListData> { uiState ->
-            uiState.copy(
-                savePlanList = uiState.savePlanList.copy(
-                    savePlans = uiState.savePlanList.savePlans.map {
-                        if (it.id == id) {
-                            it.copy(selected = !it.selected)
-                        } else {
-                            it
-                        }
-                    },
-                )
-            )
-        }
-    }
-
-    fun unselectAll() {
-        _savingListState.updateWithData<SavingListState, SavingListState.SavingListData> { uiState ->
-            uiState.copy(
-                savePlanList = uiState.savePlanList.copy(
-                    savePlans = uiState.savePlanList.savePlans.map {
-                        it.copy(selected = false)
-                    },
-                )
-            )
         }
     }
 
@@ -88,49 +57,6 @@ internal class SavingListViewModel @Inject constructor(
     fun executeChange(executed: Boolean, id: Long) {
         viewModelScope.launch {
             saveRepository.updateExecuteState(id, executed)
-        }
-    }
-
-    fun editSave() {
-        savingListState.withData<SavingListState.SavingListData> {
-            val selectedId = it.selectedId ?: return
-            viewModelScope.launch {
-                _savingListEffect.emit(SavingListEffect.EditSpendingPlan(selectedId))
-            }
-        }
-    }
-
-    fun deleteSave() {
-        savingListState.withData<SavingListState.SavingListData> {
-            viewModelScope.launch {
-                saveRepository.deleteByIds(it.selectedPlansId)
-                showSnackBar(MessageType.Message("저축 계획이 삭제되었습니다"))
-                hideModal()
-            }
-        }
-    }
-
-    fun prevMonth() {
-        _month.update {
-            it.minusMonths(1)
-        }
-    }
-
-    fun nextMonth() {
-        _month.update {
-            it.plusMonths(1)
-        }
-    }
-
-    fun showDeleteDialog() {
-        viewModelScope.launch {
-            _modalEffect.emit(SaveModalEffect.ShowDeleteConfirmDialog)
-        }
-    }
-
-    fun hideModal() {
-        viewModelScope.launch {
-            _modalEffect.emit(SaveModalEffect.Hidden)
         }
     }
 

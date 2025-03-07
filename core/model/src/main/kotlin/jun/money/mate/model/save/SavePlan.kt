@@ -3,15 +3,16 @@ package jun.money.mate.model.save
 import jun.money.mate.model.Utils
 import jun.money.mate.model.save.SavingsType.Companion.periodEnd
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.temporal.ChronoUnit
 
 data class SavePlan(
     val id: Long,
     val amount: Long,
     val day: Int,
+    val addYearMonth: YearMonth,
     val savingsType: SavingsType,
     val executed: Boolean,
-    val selected: Boolean = false,
 ) {
     val amountString: String get() = Utils.formatAmountWon(amount)
 
@@ -37,9 +38,9 @@ data class SavePlan(
             id = 0,
             amount = 10000,
             day = 1,
+            addYearMonth = YearMonth.now(),
             savingsType = SavingsType.투자,
             executed = false,
-            selected = false
         )
     }
 }

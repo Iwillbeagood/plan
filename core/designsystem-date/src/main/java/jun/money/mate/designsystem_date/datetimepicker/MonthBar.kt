@@ -26,6 +26,9 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.nonScaledSp
+import jun.money.mate.utils.canMoveToNextMonth
+import jun.money.mate.utils.canMoveToYearBefore
+import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -95,26 +98,6 @@ fun MonthBar(
                 )
             }
         }
-    }
-}
-
-private fun canMoveToNextMonth(month: LocalDate): Boolean {
-    val currentMonth = LocalDate.now().withDayOfMonth(1)
-    return month.isBefore(currentMonth)
-}
-
-private fun canMoveToYearBefore(month: LocalDate): Boolean {
-    val oneYearAgo = month.minusYears(1)
-    return !month.isBefore(oneYearAgo)
-}
-
-private fun formatDateBasedOnYear(date: LocalDate): String {
-    val currentYear = LocalDate.now().year
-
-    return if (date.year == currentYear) {
-        date.format(DateTimeFormatter.ofPattern("M월")) // 올해면 "2월"
-    } else {
-        date.format(DateTimeFormatter.ofPattern("yyyy년 M월")) // 작년 또는 그 외 연도면 "2024년 3월"
     }
 }
 

@@ -95,11 +95,13 @@ accompanistPermission = "0.34.0"
 firebaseCore = "21.1.1"
 firebaseMessaging = "24.0.1"
 googleGson = "2.10.1"
+workRuntimeKtx = "2.10.0"
 
 [libraries]
 # Gradle
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 compose-charts = { module = "io.github.ehsannarmani:compose-charts", version.ref = "composeCharts" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradle-dependency-graph-generator-plugin = { module = "com.vanniktech:gradle-dependency-graph-generator-plugin", version.ref = "gradleDependencyGraphGeneratorPlugin" }

@@ -7,6 +7,7 @@ internal fun SavePlan.toSaveEntity() = SaveEntity(
     id = id,
     amount = amount,
     day = day,
+    addYearMonth = addYearMonth,
     savingsType = savingsType,
     executed = executed,
 )
@@ -15,6 +16,7 @@ internal fun SaveEntity.toSavePlan() = SavePlan(
     id = id,
     amount = amount,
     day = day,
+    addYearMonth = addYearMonth,
     savingsType = savingsType,
     executed = executed,
 )

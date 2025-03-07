@@ -25,13 +25,14 @@ import jun.money.mate.designsystem_date.datetimepicker.views.Picker
 import jun.money.mate.designsystem_date.datetimepicker.views.TimeFormat
 import kotlinx.collections.immutable.toImmutableList
 import java.time.LocalDate
+import java.time.YearMonth
 
 @Composable
 fun YearMonthPicker(
     onDateSelected: (Int, Int) -> Unit,
-    initialYear: Int = LocalDate.now().year,
-    initialMonth: Int = LocalDate.now().monthValue,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    initialYear: Int = YearMonth.now().year,
+    initialMonth: Int = YearMonth.now().monthValue,
 ) {
     val currentYear = remember { mutableIntStateOf(initialYear) }
     val currentMonth = remember { mutableIntStateOf(initialMonth) }

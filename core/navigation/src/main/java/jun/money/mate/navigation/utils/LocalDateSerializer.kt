@@ -1,4 +1,4 @@
-package jun.money.mate.model
+package jun.money.mate.navigation.utils
 
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
@@ -20,5 +20,3 @@ object LocalDateSerializer : KSerializer<LocalDate> {
         return LocalDate.parse(stringValue, formatter)
     }
 }
-
-

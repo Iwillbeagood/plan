@@ -27,6 +27,7 @@ android {
 
 dependencies {
     implementation(projects.core.data)
+    implementation(projects.core.dataApi)
     implementation(projects.core.utils)
     implementation(projects.core.model)
     implementation(projects.core.res)
@@ -36,4 +37,6 @@ dependencies {
     implementation(libs.firebase.core)
     implementation(libs.firebase.messaging)
     implementation(libs.gson)
+
+    implementation(libs.androidx.work.runtime.ktx)
 }

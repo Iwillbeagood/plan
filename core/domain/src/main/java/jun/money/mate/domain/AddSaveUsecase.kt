@@ -4,6 +4,8 @@ import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavePlan
+import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
 
 class AddSaveUsecase @Inject constructor(
@@ -33,6 +35,7 @@ class AddSaveUsecase @Inject constructor(
                 id = System.currentTimeMillis(),
                 amount = amount,
                 day = day,
+                addYearMonth = YearMonth.now(),
                 savingsType = category,
                 executed = true
             )

@@ -7,14 +7,15 @@ import androidx.navigation.compose.composable
 import jun.money.mate.finance.FinanceRoute
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
+import java.time.LocalDate
 
 fun NavController.navigateToFinance(navOptions: NavOptions) {
     navigate(MainTabRoute.Finance, navOptions)
 }
 
 fun NavGraphBuilder.financeNavGraph(
-    onShowIncome: () -> Unit,
-    onShowSaving: () -> Unit,
+    onShowIncome: (LocalDate) -> Unit,
+    onShowSaving: (LocalDate) -> Unit,
     onShowSnackBar: (MessageType) -> Unit
 ) {
     composable<MainTabRoute.Finance> {

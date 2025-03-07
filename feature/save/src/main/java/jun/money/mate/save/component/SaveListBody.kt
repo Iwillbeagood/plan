@@ -22,11 +22,7 @@ import java.time.LocalDate
 @Composable
 internal fun SaveListBody(
     savePlanList: SavePlanList,
-    month: LocalDate,
-    onPrev: () -> Unit,
-    onNext: () -> Unit,
     onShowDetail: (Long) -> Unit,
-    onSavePlanClick: (Long) -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -38,13 +34,6 @@ internal fun SaveListBody(
     ) {
         Column {
             VerticalSpacer(20.dp)
-            MonthBar(
-                month = month,
-                onPrev = onPrev,
-                onNext = onNext,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-            VerticalSpacer(20.dp)
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -52,7 +41,6 @@ internal fun SaveListBody(
                     SaveListItem(
                         savePlan = savePlan,
                         onClick = onShowDetail,
-                        onLongClick = onSavePlanClick,
                         onExecuteChange = { onExecuteChange(it, savePlan.id) },
                     )
                 }
@@ -67,11 +55,7 @@ private fun SaveListBodyPreview() {
     JunTheme {
         SaveListBody(
             savePlanList = SavePlanList.sample,
-            month = LocalDate.now(),
-            onPrev = {},
-            onNext = {},
             onShowDetail = {},
-            onSavePlanClick = {},
             onExecuteChange = { _, _ -> },
         )
     }

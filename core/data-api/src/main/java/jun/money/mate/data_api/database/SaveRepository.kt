@@ -3,7 +3,7 @@ package jun.money.mate.data_api.database
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
 import kotlinx.coroutines.flow.Flow
-import java.time.LocalDate
+import java.time.YearMonth
 
 interface SaveRepository {
 
@@ -11,7 +11,11 @@ interface SaveRepository {
 
     fun getSavePlanListFlow(): Flow<SavePlanList>
 
-    suspend fun getSavePlan(id: Long): SavePlan
+    fun getSavingFlow(date: YearMonth): Flow<SavePlanList>
+
+    suspend fun getSavePlanListByMonth(date: YearMonth): SavePlanList
+
+    fun getSavePlan(id: Long): Flow<SavePlan>
 
     suspend fun updateExecuteState(id: Long, isExecuted: Boolean)
 

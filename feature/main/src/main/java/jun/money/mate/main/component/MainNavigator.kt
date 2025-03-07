@@ -23,6 +23,7 @@ import jun.money.mate.save.navigation.navigateToSaveAdd
 import jun.money.mate.save.navigation.navigateToSaveEdit
 import jun.money.mate.save.navigation.navigateToSaveList
 import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanAdd
+import java.time.LocalDate
 
 class MainNavigator(
     val navController: NavHostController
@@ -54,12 +55,12 @@ class MainNavigator(
         }
     }
 
-    fun navigateToIncomeList() {
-        navController.navigateToIncomeList()
+    fun navigateToIncomeList(date: LocalDate) {
+        navController.navigateToIncomeList(date)
     }
 
-    fun navigateToSaveList() {
-        navController.navigateToSaveList()
+    fun navigateToSaveList(date: LocalDate) {
+        navController.navigateToSaveList(date)
     }
 
     fun navigateToIncomeAdd() {

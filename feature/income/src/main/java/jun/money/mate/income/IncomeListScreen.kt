@@ -38,6 +38,7 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.ui.EditModeButton
+import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.LocalDate
 
 /**
@@ -57,14 +58,11 @@ internal fun IncomeListRoute(
     val incomeListState by viewModel.incomeListState.collectAsStateWithLifecycle()
     val modalEffect by viewModel.modalEffect.collectAsStateWithLifecycle()
     val leaves by viewModel.leaves.collectAsStateWithLifecycle()
-    val month by viewModel.month.collectAsStateWithLifecycle()
 
     IncomeListScreen(
         leaves = leaves,
         incomeListState = incomeListState,
-        month = month,
-        onPrev = viewModel::prevMonth,
-        onNext = viewModel::nextMonth,
+        month = viewModel.month,
         onGoBack = onGoBack,
         onShowIncomeAdd = onShowIncomeAdd,
         onIncomeClick = viewModel::selectIncome,
@@ -92,8 +90,6 @@ private fun IncomeListScreen(
     leaves: List<LeafOrder>,
     incomeListState: IncomeListState,
     month: LocalDate,
-    onPrev: () -> Unit,
-    onNext: () -> Unit,
     onGoBack: () -> Unit,
     onShowIncomeAdd: () -> Unit,
     onIncomeClick: (Income) -> Unit,
@@ -126,9 +122,6 @@ private fun IncomeListScreen(
                 )
                 IncomeListContent(
                     incomeListState = incomeListState,
-                    month = month,
-                    onPrev = onPrev,
-                    onNext = onNext,
                     onIncomeClick = onIncomeClick,
                     modifier = Modifier.weight(6f)
                 )
@@ -142,7 +135,7 @@ private fun IncomeListScreen(
                         modifier = Modifier.padding(start = 30.dp, top = 60.dp)
                     ) {
                         Text(
-                            text = "전체 수입",
+                            text = "${formatDateBasedOnYear(month)} 수입",
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = TypoTheme.typography.headlineSmallM,
                         )
@@ -172,9 +165,6 @@ private fun IncomeListScreen(
 @Composable
 private fun IncomeListContent(
     incomeListState: IncomeListState,
-    month: LocalDate,
-    onPrev: () -> Unit,
-    onNext: () -> Unit,
     onIncomeClick: (Income) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -185,9 +175,6 @@ private fun IncomeListContent(
         if (incomeListState is IncomeListState.UiData) {
             IncomeListBody(
                 incomeList = incomeListState.incomeList,
-                month = month,
-                onPrev = onPrev,
-                onNext = onNext,
                 onIncomeClick = onIncomeClick
             )
         }
@@ -227,8 +214,6 @@ private fun IncomeListScreenPreview() {
                 incomeList = IncomeList.sample
             ),
             month = LocalDate.now(),
-            onPrev = {},
-            onNext = {},
             onGoBack = {},
             onShowIncomeAdd = {},
             onIncomeClick = {},

@@ -36,7 +36,6 @@ import jun.money.mate.ui.SeedIcon
 internal fun SaveListItem(
     savePlan: SavePlan,
     onClick: (Long) -> Unit,
-    onLongClick: (Long) -> Unit,
     onExecuteChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -49,7 +48,6 @@ internal fun SaveListItem(
             .background(MaterialTheme.colorScheme.surfaceDim, shape = RoundedCornerShape(8.dp))
             .combinedClickable(
                 onClick = { onClick(savePlan.id) },
-                onLongClick = { onLongClick(savePlan.id) }
             )
     ) {
         Row(
@@ -58,13 +56,9 @@ internal fun SaveListItem(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            if (savePlan.selected) {
-                CheckIcon()
-            } else {
-                SeedIcon(
-                    modifier = Modifier.size(18.dp)
-                )
-            }
+            SeedIcon(
+                modifier = Modifier.size(18.dp)
+            )
             HorizontalSpacer(6.dp)
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -123,7 +117,6 @@ private fun ContinueSaveListItemPreview() {
         SaveListItem(
             savePlan = SavePlan.sample,
             onClick = {},
-            onLongClick = {},
             onExecuteChange = {},
         )
     }

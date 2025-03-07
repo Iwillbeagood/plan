@@ -1,10 +1,11 @@
 package jun.money.mate.save
 
-import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -15,28 +16,26 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.R
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
+import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbarIcon
-import jun.money.mate.designsystem.component.TwoBtnDialog
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main10
-import jun.money.mate.model.etc.EditMode
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.save.component.AcornBox
 import jun.money.mate.save.component.SaveListBody
-import jun.money.mate.save.contract.SaveModalEffect
 import jun.money.mate.save.contract.SavingListEffect
 import jun.money.mate.save.contract.SavingListState
-import jun.money.mate.ui.EditModeButton
+import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.LocalDate
+import java.time.YearMonth
 
 @Composable
 internal fun SaveListRoute(
@@ -47,36 +46,15 @@ internal fun SaveListRoute(
     viewModel: SavingListViewModel = hiltViewModel()
 ) {
     val savingListState by viewModel.savingListState.collectAsStateWithLifecycle()
-    val modalEffect by viewModel.modalEffect.collectAsStateWithLifecycle()
-    val month by viewModel.month.collectAsStateWithLifecycle()
 
     SavingListScreen(
         savingListState = savingListState,
-        month = month,
-        onPrev = viewModel::prevMonth,
-        onNext = viewModel::nextMonth,
+        month = viewModel.month,
         onShowDetail = onShowSavingEdit,
-        onSavePlanClick = viewModel::changeSavePlanSelected,
         onSavingAdd = onShowSavingAdd,
-        onSavingEdit = viewModel::editSave,
-        onDelete = viewModel::showDeleteDialog,
         onExecuteChange = viewModel::executeChange,
         onGoBack = onGoBack,
     )
-
-    ModalContent(modalEffect, viewModel)
-
-    BackHandler {
-        val state = savingListState
-        if (state is SavingListState.SavingListData) {
-            when (state.editMode) {
-                EditMode.LIST -> onGoBack()
-                else -> viewModel.unselectAll()
-            }
-        } else {
-            onGoBack()
-        }
-    }
 
     LaunchedEffect(Unit) {
         viewModel.savingListEffect.collect { effect ->
@@ -91,25 +69,21 @@ internal fun SaveListRoute(
 @Composable
 private fun SavingListScreen(
     savingListState: SavingListState,
-    month: LocalDate,
-    onPrev: () -> Unit,
-    onNext: () -> Unit,
+    month: YearMonth,
     onShowDetail: (Long) -> Unit,
-    onSavePlanClick: (Long) -> Unit,
     onSavingAdd: () -> Unit,
-    onSavingEdit: () -> Unit,
-    onDelete: () -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
     onGoBack: () -> Unit,
-
 ) {
     Scaffold(
         bottomBar = {
-            EditModeButton(
-                editMode = (savingListState as? SavingListState.SavingListData)?.editMode ?: EditMode.LIST,
-                onAdd = onSavingAdd,
-                onDelete = onDelete,
-                onEdit = onSavingEdit,
+            RegularButton(
+                text = "추가",
+                onClick = onSavingAdd,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surfaceDim)
+                    .padding(16.dp)
             )
         },
         containerColor = main10
@@ -130,11 +104,7 @@ private fun SavingListScreen(
                 )
                 SavingListContent(
                     savingListState = savingListState,
-                    month = month,
-                    onPrev = onPrev,
-                    onNext = onNext,
                     onShowDetail = onShowDetail,
-                    onSavePlanClick = onSavePlanClick,
                     onExecuteChange = onExecuteChange,
                     modifier = Modifier.weight(6f)
                 )
@@ -148,7 +118,7 @@ private fun SavingListScreen(
                         modifier = Modifier.padding(start = 30.dp, top = 60.dp)
                     ) {
                         Text(
-                            text = "이번 달 총 납입금액",
+                            text = "${formatDateBasedOnYear(month)} 총 납입금액",
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = TypoTheme.typography.headlineSmallM,
                         )
@@ -178,11 +148,7 @@ private fun SavingListScreen(
 @Composable
 private fun SavingListContent(
     savingListState: SavingListState,
-    month: LocalDate,
-    onPrev: () -> Unit,
-    onNext: () -> Unit,
     onShowDetail: (Long) -> Unit,
-    onSavePlanClick: (Long) -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -193,38 +159,11 @@ private fun SavingListContent(
         if (savingListState is SavingListState.SavingListData) {
             SaveListBody(
                 savePlanList = savingListState.savePlanList,
-                month = month,
-                onPrev = onPrev,
-                onNext = onNext,
                 onShowDetail = onShowDetail,
-                onSavePlanClick = onSavePlanClick,
                 onExecuteChange = onExecuteChange,
             )
         }
     }
-}
-
-@Composable
-private fun ModalContent(
-    modalEffect: SaveModalEffect,
-    viewModel: SavingListViewModel
-) {
-   when (modalEffect) {
-        is SaveModalEffect.Hidden -> {}
-       SaveModalEffect.ShowDeleteConfirmDialog -> {
-           TwoBtnDialog(
-               onDismissRequest = viewModel::hideModal,
-               button2Text = stringResource(id = jun.money.mate.res.R.string.btn_yes),
-               button2Click = viewModel::deleteSave,
-               content = {
-                   Text(
-                       text = "선택한 저축을 삭제하시겠습니까?",
-                       style = TypoTheme.typography.titleMediumM
-                   )
-               }
-           )
-       }
-   }
 }
 
 @Preview(showBackground = true)
@@ -233,15 +172,10 @@ private fun SpendingListScreenPreview() {
     JunTheme {
         SavingListScreen(
             savingListState = SavingListState.SavingListData(SavePlanList.sample),
-            month = LocalDate.now(),
-            onPrev = {},
-            onNext = {},
+            month = YearMonth.now(),
             onSavingAdd = {},
-            onSavingEdit = {},
             onShowDetail = {},
-            onSavePlanClick = {},
             onGoBack = {},
-            onDelete = {},
             onExecuteChange = { _, _ -> },
         )
     }

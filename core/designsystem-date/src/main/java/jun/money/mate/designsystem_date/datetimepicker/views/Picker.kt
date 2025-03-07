@@ -121,6 +121,7 @@ internal fun Picker(
                                 TimeFormat.DAY -> "일"
                                 TimeFormat.YEAR -> "년"
                                 TimeFormat.MONTH -> "월"
+                                TimeFormat.MONTH_PERIOD -> "개월"
                             },
                             style = TypoTheme.typography.titleNormalB,
                             color = if (isScrollInProgress) main else MaterialTheme.colorScheme.onSurface,

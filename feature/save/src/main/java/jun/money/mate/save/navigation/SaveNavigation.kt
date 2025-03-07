@@ -12,9 +12,14 @@ import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.navigation.utils.composableType
 import jun.money.mate.save.SaveAddRoute
 import jun.money.mate.save.SaveListRoute
+import java.time.LocalDate
 
-fun NavController.navigateToSaveList() {
-    navigate(Route.Save.List)
+fun NavController.navigateToSaveList(date: LocalDate) {
+    navigate(Route.Save.List(date.year, date.monthValue))
+}
+
+fun NavController.navigateToSaveDetail(id: Long) {
+    navigate(Route.Save.Detail(id))
 }
 
 fun NavController.navigateToSaveAdd() {
@@ -38,6 +43,10 @@ fun NavGraphBuilder.saveNavGraph(
             onShowSavingEdit = onShowSavingEdit,
             onShowSnackBar = onShowSnackBar
         )
+    }
+
+    composable<Route.Save.Detail> {
+
     }
 
     composable<Route.Save.Add> {
