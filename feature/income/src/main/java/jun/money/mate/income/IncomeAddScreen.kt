@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,6 +27,7 @@ import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderLineText
 import jun.money.mate.designsystem.component.UnderlineTextField
 import jun.money.mate.designsystem.component.VerticalSpacer
+import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main
@@ -38,6 +40,7 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.number.NumberKeyboard
 import java.time.LocalDate
+import java.time.YearMonth
 
 internal enum class IncomeAddStep(
     val message: String
@@ -53,6 +56,8 @@ internal fun IncomeAddRoute(
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: IncomeAddViewModel = hiltViewModel()
 ) {
+    ChangeStatusBarColor(MaterialTheme.colorScheme.background)
+
     val incomeAddState by viewModel.incomeAddState.collectAsStateWithLifecycle()
     val incomeModalEffect by viewModel.incomeModalEffect.collectAsStateWithLifecycle()
 
@@ -225,7 +230,7 @@ private fun IncomeAddScreenPreview() {
             uiState = IncomeAddState(
                 title = "월급",
                 amount = 1000000,
-                dateType = DateType.Monthly(1),
+                dateType = DateType.Monthly(1, YearMonth.now()),
             ),
             onIncomeTitleChange = {},
             onShowNumberBottomSheet = {},

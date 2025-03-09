@@ -39,6 +39,7 @@ import jun.money.mate.model.income.Income
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.number.NumberKeyboard
 import java.time.LocalDate
+import java.time.YearMonth
 
 @Composable
 internal fun IncomeEditRoute(
@@ -46,7 +47,7 @@ internal fun IncomeEditRoute(
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: IncomeEditViewModel = hiltViewModel()
 ) {
-    ChangeStatusBarColor(MaterialTheme.colorScheme.surfaceDim)
+    ChangeStatusBarColor(MaterialTheme.colorScheme.background)
 
     val editState by viewModel.editState.collectAsStateWithLifecycle()
     val incomeModalEffect by viewModel.incomeModalEffect.collectAsStateWithLifecycle()
@@ -199,7 +200,7 @@ private fun IncomeAddScreenPreview() {
                 id = 1L,
                 title = "수입 제목",
                 amount = 1000L,
-                dateType = DateType.Monthly(1),
+                dateType = DateType.Monthly(1, YearMonth.now()),
                 originIncome = Income.regularSample
             ),
             onIncomeTitleChange = {},

@@ -8,6 +8,7 @@ import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
 
 class GetFinanceUsecase @Inject constructor(
@@ -16,11 +17,11 @@ class GetFinanceUsecase @Inject constructor(
 ) {
 
     operator fun invoke(
-        month: LocalDate
+        month: YearMonth
     ): Flow<Finance> {
         return combine(
             incomeRepository.getIncomesByMonth(month),
-            saveRepository.getSavePlanListFlow(),
+            saveRepository.getSavingFlow(month),
         ) { incomes, savingPlans ->
             Logger.d("incomes: $incomes, savingPlans: $savingPlans")
             Finance(

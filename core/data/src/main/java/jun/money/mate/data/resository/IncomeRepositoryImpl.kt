@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
 
 class IncomeRepositoryImpl @Inject constructor(
@@ -42,7 +43,7 @@ class IncomeRepositoryImpl @Inject constructor(
         return incomeDao.getIncomeById(id).toIncome()
     }
 
-    override fun getIncomesByMonth(data: LocalDate): Flow<IncomeList> {
+    override fun getIncomesByMonth(data: YearMonth): Flow<IncomeList> {
         return incomeDao.getIncomeFlow()
             .map {
                 it.filter { income ->

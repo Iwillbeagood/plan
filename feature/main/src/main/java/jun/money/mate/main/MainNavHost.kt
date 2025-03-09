@@ -56,7 +56,7 @@ internal fun MainNavHost(
             )
             financeNavGraph(
                 onShowIncome = navigator::navigateToIncomeList,
-                onShowSaving = navigator::navigateToSaveList,
+                onShowSavings = navigator::navigateToSaveList,
                 onShowSnackBar = onShowSnackBar
             )
             incomeNavGraph(

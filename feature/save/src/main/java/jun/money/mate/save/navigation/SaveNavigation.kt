@@ -8,9 +8,9 @@ import jun.money.mate.navigation.Route
 import jun.money.mate.save.SaveAddRoute
 import jun.money.mate.save.SaveDetailRoute
 import jun.money.mate.save.SaveListRoute
-import java.time.LocalDate
+import java.time.YearMonth
 
-fun NavController.navigateToSaveList(date: LocalDate) {
+fun NavController.navigateToSaveList(date: YearMonth) {
     navigate(Route.Save.List(date.year, date.monthValue))
 }
 

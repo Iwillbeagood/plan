@@ -32,6 +32,7 @@ import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.ui.LeafIcon
 import java.time.LocalDate
+import java.time.YearMonth
 
 @Composable
 internal fun IncomeListBody(
@@ -152,7 +153,7 @@ private fun IncomeItemPreview() {
                 id = 1,
                 title = "Title",
                 amount = 1000,
-                dateType = DateType.Monthly(1),
+                dateType = DateType.Monthly(1, YearMonth.now()),
             ),
             onIncomeClick = {}
         )

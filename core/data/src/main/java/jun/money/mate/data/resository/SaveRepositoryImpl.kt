@@ -107,7 +107,7 @@ internal class SaveRepositoryImpl @Inject constructor(
                 val periodType = it.savingsType as SavingsType.PeriodType
                 date in periodType.periodStart..periodType.periodEndYearMonth
             } else {
-                it.addYearMonth <= date
+                it.addYearMonth == date
             }
         }
     }

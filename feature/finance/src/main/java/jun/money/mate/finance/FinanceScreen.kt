@@ -1,10 +1,14 @@
 package jun.money.mate.finance
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -12,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -40,16 +43,16 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.ui.LeafIcon
 import jun.money.mate.ui.SeedIcon
 import jun.money.mate.utils.currency.CurrencyFormatter
-import java.time.LocalDate
+import java.time.YearMonth
 
 @Composable
 internal fun FinanceRoute(
-    onShowIncome: (LocalDate) -> Unit,
-    onShowSavings: (LocalDate) -> Unit,
+    onShowIncome: (YearMonth) -> Unit,
+    onShowSavings: (YearMonth) -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: FinanceViewModel = hiltViewModel()
 ) {
-    ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
+    ChangeStatusBarColor(MaterialTheme.colorScheme.background)
 
     val financeState by viewModel.financeState.collectAsStateWithLifecycle()
     val month by viewModel.month.collectAsStateWithLifecycle()
@@ -72,7 +75,7 @@ internal fun FinanceRoute(
 private fun FinanceContent(
     financeState: FinanceState,
     viewModel: FinanceViewModel,
-    month: LocalDate,
+    month: YearMonth,
     onShowIncome: () -> Unit,
     onShowSavings: () -> Unit,
 ) {
@@ -82,7 +85,8 @@ private fun FinanceContent(
         if (financeState is FinanceState.FinanceData) {
             FinanceScreen(
                 totalIncome = financeState.incomeList.total,
-                totalSavings = financeState.savePlanList.total,
+                totalSavings = financeState.savePlanList.executedTotal,
+                total = financeState.savePlanList.total,
                 month = month,
                 onPrev = viewModel::prevMonth,
                 onNext = viewModel::nextMonth,
@@ -97,15 +101,14 @@ private fun FinanceContent(
 private fun FinanceScreen(
     totalIncome: Long,
     totalSavings: Long,
-    month: LocalDate,
+    total: Long,
+    month: YearMonth,
     onPrev: () -> Unit,
     onNext: () -> Unit,
     onShowIncome: () -> Unit,
     onShowSavings: () -> Unit,
 ) {
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.surface,
-    ) {
+    Scaffold {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -123,11 +126,14 @@ private fun FinanceScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(IntrinsicSize.Min)
                     .padding(16.dp)
             ) {
                 FinanceBox(
                     onClick = onShowIncome,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(1f)
                 ) {
                     VerticalSpacer(10.dp)
                     Row(
@@ -149,7 +155,7 @@ private fun FinanceScreen(
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    VerticalSpacer(30.dp)
+                    VerticalSpacer(1f)
                     Text(
                         text = CurrencyFormatter.formatToWon(totalIncome),
                         style = TypoTheme.typography.titleLargeB,
@@ -163,7 +169,9 @@ private fun FinanceScreen(
                 HorizontalSpacer(16.dp)
                 FinanceBox(
                     onClick = onShowSavings,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(1f)
                 ) {
                     VerticalSpacer(10.dp)
                     Row(
@@ -186,8 +194,26 @@ private fun FinanceScreen(
                         )
                     }
                     VerticalSpacer(30.dp)
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.Bottom,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 16.dp)
+                    ) {
+                        Text(
+                            text = "총 저축",
+                            style = TypoTheme.typography.labelLargeM,
+                            modifier = Modifier.padding(end = 10.dp)
+                        )
+                        Text(
+                            text = CurrencyFormatter.formatToWon(totalSavings),
+                            style = TypoTheme.typography.titleLargeB,
+                            textAlign = TextAlign.End,
+                        )
+                    }
                     Text(
-                        text = CurrencyFormatter.formatToWon(totalSavings),
+                        text = CurrencyFormatter.formatToWon(total),
                         style = TypoTheme.typography.titleLargeB,
                         textAlign = TextAlign.End,
                         modifier = Modifier
@@ -248,8 +274,9 @@ private fun FinanceScreenPreview() {
     JunTheme {
         FinanceScreen(
             totalIncome = 1000000,
-            totalSavings = 500000,
-            month = LocalDate.now(),
+            totalSavings = 300000,
+            total = 200000,
+            month = YearMonth.now(),
             onPrev = {},
             onNext = {},
             onShowIncome = {},

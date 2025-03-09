@@ -70,7 +70,7 @@ internal sealed interface HomeState {
     ) : HomeState {
 
 
-        val balance get() = incomeList.total - savePlanList.total - spendingPlanList.total
+        val balance get() = incomeList.total - savePlanList.executedTotal - spendingPlanList.total
         val balanceString get() = CurrencyFormatter.formatAmountWon(balance)
 
         data class HomeList(

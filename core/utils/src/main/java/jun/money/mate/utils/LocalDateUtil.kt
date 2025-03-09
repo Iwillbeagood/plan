@@ -4,13 +4,13 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
-fun canMoveToNextMonth(month: LocalDate): Boolean {
-    val currentMonth = LocalDate.now().withDayOfMonth(1)
+fun canMoveToNextMonth(month: YearMonth): Boolean {
+    val currentMonth = YearMonth.now()
     return month.isBefore(currentMonth)
 }
 
-fun canMoveToYearBefore(month: LocalDate): Boolean {
-    val oneYearAgo = month.minusYears(1)
+fun canMoveToYearBefore(month: YearMonth): Boolean {
+    val oneYearAgo = YearMonth.now().minusYears(1)
     return !month.isBefore(oneYearAgo)
 }
 

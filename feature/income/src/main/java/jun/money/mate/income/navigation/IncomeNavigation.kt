@@ -11,8 +11,9 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 import java.time.LocalDate
+import java.time.YearMonth
 
-fun NavController.navigateToIncomeList(date: LocalDate) {
+fun NavController.navigateToIncomeList(date: YearMonth) {
     navigate(Route.Income.List(date.year, date.monthValue))
 }
 

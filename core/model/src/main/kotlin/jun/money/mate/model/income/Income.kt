@@ -3,6 +3,7 @@ package jun.money.mate.model.income
 import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.Utils
 import java.time.LocalDate
+import java.time.YearMonth
 
 data class Income(
     val id: Long,
@@ -18,7 +19,7 @@ data class Income(
             id = 1,
             title = "정기 수입 제목",
             amount = 1000000,
-            dateType = DateType.Monthly(1),
+            dateType = DateType.Monthly(1, YearMonth.now()),
         )
 
         val variableSample = Income(

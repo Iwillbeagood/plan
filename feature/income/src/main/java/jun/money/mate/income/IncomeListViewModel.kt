@@ -24,12 +24,11 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
 import kotlin.math.ceil
 
@@ -41,7 +40,7 @@ internal class IncomeListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val listData = savedStateHandle.toRoute<Route.Income.List>()
-    val month: LocalDate = LocalDate.of(listData.year, listData.month, 1)
+    val month: YearMonth = YearMonth.of(listData.year, listData.month)
 
     private val _incomeListState = MutableStateFlow<IncomeListState>(IncomeListState.Loading)
     val incomeListState: StateFlow<IncomeListState> = _incomeListState.onStart {

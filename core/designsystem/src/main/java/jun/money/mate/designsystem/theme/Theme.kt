@@ -36,7 +36,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    surfaceDim = White,
+    surfaceDim = mainBackground,
     primary = main,
     onPrimary = main,
     secondary = Color(0xFFc7dcdc),
@@ -46,7 +46,7 @@ private val LightColorScheme = lightColorScheme(
     onSurfaceVariant = Gray4,
     onSecondary = White,
     onTertiary = Black,
-    background = White,
+    background = mainBackground,
     onBackground = Color(0xFF1C1B1F),
 )
 

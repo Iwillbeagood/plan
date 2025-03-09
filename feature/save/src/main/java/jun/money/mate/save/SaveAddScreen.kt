@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderLineText
 import jun.money.mate.designsystem.component.VerticalSpacer
+import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem_date.datetimepicker.DayPicker
@@ -48,6 +50,8 @@ internal fun SaveAddRoute(
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: SaveAddViewModel = hiltViewModel()
 ) {
+    ChangeStatusBarColor(MaterialTheme.colorScheme.background)
+
     val saveAddState by viewModel.saveAddState.collectAsStateWithLifecycle()
     val saveModalEffect by viewModel.saveAddModalEffect.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current

@@ -30,11 +30,12 @@ import jun.money.mate.utils.canMoveToNextMonth
 import jun.money.mate.utils.canMoveToYearBefore
 import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun MonthBar(
-    month: LocalDate,
+    month: YearMonth,
     onPrev: () -> Unit,
     onNext: () -> Unit,
     modifier: Modifier = Modifier
@@ -106,7 +107,7 @@ fun MonthBar(
 private fun MonthBarPreview() {
     JunTheme {
         MonthBar(
-            month = LocalDate.now().minusMonths(1),
+            month = YearMonth.now().minusMonths(1),
             onPrev = { },
             onNext = { }
         )

@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
@@ -120,7 +121,7 @@ internal class IncomeAddViewModel @Inject constructor(
 
     fun daySelected(day: String) {
         _incomeAddState.update {
-            it.copy(dateType = DateType.Monthly(day.toInt()))
+            it.copy(dateType = DateType.Monthly(day.toInt(), YearMonth.now()))
         }
     }
 

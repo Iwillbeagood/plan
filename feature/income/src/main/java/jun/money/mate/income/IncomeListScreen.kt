@@ -40,6 +40,7 @@ import jun.money.mate.model.income.IncomeList
 import jun.money.mate.ui.EditModeButton
 import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.LocalDate
+import java.time.YearMonth
 
 /**
  *  정기 수입을 수정했을 떄가 문제가 될듯.
@@ -89,7 +90,7 @@ internal fun IncomeListRoute(
 private fun IncomeListScreen(
     leaves: List<LeafOrder>,
     incomeListState: IncomeListState,
-    month: LocalDate,
+    month: YearMonth,
     onGoBack: () -> Unit,
     onShowIncomeAdd: () -> Unit,
     onIncomeClick: (Income) -> Unit,
@@ -213,7 +214,7 @@ private fun IncomeListScreenPreview() {
             incomeListState = IncomeListState.UiData(
                 incomeList = IncomeList.sample
             ),
-            month = LocalDate.now(),
+            month = YearMonth.now(),
             onGoBack = {},
             onShowIncomeAdd = {},
             onIncomeClick = {},

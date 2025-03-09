@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,8 +29,8 @@ internal class FinanceViewModel @Inject constructor(
     getFinanceUsecase: GetFinanceUsecase
 ) : ViewModel() {
 
-    private val _month = MutableStateFlow<LocalDate>(LocalDate.now())
-    val month: StateFlow<LocalDate> get() = _month
+    private val _month = MutableStateFlow<YearMonth>(YearMonth.now())
+    val month: StateFlow<YearMonth> get() = _month
 
     val financeState: StateFlow<FinanceState> = month.flatMapLatest {
         getFinanceUsecase(it)

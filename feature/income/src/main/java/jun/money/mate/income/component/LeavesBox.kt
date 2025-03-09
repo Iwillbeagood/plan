@@ -6,7 +6,8 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -42,12 +43,18 @@ private fun FallingLeaves(
     leaves: List<LeafOrder>,
     modifier: Modifier = Modifier
 ) {
-    val density = LocalDensity.current.run { LocalConfiguration.current.screenWidthDp.dp.toPx() }
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp - 50
+    val screenHeight = configuration.screenHeightDp
+    val maxDropHeight = screenHeight * 0.32f
+
+    val density = LocalDensity.current.run { screenWidth.dp.toPx() }
     val leafSize = 50f
 
     Box(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxWidth()
+            .height((screenHeight * 0.4f).dp)
     ) {
         leaves.forEachIndexed { index, leafOrder ->
             val leaf = Leaf(
@@ -64,9 +71,9 @@ private fun FallingLeaves(
 
             LaunchedEffect(index) {
                 launch {
-                    val endYPosition = Random.nextFloat() * 900f
+                    val endYPosition = Random.nextFloat() * (maxDropHeight - 50f) + 50f
                     animatedY.animateTo(
-                        targetValue = endYPosition,
+                        targetValue = endYPosition * 2,
                         animationSpec = tween(
                             durationMillis = Random.nextInt(1000, 3000),
                             easing = LinearEasing
