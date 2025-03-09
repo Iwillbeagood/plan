@@ -81,7 +81,7 @@ internal fun MainNavHost(
             saveNavGraph(
                 onGoBack = navigator::popBackStackIfNotHome,
                 onShowSavingAdd = navigator::navigateToSavingAdd,
-                onShowSavingEdit = navigator::navigateToSavingEdit,
+                onShowSavingDetail = navigator::navigateToSavingDetail,
                 onShowSnackBar = onShowSnackBar
             )
             splashNavGraph(

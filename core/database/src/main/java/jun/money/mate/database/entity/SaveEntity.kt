@@ -10,6 +10,7 @@ import java.time.YearMonth
 @Entity(tableName = AppDatabase.SAVING_PLAN_TABLE_NAME)
 data class SaveEntity(
     @PrimaryKey val id: Long,
+    val parentId: Long,
     val amount: Long,
     val day: Int,
     val addYearMonth: YearMonth,

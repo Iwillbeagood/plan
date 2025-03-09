@@ -3,7 +3,6 @@ package jun.money.mate.database.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import jun.money.mate.database.AppDatabase.Companion.INCOME_TABLE_NAME
 import jun.money.mate.database.AppDatabase.Companion.SAVING_PLAN_TABLE_NAME
 import jun.money.mate.database.entity.SaveEntity
 import kotlinx.coroutines.flow.Flow
@@ -15,14 +14,19 @@ interface SaveDao {
     suspend fun upsert(entity: SaveEntity)
 
     @Query("SELECT * FROM $SAVING_PLAN_TABLE_NAME")
-    fun getFlow(): Flow<List<SaveEntity>>
+    fun getListFlow(): Flow<List<SaveEntity>>
 
     @Query("SELECT * FROM $SAVING_PLAN_TABLE_NAME")
     suspend fun getSavingList(): List<SaveEntity>
 
+    @Query("SELECT * FROM $SAVING_PLAN_TABLE_NAME WHERE id = :id")
+    fun getFlow(id: Long): Flow<SaveEntity>
 
     @Query("SELECT * FROM $SAVING_PLAN_TABLE_NAME WHERE id = :id")
-    fun get(id: Long): Flow<SaveEntity>
+    suspend fun get(id: Long): SaveEntity
+
+    @Query("SELECT * FROM $SAVING_PLAN_TABLE_NAME WHERE parentId = :parentId")
+    suspend fun getSavingByParentId(parentId: Long): List<SaveEntity>
 
     @Query("UPDATE $SAVING_PLAN_TABLE_NAME SET executed = :isExecuted WHERE id = :id")
     suspend fun updateExecuteState(id: Long, isExecuted: Boolean)

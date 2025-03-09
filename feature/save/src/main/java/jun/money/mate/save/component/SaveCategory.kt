@@ -97,7 +97,6 @@ internal fun SaveCategories(
 private fun CategoryField(
     onCategorySelected: (SavingsType) -> Unit,
 ) {
-    var interest by remember { mutableStateOf("") }
     var startDate by remember { mutableStateOf(YearMonth.now()) }
     var period by remember { mutableIntStateOf(0) }
     var etc by remember { mutableStateOf("") }
@@ -118,7 +117,7 @@ private fun CategoryField(
                         .clip(RoundedCornerShape(10))
                         .clickable {
                             selectedCategory = category
-                            if (category in SavingsType.basicTypes) {
+                            if (category is SavingsType.PaidCount) {
                                 onCategorySelected(category)
                             }
                         }
@@ -145,36 +144,7 @@ private fun CategoryField(
                 )
             }
             CategoryAdditionalField(
-                visible = smartSelectedCategory in SavingsType.interestTypes,
-                title = "금리",
-            ) {
-                Row {
-                    UnderlineTextField(
-                        value = interest,
-                        onValueChange = {
-                            val newValue = it.toFloatOrNull()
-                            if (newValue != null && newValue in 0f..100f) {
-                                interest = it
-                            }
-                        },
-                        hint = "금리을 입력해주세요",
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
-                        ),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = "%",
-                            style = TypoTheme.typography.labelLargeM,
-                            modifier = Modifier
-                                .padding(start = 8.dp)
-                        )
-                    }
-
-                }
-            }
-            CategoryAdditionalField(
-                visible = smartSelectedCategory in SavingsType.periodTypes,
+                visible = smartSelectedCategory is SavingsType.PeriodType,
                 title = "시작일",
             ) {
                 YearMonthPicker(
@@ -184,7 +154,7 @@ private fun CategoryField(
                 )
             }
             CategoryAdditionalField(
-                visible = smartSelectedCategory in SavingsType.periodTypes,
+                visible = smartSelectedCategory is SavingsType.PeriodType,
                 title = "만기일",
             ) {
                 PeriodPicker(
@@ -194,23 +164,20 @@ private fun CategoryField(
                 )
             }
             BottomToTopSlideFadeAnimatedVisibility(
-                visible = (smartSelectedCategory in SavingsType.interestTypes && interest.isNotEmpty())
-                        || (smartSelectedCategory !in SavingsType.interestTypes && (smartSelectedCategory !is SavingsType.기타 || etc.isNotEmpty()))
-
+                visible = smartSelectedCategory !is SavingsType.기타 || etc.isNotEmpty()
             ) {
                 RegularButton(
                     text = "다음",
                     onClick = {
                         when (smartSelectedCategory) {
-                            SavingsType.보통예금 -> onCategorySelected(SavingsType.보통예금)
-                            SavingsType.연금저축 -> onCategorySelected(SavingsType.연금저축)
-                            is SavingsType.청약저축 -> onCategorySelected(SavingsType.청약저축(interest))
-                            SavingsType.투자 -> onCategorySelected(SavingsType.투자)
+                            is SavingsType.보통예금 -> onCategorySelected(SavingsType.보통예금())
+                            is SavingsType.연금저축 -> onCategorySelected(SavingsType.연금저축())
+                            is SavingsType.청약저축 -> onCategorySelected(SavingsType.청약저축())
+                            is SavingsType.투자 -> onCategorySelected(SavingsType.투자())
                             is SavingsType.기타 -> onCategorySelected(SavingsType.기타(etc))
                             is SavingsType.적금 -> {
                                 onCategorySelected(
                                     SavingsType.적금(
-                                        interest = interest,
                                         periodStart = startDate,
                                         periodMonth = period
                                     )
@@ -219,7 +186,6 @@ private fun CategoryField(
                             is SavingsType.보험저축 -> {
                                 onCategorySelected(
                                     SavingsType.보험저축(
-                                        interest = interest,
                                         periodStart = startDate,
                                         periodMonth = period
                                     )

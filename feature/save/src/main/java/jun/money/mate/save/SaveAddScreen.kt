@@ -109,7 +109,7 @@ private fun SaveAddScreen(
             text = addStep.message,
             style = TypoTheme.typography.titleLargeM,
         )
-        VerticalSpacer(50.dp)
+        VerticalSpacer(40.dp)
         SaveAddField(
             visible = SaveAddStep.Type in addSteps,
             title = "납입날짜",
@@ -151,7 +151,7 @@ private fun SaveAddScreen(
                 onCategorySelected = onCategorySelected,
             )
         }
-        VerticalSpacer(400.dp)
+        VerticalSpacer(20.dp)
     }
 }
 
@@ -169,7 +169,7 @@ private fun SaveAddField(
             )
             VerticalSpacer(10.dp)
             content()
-            VerticalSpacer(40.dp)
+            VerticalSpacer(30.dp)
         }
     }
 }

@@ -5,6 +5,7 @@ import androidx.work.*
 import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavingsType
+import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class SavingMonthlyWorker(
             if (isLastDayOfMonth()) {
                 val list = saveRepository.getSavePlanListByMonth(YearMonth.now())
                 list.savePlans
-                    .filter { it.savingsType in SavingsType.basicTypes }
+                    .filter { it.savingsType is SavingsType.PaidCount }
                     .forEach {
                         addNextMonthSavePlan(it)
                     }
@@ -37,6 +38,7 @@ class SavingMonthlyWorker(
     }
 
     private suspend fun addNextMonthSavePlan(savePlan: SavePlan) {
+        Logger.d("addNextMonthSavePlan: $savePlan")
         saveRepository.upsertSavePlan(
             savePlan.copy(
                 id = System.currentTimeMillis(),

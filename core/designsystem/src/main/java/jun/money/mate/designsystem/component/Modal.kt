@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -105,8 +106,51 @@ fun TwoBtnDialog(
         contentSpace = contentSpace,
         contentPadding = contentPadding,
         content = {
-            VerticalSpacer(16.dp)
             content()
+        },
+        button1 = {
+            RegularButton(
+                text = button1Text,
+                onClick = button1Click,
+                isActive = false,
+                modifier = Modifier.weight(5f),
+            )
+        },
+        button2 = {
+            RegularButton(
+                text = button2Text,
+                onClick = button2Click,
+                modifier = Modifier.weight(5f)
+            )
+        }
+    )
+}
+
+@Composable
+fun TextDialog(
+    content: String,
+    title: String = "",
+    onDismissRequest: () -> Unit = {},
+    contentSpace: Dp = 20.dp,
+    contentPadding: Dp = 16.dp,
+    button1Text: String = stringResource(id = R.string.btn_no),
+    button2Text: String = stringResource(id = R.string.btn_complete),
+    button1Click: () -> Unit = onDismissRequest,
+    button2Click: () -> Unit
+) {
+    DefaultDialog(
+        title = title,
+        onDismissRequest = onDismissRequest,
+        contentSpace = contentSpace,
+        contentPadding = contentPadding,
+        content = {
+            VerticalSpacer(16.dp)
+            Text(
+                text = content,
+                style = TypoTheme.typography.titleMediumM,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
             VerticalSpacer(16.dp)
         },
         button1 = {

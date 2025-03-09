@@ -93,11 +93,9 @@ fun DayPickerSheet(
 fun DayPicker(
     onDaySelected: (String) -> Unit,
     modifier: Modifier = Modifier,
-    currentMonth: Int = LocalDate.now().monthValue,
+    selectedDay: String = LocalDate.now().dayOfMonth.toString(),
 ) {
-    val today = LocalDate.now()
-    val daysInMonth = remember(currentMonth) { YearMonth.of(today.year, currentMonth).lengthOfMonth() }
-    val dates = (1..daysInMonth).map { "$it" }.toImmutableList()
+    val dates = (1..28).map { "$it" }.toImmutableList()
 
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -112,10 +110,10 @@ fun DayPicker(
         ) {
             Picker(
                 texts = dates,
-                count = daysInMonth,
+                count = 28,
                 rowCount = 5,
                 size = DpSize(100.dp, 150.dp),
-                startIndex = dates.indexOf(LocalDate.now().dayOfMonth.toString()),
+                startIndex = dates.indexOf(selectedDay),
                 onItemSelected = onDaySelected,
                 timeFormat = TimeFormat.DAY,
                 modifier = Modifier.fillMaxWidth()

@@ -30,7 +30,7 @@ import jun.money.mate.designsystem.theme.TypoTheme
 fun TopAppbar(
     modifier: Modifier = Modifier,
     title: String = "",
-    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
     navigationType: TopAppbarType = TopAppbarType.Default,
     onBackEvent: () -> Unit = {}
 ) {
@@ -46,20 +46,16 @@ fun TopAppbar(
             modifier = modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (navigationType == TopAppbarType.Default) {
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clickable(onClick = onBackEvent)
-                ) {
-                    TopAppbarIcon(
-                        iconId = R.drawable.ic_back,
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.align(Alignment.Center),
-                    )
-                }
-            } else {
-                HorizontalSpacer(20.dp)
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clickable(onClick = onBackEvent)
+            ) {
+                TopAppbarIcon(
+                    iconId = R.drawable.ic_back,
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.align(Alignment.Center),
+                )
             }
             Text(
                 text = title,

@@ -2,12 +2,16 @@ package jun.money.mate.model.save
 
 import jun.money.mate.model.Utils
 import jun.money.mate.model.save.SavingsType.Companion.periodEnd
+import jun.money.mate.model.save.SavingsType.PeriodType.Companion.periodEndYearMonth
+import jun.money.mate.model.save.SavingsType.보험저축
+import jun.money.mate.model.save.SavingsType.적금
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.temporal.ChronoUnit
 
 data class SavePlan(
     val id: Long,
+    val parentId: Long,
     val amount: Long,
     val day: Int,
     val addYearMonth: YearMonth,
@@ -15,6 +19,35 @@ data class SavePlan(
     val executed: Boolean,
 ) {
     val amountString: String get() = Utils.formatAmountWon(amount)
+
+    val period: String
+        get() = when (savingsType) {
+            is 적금 -> "${savingsType.periodStart} ~ ${savingsType.periodEndYearMonth} (${savingsType.periodMonth}개월)"
+            is 보험저축 -> "${savingsType.periodStart} ~ ${savingsType.periodEndYearMonth} (${savingsType.periodMonth}개월)"
+            else -> "$addYearMonth ~ "
+        }
+
+    fun getPaidCount(): Int {
+        if (savingsType is SavingsType.PaidCount) {
+            return savingsType.count
+        }
+
+        val now = LocalDate.now()
+        val todayYearMonth = YearMonth.from(now)
+
+        val startDate = when (savingsType) {
+            is 적금 -> LocalDate.of(savingsType.periodStart.year, savingsType.periodStart.month, day)
+            is 보험저축 -> LocalDate.of(savingsType.periodStart.year, savingsType.periodStart.month, day)
+            else -> return 0
+        }
+
+        val monthsBetween = ChronoUnit.MONTHS.between(startDate.withDayOfMonth(1), todayYearMonth.atDay(1)).toInt()
+
+        return if (now.dayOfMonth < day) 0 else monthsBetween
+    }
+
+    val periodTotal: Long
+        get() = getPaidCount() * amount
 
     fun getRemainingPeriod(): String? {
         val today = LocalDate.now()
@@ -26,20 +59,22 @@ data class SavePlan(
         val daysUntilEnd = ChronoUnit.DAYS.between(today, endDate)
 
         return when {
-            months >= 1 -> "${months}개월 남았어요!"
-            else -> "${daysUntilEnd}일만 기다려요!"
+            months >= 1 -> "만기까지 ${months}개월 남았어요!"
+            else -> "만기까지 ${daysUntilEnd}일만 기다려요!"
         }
     }
-
-    val saveState get() = if (executed) SaveState.저축완료 else SaveState.저축예정
 
     companion object {
         val sample = SavePlan(
             id = 0,
+            parentId = 0,
             amount = 10000,
             day = 1,
             addYearMonth = YearMonth.now(),
-            savingsType = SavingsType.투자,
+            savingsType = SavingsType.적금(
+                periodStart = YearMonth.now(),
+                periodMonth = 6
+            ),
             executed = false,
         )
     }
@@ -61,9 +96,4 @@ data class SavePlanList(
             )
         )
     }
-}
-
-enum class SaveState {
-    저축완료,
-    저축예정
 }

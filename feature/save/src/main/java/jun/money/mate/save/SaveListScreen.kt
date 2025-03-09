@@ -24,6 +24,7 @@ import jun.money.mate.designsystem.R
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbarIcon
+import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main10
@@ -34,23 +35,24 @@ import jun.money.mate.save.component.SaveListBody
 import jun.money.mate.save.contract.SavingListEffect
 import jun.money.mate.save.contract.SavingListState
 import jun.money.mate.utils.formatDateBasedOnYear
-import java.time.LocalDate
 import java.time.YearMonth
 
 @Composable
 internal fun SaveListRoute(
     onGoBack: () -> Unit,
     onShowSavingAdd: () -> Unit,
-    onShowSavingEdit: (id: Long) -> Unit,
+    onShowSavingDetail: (id: Long) -> Unit,
     onShowSnackBar: (MessageType) -> Unit,
     viewModel: SavingListViewModel = hiltViewModel()
 ) {
+    ChangeStatusBarColor(main10)
+
     val savingListState by viewModel.savingListState.collectAsStateWithLifecycle()
 
     SavingListScreen(
         savingListState = savingListState,
         month = viewModel.month,
-        onShowDetail = onShowSavingEdit,
+        onShowDetail = onShowSavingDetail,
         onSavingAdd = onShowSavingAdd,
         onExecuteChange = viewModel::executeChange,
         onGoBack = onGoBack,
@@ -59,7 +61,7 @@ internal fun SaveListRoute(
     LaunchedEffect(Unit) {
         viewModel.savingListEffect.collect { effect ->
             when (effect) {
-                is SavingListEffect.EditSpendingPlan -> onShowSavingEdit(effect.id)
+                is SavingListEffect.EditSpendingPlan -> onShowSavingDetail(effect.id)
                 is SavingListEffect.ShowSnackBar -> onShowSnackBar(effect.messageType)
             }
         }
@@ -100,13 +102,12 @@ private fun SavingListScreen(
                 AcornBox(
                     count = (savingListState as? SavingListState.SavingListData)?.acornCount ?: 0,
                     goldCount = (savingListState as? SavingListState.SavingListData)?.goldAcornCount ?: 0,
-                    modifier = Modifier.weight(4f)
                 )
                 SavingListContent(
                     savingListState = savingListState,
                     onShowDetail = onShowDetail,
                     onExecuteChange = onExecuteChange,
-                    modifier = Modifier.weight(6f)
+                    modifier = Modifier.weight(1f)
                 )
             }
             FadeAnimatedVisibility(

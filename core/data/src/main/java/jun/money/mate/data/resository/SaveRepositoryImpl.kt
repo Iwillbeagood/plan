@@ -12,6 +12,7 @@ import jun.money.mate.model.save.SavingsType.PeriodType.Companion.periodEndYearM
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.time.YearMonth
 import javax.inject.Inject
@@ -29,7 +30,7 @@ internal class SaveRepositoryImpl @Inject constructor(
     }
 
     override fun getSavePlanListFlow(): Flow<SavePlanList> {
-        return saveDao.getFlow().map { list ->
+        return saveDao.getListFlow().map { list ->
             SavePlanList(savePlans = list.map(SaveEntity::toSavePlan))
         }.catch {
             Logger.e("getSavePlanListFlow error: $it")
@@ -37,7 +38,7 @@ internal class SaveRepositoryImpl @Inject constructor(
     }
 
     override fun getSavingFlow(date: YearMonth): Flow<SavePlanList> {
-        return saveDao.getFlow().map { list ->
+        return saveDao.getListFlow().map { list ->
             SavePlanList(
                 savePlans = list
                     .filterSaveList(date)
@@ -56,8 +57,24 @@ internal class SaveRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun getSavePlan(id: Long): Flow<SavePlan> {
-        return saveDao.get(id).map(SaveEntity::toSavePlan)
+    override suspend fun getSavingByParentId(id: Long): List<SavePlan> {
+        return saveDao.getSavingByParentId(id).map(SaveEntity::toSavePlan)
+    }
+
+    override fun getSavePlan(id: Long): Flow<SavePlan> = flow {
+        val savePlan = saveDao.get(id).toSavePlan()
+
+        val count = saveDao.getSavingByParentId(id).count { it.executed }
+        val new = when (val savingsType = savePlan.savingsType) {
+            is SavingsType.보통예금 -> savePlan.copy(savingsType = savingsType.copy(count = count))
+            is SavingsType.청약저축 -> savePlan.copy(savingsType = savingsType.copy(count = count))
+            is SavingsType.투자 -> savePlan.copy(savingsType = savingsType.copy(count = count))
+            is SavingsType.연금저축 -> savePlan.copy(savingsType = savingsType.copy(count = count))
+            is SavingsType.기타 -> savePlan.copy(savingsType = savingsType.copy(count = count))
+            else -> savePlan
+        }
+
+        emit(new)
     }
 
     override suspend fun updateExecuteState(id: Long, isExecuted: Boolean) {

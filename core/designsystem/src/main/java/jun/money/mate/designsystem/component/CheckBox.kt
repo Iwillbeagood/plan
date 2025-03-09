@@ -21,7 +21,7 @@ import jun.money.mate.designsystem.theme.White1
 fun TextCheckBox(
     modifier: Modifier = Modifier,
     text: String = "",
-    textStyle: TextStyle = TypoTheme.typography.titleNormalM,
+    style: TextStyle = TypoTheme.typography.titleNormalM,
     checked: Boolean = false,
     enabled: Boolean = true,
     onCheckedChange: (Boolean) -> Unit
@@ -42,7 +42,7 @@ fun TextCheckBox(
         if (text.isNotEmpty())
             Text(
                 text = text,
-                style = textStyle,
+                style = style,
                 modifier = Modifier
             )
     }

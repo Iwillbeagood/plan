@@ -2,6 +2,9 @@
 package jun.money.mate.designsystem.theme
 
 import android.app.Activity
+import android.os.Build
+import android.view.View
+import android.view.WindowInsetsController
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -27,7 +30,9 @@ private val DarkColorScheme = darkColorScheme(
     onTertiary = White2,
     surface = Black3,
     secondary = Gray3,
-    tertiary = Gray3
+    tertiary = Gray3,
+    background = Black2,
+
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -41,6 +46,7 @@ private val LightColorScheme = lightColorScheme(
     onSurfaceVariant = Gray4,
     onSecondary = White,
     onTertiary = Black,
+    background = White,
     onBackground = Color(0xFF1C1B1F),
 )
 
@@ -55,8 +61,14 @@ fun JunTheme(
 
     if (!LocalInspectionMode.current) {
         val view = LocalView.current
+        val window = (view.context as Activity).window
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val controller = window.decorView.windowInsetsController
+            controller?.setSystemBarsAppearance(0, WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS)
+        } else {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+        }
         SideEffect {
-            val window = (view.context as Activity).window
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
             WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
         }

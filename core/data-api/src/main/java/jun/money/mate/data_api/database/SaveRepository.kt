@@ -15,6 +15,8 @@ interface SaveRepository {
 
     suspend fun getSavePlanListByMonth(date: YearMonth): SavePlanList
 
+    suspend fun getSavingByParentId(id: Long): List<SavePlan>
+
     fun getSavePlan(id: Long): Flow<SavePlan>
 
     suspend fun updateExecuteState(id: Long, isExecuted: Boolean)

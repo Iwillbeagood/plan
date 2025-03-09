@@ -7,16 +7,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,13 +44,17 @@ internal fun AcornBox(
     count: Int = 20,
     size: Int = 10,
 ) {
-    val screenWidth = LocalConfiguration.current.screenWidthDp - 50
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp - 50
+    val screenHeight = configuration.screenHeightDp
+    val maxDropHeight = screenHeight * 0.32f
+
     val spacing = 20f
     val centerX = screenWidth / 2f
 
     val xPositions = List(size) { i -> centerX - ((size - 1) / 2f) * spacing + i * spacing }
-
     val maxHeight = (size / 2) + 1
+
     val maxHeightMap = xPositions.associateWith { index ->
         when (index) {
             xPositions.first(), xPositions.last() -> 1
@@ -61,14 +68,18 @@ internal fun AcornBox(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .height((screenHeight * 0.4f).dp)
     ) {
         acorns.forEachIndexed { _, (x, count, rotation, isGold) ->
             val animatedY = remember { Animatable(-50f) }
 
-            LaunchedEffect(Unit) {
+            LaunchedEffect(maxDropHeight) { // 40% 높이에서만 애니메이션 동작
                 animatedY.animateTo(
-                    targetValue = 300f - (count * 25f),
-                    animationSpec = tween(durationMillis = Random.nextInt(1000, 3000), easing = EaseOutBounce)
+                    targetValue = maxDropHeight - (count * 10f), // 최대 높이를 40%로 제한
+                    animationSpec = tween(
+                        durationMillis = Random.nextInt(1000, 3000),
+                        easing = EaseOutBounce
+                    )
                 )
             }
 
