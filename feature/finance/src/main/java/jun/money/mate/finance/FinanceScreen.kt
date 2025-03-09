@@ -86,7 +86,6 @@ private fun FinanceContent(
             FinanceScreen(
                 totalIncome = financeState.incomeList.total,
                 totalSavings = financeState.savePlanList.executedTotal,
-                total = financeState.savePlanList.total,
                 month = month,
                 onPrev = viewModel::prevMonth,
                 onNext = viewModel::nextMonth,
@@ -101,7 +100,6 @@ private fun FinanceContent(
 private fun FinanceScreen(
     totalIncome: Long,
     totalSavings: Long,
-    total: Long,
     month: YearMonth,
     onPrev: () -> Unit,
     onNext: () -> Unit,
@@ -194,26 +192,8 @@ private fun FinanceScreen(
                         )
                     }
                     VerticalSpacer(30.dp)
-                    Row(
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.Bottom,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 16.dp)
-                    ) {
-                        Text(
-                            text = "총 저축",
-                            style = TypoTheme.typography.labelLargeM,
-                            modifier = Modifier.padding(end = 10.dp)
-                        )
-                        Text(
-                            text = CurrencyFormatter.formatToWon(totalSavings),
-                            style = TypoTheme.typography.titleLargeB,
-                            textAlign = TextAlign.End,
-                        )
-                    }
                     Text(
-                        text = CurrencyFormatter.formatToWon(total),
+                        text = CurrencyFormatter.formatToWon(totalSavings),
                         style = TypoTheme.typography.titleLargeB,
                         textAlign = TextAlign.End,
                         modifier = Modifier
@@ -275,7 +255,6 @@ private fun FinanceScreenPreview() {
         FinanceScreen(
             totalIncome = 1000000,
             totalSavings = 300000,
-            total = 200000,
             month = YearMonth.now(),
             onPrev = {},
             onNext = {},
