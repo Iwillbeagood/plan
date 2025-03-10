@@ -1,4 +1,4 @@
-package jun.money.mate.main.component
+package jun.money.mate.main.navigation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn

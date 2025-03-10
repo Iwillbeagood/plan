@@ -10,10 +10,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import jun.money.mate.main.component.MainBottomBar
-import jun.money.mate.main.component.MainNavigator
+import jun.money.mate.main.navigation.MainBottomBar
+import jun.money.mate.main.navigation.MainNavHost
+import jun.money.mate.main.navigation.MainNavigator
 import jun.money.mate.model.etc.ConnectionState
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.network.connectivityState
 import kotlinx.collections.immutable.toPersistentList
@@ -22,8 +22,6 @@ import kotlinx.collections.immutable.toPersistentList
 internal fun MainScreen(
     navigator: MainNavigator,
     snackBarHostState: SnackbarHostState,
-    appRestart: () -> Unit,
-    onShowSnackBar: (MessageType) -> Unit,
 ) {
     val connection by connectivityState()
 
@@ -31,8 +29,6 @@ internal fun MainScreen(
         navigator = navigator,
         connection = connection,
         snackBarHostState = snackBarHostState,
-        appRestart = appRestart,
-        onShowSnackBar = onShowSnackBar,
     )
 }
 
@@ -41,8 +37,6 @@ private fun MainScreenContent(
     navigator: MainNavigator,
     connection: ConnectionState,
     snackBarHostState: SnackbarHostState,
-    appRestart: () -> Unit,
-    onShowSnackBar: (MessageType) -> Unit,
 ) {
     Scaffold(
         modifier = Modifier
@@ -61,8 +55,6 @@ private fun MainScreenContent(
             MainNavHost(
                 navigator = navigator,
                 paddingValues = it,
-                appRestart = appRestart,
-                onShowSnackBar = onShowSnackBar,
             )
         },
         snackbarHost = {

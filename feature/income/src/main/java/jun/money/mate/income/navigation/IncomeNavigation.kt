@@ -25,33 +25,14 @@ fun NavController.navigateToIncomeEdit(id: Long) {
     navigate(Route.Income.Edit(id))
 }
 
-fun NavGraphBuilder.incomeNavGraph(
-    onGoBack: () -> Unit,
-    onShowIncomeAdd: () -> Unit,
-    onShowIncomeEdit: (id: Long) -> Unit,
-    onShowSnackBar: (MessageType) -> Unit
-) {
-
+fun NavGraphBuilder.incomeNavGraph() {
     composable<Route.Income.List> {
-        IncomeListRoute(
-            onGoBack = onGoBack,
-            onShowIncomeAdd = onShowIncomeAdd,
-            onShowIncomeEdit = onShowIncomeEdit,
-            onShowSnackBar = onShowSnackBar
-        )
+        IncomeListRoute()
     }
-
-    composable<Route.Income.Add> { backStackEntry ->
-        IncomeAddRoute(
-            onGoBack = onGoBack,
-            onShowSnackBar = onShowSnackBar
-        )
+    composable<Route.Income.Add> {
+        IncomeAddRoute()
     }
-
-    composable<Route.Income.Edit> { backStackEntry ->
-        IncomeEditRoute(
-            onGoBack = onGoBack,
-            onShowSnackBar = onShowSnackBar
-        )
+    composable<Route.Income.Edit> {
+        IncomeEditRoute()
     }
 }

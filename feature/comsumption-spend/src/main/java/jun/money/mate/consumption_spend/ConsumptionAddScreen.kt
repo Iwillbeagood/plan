@@ -26,23 +26,24 @@ import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.TextButton
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.AddTitleContent
+import jun.money.mate.ui.interop.rememberPopBackStack
+import jun.money.mate.ui.interop.rememberShowSnackBar
 import java.time.LocalDate
 
 @Composable
 internal fun ConsumptionAddRoute(
     addType: AddType,
-    onGoBack: () -> Unit,
-    onShowSnackBar: (MessageType) -> Unit,
     viewModel: ConsumptionAddViewModel = hiltViewModel()
 ) {
+    val showSnackBar = rememberShowSnackBar()
+    val popBackStack = rememberPopBackStack()
     val consumptionAddState by viewModel.consumptionAddState.collectAsStateWithLifecycle()
     val consumptionModalEffect by viewModel.consumptionModalEffect.collectAsStateWithLifecycle()
 
@@ -52,7 +53,7 @@ internal fun ConsumptionAddRoute(
             AddType.New -> "추가"
         },
         consumptionAddState = consumptionAddState,
-        onBackClick = onGoBack,
+        onBackClick = popBackStack,
         onConsumptionAdd = viewModel::addSpendingPlan,
         onTitleChange = viewModel::titleValueChange,
         onAmountChange = viewModel::amountValueChange,
@@ -70,8 +71,8 @@ internal fun ConsumptionAddRoute(
     LaunchedEffect(true) {
         viewModel.consumptionAddEffect.collect {
             when (it) {
-                is ConsumptionAddEffect.ShowSnackBar -> onShowSnackBar(it.messageType)
-                ConsumptionAddEffect.SpendingPlanAddComplete -> onGoBack()
+                is ConsumptionAddEffect.ShowSnackBar -> showSnackBar(it.messageType)
+                ConsumptionAddEffect.SpendingPlanAddComplete -> popBackStack()
             }
         }
     }
@@ -207,15 +208,6 @@ private fun ConsumptionAddBody(
         }
         VerticalSpacer(30.dp)
     }
-}
-
-@Composable
-private fun SpendingPlanTitle(title: String) {
-    Text(
-        text = title,
-        style = TypoTheme.typography.titleMediumM,
-    )
-    VerticalSpacer(10.dp)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -7,7 +7,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import jun.money.mate.consumption_spend.ConsumptionAddRoute
 import jun.money.mate.consumption_spend.ConsumptionListRoute
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.navigation.utils.composableType
@@ -21,19 +20,15 @@ fun NavController.navigateToConsumptionAdd(addType: AddType) {
 }
 
 fun NavGraphBuilder.consumptionNavGraph(
-    onGoBack: () -> Unit,
     onShowSpendingPlanAdd: () -> Unit,
     onShowConsumptionAdd: () -> Unit,
     onShowConsumptionEdit: (id: Long) -> Unit,
-    onShowSnackBar: (MessageType) -> Unit
 ) {
     composable<MainTabRoute.ConsumptionSpend.List> {
         ConsumptionListRoute(
-            onGoBack = onGoBack,
             onShowConsumptionAdd = onShowConsumptionAdd,
             onShowSpendingPlanAdd = onShowSpendingPlanAdd,
-            onShowConsumptionEdit = onShowConsumptionEdit,
-            onShowSnackBar = onShowSnackBar
+            onShowConsumptionEdit = onShowConsumptionEdit
         )
     }
 
@@ -41,9 +36,7 @@ fun NavGraphBuilder.consumptionNavGraph(
         val addType = backStackEntry.toRoute<MainTabRoute.ConsumptionSpend.Add>().addType
 
         ConsumptionAddRoute(
-            addType = addType,
-            onGoBack = onGoBack,
-            onShowSnackBar = onShowSnackBar
+            addType = addType
         )
     }
 }

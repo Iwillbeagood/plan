@@ -26,7 +26,6 @@ import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem_date.datetimepicker.DayPicker
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.save.component.SaveCategories
 import jun.money.mate.save.contract.SaveAddEffect
@@ -35,6 +34,8 @@ import jun.money.mate.save.contract.SaveAddState
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.ui.number.ValueState
+import jun.money.mate.ui.interop.rememberPopBackStack
+import jun.money.mate.ui.interop.rememberShowSnackBar
 
 internal enum class SaveAddStep(
     val message: String
@@ -46,12 +47,12 @@ internal enum class SaveAddStep(
 
 @Composable
 internal fun SaveAddRoute(
-    onGoBack: () -> Unit,
-    onShowSnackBar: (MessageType) -> Unit,
     viewModel: SaveAddViewModel = hiltViewModel()
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.background)
 
+    val showSnackBar = rememberShowSnackBar()
+    val popBackStack = rememberPopBackStack()
     val saveAddState by viewModel.saveAddState.collectAsStateWithLifecycle()
     val saveModalEffect by viewModel.saveAddModalEffect.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
@@ -62,7 +63,7 @@ internal fun SaveAddRoute(
             SaveAddStep.Type -> "추가"
             else -> "다음"
         },
-        onGoBack = onGoBack,
+        onGoBack = popBackStack,
         onComplete = viewModel::nextStep,
     ) {
         SaveAddScreen(
@@ -84,8 +85,8 @@ internal fun SaveAddRoute(
     LaunchedEffect(true) {
         viewModel.saveAddEffect.collect {
             when (it) {
-                is SaveAddEffect.ShowSnackBar -> onShowSnackBar(it.messageType)
-                SaveAddEffect.SaveAddComplete -> onGoBack()
+                is SaveAddEffect.ShowSnackBar -> showSnackBar(it.messageType)
+                SaveAddEffect.SaveAddComplete -> popBackStack()
                 SaveAddEffect.RemoveTextFocus -> focusManager.clearFocus()
             }
         }

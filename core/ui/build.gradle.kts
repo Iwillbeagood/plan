@@ -14,6 +14,7 @@ dependencies {
     api(projects.core.res)
     api(projects.core.designsystem)
     api(projects.core.utils)
+    api(projects.core.navigation)
     api(libs.androidx.compose.material.icon)
 
     implementation(projects.core.designsystemDate)

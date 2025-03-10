@@ -28,27 +28,27 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem.theme.main
 import jun.money.mate.ui.DateAdd
 import jun.money.mate.income.contract.EditState
 import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
 import jun.money.mate.model.etc.DateType
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.number.NumberKeyboard
+import jun.money.mate.ui.interop.rememberPopBackStack
+import jun.money.mate.ui.interop.rememberShowSnackBar
 import java.time.LocalDate
 import java.time.YearMonth
 
 @Composable
 internal fun IncomeEditRoute(
-    onGoBack: () -> Unit,
-    onShowSnackBar: (MessageType) -> Unit,
     viewModel: IncomeEditViewModel = hiltViewModel()
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.background)
 
+    val showSnackBar = rememberShowSnackBar()
+    val popBackStack = rememberPopBackStack()
     val editState by viewModel.editState.collectAsStateWithLifecycle()
     val incomeModalEffect by viewModel.incomeModalEffect.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -56,7 +56,7 @@ internal fun IncomeEditRoute(
 
     AddScaffold(
         buttonText = "수정",
-        onGoBack = onGoBack,
+        onGoBack = popBackStack,
         onComplete = viewModel::editIncome,
     ) {
         IncomeAddContent(
@@ -73,8 +73,8 @@ internal fun IncomeEditRoute(
     LaunchedEffect(true) {
         viewModel.incomeEffect.collect {
             when (it) {
-                is IncomeEffect.ShowSnackBar -> onShowSnackBar(it.messageType)
-                IncomeEffect.IncomeComplete -> onGoBack()
+                is IncomeEffect.ShowSnackBar -> showSnackBar(it.messageType)
+                IncomeEffect.IncomeComplete -> popBackStack()
                 IncomeEffect.DismissKeyboard -> keyboardController?.hide()
                 IncomeEffect.RemoveTitleFocus -> focusManager.clearFocus()
             }

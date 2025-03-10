@@ -41,29 +41,30 @@ import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem_date.datetimepicker.DayPicker
 import jun.money.mate.model.Utils
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavingsType.Companion.title
 import jun.money.mate.save.contract.SaveDetailEffect
 import jun.money.mate.save.contract.SaveDetailModalEffect
 import jun.money.mate.ui.number.NumberKeyboard
+import jun.money.mate.ui.interop.rememberPopBackStack
+import jun.money.mate.ui.interop.rememberShowSnackBar
 
 @Composable
 internal fun SaveDetailRoute(
-    onGoBack: () -> Unit,
-    onShowSnackBar: (MessageType) -> Unit,
     viewModel: SaveDetailViewModel = hiltViewModel()
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.background)
 
+    val showSnackBar = rememberShowSnackBar()
+    val popBackStack = rememberPopBackStack()
     val saveDetailState by viewModel.saveDetailState.collectAsStateWithLifecycle()
     val saveModalEffect by viewModel.modalEffect.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
             TopAppbar(
-                onBackEvent = onGoBack,
+                onBackEvent = popBackStack,
                 title = "저축 수정",
                 navigationType = TopAppbarType.Custom {
                     Text(
@@ -116,8 +117,8 @@ internal fun SaveDetailRoute(
     LaunchedEffect(Unit) {
         viewModel.saveEffect.collect {
             when (it) {
-                is SaveDetailEffect.ShowSnackBar -> onShowSnackBar(it.messageType)
-                SaveDetailEffect.SaveDetailComplete -> onGoBack()
+                is SaveDetailEffect.ShowSnackBar -> showSnackBar(it.messageType)
+                SaveDetailEffect.SaveDetailComplete -> popBackStack()
             }
         }
     }

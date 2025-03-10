@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -19,14 +20,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import jun.money.mate.designsystem.component.TwoBtnDialog
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.main.component.MainNavigator
-import jun.money.mate.main.component.rememberMainNavigator
+import jun.money.mate.main.navigation.MainNavigator
+import jun.money.mate.main.navigation.rememberMainNavigator
 import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.ui.interop.LocalMainActionInterop
+import jun.money.mate.ui.interop.LocalNavigateActionInterop
+import jun.money.mate.ui.interop.MainActionInterop
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,33 +44,44 @@ class MainActivity : ComponentActivity() {
 
             val coroutineScope = rememberCoroutineScope()
             val snackBarHostState = remember { SnackbarHostState() }
-            val onShowSnackBar: (MessageType) -> Unit = { messageType ->
-                coroutineScope.launch {
-                    when (messageType) {
-                        is MessageType.Message -> snackBarHostState.showSnackbar(messageType.message)
-                        is MessageType.ResId -> snackBarHostState.showSnackbar(getString(messageType.resId))
+
+            val mainActionInterop = object : MainActionInterop {
+                override fun onFinish() = finish()
+                override fun onRestart() = appRestart()
+                override fun onShowSnackBar(messageType: MessageType) {
+                    coroutineScope.launch {
+                        when (messageType) {
+                            is MessageType.Message -> snackBarHostState.showSnackbar(messageType.message)
+                            is MessageType.ResId -> snackBarHostState.showSnackbar(getString(messageType.resId))
+                        }
                     }
+                }
+                override fun onPopBackStack() {
+                    navigator.popBackStackIfNotHome()
                 }
             }
 
-            JunTheme {
-                MainScreen(
-                    navigator = navigator,
-                    snackBarHostState = snackBarHostState,
-                    appRestart = ::appRestart,
-                    onShowSnackBar = onShowSnackBar,
-                )
+            CompositionLocalProvider(
+                LocalMainActionInterop provides mainActionInterop,
+                LocalNavigateActionInterop provides navigator.navigationInteropImpl()
+            ) {
+                JunTheme {
+                    MainScreen(
+                        navigator = navigator,
+                        snackBarHostState = snackBarHostState,
+                    )
 
-                DialogContent(
-                    mainDialogEffect = mainDialogEffect,
-                    onDismissRequest = viewModel::onDialogDismiss,
-                    onFinishApp = ::finish,
-                )
+                    DialogContent(
+                        mainDialogEffect = mainDialogEffect,
+                        onDismissRequest = viewModel::onDialogDismiss,
+                        onFinishApp = ::finish,
+                    )
 
-                MainBackHandler(
-                    navigator = navigator,
-                    onShowAppCloseDialog = viewModel::onShowAppCloseDialog
-                )
+                    MainBackHandler(
+                        navigator = navigator,
+                        onShowAppCloseDialog = viewModel::onShowAppCloseDialog
+                    )
+                }
             }
         }
     }

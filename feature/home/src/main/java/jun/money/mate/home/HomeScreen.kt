@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.designsystem.component.CircleIcon
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbar
@@ -32,35 +31,30 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Black
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.Gray9
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.home.HomeState.HomeData.HomeList
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainBottomNavItem
+import jun.money.mate.ui.interop.LocalNavigateActionInterop
+import jun.money.mate.ui.interop.rememberShowSnackBar
 import java.time.LocalDate
 
 @Composable
 internal fun HomeRoute(
-    onShowMenu: () -> Unit,
-    onShowNotification: () -> Unit,
-    onShowMainNavScreen: (MainBottomNavItem) -> Unit,
-    onShowIncomeAdd: () -> Unit,
-    onShowSpendingAdd: () -> Unit,
-    onShowSaveAdd: () -> Unit,
-    onShowConsumptionAdd: () -> Unit,
-    onShowSnackBar: (MessageType) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
+    val showSnackBar = rememberShowSnackBar()
+    val navigateAction = LocalNavigateActionInterop.current
 
     val homeState by viewModel.homeState.collectAsStateWithLifecycle()
 
     HomeContent(
         homeState = homeState,
-        onShowMenu = onShowMenu,
-        onShowNotification = onShowNotification,
+        onShowMenu = {  },
+        onShowNotification = {  },
         onHomeListClick = viewModel::navigateTo,
         onShowAddScreen = viewModel::navigateToAdd,
     )
@@ -68,11 +62,11 @@ internal fun HomeRoute(
     LaunchedEffect(Unit) {
         viewModel.homeEffect.collect { effect ->
             when (effect) {
-                HomeEffect.ShowIncomeAddScreen -> onShowIncomeAdd()
-                HomeEffect.ShowSpendingAddScreen -> onShowSpendingAdd()
-                HomeEffect.ShowConsumptionAddScreen -> onShowConsumptionAdd()
-                HomeEffect.ShowSaveAddScreen -> onShowSaveAdd()
-                is HomeEffect.ShowMainNavScreen -> onShowMainNavScreen(effect.navItem)
+                HomeEffect.ShowIncomeAddScreen -> navigateAction.navigateToIncomeAdd()
+                HomeEffect.ShowSpendingAddScreen -> navigateAction.navigateToSpendingPlanAdd()
+                HomeEffect.ShowConsumptionAddScreen -> navigateAction.navigateToConsumptionAdd()
+                HomeEffect.ShowSaveAddScreen -> navigateAction.navigateToSavingAdd()
+                is HomeEffect.ShowMainNavScreen -> navigateAction.navigateBottomNav(effect.navItem)
             }
         }
     }

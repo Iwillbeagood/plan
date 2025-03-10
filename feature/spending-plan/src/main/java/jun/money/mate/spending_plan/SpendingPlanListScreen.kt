@@ -11,18 +11,18 @@ import jun.money.mate.designsystem.etc.EmptyMessage
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.model.etc.ViewMode
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.SpendingPlan
 import jun.money.mate.spending_plan.component.SpendingPlanListBody
 import jun.money.mate.ui.DefaultScaffold
+import jun.money.mate.ui.interop.rememberShowSnackBar
 
 @Composable
 internal fun SpendingPlanListRoute(
     onShowSpendingPlanAdd: () -> Unit,
     onShowSpendingPlanEdit: (id: Long) -> Unit,
-    onShowSnackBar: (MessageType) -> Unit,
     viewModel: SpendingPlanListViewModel = hiltViewModel()
 ) {
+    val showSnackBar = rememberShowSnackBar()
     val spendingPlanListState by viewModel.spendingPlanListState.collectAsStateWithLifecycle()
     val spendingListViewMode by viewModel.spendingListViewMode.collectAsStateWithLifecycle()
 
@@ -40,7 +40,7 @@ internal fun SpendingPlanListRoute(
         viewModel.spendingPlanListEffect.collect { effect ->
             when (effect) {
                 is SpendingPlanListEffect.EditSpendingPlan -> onShowSpendingPlanEdit(effect.id)
-                is SpendingPlanListEffect.ShowSnackBar -> onShowSnackBar(effect.messageType)
+                is SpendingPlanListEffect.ShowSnackBar -> showSnackBar(effect.messageType)
             }
         }
     }

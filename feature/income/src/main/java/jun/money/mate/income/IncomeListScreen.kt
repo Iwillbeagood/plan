@@ -34,12 +34,13 @@ import jun.money.mate.income.contract.IncomeListModalEffect
 import jun.money.mate.income.contract.IncomeListState
 import jun.money.mate.model.LeafOrder
 import jun.money.mate.model.etc.EditMode
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.ui.EditModeButton
+import jun.money.mate.ui.interop.LocalNavigateActionInterop
+import jun.money.mate.ui.interop.rememberPopBackStack
+import jun.money.mate.ui.interop.rememberShowSnackBar
 import jun.money.mate.utils.formatDateBasedOnYear
-import java.time.LocalDate
 import java.time.YearMonth
 
 /**
@@ -48,13 +49,12 @@ import java.time.YearMonth
  * */
 @Composable
 internal fun IncomeListRoute(
-    onGoBack: () -> Unit,
-    onShowIncomeAdd: () -> Unit,
-    onShowIncomeEdit: (id: Long) -> Unit,
-    onShowSnackBar: (MessageType) -> Unit,
     viewModel: IncomeListViewModel = hiltViewModel()
 ) {
     ChangeStatusBarColor(main10)
+    val navigateAction = LocalNavigateActionInterop.current
+    val showSnackBar = rememberShowSnackBar()
+    val popBackStack = rememberPopBackStack()
 
     val incomeListState by viewModel.incomeListState.collectAsStateWithLifecycle()
     val modalEffect by viewModel.modalEffect.collectAsStateWithLifecycle()
@@ -64,8 +64,8 @@ internal fun IncomeListRoute(
         leaves = leaves,
         incomeListState = incomeListState,
         month = viewModel.month,
-        onGoBack = onGoBack,
-        onShowIncomeAdd = onShowIncomeAdd,
+        onGoBack = popBackStack,
+        onShowIncomeAdd = navigateAction::navigateToIncomeAdd,
         onIncomeClick = viewModel::selectIncome,
         onDeleteSelectedIncome = viewModel::showDeleteDialog,
         onEditSelectedIncome = viewModel::editIncome,
@@ -79,8 +79,8 @@ internal fun IncomeListRoute(
     LaunchedEffect(Unit) {
         viewModel.incomeListEffect.collect { effect ->
             when (effect) {
-                is IncomeListEffect.EditIncome -> onShowIncomeEdit(effect.id)
-                is IncomeListEffect.ShowSnackBar -> onShowSnackBar(effect.messageType)
+                is IncomeListEffect.EditIncome -> navigateAction.navigateToIncomeEdit(effect.id)
+                is IncomeListEffect.ShowSnackBar -> showSnackBar(effect.messageType)
             }
         }
     }

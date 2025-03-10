@@ -11,7 +11,6 @@ import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.SpendingCategory
 import jun.money.mate.model.spending.SpendingCategoryType
 import jun.money.mate.model.spending.SpendingType
@@ -19,15 +18,17 @@ import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.spending_plan.component.SpendingCategoryBottomSheet
 import jun.money.mate.spending_plan.component.SpendingPlanAddBody
 import jun.money.mate.ui.AddScaffold
+import jun.money.mate.ui.interop.rememberPopBackStack
+import jun.money.mate.ui.interop.rememberShowSnackBar
 import java.time.LocalDate
 
 @Composable
 internal fun SpendingPlanAddRoute(
     addType: AddType,
-    onGoBack: () -> Unit,
-    onShowSnackBar: (MessageType) -> Unit,
     viewModel: SpendingPlanAddViewModel = hiltViewModel()
 ) {
+    val showSnackBar = rememberShowSnackBar()
+    val popBackStack = rememberPopBackStack()
     val spendingPlanAddState by viewModel.spendingPlanAddState.collectAsStateWithLifecycle()
     val spendingPlanModalEffect by viewModel.spendingPlanModalEffect.collectAsStateWithLifecycle()
 
@@ -37,7 +38,7 @@ internal fun SpendingPlanAddRoute(
             AddType.New -> "추가"
         },
         incomeAddState = spendingPlanAddState,
-        onBackClick = onGoBack,
+        onBackClick = popBackStack,
         onAddIncome = viewModel::addSpendingPlan,
         onIncomeTitleChange = viewModel::titleValueChange,
         onIncomeAmountChange = viewModel::amountValueChange,
@@ -56,8 +57,8 @@ internal fun SpendingPlanAddRoute(
     LaunchedEffect(true) {
         viewModel.spendingPlanAddEffect.collect {
             when (it) {
-                is SpendingPlanAddEffect.ShowSnackBar -> onShowSnackBar(it.messageType)
-                SpendingPlanAddEffect.SpendingPlanAddComplete -> onGoBack()
+                is SpendingPlanAddEffect.ShowSnackBar -> showSnackBar(it.messageType)
+                SpendingPlanAddEffect.SpendingPlanAddComplete -> popBackStack()
             }
         }
     }

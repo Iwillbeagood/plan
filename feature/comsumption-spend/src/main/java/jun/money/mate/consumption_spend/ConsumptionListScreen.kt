@@ -24,19 +24,20 @@ import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.model.consumption.Consumption
 import jun.money.mate.model.consumption.ConsumptionFilter.Companion.selectedFilter
 import jun.money.mate.model.etc.ViewMode
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.ui.DateScaffold
+import jun.money.mate.ui.interop.rememberPopBackStack
+import jun.money.mate.ui.interop.rememberShowSnackBar
 import java.time.LocalDate
 
 @Composable
 internal fun ConsumptionListRoute(
-    onGoBack: () -> Unit,
     onShowConsumptionAdd: () -> Unit,
     onShowSpendingPlanAdd: () -> Unit,
     onShowConsumptionEdit: (id: Long) -> Unit,
-    onShowSnackBar: (MessageType) -> Unit,
     viewModel: ConsumptionListViewModel = hiltViewModel()
 ) {
+    val showSnackBar = rememberShowSnackBar()
+    val popBackStack = rememberPopBackStack()
     val consumptionListState by viewModel.consumptionListState.collectAsStateWithLifecycle()
     val consumptionListViewMode by viewModel.consumptionListViewMode.collectAsStateWithLifecycle()
     val consumptionModalEffect by viewModel.consumptionModalEffect.collectAsStateWithLifecycle()
@@ -67,7 +68,7 @@ internal fun ConsumptionListRoute(
         viewModel.consumptionListEffect.collect { effect ->
             when (effect) {
                 is ConsumptionListEffect.EditSpendingPlan -> onShowConsumptionEdit(effect.id)
-                is ConsumptionListEffect.ShowSnackBar -> onShowSnackBar(effect.messageType)
+                is ConsumptionListEffect.ShowSnackBar -> showSnackBar(effect.messageType)
                 ConsumptionListEffect.ShowConsumptionAdd -> onShowConsumptionAdd()
             }
         }

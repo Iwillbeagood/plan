@@ -3,7 +3,6 @@ package jun.money.mate.save.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.Route
 import jun.money.mate.save.SaveAddRoute
 import jun.money.mate.save.SaveDetailRoute
@@ -23,31 +22,16 @@ fun NavController.navigateToSaveAdd() {
 }
 
 fun NavGraphBuilder.saveNavGraph(
-    onGoBack: () -> Unit,
-    onShowSavingAdd: () -> Unit,
-    onShowSavingDetail: (id: Long) -> Unit,
-    onShowSnackBar: (MessageType) -> Unit
 ) {
     composable<Route.Save.List> {
-        SaveListRoute(
-            onGoBack = onGoBack,
-            onShowSavingAdd = onShowSavingAdd,
-            onShowSavingDetail = onShowSavingDetail,
-            onShowSnackBar = onShowSnackBar
-        )
+        SaveListRoute()
     }
 
     composable<Route.Save.Detail> {
-        SaveDetailRoute(
-            onGoBack = onGoBack,
-            onShowSnackBar = onShowSnackBar
-        )
+        SaveDetailRoute()
     }
 
     composable<Route.Save.Add> {
-        SaveAddRoute(
-            onGoBack = onGoBack,
-            onShowSnackBar = onShowSnackBar
-        )
+        SaveAddRoute()
     }
 }

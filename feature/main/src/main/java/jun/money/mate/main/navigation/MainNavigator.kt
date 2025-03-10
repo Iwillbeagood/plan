@@ -1,4 +1,4 @@
-package jun.money.mate.main.component
+package jun.money.mate.main.navigation
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
@@ -23,8 +23,7 @@ import jun.money.mate.save.navigation.navigateToSaveAdd
 import jun.money.mate.save.navigation.navigateToSaveDetail
 import jun.money.mate.save.navigation.navigateToSaveList
 import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanAdd
-import java.time.LocalDate
-import java.time.Year
+import jun.money.mate.ui.interop.NavigateActionInterop
 import java.time.YearMonth
 
 class MainNavigator(
@@ -38,6 +37,72 @@ class MainNavigator(
         get() = MainBottomNavItem.find { tab ->
             navController.currentDestination?.hasRoute(tab::class) == true
         }
+
+    fun navigationInteropImpl(): NavigateActionInterop {
+        return object : NavigateActionInterop {
+            override fun popBackStack() {
+                popBackStackIfNotHome()
+            }
+
+            override fun navigateBottomNav(item: MainBottomNavItem) {
+                if (currentItem == item) return
+
+                val navOptions = navOptions {
+                    popUpTo(0) {
+                        inclusive = true
+                    }
+                    restoreState = true
+                }
+
+                when (item) {
+                    MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
+                    MainBottomNavItem.Finance -> navController.navigateToFinance(navOptions)
+                    MainBottomNavItem.Calendar -> TODO()
+                    MainBottomNavItem.Budget -> TODO()
+                }
+            }
+
+            override fun navigateToIncomeList(date: YearMonth) {
+                navController.navigateToIncomeList(date)
+            }
+
+            override fun navigateToSaveList(date: YearMonth) {
+                navController.navigateToSaveList(date)
+            }
+
+            override fun navigateToIncomeAdd() {
+                navController.navigateToIncomeAdd()
+            }
+
+            override fun navigateToIncomeEdit(id: Long) {
+                navController.navigateToIncomeEdit(id)
+            }
+
+            override fun navigateToSpendingPlanAdd() {
+                navController.navigateToSpendingPlanAdd(AddType.New)
+            }
+
+            override fun navigateToConsumptionAdd() {
+                navController.navigateToConsumptionAdd(AddType.New)
+            }
+
+            override fun navigateToConsumptionEdit(id: Long) {
+                navController.navigateToConsumptionAdd(AddType.Edit(id))
+            }
+
+            override fun navigateToSpendingPlanEdit(id: Long) {
+                navController.navigateToSpendingPlanAdd(AddType.Edit(id))
+            }
+
+            override fun navigateToSavingAdd() {
+                navController.navigateToSaveAdd()
+            }
+
+            override fun navigateToSavingDetail(id: Long) {
+                navController.navigateToSaveDetail(id)
+            }
+        }
+    }
 
     fun navigateTo(menuItem: MainBottomNavItem) {
         if (currentItem == menuItem) return
@@ -57,22 +122,6 @@ class MainNavigator(
         }
     }
 
-    fun navigateToIncomeList(date: YearMonth) {
-        navController.navigateToIncomeList(date)
-    }
-
-    fun navigateToSaveList(date: YearMonth) {
-        navController.navigateToSaveList(date)
-    }
-
-    fun navigateToIncomeAdd() {
-        navController.navigateToIncomeAdd()
-    }
-
-    fun navigateToIncomeEdit(id: Long) {
-        navController.navigateToIncomeEdit(id)
-    }
-
     fun navigateToSpendingPlanAdd() {
         navController.navigateToSpendingPlanAdd(AddType.New)
     }
@@ -87,14 +136,6 @@ class MainNavigator(
 
     fun navigateToSpendingPlanEdit(id: Long) {
         navController.navigateToSpendingPlanAdd(AddType.Edit(id))
-    }
-
-    fun navigateToSavingAdd() {
-        navController.navigateToSaveAdd()
-    }
-
-    fun navigateToSavingDetail(id: Long) {
-        navController.navigateToSaveDetail(id)
     }
 
     fun popBackStackIfNotHome(): Boolean {

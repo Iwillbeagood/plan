@@ -4,11 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.navOptions
 import androidx.navigation.toRoute
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
-import jun.money.mate.navigation.Route
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.navigation.utils.composableType
 import jun.money.mate.spending_plan.SpendingPlanAddRoute
@@ -23,16 +20,13 @@ fun NavController.navigateToSpendingPlanAdd(addType: AddType) {
 }
 
 fun NavGraphBuilder.spendingPlanNavGraph(
-    onGoBack: () -> Unit,
     onShowSpendingPlanAdd: () -> Unit,
     onShowSpendingPlanEdit: (id: Long) -> Unit,
-    onShowErrorSnackBar: (MessageType) -> Unit,
 ) {
     composable<MainTabRoute.SpendingPlan.List> {
         SpendingPlanListRoute(
             onShowSpendingPlanAdd = onShowSpendingPlanAdd,
             onShowSpendingPlanEdit = onShowSpendingPlanEdit,
-            onShowSnackBar = onShowErrorSnackBar
         )
     }
 
@@ -40,9 +34,7 @@ fun NavGraphBuilder.spendingPlanNavGraph(
         val addType = backStackEntry.toRoute<MainTabRoute.SpendingPlan.Add>().addType
 
         SpendingPlanAddRoute(
-            addType = addType,
-            onGoBack = onGoBack,
-            onShowSnackBar = onShowErrorSnackBar,
+            addType = addType
         )
     }
 }
