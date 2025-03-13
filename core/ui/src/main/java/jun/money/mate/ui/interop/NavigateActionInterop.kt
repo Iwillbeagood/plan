@@ -21,4 +21,6 @@ interface NavigateActionInterop {
     fun navigateToSpendingPlanEdit(id: Long)
     fun navigateToSavingAdd()
     fun navigateToSavingDetail(id: Long)
+    fun navigateToChallengeAdd()
+    fun navigateToChallengeDetail(id: Long)
 }

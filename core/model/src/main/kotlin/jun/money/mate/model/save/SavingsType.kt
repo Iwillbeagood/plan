@@ -1,6 +1,6 @@
 package jun.money.mate.model.save
 
-import jun.money.mate.model.YearMonthSerializer
+import jun.money.mate.model.serializer.YearMonthSerializer
 import jun.money.mate.model.save.SavingsType.PeriodType.Companion.periodEndYearMonth
 import kotlinx.serialization.Serializable
 import java.time.YearMonth

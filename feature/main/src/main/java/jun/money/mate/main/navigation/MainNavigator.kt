@@ -19,9 +19,9 @@ import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 import jun.money.mate.navigation.argument.AddType
-import jun.money.mate.save.navigation.navigateToSaveAdd
-import jun.money.mate.save.navigation.navigateToSaveDetail
-import jun.money.mate.save.navigation.navigateToSaveList
+import jun.money.mate.challenge.navigation.navigateToSaveAdd
+import jun.money.mate.challenge.navigation.navigateToSaveDetail
+import jun.money.mate.challenge.navigation.navigateToSaveList
 import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanAdd
 import jun.money.mate.ui.interop.NavigateActionInterop
 import java.time.YearMonth
@@ -62,45 +62,18 @@ class MainNavigator(
                 }
             }
 
-            override fun navigateToIncomeList(date: YearMonth) {
-                navController.navigateToIncomeList(date)
-            }
-
-            override fun navigateToSaveList(date: YearMonth) {
-                navController.navigateToSaveList(date)
-            }
-
-            override fun navigateToIncomeAdd() {
-                navController.navigateToIncomeAdd()
-            }
-
-            override fun navigateToIncomeEdit(id: Long) {
-                navController.navigateToIncomeEdit(id)
-            }
-
-            override fun navigateToSpendingPlanAdd() {
-                navController.navigateToSpendingPlanAdd(AddType.New)
-            }
-
-            override fun navigateToConsumptionAdd() {
-                navController.navigateToConsumptionAdd(AddType.New)
-            }
-
-            override fun navigateToConsumptionEdit(id: Long) {
-                navController.navigateToConsumptionAdd(AddType.Edit(id))
-            }
-
-            override fun navigateToSpendingPlanEdit(id: Long) {
-                navController.navigateToSpendingPlanAdd(AddType.Edit(id))
-            }
-
-            override fun navigateToSavingAdd() {
-                navController.navigateToSaveAdd()
-            }
-
-            override fun navigateToSavingDetail(id: Long) {
-                navController.navigateToSaveDetail(id)
-            }
+            override fun navigateToIncomeList(date: YearMonth) = navController.navigateToIncomeList(date)
+            override fun navigateToSaveList(date: YearMonth) = navController.navigateToSaveList(date)
+            override fun navigateToIncomeAdd() = navController.navigateToIncomeAdd()
+            override fun navigateToIncomeEdit(id: Long) = navController.navigateToIncomeEdit(id)
+            override fun navigateToSpendingPlanAdd() = navController.navigateToSpendingPlanAdd(AddType.New)
+            override fun navigateToConsumptionAdd() = navController.navigateToConsumptionAdd(AddType.New)
+            override fun navigateToConsumptionEdit(id: Long) = navController.navigateToConsumptionAdd(AddType.Edit(id))
+            override fun navigateToSpendingPlanEdit(id: Long) = navController.navigateToSpendingPlanAdd(AddType.Edit(id))
+            override fun navigateToSavingAdd() = navController.navigateToSaveAdd()
+            override fun navigateToSavingDetail(id: Long) = navController.navigateToSaveDetail(id)
+            override fun navigateToChallengeAdd() {}
+            override fun navigateToChallengeDetail(id: Long) {}
         }
     }
 

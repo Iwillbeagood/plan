@@ -1,4 +1,4 @@
-package jun.money.mate.model
+package jun.money.mate.model.serializer
 
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*

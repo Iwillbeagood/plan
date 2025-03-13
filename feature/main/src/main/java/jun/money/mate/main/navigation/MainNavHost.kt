@@ -18,7 +18,7 @@ import jun.money.mate.home.navigation.homeNavGraph
 import jun.money.mate.income.navigation.incomeNavGraph
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.Route
-import jun.money.mate.save.navigation.saveNavGraph
+import jun.money.mate.challenge.navigation.saveNavGraph
 import jun.money.mate.spending_plan.navigation.spendingPlanNavGraph
 import jun.money.mate.splash.navigation.splashNavGraph
 

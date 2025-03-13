@@ -36,9 +36,9 @@ fun ProgressIndicator(
 }
 
 @Composable
-private fun Scrim(
-    color: Color,
-    visible: Boolean
+fun Scrim(
+    visible: Boolean,
+    color: Color = Color.Gray,
 ) {
     if (color.isSpecified) {
         val alpha by animateFloatAsState(

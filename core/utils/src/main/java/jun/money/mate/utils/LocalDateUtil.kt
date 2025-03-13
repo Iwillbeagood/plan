@@ -18,9 +18,9 @@ fun formatDateBasedOnYear(date: LocalDate): String {
     val currentYear = LocalDate.now().year
 
     return if (date.year == currentYear) {
-        date.format(DateTimeFormatter.ofPattern("M월")) // 올해면 "2월"
+        date.format(DateTimeFormatter.ofPattern("M월 dd일")) // 올해면 "2월"
     } else {
-        date.format(DateTimeFormatter.ofPattern("yyyy년 M월")) // 작년 또는 그 외 연도면 "2024년 3월"
+        date.format(DateTimeFormatter.ofPattern("yyyy년 M월 dd일")) // 작년 또는 그 외 연도면 "2024년 3월"
     }
 }
 

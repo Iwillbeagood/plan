@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.domain.GetFinanceUsecase
 import jun.money.mate.model.income.IncomeList
+import jun.money.mate.model.save.MoneyChallenge
 import jun.money.mate.model.save.SavePlanList
-import jun.money.mate.navigation.MainBottomNavItem
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,8 +19,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.YearMonth
 import javax.inject.Inject
 
@@ -38,6 +36,7 @@ internal class FinanceViewModel @Inject constructor(
         FinanceState.FinanceData(
             incomeList = it.incomeList,
             savePlanList = it.savePlanList,
+            challengeList = it.challenge
         )
     }.stateIn(
         scope = viewModelScope,
@@ -71,6 +70,7 @@ internal sealed interface FinanceState {
     data class FinanceData(
         val incomeList: IncomeList,
         val savePlanList: SavePlanList,
+        val challengeList: List<MoneyChallenge>
     ) : FinanceState
 }
 
