@@ -33,7 +33,7 @@ import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.AddTitleContent
-import jun.money.mate.ui.interop.rememberPopBackStack
+import jun.money.mate.ui.interop.LocalNavigateActionInterop
 import jun.money.mate.ui.interop.rememberShowSnackBar
 import java.time.LocalDate
 
@@ -43,7 +43,7 @@ internal fun ConsumptionAddRoute(
     viewModel: ConsumptionAddViewModel = hiltViewModel()
 ) {
     val showSnackBar = rememberShowSnackBar()
-    val popBackStack = rememberPopBackStack()
+    val navigateAction = LocalNavigateActionInterop.current
     val consumptionAddState by viewModel.consumptionAddState.collectAsStateWithLifecycle()
     val consumptionModalEffect by viewModel.consumptionModalEffect.collectAsStateWithLifecycle()
 
@@ -53,7 +53,7 @@ internal fun ConsumptionAddRoute(
             AddType.New -> "추가"
         },
         consumptionAddState = consumptionAddState,
-        onBackClick = popBackStack,
+        onBackClick = navigateAction::popBackStack,
         onConsumptionAdd = viewModel::addSpendingPlan,
         onTitleChange = viewModel::titleValueChange,
         onAmountChange = viewModel::amountValueChange,
@@ -72,7 +72,7 @@ internal fun ConsumptionAddRoute(
         viewModel.consumptionAddEffect.collect {
             when (it) {
                 is ConsumptionAddEffect.ShowSnackBar -> showSnackBar(it.messageType)
-                ConsumptionAddEffect.SpendingPlanAddComplete -> popBackStack()
+                ConsumptionAddEffect.SpendingPlanAddComplete -> navigateAction.popBackStack()
             }
         }
     }

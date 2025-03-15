@@ -32,10 +32,10 @@ import jun.money.mate.save.contract.SaveAddEffect
 import jun.money.mate.save.contract.SaveAddModalEffect
 import jun.money.mate.save.contract.SaveAddState
 import jun.money.mate.ui.AddScaffold
+import jun.money.mate.ui.interop.LocalNavigateActionInterop
+import jun.money.mate.ui.interop.rememberShowSnackBar
 import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.ui.number.ValueState
-import jun.money.mate.ui.interop.rememberPopBackStack
-import jun.money.mate.ui.interop.rememberShowSnackBar
 
 internal enum class SaveAddStep(
     val message: String
@@ -52,7 +52,7 @@ internal fun SaveAddRoute(
     ChangeStatusBarColor(MaterialTheme.colorScheme.background)
 
     val showSnackBar = rememberShowSnackBar()
-    val popBackStack = rememberPopBackStack()
+    val navigateAction = LocalNavigateActionInterop.current
     val saveAddState by viewModel.saveAddState.collectAsStateWithLifecycle()
     val saveModalEffect by viewModel.saveAddModalEffect.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
@@ -63,7 +63,7 @@ internal fun SaveAddRoute(
             SaveAddStep.Type -> "추가"
             else -> "다음"
         },
-        onGoBack = popBackStack,
+        onGoBack = navigateAction::popBackStack,
         onComplete = viewModel::nextStep,
     ) {
         SaveAddScreen(
@@ -86,7 +86,7 @@ internal fun SaveAddRoute(
         viewModel.saveAddEffect.collect {
             when (it) {
                 is SaveAddEffect.ShowSnackBar -> showSnackBar(it.messageType)
-                SaveAddEffect.SaveAddComplete -> popBackStack()
+                SaveAddEffect.SaveAddComplete -> navigateAction.popBackStack()
                 SaveAddEffect.RemoveTextFocus -> focusManager.clearFocus()
             }
         }

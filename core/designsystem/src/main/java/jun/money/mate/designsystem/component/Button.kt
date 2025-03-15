@@ -163,6 +163,7 @@ fun TextButton(
         shape = RoundedCornerShape(5.dp),
         onClick = onClick,
         color = color,
+        shadowElevation = 2.dp,
         border = BorderStroke(1.dp, borderColor),
         modifier = modifier
     ) {

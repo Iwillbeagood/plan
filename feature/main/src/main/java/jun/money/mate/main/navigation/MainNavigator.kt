@@ -9,6 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import jun.money.mate.challenge.navigation.navigateToChallengeAdd
+import jun.money.mate.challenge.navigation.navigateToChallengeDetail
 import jun.money.mate.consumption_spend.navigation.navigateToConsumptionAdd
 import jun.money.mate.finance.navigation.navigateToFinance
 import jun.money.mate.home.navigation.navigateToHome
@@ -19,9 +21,9 @@ import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
 import jun.money.mate.navigation.argument.AddType
-import jun.money.mate.challenge.navigation.navigateToSaveAdd
-import jun.money.mate.challenge.navigation.navigateToSaveDetail
-import jun.money.mate.challenge.navigation.navigateToSaveList
+import jun.money.mate.save.navigation.navigateToSaveAdd
+import jun.money.mate.save.navigation.navigateToSaveDetail
+import jun.money.mate.save.navigation.navigateToSaveList
 import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanAdd
 import jun.money.mate.ui.interop.NavigateActionInterop
 import java.time.YearMonth
@@ -72,8 +74,8 @@ class MainNavigator(
             override fun navigateToSpendingPlanEdit(id: Long) = navController.navigateToSpendingPlanAdd(AddType.Edit(id))
             override fun navigateToSavingAdd() = navController.navigateToSaveAdd()
             override fun navigateToSavingDetail(id: Long) = navController.navigateToSaveDetail(id)
-            override fun navigateToChallengeAdd() {}
-            override fun navigateToChallengeDetail(id: Long) {}
+            override fun navigateToChallengeAdd() = navController.navigateToChallengeAdd()
+            override fun navigateToChallengeDetail(id: Long) = navController.navigateToChallengeDetail(id)
         }
     }
 

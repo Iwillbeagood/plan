@@ -264,26 +264,27 @@ private fun FinanceInfos(
         }
         VerticalSpacer(30.dp)
         HorizontalDivider(10.dp)
-        VerticalSpacer(40.dp)
+        VerticalSpacer(38.dp)
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 32.dp)
+            modifier = Modifier.padding(start = 20.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.Bottom,
             ) {
                 Text(
-                    text = "머니 챌린지",
+                    text = "저축 챌린지",
                     style = TypoTheme.typography.titleNormalM,
                 )
                 HorizontalSpacer(16.dp)
                 Text(
                     text = "목표를 세우고 도전해보세요!",
-                    style = TypoTheme.typography.titleSmallR,
+                    style = TypoTheme.typography.titleSmallM,
                     color = MaterialTheme.colorScheme.primary,
                 )
             }
         }
+        VerticalSpacer(16.dp)
         MoneyChallengeLazyColumn(
             moneyChallengeList = moneyChallengeList,
             onAddClick = onAddClick,

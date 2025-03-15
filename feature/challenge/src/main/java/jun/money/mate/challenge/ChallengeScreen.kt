@@ -47,7 +47,6 @@ import jun.money.mate.model.save.ChallengeProgress
 import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.res.R
 import jun.money.mate.ui.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.interop.rememberPopBackStack
 import jun.money.mate.ui.interop.rememberShowSnackBar
 import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.YearMonth
@@ -60,7 +59,6 @@ internal fun SaveListRoute(
 
     val navigateAction = LocalNavigateActionInterop.current
     val showSnackBar = rememberShowSnackBar()
-    val popBackStack = rememberPopBackStack()
     val savingListState by viewModel.savingListState.collectAsStateWithLifecycle()
 
     SavingListScreen(
@@ -69,7 +67,7 @@ internal fun SaveListRoute(
         onShowDetail = navigateAction::navigateToSavingDetail,
         onSavingAdd = navigateAction::navigateToSavingAdd,
         onExecuteChange = viewModel::executeChange,
-        onGoBack = popBackStack,
+        onGoBack = navigateAction::popBackStack,
     )
 
     LaunchedEffect(Unit) {

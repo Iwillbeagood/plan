@@ -46,8 +46,8 @@ import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavingsType.Companion.title
 import jun.money.mate.save.contract.SaveDetailEffect
 import jun.money.mate.save.contract.SaveDetailModalEffect
+import jun.money.mate.ui.interop.LocalNavigateActionInterop
 import jun.money.mate.ui.number.NumberKeyboard
-import jun.money.mate.ui.interop.rememberPopBackStack
 import jun.money.mate.ui.interop.rememberShowSnackBar
 
 @Composable
@@ -57,14 +57,14 @@ internal fun SaveDetailRoute(
     ChangeStatusBarColor(MaterialTheme.colorScheme.background)
 
     val showSnackBar = rememberShowSnackBar()
-    val popBackStack = rememberPopBackStack()
+    val navigateAction = LocalNavigateActionInterop.current
     val saveDetailState by viewModel.saveDetailState.collectAsStateWithLifecycle()
     val saveModalEffect by viewModel.modalEffect.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
             TopAppbar(
-                onBackEvent = popBackStack,
+                onBackEvent = navigateAction::popBackStack,
                 title = "저축 수정",
                 navigationType = TopAppbarType.Custom {
                     Text(
@@ -118,7 +118,7 @@ internal fun SaveDetailRoute(
         viewModel.saveEffect.collect {
             when (it) {
                 is SaveDetailEffect.ShowSnackBar -> showSnackBar(it.messageType)
-                SaveDetailEffect.SaveDetailComplete -> popBackStack()
+                SaveDetailEffect.SaveDetailComplete -> navigateAction.popBackStack()
             }
         }
     }

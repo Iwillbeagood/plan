@@ -56,9 +56,6 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-                override fun onPopBackStack() {
-                    navigator.popBackStackIfNotHome()
-                }
             }
 
             CompositionLocalProvider(

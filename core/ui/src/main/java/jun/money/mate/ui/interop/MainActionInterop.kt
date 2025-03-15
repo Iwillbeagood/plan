@@ -12,7 +12,6 @@ interface MainActionInterop {
     fun onFinish()
     fun onRestart()
     fun onShowSnackBar(messageType: MessageType)
-    fun onPopBackStack()
 }
 
 @Composable
@@ -36,13 +35,5 @@ fun rememberAppRestart(): () -> Unit {
     val mainActionInterop = LocalMainActionInterop.current
     return {
         mainActionInterop.onRestart()
-    }
-}
-
-@Composable
-fun rememberPopBackStack(): () -> Unit {
-    val mainActionInterop = LocalMainActionInterop.current
-    return {
-        mainActionInterop.onPopBackStack()
     }
 }

@@ -3,13 +3,15 @@ package jun.money.mate.challenge
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.domain.AddSaveUsecase
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.model.save.SavingsType
-import jun.money.mate.challenge.contract.SaveAddEffect
-import jun.money.mate.challenge.contract.SaveAddState
-import jun.money.mate.challenge.contract.SaveAddModalEffect
+import jun.money.mate.challenge.contract.ChallengeAddEffect
+import jun.money.mate.challenge.contract.ChallengeAddState
+import jun.money.mate.challenge.contract.ChallengeModalEffect
+import jun.money.mate.domain.AddChallengeUsecase
+import jun.money.mate.model.save.ChallengeType
 import jun.money.mate.ui.number.ValueState
 import jun.money.mate.ui.number.ValueState.Companion.value
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,26 +22,27 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.ceil
 
 @HiltViewModel
 internal class ChallengeAddViewModel @Inject constructor(
-    private val addSaveUsecase: AddSaveUsecase
+    private val addChallengeUsecase: AddChallengeUsecase
 ) : ViewModel() {
 
-    var addStep = mutableStateOf(SaveAddStep.entries.first())
+    var currentStep = mutableStateOf(ChallengeStep.entries.first())
         private set
 
-    var addSteps = mutableStateOf(listOf(SaveAddStep.entries.first()))
+    var addSteps = mutableStateOf(listOf(ChallengeStep.entries.first()))
         private set
 
-    private val _saveAddState = MutableStateFlow(SaveAddState())
-    val saveAddState: StateFlow<SaveAddState> get() = _saveAddState
+    private val _challengeAddState = MutableStateFlow(ChallengeAddState())
+    val challengeAddState: StateFlow<ChallengeAddState> get() = _challengeAddState
 
-    private val _saveAddModalEffect = MutableStateFlow<SaveAddModalEffect>(SaveAddModalEffect.Idle)
-    val saveAddModalEffect: StateFlow<SaveAddModalEffect> get() = _saveAddModalEffect
+    private val _challengeModalEffect = MutableStateFlow<ChallengeModalEffect>(ChallengeModalEffect.Idle)
+    val challengeModalEffect: StateFlow<ChallengeModalEffect> get() = _challengeModalEffect
 
-    private val _saveAddEffect = MutableSharedFlow<SaveAddEffect>()
-    val saveAddEffect: SharedFlow<SaveAddEffect> get() = _saveAddEffect.asSharedFlow()
+    private val _challengeAddEffect = MutableSharedFlow<ChallengeAddEffect>()
+    val challengeAddEffect: SharedFlow<ChallengeAddEffect> get() = _challengeAddEffect.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -47,101 +50,143 @@ internal class ChallengeAddViewModel @Inject constructor(
     }
 
     fun nextStep() {
-        val state = saveAddState.value
-        when (val step = addStep.value) {
-            SaveAddStep.Category -> {
-                changeStep(SaveAddStep.Amount)
-                showNumberKeyboard()
-            }
-            SaveAddStep.Amount -> {
-                if (state.category == null) {
-                    backToStep(SaveAddStep.Category)
-                    dismiss()
-                    return
-                }
-
-                if (state.amount <= 0) {
+        val state = challengeAddState.value
+        when (val step = currentStep.value) {
+            ChallengeStep.GoalAmount -> {
+                if (state.goalAmount <= 0) {
                     showSnackBar(MessageType.Message(step.message))
                     showNumberKeyboard()
                     return
                 }
-
-                changeStep(SaveAddStep.Type)
+                changeStep(ChallengeStep.AmountCount)
                 dismiss()
             }
-            SaveAddStep.Type -> addSave()
+            ChallengeStep.AmountCount -> {
+                if (state.amount.isEmpty()) {
+                    showSnackBar(MessageType.Message(step.message))
+                    return
+                }
+                changeStep(ChallengeStep.Remaining)
+            }
+            ChallengeStep.Remaining -> {
+                if (state.challengeType == null) {
+                    showSnackBar(MessageType.Message(step.message))
+                    return
+                }
+                addChallenge()
+            }
         }
+
+        removeTextFocus()
+        scrollBottom()
     }
 
-    private fun changeStep(step: SaveAddStep) {
-        addStep.value = step
+    private fun changeStep(step: ChallengeStep) {
+        currentStep.value = step
         addSteps.value += step
     }
 
-    private fun backToStep(step: SaveAddStep) {
-        addSteps.value -= addStep.value
-        addStep.value = step
-    }
-
-    private fun addSave() {
-        val state = saveAddState.value
+    private fun addChallenge() {
+        val state = challengeAddState.value
         viewModelScope.launch {
-            addSaveUsecase(
-                amount = state.amount,
-                day = state.day,
-                category = state.category,
+            addChallengeUsecase(
+                title = state.title,
+                goalAmount = state.goalAmount,
+                amount = state.amount.toLong(),
+                count = state.count.toInt(),
+                challengeType = state.challengeType!!,
                 onSuccess = {
-                    showSnackBar(MessageType.Message("저축 계획이 추가되었습니다."))
-                    incomeAddComplete()
+                    showSnackBar(MessageType.Message("도전이 추가되었습니다."))
+                    complete()
                 },
                 onError = ::showSnackBar
             )
         }
     }
 
-    fun amountValueChange(value: ValueState) {
-        _saveAddState.update {
+    fun goalAmountValueChange(value: ValueState) {
+        _challengeAddState.update {
             it.copy(
-                amount = value.value(it.amountString).toLongOrNull() ?: 0
+                goalAmount = value.value(it.goalAmountString).toLongOrNull() ?: 0
             )
         }
     }
 
-    fun daySelected(day: String) {
-        _saveAddState.update {
-            it.copy(day = day.toInt())
+    fun challengeTypeSelected(challengeType: ChallengeType) {
+        _challengeAddState.update {
+            it.copy(challengeType = challengeType)
         }
     }
 
-    fun categorySelected(savingsType: SavingsType?) {
-        _saveAddState.update { it.copy(category = savingsType) }
+    fun amountValueChange(value: String) {
+        _challengeAddState.update {
+            it.copy(
+                amount = value,
+                count = calculatePaymentCount(it.goalAmount, value.toLongOrNull() ?: 0).toString()
+            )
+        }
+    }
 
-        nextStep()
+    fun countValueChange(value: String) {
+        _challengeAddState.update {
+            it.copy(
+                amount = calculatePaymentAmount(it.goalAmount, value.toIntOrNull() ?: 0).toString(),
+                count = value
+            )
+        }
+    }
+
+
+    fun titleChange(value: String) {
+        _challengeAddState.update {
+            it.copy(title = value)
+        }
     }
 
     fun showNumberKeyboard() {
-        _saveAddModalEffect.update { SaveAddModalEffect.ShowNumberKeyboard }
+        removeTextFocus()
+        _challengeModalEffect.update { ChallengeModalEffect.ShowNumberKeyboard }
     }
 
     private fun dismiss() {
-        _saveAddModalEffect.update { SaveAddModalEffect.Idle }
+        _challengeModalEffect.update { ChallengeModalEffect.Idle }
     }
 
     fun numberKeyboardDismiss() {
         nextStep()
-        _saveAddModalEffect.update { SaveAddModalEffect.Idle }
+        _challengeModalEffect.update { ChallengeModalEffect.Idle }
     }
 
     private fun showSnackBar(messageType: MessageType) {
         viewModelScope.launch {
-            _saveAddEffect.emit(SaveAddEffect.ShowSnackBar(messageType))
+            _challengeAddEffect.emit(ChallengeAddEffect.ShowSnackBar(messageType))
         }
     }
 
-    private fun incomeAddComplete() {
+    private fun removeTextFocus() {
         viewModelScope.launch {
-            _saveAddEffect.emit(SaveAddEffect.SaveAddComplete)
+            _challengeAddEffect.emit(ChallengeAddEffect.RemoveTextFocus)
         }
+    }
+
+    private fun scrollBottom() {
+        viewModelScope.launch {
+            _challengeAddEffect.emit(ChallengeAddEffect.ScrollToBottom)
+        }
+    }
+
+    private fun complete() {
+        viewModelScope.launch {
+            _challengeAddEffect.emit(ChallengeAddEffect.ChallengeAddComplete)
+        }
+    }
+
+    private fun calculatePaymentCount(targetAmount: Long, paymentAmount: Long): Int {
+        return ceil(targetAmount.toDouble() / paymentAmount.toDouble()).toInt()
+    }
+
+    private fun calculatePaymentAmount(targetAmount: Long, paymentCount: Int): Int {
+        return ceil(targetAmount.toDouble() / paymentCount.toDouble()).toInt()
     }
 }
 

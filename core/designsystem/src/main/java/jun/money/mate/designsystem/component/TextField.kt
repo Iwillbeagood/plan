@@ -2,6 +2,7 @@ package jun.money.mate.designsystem.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,7 +50,9 @@ fun DefaultTextField(
     focusRequester: FocusRequester = FocusRequester(),
     hint: String = "",
     label: String = "",
-    textStyle: TextStyle = TypoTheme.typography.titleSmallR,
+    unit: String = "",
+    textStyle: TextStyle = TypoTheme.typography.titleMediumR,
+    textAlign: TextAlign = TextAlign.Start,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
@@ -57,20 +61,22 @@ fun DefaultTextField(
 
     BasicTextField(
         value = value,
-        textStyle = textStyle,
+        textStyle = textStyle.copy(
+            textAlign = textAlign,
+        ),
         onValueChange = onValueChange,
         singleLine = true,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         modifier = modifier
-            .fillMaxWidth()
             .focusRequester(requester)
             .onFocusChanged {
                 isFocus = it.isFocused
             }
     ) { innerTextField ->
         Surface(
-            shape = RoundedCornerShape(5.dp),
+            shape = RoundedCornerShape(8.dp),
+            shadowElevation = 2.dp,
             color = MaterialTheme.colorScheme.surfaceDim,
             border = BorderStroke(1.dp, Gray6),
         ) {
@@ -82,8 +88,11 @@ fun DefaultTextField(
                     if (label.isNotEmpty()) {
                         Text(
                             text = label,
-                            style = TypoTheme.typography.labelLargeR,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style = TypoTheme.typography.labelMediumM.copy(
+                                textAlign = textAlign
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
                     VerticalSpacer(2.dp)
@@ -91,10 +100,23 @@ fun DefaultTextField(
                         if (value.isEmpty() && !isFocus) {
                             Text(
                                 text = hint,
-                                style = textStyle
+                                style = textStyle.copy(
+                                    textAlign = textAlign
+                                )
                             )
                         }
-                        innerTextField()
+                        Row(
+                            horizontalArrangement = if (textAlign == TextAlign.Start) Arrangement.Start else Arrangement.End,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            innerTextField()
+                            Text(
+                                text = unit,
+                                style = textStyle.copy(
+                                    textAlign = textAlign
+                                )
+                            )
+                        }
                     }
                 }
 

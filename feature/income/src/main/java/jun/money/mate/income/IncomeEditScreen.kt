@@ -35,8 +35,8 @@ import jun.money.mate.income.contract.IncomeModalEffect
 import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.income.Income
 import jun.money.mate.ui.AddScaffold
+import jun.money.mate.ui.interop.LocalNavigateActionInterop
 import jun.money.mate.ui.number.NumberKeyboard
-import jun.money.mate.ui.interop.rememberPopBackStack
 import jun.money.mate.ui.interop.rememberShowSnackBar
 import java.time.LocalDate
 import java.time.YearMonth
@@ -48,7 +48,7 @@ internal fun IncomeEditRoute(
     ChangeStatusBarColor(MaterialTheme.colorScheme.background)
 
     val showSnackBar = rememberShowSnackBar()
-    val popBackStack = rememberPopBackStack()
+    val navigateAction = LocalNavigateActionInterop.current
     val editState by viewModel.editState.collectAsStateWithLifecycle()
     val incomeModalEffect by viewModel.incomeModalEffect.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -56,7 +56,7 @@ internal fun IncomeEditRoute(
 
     AddScaffold(
         buttonText = "수정",
-        onGoBack = popBackStack,
+        onGoBack = navigateAction::popBackStack,
         onComplete = viewModel::editIncome,
     ) {
         IncomeAddContent(
@@ -74,7 +74,7 @@ internal fun IncomeEditRoute(
         viewModel.incomeEffect.collect {
             when (it) {
                 is IncomeEffect.ShowSnackBar -> showSnackBar(it.messageType)
-                IncomeEffect.IncomeComplete -> popBackStack()
+                IncomeEffect.IncomeComplete -> navigateAction.popBackStack()
                 IncomeEffect.DismissKeyboard -> keyboardController?.hide()
                 IncomeEffect.RemoveTitleFocus -> focusManager.clearFocus()
             }

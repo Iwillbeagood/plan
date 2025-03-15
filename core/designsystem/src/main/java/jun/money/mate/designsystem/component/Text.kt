@@ -1,5 +1,6 @@
 package jun.money.mate.designsystem.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import jun.money.mate.designsystem.theme.Gray6
+import jun.money.mate.designsystem.theme.Gray7
 import jun.money.mate.designsystem.theme.TypoTheme
 
 @Composable
@@ -24,6 +27,7 @@ fun UnderLineText(
     hint: String = "",
     textAlign: TextAlign = TextAlign.Start,
     textStyle: TextStyle = TypoTheme.typography.titleMediumB,
+    isSelected: Boolean = false,
     content: @Composable () -> Unit = {}
 ) {
     Column(
@@ -31,7 +35,11 @@ fun UnderLineText(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+            modifier = Modifier
+                .background(
+                    color = if (isSelected) Gray7 else MaterialTheme.colorScheme.surface,
+                )
+                .padding(horizontal = 16.dp, vertical = 10.dp)
         ) {
             Box(
                 modifier = Modifier.weight(1f)

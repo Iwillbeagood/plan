@@ -38,7 +38,6 @@ import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.ui.EditModeButton
 import jun.money.mate.ui.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.interop.rememberPopBackStack
 import jun.money.mate.ui.interop.rememberShowSnackBar
 import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.YearMonth
@@ -54,7 +53,6 @@ internal fun IncomeListRoute(
     ChangeStatusBarColor(main10)
     val navigateAction = LocalNavigateActionInterop.current
     val showSnackBar = rememberShowSnackBar()
-    val popBackStack = rememberPopBackStack()
 
     val incomeListState by viewModel.incomeListState.collectAsStateWithLifecycle()
     val modalEffect by viewModel.modalEffect.collectAsStateWithLifecycle()
@@ -64,7 +62,7 @@ internal fun IncomeListRoute(
         leaves = leaves,
         incomeListState = incomeListState,
         month = viewModel.month,
-        onGoBack = popBackStack,
+        onGoBack = navigateAction::popBackStack,
         onShowIncomeAdd = navigateAction::navigateToIncomeAdd,
         onIncomeClick = viewModel::selectIncome,
         onDeleteSelectedIncome = viewModel::showDeleteDialog,

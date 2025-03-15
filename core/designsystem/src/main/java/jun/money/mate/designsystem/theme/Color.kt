@@ -34,7 +34,8 @@ val Black3 = Color(0xFF2D2D2D)
 // Line Color
 val LightBlue1 = Color(0xFFA7C7E7)
 val LightBlue2 = Color(0xFFdee0e4)
-val ThickBlue1 = Color(0xFF016acb)
+val Blue1 = Color(0xFF016acb)
+val Blue2 = Color(0xFF9EC5E5)
 
 val LightGray = Color(0xFFF7F7F7)
 val LightGray2 = Color(0xFFF5F5F5)

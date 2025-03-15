@@ -18,7 +18,7 @@ import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.spending_plan.component.SpendingCategoryBottomSheet
 import jun.money.mate.spending_plan.component.SpendingPlanAddBody
 import jun.money.mate.ui.AddScaffold
-import jun.money.mate.ui.interop.rememberPopBackStack
+import jun.money.mate.ui.interop.LocalNavigateActionInterop
 import jun.money.mate.ui.interop.rememberShowSnackBar
 import java.time.LocalDate
 
@@ -28,7 +28,7 @@ internal fun SpendingPlanAddRoute(
     viewModel: SpendingPlanAddViewModel = hiltViewModel()
 ) {
     val showSnackBar = rememberShowSnackBar()
-    val popBackStack = rememberPopBackStack()
+    val navigateAction = LocalNavigateActionInterop.current
     val spendingPlanAddState by viewModel.spendingPlanAddState.collectAsStateWithLifecycle()
     val spendingPlanModalEffect by viewModel.spendingPlanModalEffect.collectAsStateWithLifecycle()
 
@@ -38,7 +38,7 @@ internal fun SpendingPlanAddRoute(
             AddType.New -> "추가"
         },
         incomeAddState = spendingPlanAddState,
-        onBackClick = popBackStack,
+        onBackClick = navigateAction::popBackStack,
         onAddIncome = viewModel::addSpendingPlan,
         onIncomeTitleChange = viewModel::titleValueChange,
         onIncomeAmountChange = viewModel::amountValueChange,
@@ -58,7 +58,7 @@ internal fun SpendingPlanAddRoute(
         viewModel.spendingPlanAddEffect.collect {
             when (it) {
                 is SpendingPlanAddEffect.ShowSnackBar -> showSnackBar(it.messageType)
-                SpendingPlanAddEffect.SpendingPlanAddComplete -> popBackStack()
+                SpendingPlanAddEffect.SpendingPlanAddComplete -> navigateAction.popBackStack()
             }
         }
     }

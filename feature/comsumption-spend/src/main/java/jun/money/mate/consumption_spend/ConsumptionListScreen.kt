@@ -25,7 +25,7 @@ import jun.money.mate.model.consumption.Consumption
 import jun.money.mate.model.consumption.ConsumptionFilter.Companion.selectedFilter
 import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.ui.DateScaffold
-import jun.money.mate.ui.interop.rememberPopBackStack
+import jun.money.mate.ui.interop.LocalNavigateActionInterop
 import jun.money.mate.ui.interop.rememberShowSnackBar
 import java.time.LocalDate
 
@@ -37,7 +37,6 @@ internal fun ConsumptionListRoute(
     viewModel: ConsumptionListViewModel = hiltViewModel()
 ) {
     val showSnackBar = rememberShowSnackBar()
-    val popBackStack = rememberPopBackStack()
     val consumptionListState by viewModel.consumptionListState.collectAsStateWithLifecycle()
     val consumptionListViewMode by viewModel.consumptionListViewMode.collectAsStateWithLifecycle()
     val consumptionModalEffect by viewModel.consumptionModalEffect.collectAsStateWithLifecycle()

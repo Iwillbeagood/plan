@@ -42,6 +42,16 @@ sealed interface Route {
         @Serializable
         data class Edit(val id: Long): Save
     }
+
+    @Serializable
+    sealed interface Challenge : Route {
+
+        @Serializable
+        data class Detail(val id: Long) : Challenge
+
+        @Serializable
+        data object Add : Challenge
+    }
 }
 
 sealed interface MainTabRoute : Route {

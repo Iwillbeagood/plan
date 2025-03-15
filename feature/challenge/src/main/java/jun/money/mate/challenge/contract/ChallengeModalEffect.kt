@@ -4,11 +4,11 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 
 @Stable
-internal sealed interface SaveAddModalEffect {
+internal sealed interface ChallengeModalEffect {
 
     @Immutable
-    data object Idle : SaveAddModalEffect
+    data object Idle : ChallengeModalEffect
 
     @Immutable
-    data object ShowNumberKeyboard : SaveAddModalEffect
+    data object ShowNumberKeyboard : ChallengeModalEffect
 }

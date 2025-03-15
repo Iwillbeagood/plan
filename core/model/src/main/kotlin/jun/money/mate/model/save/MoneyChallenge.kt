@@ -1,11 +1,9 @@
 package jun.money.mate.model.save
 
-import jun.money.mate.model.save.ChallengeType.Monthly
-import jun.money.mate.model.save.ChallengeType.Weekly
 import java.time.LocalDate
 
 data class MoneyChallenge(
-    val id: Long,
+    val id: Long = 0,
     val title: String,
     val count: Int,
     val startDate: LocalDate,
@@ -26,33 +24,15 @@ data class MoneyChallenge(
         get() {
             val lastDate = nextProgress.date
             return when (type) {
-                is Monthly -> lastDate.plusMonths(1)
-                is Weekly -> lastDate.plusWeeks(1)
+                is ChallengeType.Monthly -> lastDate.plusMonths(1)
+                is ChallengeType.Weekly -> lastDate.plusWeeks(1)
             }
         }
 
-    fun getInstallmentAmount(): Pair<Long, Long> {
-        if (count <= 0) return Pair(0L, 0L)
-
-        val baseInstallment = ((goalAmount / count) / 10_000) * 10_000
-        val totalBaseAmount = baseInstallment * count
-        val remainingAmount = goalAmount - totalBaseAmount
-
-        return Pair(baseInstallment, remainingAmount)
-    }
-
-//    fun getRequiredInstallments(): Int {
-//        return if (amount > 0) {
-//            ceil(goalAmount.toDouble() / amount).toInt()
-//        } else {
-//            0
-//        }
-//    }
-
     fun totalTimes(): String {
         return when (type) {
-            is Monthly -> "/${count}개월"
-            is Weekly -> "/${count}주"
+            is ChallengeType.Monthly -> "/${count}개월"
+            is ChallengeType.Weekly -> "/${count}주"
         }
     }
 
@@ -66,7 +46,6 @@ data class MoneyChallenge(
             type = ChallengeType.Monthly(1),
             progress = listOf(
                 ChallengeProgress(
-                    id = 1,
                     challengeId = 1,
                     index = 1,
                     amount = 100_000,
@@ -87,12 +66,12 @@ data class MoneyChallenge(
 }
 
 data class ChallengeProgress(
+    val id: Long = 0,
     val index: Int,
-    val id: Long,
     val challengeId: Long,
     val amount: Long,
-    val isAchieved: Boolean,
     val date: LocalDate,
+    val isAchieved: Boolean = false,
 ) {
 
     val dateType: ChallengeDateType

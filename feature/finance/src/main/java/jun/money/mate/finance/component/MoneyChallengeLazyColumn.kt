@@ -1,5 +1,6 @@
 package jun.money.mate.finance.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.Scrim
 import jun.money.mate.designsystem.component.VerticalSpacer
+import jun.money.mate.designsystem.theme.Gray6
+import jun.money.mate.designsystem.theme.Gray7
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red2
 import jun.money.mate.designsystem.theme.TypoTheme
@@ -42,7 +45,7 @@ internal fun MoneyChallengeLazyColumn(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier
             .fillMaxWidth(),
     ) {
@@ -56,7 +59,7 @@ internal fun MoneyChallengeLazyColumn(
         }
         item {
             Column {
-                VerticalSpacer(12.dp)
+                VerticalSpacer(4.dp)
                 PlusButton(
                     onClick = onAddClick,
                     modifier = Modifier.fillMaxWidth()
@@ -72,69 +75,79 @@ private fun MoneyChallengeItem(
     moneyChallenge: MoneyChallenge,
     onClick: () -> Unit,
 ) {
-    Box(
+    Surface(
+        shape = RoundedCornerShape(4.dp),
+        border = BorderStroke(1.dp, Gray6),
+        shadowElevation = 1.dp,
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 16.dp)
             .height(IntrinsicSize.Min)
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
-                .clickable(onClick = onClick)
-                .padding(vertical = 12.dp, horizontal = 16.dp)
         ) {
-            Column(
+            Row(
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min)
+                    .clickable(onClick = onClick)
+                    .padding(vertical = 20.dp, horizontal = 16.dp)
             ) {
-                Text(
-                    text = moneyChallenge.title,
-                    style = TypoTheme.typography.titleLargeB,
-                )
-                VerticalSpacer(16.dp)
-                Text(
-                    text = moneyChallenge.type.dayString(),
-                    style = TypoTheme.typography.titleNormalM,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.End,
-                modifier = Modifier.fillMaxHeight()
-            ) {
-                if (!moneyChallenge.challengeCompleted) {
-                    Text(
-                        text = "다음 결제일 : ${moneyChallenge.nextDate}",
-                        style = TypoTheme.typography.titleSmallR,
-                        color = Red2,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
-                VerticalSpacer(1f)
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End,
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxHeight()
                 ) {
                     Text(
-                        text = moneyChallenge.achievedCount,
-                        style = TypoTheme.typography.headlineMediumB,
-                        color = MaterialTheme.colorScheme.primary
+                        text = moneyChallenge.title,
+                        style = TypoTheme.typography.titleLargeB,
                     )
-                    HorizontalSpacer(2.dp)
+                    VerticalSpacer(16.dp)
                     Text(
-                        text = moneyChallenge.totalTimes(),
+                        text = moneyChallenge.type.dayString(),
                         style = TypoTheme.typography.titleNormalM,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    modifier = Modifier.fillMaxHeight()
+                ) {
+                    if (!moneyChallenge.challengeCompleted) {
+                        Text(
+                            text = "다음 결제일 : ${moneyChallenge.nextDate}",
+                            style = TypoTheme.typography.titleSmallR,
+                            color = Red2,
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                    }
+                    VerticalSpacer(1f)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = moneyChallenge.achievedCount,
+                            style = TypoTheme.typography.headlineMediumB,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        HorizontalSpacer(2.dp)
+                        Text(
+                            text = moneyChallenge.totalTimes(),
+                            style = TypoTheme.typography.titleNormalM,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
             }
+            CompleteMark(
+                visible = moneyChallenge.challengeCompleted
+            )
         }
-        CompleteMark(
-            visible = moneyChallenge.challengeCompleted
-        )
     }
 }
 
@@ -172,8 +185,8 @@ private fun PlusButton(
         modifier = modifier.padding(16.dp),
     ) {
         Text(
-            text = "캘린지 시작하기",
-            style = TypoTheme.typography.titleMediumM,
+            text = "챌린지 시작하기",
+            style = TypoTheme.typography.titleMediumB,
             color = White1,
             modifier = Modifier
                 .wrapContentSize(Alignment.Center)
