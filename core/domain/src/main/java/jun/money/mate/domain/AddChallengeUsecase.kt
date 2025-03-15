@@ -1,15 +1,12 @@
 package jun.money.mate.domain
 
 import jun.money.mate.data_api.database.ChallengeRepository
-import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.ChallengeProgress
 import jun.money.mate.model.save.ChallengeType
+import jun.money.mate.model.save.ChallengeType.Companion.nthPaymentDate
 import jun.money.mate.model.save.MoneyChallenge
-import jun.money.mate.model.save.SavingsType
-import jun.money.mate.model.save.SavePlan
 import java.time.LocalDate
-import java.time.YearMonth
 import javax.inject.Inject
 
 class AddChallengeUsecase @Inject constructor(
@@ -51,7 +48,7 @@ class AddChallengeUsecase @Inject constructor(
                 startDate = LocalDate.now(),
                 goalAmount = goalAmount,
                 type = challengeType,
-                progress = getProgress(parentId, count, amount, goalAmount)
+                progress = getProgress(parentId, count, amount, goalAmount, challengeType)
             )
         )
         onSuccess()
@@ -62,9 +59,12 @@ class AddChallengeUsecase @Inject constructor(
         count: Int,
         amount: Long,
         goalAmount: Long,
+        challengeType: ChallengeType,
     ): List<ChallengeProgress> {
         val remainAmount = goalAmount - amount * count
         val progress = mutableListOf<ChallengeProgress>()
+
+
         for (i in 1..count) {
             if (i == count && remainAmount != 0L) {
                 progress.add(
@@ -72,7 +72,7 @@ class AddChallengeUsecase @Inject constructor(
                         challengeId = challengeId,
                         index = i,
                         amount = remainAmount,
-                        date = LocalDate.now(),
+                        date = challengeType.nthPaymentDate(i),
                     )
                 )
             } else {
@@ -81,7 +81,7 @@ class AddChallengeUsecase @Inject constructor(
                         challengeId = challengeId,
                         index = i,
                         amount = amount,
-                        date = LocalDate.now(),
+                        date = challengeType.nthPaymentDate(i),
                     )
                 )
             }

@@ -1,10 +1,8 @@
 package jun.money.mate.designsystem.component
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -15,7 +13,7 @@ import jun.money.mate.designsystem.theme.Gray9
 @Composable
 fun HorizontalDivider(
     thickness: Dp = 1.dp,
-    lineColor: Color = Gray8,
+    lineColor: Color = Gray9,
 ) {
     HorizontalDivider(
         color = lineColor,

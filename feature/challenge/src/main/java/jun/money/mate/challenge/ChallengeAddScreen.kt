@@ -46,7 +46,7 @@ internal enum class ChallengeStep(
     val message: String
 ) {
     GoalAmount("도전 금액을 입력해 주세요"),
-    AmountCount("1회 납입 금액이나 횟수을 선택해 주세요"),
+    AmountCount("1회 납입 금액이나 횟수를 선택해 주세요"),
     Remaining(""),
 }
 

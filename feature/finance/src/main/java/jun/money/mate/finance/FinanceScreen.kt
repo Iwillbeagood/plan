@@ -1,6 +1,9 @@
 package jun.money.mate.finance
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -12,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -41,7 +46,8 @@ import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem_date.datetimepicker.MonthBar
 import jun.money.mate.finance.component.FinanceChart
-import jun.money.mate.finance.component.MoneyChallengeLazyColumn
+import jun.money.mate.finance.component.MoneyChallengeItem
+import jun.money.mate.finance.component.PlusButton
 import jun.money.mate.model.save.MoneyChallenge
 import jun.money.mate.ui.LeafIcon
 import jun.money.mate.ui.SeedIcon
@@ -108,6 +114,7 @@ private fun FinanceContent(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FinanceScreen(
     totalIncome: Long,
@@ -132,22 +139,69 @@ private fun FinanceScreen(
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
             }
-        }
+        },
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-            FinanceInfos(
-                totalIncome = totalIncome,
-                totalSavings = totalSavings,
-                moneyChallengeList = moneyChallengeList,
-                onShowIncome = onShowIncome,
-                onShowSavings = onShowSavings,
-                onAddClick = onAddClick,
-                onChallengeClick = onChallengeClick
-            )
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background),
+            ) {
+                item {
+                    FinanceInfos(
+                        totalIncome = totalIncome,
+                        totalSavings = totalSavings,
+                        onShowIncome = onShowIncome,
+                        onShowSavings = onShowSavings,
+                    )
+                }
+                stickyHeader {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.background)
+                            .padding(top = 28.dp, bottom = 6.dp, start = 20.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.Bottom,
+                        ) {
+                            Text(
+                                text = "저축 챌린지",
+                                style = TypoTheme.typography.titleNormalM,
+                            )
+                            HorizontalSpacer(16.dp)
+                            Text(
+                                text = "목표를 세우고 도전해보세요!",
+                                style = TypoTheme.typography.titleSmallM,
+                                color = MaterialTheme.colorScheme.primary,
+                            )
+                        }
+                    }
+                }
+                items(moneyChallengeList) { item ->
+                    MoneyChallengeItem(
+                        moneyChallenge = item,
+                        onClick = {
+                            onChallengeClick(item.id)
+                        },
+                    )
+                }
+                item {
+                    Column {
+                        VerticalSpacer(4.dp)
+                        PlusButton(
+                            onClick = onAddClick,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -156,11 +210,8 @@ private fun FinanceScreen(
 private fun FinanceInfos(
     totalIncome: Long,
     totalSavings: Long,
-    moneyChallengeList: List<MoneyChallenge>,
     onShowIncome: () -> Unit,
     onShowSavings: () -> Unit,
-    onAddClick: () -> Unit,
-    onChallengeClick: (Long) -> Unit,
 ) {
     Column {
         VerticalSpacer(20.dp)
@@ -264,33 +315,6 @@ private fun FinanceInfos(
         }
         VerticalSpacer(30.dp)
         HorizontalDivider(10.dp)
-        VerticalSpacer(38.dp)
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 20.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.Bottom,
-            ) {
-                Text(
-                    text = "저축 챌린지",
-                    style = TypoTheme.typography.titleNormalM,
-                )
-                HorizontalSpacer(16.dp)
-                Text(
-                    text = "목표를 세우고 도전해보세요!",
-                    style = TypoTheme.typography.titleSmallM,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
-        }
-        VerticalSpacer(16.dp)
-        MoneyChallengeLazyColumn(
-            moneyChallengeList = moneyChallengeList,
-            onAddClick = onAddClick,
-            onChallengeClick = onChallengeClick,
-            modifier = Modifier.weight(1f)
-        )
     }
 }
 

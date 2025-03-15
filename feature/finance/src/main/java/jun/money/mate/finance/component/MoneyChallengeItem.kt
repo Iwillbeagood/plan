@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -29,49 +26,17 @@ import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.Scrim
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray6
-import jun.money.mate.designsystem.theme.Gray7
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red2
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem.theme.White1
+import jun.money.mate.model.save.ChallengeType
 import jun.money.mate.model.save.ChallengeType.Companion.dayString
 import jun.money.mate.model.save.MoneyChallenge
+import jun.money.mate.utils.currency.CurrencyFormatter
+import java.time.LocalDate
 
 @Composable
-internal fun MoneyChallengeLazyColumn(
-    moneyChallengeList: List<MoneyChallenge>,
-    onAddClick: () -> Unit,
-    onChallengeClick: (Long) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = modifier
-            .fillMaxWidth(),
-    ) {
-        items(moneyChallengeList) {
-            MoneyChallengeItem(
-                moneyChallenge = it,
-                onClick = {
-                    onChallengeClick(it.id)
-                },
-            )
-        }
-        item {
-            Column {
-                VerticalSpacer(4.dp)
-                PlusButton(
-                    onClick = onAddClick,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-        }
-
-    }
-}
-
-@Composable
-private fun MoneyChallengeItem(
+internal fun MoneyChallengeItem(
     moneyChallenge: MoneyChallenge,
     onClick: () -> Unit,
 ) {
@@ -101,13 +66,15 @@ private fun MoneyChallengeItem(
                         .fillMaxHeight()
                 ) {
                     Text(
-                        text = moneyChallenge.title,
+                        text = moneyChallenge.title.ifBlank {
+                            CurrencyFormatter.formatToWon(moneyChallenge.goalAmount) + " 모으기"
+                        },
                         style = TypoTheme.typography.titleLargeB,
                     )
                     VerticalSpacer(16.dp)
                     Text(
                         text = moneyChallenge.type.dayString(),
-                        style = TypoTheme.typography.titleNormalM,
+                        style = TypoTheme.typography.titleMediumM,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -138,7 +105,7 @@ private fun MoneyChallengeItem(
                         HorizontalSpacer(2.dp)
                         Text(
                             text = moneyChallenge.totalTimes(),
-                            style = TypoTheme.typography.titleNormalM,
+                            style = TypoTheme.typography.titleSmallM,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -172,37 +139,22 @@ private fun BoxScope.CompleteMark(
     }
 }
 
-@Composable
-private fun PlusButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        shape = RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.primary,
-        onClick = onClick,
-        shadowElevation = 2.dp,
-        modifier = modifier.padding(16.dp),
-    ) {
-        Text(
-            text = "챌린지 시작하기",
-            style = TypoTheme.typography.titleMediumB,
-            color = White1,
-            modifier = Modifier
-                .wrapContentSize(Alignment.Center)
-                .padding(16.dp)
-        )
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
 private fun MoneyChallengePreview() {
     JunTheme {
-        MoneyChallengeLazyColumn(
-            moneyChallengeList = listOf(MoneyChallenge.sample),
-            onAddClick = {},
-            onChallengeClick = {}
+        MoneyChallengeItem(
+            moneyChallenge = MoneyChallenge(
+                id = 0,
+                title = "테스트",
+                count = 10,
+                startDate = LocalDate.now(),
+                goalAmount = 1000000,
+                type = ChallengeType.Monthly(1),
+                progress = emptyList()
+            ),
+            onClick = {}
         )
     }
 }

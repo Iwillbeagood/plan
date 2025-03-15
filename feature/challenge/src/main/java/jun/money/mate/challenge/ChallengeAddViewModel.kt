@@ -3,14 +3,12 @@ package jun.money.mate.challenge
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jun.money.mate.domain.AddSaveUsecase
-import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.challenge.contract.ChallengeAddEffect
 import jun.money.mate.challenge.contract.ChallengeAddState
 import jun.money.mate.challenge.contract.ChallengeModalEffect
 import jun.money.mate.domain.AddChallengeUsecase
+import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.ChallengeType
 import jun.money.mate.ui.number.ValueState
 import jun.money.mate.ui.number.ValueState.Companion.value
@@ -43,11 +41,6 @@ internal class ChallengeAddViewModel @Inject constructor(
 
     private val _challengeAddEffect = MutableSharedFlow<ChallengeAddEffect>()
     val challengeAddEffect: SharedFlow<ChallengeAddEffect> get() = _challengeAddEffect.asSharedFlow()
-
-    init {
-        viewModelScope.launch {
-        }
-    }
 
     fun nextStep() {
         val state = challengeAddState.value
@@ -94,9 +87,9 @@ internal class ChallengeAddViewModel @Inject constructor(
                 goalAmount = state.goalAmount,
                 amount = state.amount.toLong(),
                 count = state.count.toInt(),
-                challengeType = state.challengeType!!,
+                challengeType = state.challengeType,
                 onSuccess = {
-                    showSnackBar(MessageType.Message("도전이 추가되었습니다."))
+                    showSnackBar(MessageType.Message("챌린지가 추가되었습니다."))
                     complete()
                 },
                 onError = ::showSnackBar

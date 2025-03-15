@@ -16,17 +16,13 @@ data class MoneyChallenge(
 
     val nextProgress: ChallengeProgress
         get() {
-            val lastProgress = progress.findLast { it.isAchieved } ?: progress.first()
+            val lastProgress = progress.find { it.isAchieved } ?: progress.first()
             return lastProgress
         }
 
     val nextDate: LocalDate
         get() {
-            val lastDate = nextProgress.date
-            return when (type) {
-                is ChallengeType.Monthly -> lastDate.plusMonths(1)
-                is ChallengeType.Weekly -> lastDate.plusWeeks(1)
-            }
+            return nextProgress.date
         }
 
     fun totalTimes(): String {
