@@ -87,7 +87,7 @@ fun JunTheme(
 
 @Composable
 fun ChangeStatusBarColor(
-    color: Color
+    color: Color = MaterialTheme.colorScheme.background
 ) {
     val view = LocalView.current
     val darkTheme = LocalDarkTheme.current

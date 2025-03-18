@@ -44,17 +44,15 @@ import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.Gray7
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem_date.datetimepicker.MonthBar
 import jun.money.mate.finance.component.FinanceChart
 import jun.money.mate.finance.component.MoneyChallengeItem
 import jun.money.mate.finance.component.PlusButton
-import jun.money.mate.model.save.MoneyChallenge
+import jun.money.mate.model.save.Challenge
 import jun.money.mate.ui.LeafIcon
 import jun.money.mate.ui.SeedIcon
 import jun.money.mate.ui.interop.LocalNavigateActionInterop
 import jun.money.mate.ui.interop.rememberShowSnackBar
 import jun.money.mate.utils.currency.CurrencyFormatter
-import java.time.YearMonth
 
 @Composable
 internal fun FinanceRoute(
@@ -66,14 +64,11 @@ internal fun FinanceRoute(
     val navigateAction = LocalNavigateActionInterop.current
 
     val financeState by viewModel.financeState.collectAsStateWithLifecycle()
-    val month by viewModel.month.collectAsStateWithLifecycle()
 
     FinanceContent(
         financeState = financeState,
-        viewModel = viewModel,
-        month = month,
-        onShowIncome = { navigateAction.navigateToIncomeList(month) },
-        onShowSavings = { navigateAction.navigateToSaveList(month) },
+        onShowIncome = navigateAction::navigateToIncomeList,
+        onShowSavings = navigateAction::navigateToSaveList,
         onShowChallengeAdd = navigateAction::navigateToChallengeAdd,
         onShowChallengeDetail = navigateAction::navigateToChallengeDetail
     )
@@ -87,8 +82,6 @@ internal fun FinanceRoute(
 @Composable
 private fun FinanceContent(
     financeState: FinanceState,
-    viewModel: FinanceViewModel,
-    month: YearMonth,
     onShowIncome: () -> Unit,
     onShowSavings: () -> Unit,
     onShowChallengeAdd: () -> Unit,
@@ -101,10 +94,7 @@ private fun FinanceContent(
             FinanceScreen(
                 totalIncome = financeState.incomeList.total,
                 totalSavings = financeState.savePlanList.executedTotal,
-                moneyChallengeList = financeState.challengeList,
-                month = month,
-                onPrev = viewModel::prevMonth,
-                onNext = viewModel::nextMonth,
+                challengeList = financeState.challengeList,
                 onShowIncome = onShowIncome,
                 onShowSavings = onShowSavings,
                 onAddClick = onShowChallengeAdd,
@@ -119,28 +109,13 @@ private fun FinanceContent(
 private fun FinanceScreen(
     totalIncome: Long,
     totalSavings: Long,
-    moneyChallengeList: List<MoneyChallenge>,
-    month: YearMonth,
-    onPrev: () -> Unit,
-    onNext: () -> Unit,
+    challengeList: List<Challenge>,
     onShowIncome: () -> Unit,
     onShowSavings: () -> Unit,
     onAddClick: () -> Unit,
     onChallengeClick: (Long) -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            Column {
-                VerticalSpacer(20.dp)
-                MonthBar(
-                    month = month,
-                    onPrev = onPrev,
-                    onNext = onNext,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-            }
-        },
-    ) {
+    Scaffold{
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -184,9 +159,9 @@ private fun FinanceScreen(
                         }
                     }
                 }
-                items(moneyChallengeList) { item ->
+                items(challengeList) { item ->
                     MoneyChallengeItem(
-                        moneyChallenge = item,
+                        challenge = item,
                         onClick = {
                             onChallengeClick(item.id)
                         },
@@ -194,7 +169,6 @@ private fun FinanceScreen(
                 }
                 item {
                     Column {
-                        VerticalSpacer(4.dp)
                         PlusButton(
                             onClick = onAddClick,
                             modifier = Modifier.fillMaxWidth()
@@ -232,7 +206,7 @@ private fun FinanceInfos(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "수입",
+                        text = "이번달 수입",
                         style = TypoTheme.typography.titleMediumM,
                         modifier = Modifier.padding(start = 10.dp)
                     )
@@ -270,7 +244,7 @@ private fun FinanceInfos(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "저축",
+                        text = "이번달 저축",
                         style = TypoTheme.typography.titleMediumM,
                         modifier = Modifier.padding(start = 10.dp)
                     )
@@ -349,10 +323,7 @@ private fun FinanceScreenPreview() {
         FinanceScreen(
             totalIncome = 1000000,
             totalSavings = 300000,
-            moneyChallengeList = listOf(MoneyChallenge.sample),
-            month = YearMonth.now(),
-            onPrev = {},
-            onNext = {},
+            challengeList = listOf(Challenge.sample),
             onShowIncome = {},
             onShowSavings = {},
             onAddClick = {},

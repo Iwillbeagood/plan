@@ -36,6 +36,9 @@ import java.time.YearMonth
 
 @Composable
 internal fun IncomeListBody(
+    month: YearMonth,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
     incomeList: IncomeList,
     onIncomeClick: (Income) -> Unit,
     modifier : Modifier = Modifier
@@ -47,6 +50,13 @@ internal fun IncomeListBody(
         modifier = modifier.fillMaxWidth()
     ) {
         Column {
+            VerticalSpacer(20.dp)
+            MonthBar(
+                month = month,
+                onPrev = onPrev,
+                onNext = onNext,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
             VerticalSpacer(20.dp)
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -133,6 +143,9 @@ private fun IncomeItem(
 private fun IncomeListBodyPreview() {
     JunTheme {
         IncomeListBody(
+            month = YearMonth.now(),
+            onPrev = {},
+            onNext = {},
             incomeList = IncomeList(
                 incomes = listOf(
                     Income.regularSample,

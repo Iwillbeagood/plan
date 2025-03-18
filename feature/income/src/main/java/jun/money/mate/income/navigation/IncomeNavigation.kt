@@ -13,8 +13,8 @@ import jun.money.mate.navigation.Route
 import java.time.LocalDate
 import java.time.YearMonth
 
-fun NavController.navigateToIncomeList(date: YearMonth) {
-    navigate(Route.Income.List(date.year, date.monthValue))
+fun NavController.navigateToIncomeList() {
+    navigate(Route.Income.List)
 }
 
 fun NavController.navigateToIncomeAdd() {

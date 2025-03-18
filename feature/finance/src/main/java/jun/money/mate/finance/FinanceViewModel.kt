@@ -7,19 +7,15 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.domain.GetFinanceUsecase
 import jun.money.mate.model.income.IncomeList
-import jun.money.mate.model.save.MoneyChallenge
+import jun.money.mate.model.save.Challenge
 import jun.money.mate.model.save.SavePlanList
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,12 +23,7 @@ internal class FinanceViewModel @Inject constructor(
     getFinanceUsecase: GetFinanceUsecase
 ) : ViewModel() {
 
-    private val _month = MutableStateFlow<YearMonth>(YearMonth.now())
-    val month: StateFlow<YearMonth> get() = _month
-
-    val financeState: StateFlow<FinanceState> = month.flatMapLatest {
-        getFinanceUsecase(it)
-    }.map {
+    val financeState: StateFlow<FinanceState> = getFinanceUsecase().map {
         FinanceState.FinanceData(
             incomeList = it.incomeList,
             savePlanList = it.savePlanList,
@@ -46,18 +37,6 @@ internal class FinanceViewModel @Inject constructor(
 
     private val _financeEffect = MutableSharedFlow<FinanceEffect>()
     val financeEffect: SharedFlow<FinanceEffect> get() = _financeEffect.asSharedFlow()
-
-    fun prevMonth() {
-        _month.update {
-            it.minusMonths(1)
-        }
-    }
-
-    fun nextMonth() {
-        _month.update {
-            it.plusMonths(1)
-        }
-    }
 }
 
 @Stable
@@ -70,7 +49,7 @@ internal sealed interface FinanceState {
     data class FinanceData(
         val incomeList: IncomeList,
         val savePlanList: SavePlanList,
-        val challengeList: List<MoneyChallenge>
+        val challengeList: List<Challenge>
     ) : FinanceState
 }
 

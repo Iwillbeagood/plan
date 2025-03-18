@@ -4,9 +4,9 @@ import jun.money.mate.database.entity.ChallengeEntity
 import jun.money.mate.database.entity.ChallengeProgressEntity
 import jun.money.mate.database.entity.ChallengeWithProgress
 import jun.money.mate.model.save.ChallengeProgress
-import jun.money.mate.model.save.MoneyChallenge
+import jun.money.mate.model.save.Challenge
 
-fun MoneyChallenge.toChallengeEntity() = ChallengeEntity(
+fun Challenge.toChallengeEntity() = ChallengeEntity(
     id = id,
     title = title,
     startDate = startDate,
@@ -15,7 +15,7 @@ fun MoneyChallenge.toChallengeEntity() = ChallengeEntity(
     type = type
 )
 
-fun MoneyChallenge.toChallengeProgressEntity() = progress.map {
+fun Challenge.toChallengeProgressEntity() = progress.map {
     ChallengeProgressEntity(
         index = it.index,
         challengeId = id,
@@ -25,7 +25,7 @@ fun MoneyChallenge.toChallengeProgressEntity() = progress.map {
     )
 }
 
-fun ChallengeWithProgress.toMoneyChallenge() = MoneyChallenge(
+fun ChallengeWithProgress.toMoneyChallenge() = Challenge(
     id = challenge.id,
     title = challenge.title,
     startDate = challenge.startDate,

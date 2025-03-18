@@ -47,10 +47,13 @@ internal fun SaveListRoute(
     val navigateAction = LocalNavigateActionInterop.current
     val showSnackBar = rememberShowSnackBar()
     val savingListState by viewModel.savingListState.collectAsStateWithLifecycle()
+    val month by viewModel.month.collectAsStateWithLifecycle()
 
     SavingListScreen(
         savingListState = savingListState,
-        month = viewModel.month,
+        month = month,
+        onPrev = viewModel::prevMonth,
+        onNext = viewModel::nextMonth,
         onShowDetail = navigateAction::navigateToSavingDetail,
         onSavingAdd = navigateAction::navigateToSavingAdd,
         onExecuteChange = viewModel::executeChange,
@@ -71,6 +74,8 @@ internal fun SaveListRoute(
 private fun SavingListScreen(
     savingListState: SavingListState,
     month: YearMonth,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
     onShowDetail: (Long) -> Unit,
     onSavingAdd: () -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
@@ -103,6 +108,9 @@ private fun SavingListScreen(
                     goldCount = (savingListState as? SavingListState.SavingListData)?.goldAcornCount ?: 0,
                 )
                 SavingListContent(
+                    month = month,
+                    onPrev = onPrev,
+                    onNext = onNext,
                     savingListState = savingListState,
                     onShowDetail = onShowDetail,
                     onExecuteChange = onExecuteChange,
@@ -147,6 +155,9 @@ private fun SavingListScreen(
 
 @Composable
 private fun SavingListContent(
+    month: YearMonth,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
     savingListState: SavingListState,
     onShowDetail: (Long) -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
@@ -158,6 +169,9 @@ private fun SavingListContent(
     ) {
         if (savingListState is SavingListState.SavingListData) {
             SaveListBody(
+                month = month,
+                onPrev = onPrev,
+                onNext = onNext,
                 savePlanList = savingListState.savePlanList,
                 onShowDetail = onShowDetail,
                 onExecuteChange = onExecuteChange,
@@ -173,6 +187,8 @@ private fun SpendingListScreenPreview() {
         SavingListScreen(
             savingListState = SavingListState.SavingListData(SavePlanList.sample),
             month = YearMonth.now(),
+            onPrev = {},
+            onNext = {},
             onSavingAdd = {},
             onShowDetail = {},
             onGoBack = {},

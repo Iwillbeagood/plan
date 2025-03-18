@@ -45,7 +45,7 @@ import jun.money.mate.ui.number.ValueState
 internal enum class ChallengeStep(
     val message: String
 ) {
-    GoalAmount("도전 금액을 입력해 주세요"),
+    GoalAmount("챌린지 금액을 입력해 주세요"),
     AmountCount("1회 납입 금액이나 횟수를 선택해 주세요"),
     Remaining(""),
 }
@@ -134,7 +134,7 @@ private fun ChallengeAddScreen(
         }
         ChallengeAddField(
             visible = ChallengeStep.GoalAmount in steps,
-            title = "도전 금액",
+            title = "챌린지 금액",
         ) {
             Column {
                 UnderLineText(
@@ -184,7 +184,7 @@ private fun ChallengeAddScreen(
                     UnderlineTextField(
                         value = uiState.title,
                         onValueChange = onTitleChange,
-                        hint = "도전의 설명을 입력해 주세요",
+                        hint = "챌린지의 설명을 입력해 주세요",
                         keyboardOptions = KeyboardOptions(
                             imeAction = ImeAction.Done,
                         ),
@@ -197,7 +197,7 @@ private fun ChallengeAddScreen(
                 }
             }
         }
-        VerticalSpacer(20.dp)
+        VerticalSpacer(100.dp)
     }
 }
 

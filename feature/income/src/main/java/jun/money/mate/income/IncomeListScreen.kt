@@ -57,11 +57,14 @@ internal fun IncomeListRoute(
     val incomeListState by viewModel.incomeListState.collectAsStateWithLifecycle()
     val modalEffect by viewModel.modalEffect.collectAsStateWithLifecycle()
     val leaves by viewModel.leaves.collectAsStateWithLifecycle()
+    val month by viewModel.month.collectAsStateWithLifecycle()
 
     IncomeListScreen(
         leaves = leaves,
         incomeListState = incomeListState,
-        month = viewModel.month,
+        month = month,
+        onPrev = viewModel::prevMonth,
+        onNext = viewModel::nextMonth,
         onGoBack = navigateAction::popBackStack,
         onShowIncomeAdd = navigateAction::navigateToIncomeAdd,
         onIncomeClick = viewModel::selectIncome,
@@ -89,6 +92,8 @@ private fun IncomeListScreen(
     leaves: List<LeafOrder>,
     incomeListState: IncomeListState,
     month: YearMonth,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
     onGoBack: () -> Unit,
     onShowIncomeAdd: () -> Unit,
     onIncomeClick: (Income) -> Unit,
@@ -120,6 +125,9 @@ private fun IncomeListScreen(
                     modifier = Modifier.weight(4f)
                 )
                 IncomeListContent(
+                    month = month,
+                    onPrev = onPrev,
+                    onNext = onNext,
                     incomeListState = incomeListState,
                     onIncomeClick = onIncomeClick,
                     modifier = Modifier.weight(6f)
@@ -163,6 +171,9 @@ private fun IncomeListScreen(
 
 @Composable
 private fun IncomeListContent(
+    month: YearMonth,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
     incomeListState: IncomeListState,
     onIncomeClick: (Income) -> Unit,
     modifier: Modifier = Modifier
@@ -173,6 +184,9 @@ private fun IncomeListContent(
     ) {
         if (incomeListState is IncomeListState.UiData) {
             IncomeListBody(
+                month = month,
+                onPrev = onPrev,
+                onNext = onNext,
                 incomeList = incomeListState.incomeList,
                 onIncomeClick = onIncomeClick
             )
@@ -213,6 +227,8 @@ private fun IncomeListScreenPreview() {
                 incomeList = IncomeList.sample
             ),
             month = YearMonth.now(),
+            onPrev = {},
+            onNext = {},
             onGoBack = {},
             onShowIncomeAdd = {},
             onIncomeClick = {},

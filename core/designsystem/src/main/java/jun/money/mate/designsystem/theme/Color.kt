@@ -33,6 +33,7 @@ val Black3 = Color(0xFF2D2D2D)
 
 // Line Color
 val LightBlue1 = Color(0xFFA7C7E7)
+val LightBlue10 = Color(0x1AA7C7E7)
 val LightBlue2 = Color(0xFFdee0e4)
 val Blue1 = Color(0xFF016acb)
 val Blue2 = Color(0xFF9EC5E5)

@@ -1,13 +1,10 @@
 package jun.money.mate.save
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.navigation.Route
 import jun.money.mate.save.contract.SavingListEffect
 import jun.money.mate.save.contract.SavingListState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,18 +15,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
 internal class SavingListViewModel @Inject constructor(
-    private val saveRepository: SaveRepository,
-    savedStateHandle: SavedStateHandle
+    private val saveRepository: SaveRepository
 ) : ViewModel() {
 
-    private val listData = savedStateHandle.toRoute<Route.Save.List>()
-    val month: YearMonth = YearMonth.of(listData.year, listData.month)
+    private val _month = MutableStateFlow<YearMonth>(YearMonth.now())
+    val month: StateFlow<YearMonth> get() = _month
 
     private val _savingListState = MutableStateFlow<SavingListState>(SavingListState.Loading)
     val savingListState: StateFlow<SavingListState> = _savingListState.onStart {
@@ -45,7 +42,7 @@ internal class SavingListViewModel @Inject constructor(
 
     private fun loadSpending() {
         viewModelScope.launch {
-            saveRepository.getSavingFlow(month).collect { savePlan ->
+            saveRepository.getSavingFlow(month.value).collect { savePlan ->
                 _savingListState.value = SavingListState.SavingListData(savePlan)
             }
         }
@@ -57,6 +54,18 @@ internal class SavingListViewModel @Inject constructor(
     fun executeChange(executed: Boolean, id: Long) {
         viewModelScope.launch {
             saveRepository.updateExecuteState(id, executed)
+        }
+    }
+
+    fun prevMonth() {
+        _month.update {
+            it.minusMonths(1)
+        }
+    }
+
+    fun nextMonth() {
+        _month.update {
+            it.plusMonths(1)
         }
     }
 

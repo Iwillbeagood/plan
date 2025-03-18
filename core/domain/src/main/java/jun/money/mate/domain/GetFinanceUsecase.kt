@@ -4,7 +4,7 @@ import jun.money.mate.data_api.database.ChallengeRepository
 import jun.money.mate.data_api.database.IncomeRepository
 import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.income.IncomeList
-import jun.money.mate.model.save.MoneyChallenge
+import jun.money.mate.model.save.Challenge
 import jun.money.mate.model.save.SavePlanList
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +19,7 @@ class GetFinanceUsecase @Inject constructor(
 ) {
 
     operator fun invoke(
-        month: YearMonth
+        month: YearMonth = YearMonth.now()
     ): Flow<FinanceData> {
         return combine(
             incomeRepository.getIncomesByMonth(month),
@@ -41,5 +41,5 @@ class GetFinanceUsecase @Inject constructor(
 data class FinanceData(
     val incomeList: IncomeList,
     val savePlanList: SavePlanList,
-    val challenge: List<MoneyChallenge>
+    val challenge: List<Challenge>
 )

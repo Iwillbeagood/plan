@@ -12,10 +12,7 @@ sealed interface Route {
     sealed interface Income : Route {
 
         @Serializable
-        data class List(
-            val year: Int,
-            val month: Int
-        ) : Income
+        data object List : Income
 
         @Serializable
         data object Add : Income
@@ -28,10 +25,7 @@ sealed interface Route {
     sealed interface Save : Route {
 
         @Serializable
-        data class List(
-            val year: Int,
-            val month: Int
-        ) : Save
+        data object List : Save
 
         @Serializable
         data class Detail(val id: Long) : Save

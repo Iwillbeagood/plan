@@ -2,7 +2,7 @@ package jun.money.mate.model.save
 
 import java.time.LocalDate
 
-data class MoneyChallenge(
+data class Challenge(
     val id: Long = 0,
     val title: String,
     val count: Int,
@@ -13,16 +13,17 @@ data class MoneyChallenge(
 ) {
     val challengeCompleted get() = progress.all { it.isAchieved }
     val achievedCount get() = progress.count { it.isAchieved }.toString()
+    val currentAmount get() = progress.sumOf { it.amount }
 
-    val nextProgress: ChallengeProgress
+    val nextProgress: ChallengeProgress?
         get() {
-            val lastProgress = progress.find { it.isAchieved } ?: progress.first()
+            val lastProgress = progress.find { !it.isAchieved }
             return lastProgress
         }
 
-    val nextDate: LocalDate
+    val nextDate: LocalDate?
         get() {
-            return nextProgress.date
+            return nextProgress?.date
         }
 
     fun totalTimes(): String {
@@ -33,7 +34,7 @@ data class MoneyChallenge(
     }
 
     companion object {
-        val sample = MoneyChallenge(
+        val sample = Challenge(
             id = 1,
             title = "적금",
             count = 12,
@@ -46,7 +47,7 @@ data class MoneyChallenge(
                     index = 1,
                     amount = 100_000,
                     isAchieved = false,
-                    date = LocalDate.now(),
+                    date = LocalDate.now().minusMonths(1),
                 ),
                 ChallengeProgress(
                     id = 2,
@@ -55,6 +56,14 @@ data class MoneyChallenge(
                     amount = 100_000,
                     isAchieved = true,
                     date = LocalDate.now(),
+                ),
+                ChallengeProgress(
+                    id = 2,
+                    challengeId = 1,
+                    index = 2,
+                    amount = 100_000,
+                    isAchieved = true,
+                    date = LocalDate.now().plusMonths(1),
                 ),
             )
         )
@@ -68,25 +77,10 @@ data class ChallengeProgress(
     val amount: Long,
     val date: LocalDate,
     val isAchieved: Boolean = false,
-) {
+)
 
-    val dateType: ChallengeDateType
-        get() = ChallengeDateType.from(date)
-}
-
-enum class ChallengeDateType {
-    Today,
+enum class ChallengeProgressType {
+    Now,
     PAST,
-    UPCOMING;
-
-    companion object {
-        fun from(date: LocalDate): ChallengeDateType {
-            val now = LocalDate.now()
-            return when {
-                date.isBefore(now) -> PAST
-                date.isEqual(now) -> Today
-                else -> UPCOMING
-            }
-        }
-    }
+    UPCOMING
 }

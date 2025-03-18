@@ -64,8 +64,8 @@ class MainNavigator(
                 }
             }
 
-            override fun navigateToIncomeList(date: YearMonth) = navController.navigateToIncomeList(date)
-            override fun navigateToSaveList(date: YearMonth) = navController.navigateToSaveList(date)
+            override fun navigateToIncomeList() = navController.navigateToIncomeList()
+            override fun navigateToSaveList() = navController.navigateToSaveList()
             override fun navigateToIncomeAdd() = navController.navigateToIncomeAdd()
             override fun navigateToIncomeEdit(id: Long) = navController.navigateToIncomeEdit(id)
             override fun navigateToSpendingPlanAdd() = navController.navigateToSpendingPlanAdd(AddType.New)

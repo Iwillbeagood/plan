@@ -11,8 +11,8 @@ val LocalNavigateActionInterop = staticCompositionLocalOf<NavigateActionInterop>
 interface NavigateActionInterop {
     fun popBackStack()
     fun navigateBottomNav(item: MainBottomNavItem)
-    fun navigateToIncomeList(date: YearMonth)
-    fun navigateToSaveList(date: YearMonth)
+    fun navigateToIncomeList()
+    fun navigateToSaveList()
     fun navigateToIncomeAdd()
     fun navigateToIncomeEdit(id: Long)
     fun navigateToSpendingPlanAdd()

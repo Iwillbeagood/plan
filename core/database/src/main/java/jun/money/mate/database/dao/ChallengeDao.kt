@@ -21,7 +21,7 @@ interface ChallengeDao {
     suspend fun upsertChallengeProgress(entity: List<ChallengeProgressEntity>)
 
     @Query("UPDATE $CHALLENGE_PROGRESS_TABLE_NAME SET isAchieved = :isAchieved WHERE id = :challengeId")
-    fun updateChallengeAchieved(challengeId: Long, isAchieved: Boolean)
+    suspend fun updateChallengeAchieved(challengeId: Long, isAchieved: Boolean)
 
     @Transaction
     @Query("SELECT * FROM $CHALLENGE_TABLE_NAME")
@@ -29,7 +29,7 @@ interface ChallengeDao {
 
     @Transaction
     @Query("SELECT * FROM $CHALLENGE_TABLE_NAME WHERE id = :challengeId")
-    suspend fun getChallengeWithProgress(challengeId: Long): ChallengeWithProgress
+    fun getChallengeWithProgress(challengeId: Long): Flow<ChallengeWithProgress>
 
     @Query("DELETE FROM $CHALLENGE_TABLE_NAME WHERE id = :id")
     suspend fun deleteById(id: Long)

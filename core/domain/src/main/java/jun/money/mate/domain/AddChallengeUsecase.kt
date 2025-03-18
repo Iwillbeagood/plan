@@ -5,7 +5,7 @@ import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.ChallengeProgress
 import jun.money.mate.model.save.ChallengeType
 import jun.money.mate.model.save.ChallengeType.Companion.nthPaymentDate
-import jun.money.mate.model.save.MoneyChallenge
+import jun.money.mate.model.save.Challenge
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -24,7 +24,7 @@ class AddChallengeUsecase @Inject constructor(
     ) {
 
         if (goalAmount <= 0) {
-            onError(MessageType.Message("도전 금액을 입력해 주세요"))
+            onError(MessageType.Message("챌린지 금액을 입력해 주세요"))
             return
         }
 
@@ -34,14 +34,14 @@ class AddChallengeUsecase @Inject constructor(
         }
 
         if (challengeType == null) {
-            onError(MessageType.Message("도전 주기를 선택해 주세요"))
+            onError(MessageType.Message("챌린지 주기를 선택해 주세요"))
             return
         }
 
         val parentId = System.currentTimeMillis()
 
         challengeRepository.upsertChallenge(
-            MoneyChallenge(
+            Challenge(
                 id = parentId,
                 title = title,
                 count = count,

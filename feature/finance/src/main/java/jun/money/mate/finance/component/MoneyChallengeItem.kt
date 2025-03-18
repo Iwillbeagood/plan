@@ -31,17 +31,19 @@ import jun.money.mate.designsystem.theme.Red2
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.model.save.ChallengeType
 import jun.money.mate.model.save.ChallengeType.Companion.dayString
-import jun.money.mate.model.save.MoneyChallenge
+import jun.money.mate.model.save.Challenge
+import jun.money.mate.model.save.ChallengeProgress
 import jun.money.mate.utils.currency.CurrencyFormatter
+import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.LocalDate
 
 @Composable
 internal fun MoneyChallengeItem(
-    moneyChallenge: MoneyChallenge,
+    challenge: Challenge,
     onClick: () -> Unit,
 ) {
     Surface(
-        shape = RoundedCornerShape(4.dp),
+        shape = RoundedCornerShape(6.dp),
         border = BorderStroke(1.dp, Gray6),
         shadowElevation = 1.dp,
         modifier = Modifier
@@ -66,28 +68,29 @@ internal fun MoneyChallengeItem(
                         .fillMaxHeight()
                 ) {
                     Text(
-                        text = moneyChallenge.title.ifBlank {
-                            CurrencyFormatter.formatToWon(moneyChallenge.goalAmount) + " 모으기"
+                        text = challenge.title.ifBlank {
+                            CurrencyFormatter.formatToWon(challenge.goalAmount) + " 챌린지"
                         },
                         style = TypoTheme.typography.titleLargeB,
                     )
                     VerticalSpacer(16.dp)
                     Text(
-                        text = moneyChallenge.type.dayString(),
+                        text = challenge.type.dayString(),
                         style = TypoTheme.typography.titleMediumM,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Column(
                     horizontalAlignment = Alignment.End,
-                    modifier = Modifier.fillMaxHeight()
+                    modifier = Modifier
+                        .fillMaxHeight()
                 ) {
-                    if (!moneyChallenge.challengeCompleted) {
+                    val nextDate = challenge.nextDate
+                    if (!challenge.challengeCompleted && nextDate != null) {
                         Text(
-                            text = "다음 결제일 : ${moneyChallenge.nextDate}",
-                            style = TypoTheme.typography.titleSmallR,
+                            text = formatDateBasedOnYear(nextDate),
+                            style = TypoTheme.typography.titleSmallM,
                             color = Red2,
-                            modifier = Modifier.padding(top = 4.dp)
                         )
                     }
                     VerticalSpacer(1f)
@@ -98,13 +101,13 @@ internal fun MoneyChallengeItem(
                             .fillMaxWidth()
                     ) {
                         Text(
-                            text = moneyChallenge.achievedCount,
+                            text = challenge.achievedCount,
                             style = TypoTheme.typography.headlineMediumB,
                             color = MaterialTheme.colorScheme.primary
                         )
                         HorizontalSpacer(2.dp)
                         Text(
-                            text = moneyChallenge.totalTimes(),
+                            text = challenge.totalTimes(),
                             style = TypoTheme.typography.titleSmallM,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -112,7 +115,7 @@ internal fun MoneyChallengeItem(
                 }
             }
             CompleteMark(
-                visible = moneyChallenge.challengeCompleted
+                visible = challenge.challengeCompleted
             )
         }
     }
@@ -127,7 +130,7 @@ private fun BoxScope.CompleteMark(
     )
     if (visible) {
         Text(
-            text = "도전 성공!",
+            text = "챌린지 성공!",
             style = TypoTheme.typography.headlineMediumB,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
@@ -145,14 +148,23 @@ private fun BoxScope.CompleteMark(
 private fun MoneyChallengePreview() {
     JunTheme {
         MoneyChallengeItem(
-            moneyChallenge = MoneyChallenge(
+            challenge = Challenge(
                 id = 0,
                 title = "테스트",
                 count = 10,
                 startDate = LocalDate.now(),
                 goalAmount = 1000000,
                 type = ChallengeType.Monthly(1),
-                progress = emptyList()
+                progress = listOf(
+                    ChallengeProgress(
+                        id = 0,
+                        index = 0,
+                        challengeId = 0,
+                        amount = 100000,
+                        date = LocalDate.now(),
+                        isAchieved = false
+                    )
+                )
             ),
             onClick = {}
         )

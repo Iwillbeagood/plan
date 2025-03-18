@@ -31,7 +31,7 @@ internal fun PlusButton(
             color = White1,
             modifier = Modifier
                 .wrapContentSize(Alignment.Center)
-                .padding(16.dp)
+                .padding(vertical = 14.dp)
         )
     }
 }

@@ -5,64 +5,70 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jun.money.mate.challenge.contract.ChallengeEffect
+import jun.money.mate.challenge.contract.ChallengeState
+import jun.money.mate.data_api.database.ChallengeRepository
 import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.Route
-import jun.money.mate.challenge.contract.SavingListEffect
-import jun.money.mate.challenge.contract.SavingListState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
-internal class SavingListViewModel @Inject constructor(
-    private val saveRepository: SaveRepository,
+internal class ChallengeViewModel @Inject constructor(
+    private val challengeRepository: ChallengeRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val listData = savedStateHandle.toRoute<Route.Save.List>()
-    val month: YearMonth = YearMonth.of(listData.year, listData.month)
+    private val id = savedStateHandle.toRoute<Route.Challenge.Detail>().id
 
-    private val _savingListState = MutableStateFlow<SavingListState>(SavingListState.Loading)
-    val savingListState: StateFlow<SavingListState> = _savingListState.onStart {
-        loadSpending()
-    }.stateIn(
+    val challengeState: StateFlow<ChallengeState> = challengeRepository.getChallengeById(id)
+        .map {
+            ChallengeState.ChallengeData(it)
+        }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = SavingListState.Loading
+        initialValue = ChallengeState.Loading
     )
 
-    private val _savingListEffect = MutableSharedFlow<SavingListEffect>()
-    val savingListEffect: SharedFlow<SavingListEffect> get() = _savingListEffect.asSharedFlow()
+    private val _challengeEffect = MutableSharedFlow<ChallengeEffect>()
+    val challengeEffect: SharedFlow<ChallengeEffect> get() = _challengeEffect.asSharedFlow()
 
-    private fun loadSpending() {
+    fun deleteChallenge() {
         viewModelScope.launch {
-            saveRepository.getSavingFlow(month).collect { savePlan ->
-                _savingListState.value = SavingListState.SavingListData(savePlan)
-            }
+            challengeRepository.deleteById(id)
+            showSnackBar(MessageType.Message("챌린지가 삭제되었습니다"))
         }
     }
 
-    /**
-     *  일단 기간이 정해져있는 save의 경우에는
-     * */
+    fun changeAchieve(executed: Boolean, id: Long) {
+        viewModelScope.launch {
+            challengeRepository.updateChallengeAchieved(id, executed)
+        }
+    }
+
+    private fun loadSpending() {
+        viewModelScope.launch {
+        }
+    }
+
     fun executeChange(executed: Boolean, id: Long) {
         viewModelScope.launch {
-            saveRepository.updateExecuteState(id, executed)
         }
     }
 
     private fun showSnackBar(messageType: MessageType) {
         viewModelScope.launch {
-            _savingListEffect.emit(SavingListEffect.ShowSnackBar(messageType))
+            _challengeEffect.emit(ChallengeEffect.ShowSnackBar(messageType))
         }
     }
 }

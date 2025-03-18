@@ -5,11 +5,11 @@ import androidx.compose.runtime.Stable
 import jun.money.mate.model.etc.error.MessageType
 
 @Stable
-internal sealed interface SavingListEffect {
+internal sealed interface ChallengeEffect {
 
     @Immutable
-    data class ShowSnackBar(val messageType: MessageType) : SavingListEffect
+    data class ShowSnackBar(val messageType: MessageType) : ChallengeEffect
 
     @Immutable
-    data class EditSpendingPlan(val id: Long) : SavingListEffect
+    data class EditSpendingPlan(val id: Long) : ChallengeEffect
 }

@@ -9,8 +9,8 @@ import jun.money.mate.save.SaveDetailRoute
 import jun.money.mate.save.SaveListRoute
 import java.time.YearMonth
 
-fun NavController.navigateToSaveList(date: YearMonth) {
-    navigate(Route.Save.List(date.year, date.monthValue))
+fun NavController.navigateToSaveList() {
+    navigate(Route.Save.List)
 }
 
 fun NavController.navigateToSaveDetail(id: Long) {

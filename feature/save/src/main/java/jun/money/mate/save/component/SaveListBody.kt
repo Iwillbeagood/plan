@@ -18,9 +18,13 @@ import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem_date.datetimepicker.MonthBar
 import jun.money.mate.model.save.SavePlanList
 import java.time.LocalDate
+import java.time.YearMonth
 
 @Composable
 internal fun SaveListBody(
+    month: YearMonth,
+    onPrev: () -> Unit,
+    onNext: () -> Unit,
     savePlanList: SavePlanList,
     onShowDetail: (Long) -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
@@ -33,6 +37,13 @@ internal fun SaveListBody(
         modifier = modifier.fillMaxWidth()
     ) {
         Column {
+            VerticalSpacer(20.dp)
+            MonthBar(
+                month = month,
+                onPrev = onPrev,
+                onNext = onNext,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
             VerticalSpacer(20.dp)
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
@@ -54,6 +65,9 @@ internal fun SaveListBody(
 private fun SaveListBodyPreview() {
     JunTheme {
         SaveListBody(
+            month = YearMonth.now(),
+            onPrev = {},
+            onNext = {},
             savePlanList = SavePlanList.sample,
             onShowDetail = {},
             onExecuteChange = { _, _ -> },

@@ -6,7 +6,7 @@ import jun.money.mate.data.mapper.toMoneyChallenge
 import jun.money.mate.data_api.database.ChallengeRepository
 import jun.money.mate.database.dao.ChallengeDao
 import jun.money.mate.database.entity.ChallengeWithProgress
-import jun.money.mate.model.save.MoneyChallenge
+import jun.money.mate.model.save.Challenge
 import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -17,7 +17,7 @@ class ChallengeRepositoryImpl @Inject constructor(
     private val challengeDao: ChallengeDao
 ) : ChallengeRepository {
 
-    override suspend fun upsertChallenge(challenge: MoneyChallenge) {
+    override suspend fun upsertChallenge(challenge: Challenge) {
         try {
             challengeDao.upsertChallenge(challenge.toChallengeEntity())
             challengeDao.upsertChallengeProgress(challenge.toChallengeProgressEntity())
@@ -34,16 +34,21 @@ class ChallengeRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getChallengeList(): Flow<List<MoneyChallenge>> {
+    override fun getChallengeList(): Flow<List<Challenge>> {
         return challengeDao.getAllChallengesWithProgress().map {
             it.map(ChallengeWithProgress::toMoneyChallenge)
+                .sortedBy { it.challengeCompleted }
         }.catch {
             Logger.e("getChallengeList error: $it")
         }
     }
 
-    override suspend fun getChallengeById(id: Long): MoneyChallenge {
-        return challengeDao.getChallengeWithProgress(id).toMoneyChallenge()
+    override fun getChallengeById(id: Long): Flow<Challenge> {
+        return challengeDao.getChallengeWithProgress(id).map {
+            it.toMoneyChallenge()
+        }.catch {
+            Logger.e("getChallengeById error: $it")
+        }
     }
 
     override suspend fun deleteById(id: Long) {
