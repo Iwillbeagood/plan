@@ -1,6 +1,5 @@
 package jun.money.mate.challenge
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,10 +24,11 @@ import jun.money.mate.challenge.contract.ChallengeEffect
 import jun.money.mate.challenge.contract.ChallengeState
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalSpacer
+import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbar
-import jun.money.mate.designsystem.component.TopAppbarType
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
+import jun.money.mate.designsystem.theme.Gray4
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.model.save.Challenge
@@ -57,17 +57,22 @@ internal fun ChallengeRoute(
     Scaffold(
         topBar = {
             TopAppbar(
-                onBackEvent = navigateAction::popBackStack,
-                navigationType = TopAppbarType.Custom {
-                    Text(
-                        text = "삭제하기",
-                        style = TypoTheme.typography.titleMediumM,
-                        modifier = Modifier
-                            .clickable(onClick = viewModel::deleteChallenge)
-                            .padding(5.dp)
-                    )
-                }
+                onBackEvent = navigateAction::popBackStack
             )
+        },
+        bottomBar = {
+            val state = challengeState
+            if (state is ChallengeState.ChallengeData && !state.challenge.challengeCompleted) {
+                RegularButton(
+                    text = "챌린지 포기하기",
+                    onClick = viewModel::giveUpChallenge,
+                    color = Gray4,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+            }
+
         }
     ) {
         Box(
@@ -124,7 +129,7 @@ private fun ChallengeScreen(
             modifier = Modifier
                 .padding(horizontal = 30.dp)
         ) {
-            Column{
+            Column {
                 Text(
                     text = "챌린지 금액",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
