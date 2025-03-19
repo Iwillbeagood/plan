@@ -17,6 +17,7 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem_date.datetimepicker.MonthBar
 import jun.money.mate.model.save.SavePlanList
+import jun.money.mate.model.save.SavingChallenge
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -26,6 +27,7 @@ internal fun SaveListBody(
     onPrev: () -> Unit,
     onNext: () -> Unit,
     savePlanList: SavePlanList,
+    savingChallengeList: List<SavingChallenge>,
     onShowDetail: (Long) -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
     modifier: Modifier = Modifier
@@ -48,6 +50,11 @@ internal fun SaveListBody(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
+                items(savingChallengeList) { savingChallenge ->
+                    SavingChallengeItem(
+                        savingChallenge = savingChallenge,
+                    )
+                }
                 items(savePlanList.savePlans) { savePlan ->
                     SaveListItem(
                         savePlan = savePlan,
@@ -69,6 +76,7 @@ private fun SaveListBodyPreview() {
             onPrev = {},
             onNext = {},
             savePlanList = SavePlanList.sample,
+            savingChallengeList = listOf(SavingChallenge.sample),
             onShowDetail = {},
             onExecuteChange = { _, _ -> },
         )

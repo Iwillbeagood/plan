@@ -1,15 +1,11 @@
 package jun.money.mate.challenge.component
 
-import androidx.annotation.DrawableRes
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.DefaultSwitch
@@ -36,7 +31,7 @@ import jun.money.mate.model.save.ChallengeProgressType
 import jun.money.mate.model.save.ChallengeProgressType.Now
 import jun.money.mate.model.save.ChallengeProgressType.PAST
 import jun.money.mate.model.save.ChallengeProgressType.UPCOMING
-import jun.money.mate.res.R
+import jun.money.mate.ui.FlowerImage
 import jun.money.mate.utils.formatDateBasedOnYear
 
 data class ChallengeItemParam(
@@ -133,27 +128,6 @@ private fun ChallengeItem(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun FlowerImage(
-    size: Int,
-    isAchieved: Boolean,
-    modifier: Modifier = Modifier
-) {
-    Crossfade(
-        targetState = isAchieved,
-        label = "flower_animation",
-        modifier = modifier
-    ) { achieved ->
-        Image(
-            painter = painterResource(
-                id = if (achieved) R.drawable.ic_smile_flower else R.drawable.ic_upset_flower
-            ),
-            contentDescription = "Flower Image",
-            modifier = Modifier.size(size.dp)
-        )
     }
 }
 

@@ -6,7 +6,7 @@ import jun.money.mate.model.save.SavingsType
 import javax.inject.Inject
 
 class EditSaveUsecase @Inject constructor(
-    private val saveRepository: SaveRepository
+    private val saveRepository: SaveRepository,
 ) {
 
     suspend operator fun invoke(

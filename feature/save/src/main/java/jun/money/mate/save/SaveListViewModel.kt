@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.SaveRepository
+import jun.money.mate.domain.GetChallengeProgressUsecase
 import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.model.save.SavingChallenge
 import jun.money.mate.save.contract.SavingListEffect
 import jun.money.mate.save.contract.SavingListState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -22,7 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SavingListViewModel @Inject constructor(
-    private val saveRepository: SaveRepository
+    private val saveRepository: SaveRepository,
+    getChallengeProgressUsecase: GetChallengeProgressUsecase
 ) : ViewModel() {
 
     private val _month = MutableStateFlow<YearMonth>(YearMonth.now())
@@ -37,13 +41,25 @@ internal class SavingListViewModel @Inject constructor(
         initialValue = SavingListState.Loading
     )
 
+    val challengeState: StateFlow<List<SavingChallenge>> = month.flatMapLatest { month ->
+        getChallengeProgressUsecase(month)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
     private val _savingListEffect = MutableSharedFlow<SavingListEffect>()
     val savingListEffect: SharedFlow<SavingListEffect> get() = _savingListEffect.asSharedFlow()
 
     private fun loadSpending() {
         viewModelScope.launch {
-            saveRepository.getSavingFlow(month.value).collect { savePlan ->
-                _savingListState.value = SavingListState.SavingListData(savePlan)
+            month.flatMapLatest { month ->
+                saveRepository.getSavingFlow(month)
+            }.collect { savePlan ->
+                _savingListState.update {
+                    SavingListState.SavingListData(savePlan)
+                }
             }
         }
     }

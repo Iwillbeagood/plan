@@ -29,7 +29,8 @@ import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main10
 import jun.money.mate.model.save.SavePlanList
-import jun.money.mate.save.component.AcornBox
+import jun.money.mate.model.save.SavingChallenge
+import jun.money.mate.save.component.AcornFlowerBox
 import jun.money.mate.save.component.SaveListBody
 import jun.money.mate.save.contract.SavingListEffect
 import jun.money.mate.save.contract.SavingListState
@@ -47,10 +48,12 @@ internal fun SaveListRoute(
     val navigateAction = LocalNavigateActionInterop.current
     val showSnackBar = rememberShowSnackBar()
     val savingListState by viewModel.savingListState.collectAsStateWithLifecycle()
+    val challengeState by viewModel.challengeState.collectAsStateWithLifecycle()
     val month by viewModel.month.collectAsStateWithLifecycle()
 
     SavingListScreen(
         savingListState = savingListState,
+        savingChallengeList = challengeState,
         month = month,
         onPrev = viewModel::prevMonth,
         onNext = viewModel::nextMonth,
@@ -73,6 +76,7 @@ internal fun SaveListRoute(
 @Composable
 private fun SavingListScreen(
     savingListState: SavingListState,
+    savingChallengeList: List<SavingChallenge>,
     month: YearMonth,
     onPrev: () -> Unit,
     onNext: () -> Unit,
@@ -103,15 +107,17 @@ private fun SavingListScreen(
                     .fillMaxSize()
                     .padding(it)
             ) {
-                AcornBox(
+                AcornFlowerBox(
                     count = (savingListState as? SavingListState.SavingListData)?.acornCount ?: 0,
                     goldCount = (savingListState as? SavingListState.SavingListData)?.goldAcornCount ?: 0,
+                    flowerCount = savingChallengeList.size,
                 )
                 SavingListContent(
                     month = month,
                     onPrev = onPrev,
                     onNext = onNext,
                     savingListState = savingListState,
+                    savingChallengeList = savingChallengeList,
                     onShowDetail = onShowDetail,
                     onExecuteChange = onExecuteChange,
                     modifier = Modifier.weight(1f)
@@ -159,6 +165,7 @@ private fun SavingListContent(
     onPrev: () -> Unit,
     onNext: () -> Unit,
     savingListState: SavingListState,
+    savingChallengeList: List<SavingChallenge>,
     onShowDetail: (Long) -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
     modifier: Modifier = Modifier
@@ -173,6 +180,7 @@ private fun SavingListContent(
                 onPrev = onPrev,
                 onNext = onNext,
                 savePlanList = savingListState.savePlanList,
+                savingChallengeList = savingChallengeList,
                 onShowDetail = onShowDetail,
                 onExecuteChange = onExecuteChange,
             )
@@ -186,6 +194,7 @@ private fun SpendingListScreenPreview() {
     JunTheme {
         SavingListScreen(
             savingListState = SavingListState.SavingListData(SavePlanList.sample),
+            savingChallengeList = listOf(SavingChallenge.sample),
             month = YearMonth.now(),
             onPrev = {},
             onNext = {},
