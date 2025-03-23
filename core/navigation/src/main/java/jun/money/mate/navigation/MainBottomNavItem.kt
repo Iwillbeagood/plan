@@ -33,7 +33,7 @@ enum class MainBottomNavItem(
     Budget(
         titleRes = R.string.tab_budget,
         icon = Icons.Default.AttachMoney,
-        route = MainTabRoute.SpendingPlan.List,
+        route = MainTabRoute.Spending,
     );
 
     companion object {

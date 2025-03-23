@@ -7,20 +7,14 @@ import dagger.hilt.components.SingletonComponent
 import jun.money.mate.database.AppDatabase
 import jun.money.mate.database.dao.ChallengeDao
 import jun.money.mate.database.dao.ConsumptionDao
+import jun.money.mate.database.dao.CostDao
 import jun.money.mate.database.dao.IncomeDao
 import jun.money.mate.database.dao.SaveDao
-import jun.money.mate.database.dao.SpendingPlanDao
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 internal object DaoModule {
-
-    @Provides
-    @Singleton
-    fun provideSpendingDao(
-        database: AppDatabase,
-    ) : SpendingPlanDao = database.spendingPlanDao()
 
     @Provides
     @Singleton
@@ -45,4 +39,10 @@ internal object DaoModule {
     fun provideChallengeDao(
         database: AppDatabase,
     ) : ChallengeDao = database.challengeDao()
+
+    @Provides
+    @Singleton
+    fun provideCostDao(
+        database: AppDatabase,
+    ) : CostDao = database.costDao()
 }

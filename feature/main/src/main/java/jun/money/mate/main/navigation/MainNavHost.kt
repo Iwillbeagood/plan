@@ -14,14 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import jun.money.mate.challenge.navigation.challengeNavGraph
 import jun.money.mate.consumption_spend.navigation.consumptionNavGraph
+import jun.money.mate.cost.navigation.costNavGraph
 import jun.money.mate.finance.navigation.financeNavGraph
 import jun.money.mate.home.navigation.homeNavGraph
 import jun.money.mate.income.navigation.incomeNavGraph
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.Route
 import jun.money.mate.save.navigation.saveNavGraph
-import jun.money.mate.spending_plan.navigation.spendingPlanNavGraph
+import jun.money.mate.spending_plan.navigation.spendingNavGraph
 import jun.money.mate.splash.navigation.splashNavGraph
+import jun.money.mate.ui.interop.LocalNavigateActionInterop
 
 @Composable
 internal fun MainNavHost(
@@ -35,6 +37,8 @@ internal fun MainNavHost(
             .background(MaterialTheme.colorScheme.surfaceDim)
             .padding(paddingValues)
     ) {
+        val navigateAction = LocalNavigateActionInterop.current
+
         NavHost(
             navController = navigator.navController,
             startDestination = Route.Splash,
@@ -45,19 +49,16 @@ internal fun MainNavHost(
             financeNavGraph()
             incomeNavGraph()
             challengeNavGraph()
-            spendingPlanNavGraph(
-                onShowSpendingPlanAdd = navigator::navigateToSpendingPlanAdd,
-                onShowSpendingPlanEdit = navigator::navigateToSpendingPlanEdit,
-            )
+            costNavGraph()
+            spendingNavGraph()
             consumptionNavGraph(
                 onShowConsumptionAdd = navigator::navigateToConsumptionAdd,
-                onShowSpendingPlanAdd = navigator::navigateToSpendingPlanAdd,
                 onShowConsumptionEdit = navigator::navigateToConsumptionEdit,
             )
             saveNavGraph()
             splashNavGraph(
                 onShowHomeScreen = {
-                    navigator.navigateTo(MainBottomNavItem.Home)
+                    navigateAction.navigateBottomNav(MainBottomNavItem.Home)
                 }
             )
         }

@@ -9,15 +9,6 @@ import java.time.LocalDate
 
 @Entity(
     tableName = AppDatabase.CONSUMPTION_TABLE_NAME,
-    foreignKeys = [
-        ForeignKey(
-            entity = SpendingPlanEntity::class,
-            parentColumns = ["title"],
-            childColumns = ["planTitle"],
-            onUpdate = ForeignKey.CASCADE,
-            onDelete = ForeignKey.CASCADE
-        )
-    ],
     indices = [Index(value = ["planTitle"])]
 )
 data class ConsumptionEntity(

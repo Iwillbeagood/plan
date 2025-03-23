@@ -47,6 +47,7 @@ import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.finance.component.FinanceChart
 import jun.money.mate.finance.component.MoneyChallengeItem
 import jun.money.mate.finance.component.PlusButton
+import jun.money.mate.finance.contract.FinanceState
 import jun.money.mate.model.save.Challenge
 import jun.money.mate.ui.LeafIcon
 import jun.money.mate.ui.SeedIcon

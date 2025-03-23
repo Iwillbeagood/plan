@@ -12,7 +12,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jun.money.mate.database.AppDatabase
 import jun.money.mate.database.AppDatabase.Companion.DATABASE_NAME
-import jun.money.mate.database.entity.SpendingPlanEntity
 import jun.money.mate.utils.BuildConfig
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors

@@ -6,11 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.ConsumptionRepository
-import jun.money.mate.domain.GetConsumptionFilterUsecase
 import jun.money.mate.model.consumption.Consumption
 import jun.money.mate.model.consumption.ConsumptionFilter
-import jun.money.mate.model.consumption.ConsumptionFilter.Companion.selectedFilter
-import jun.money.mate.model.consumption.ConsumptionFilter.Companion.toStringList
 import jun.money.mate.model.consumption.ConsumptionList
 import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.model.etc.error.MessageType
@@ -20,10 +17,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -34,7 +29,6 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ConsumptionListViewModel @Inject constructor(
     private val consumptionRepository: ConsumptionRepository,
-    private val getConsumptionFilterUsecase: GetConsumptionFilterUsecase
 ) : ViewModel() {
 
     var dateState = MutableStateFlow<LocalDate>(LocalDate.now())
@@ -64,9 +58,6 @@ internal class ConsumptionListViewModel @Inject constructor(
 
     private val _consumptionFilter = MutableStateFlow<List<ConsumptionFilter>>(emptyList())
     val consumptionFilter: StateFlow<List<ConsumptionFilter>> = _consumptionFilter.onStart {
-        _consumptionFilter.update {
-            getConsumptionFilterUsecase()
-        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
@@ -81,22 +72,6 @@ internal class ConsumptionListViewModel @Inject constructor(
     val consumptionListEffect: SharedFlow<ConsumptionListEffect> get() = _consumptionListEffect.asSharedFlow()
 
     private fun loadSpending() {
-        viewModelScope.launch {
-            combine(
-                dateState,
-                consumptionFilter
-            ) { date, filter ->
-                date to filter.selectedFilter()
-            }.flatMapLatest { (date, filter) ->
-                consumptionRepository.getConsumptionByMonth(date).map { consumptionList ->
-                    consumptionList.consumptions.filter {
-                        filter.planTitle == ConsumptionFilter.ALL_TITLE || it.planTitle == filter.planTitle
-                    }
-                }
-            }.collect {
-                _consumptionListState.value = ConsumptionListState.ConsumptionListData(ConsumptionList(it))
-            }
-        }
     }
 
     fun changeConsumptionSelected(consumption: Consumption) {
@@ -124,11 +99,6 @@ internal class ConsumptionListViewModel @Inject constructor(
         val filterValue = consumptionFilter.value
 
         viewModelScope.launch {
-            _consumptionModalEffect.update {
-                ConsumptionDialogEffect.ShowFilterBottomSheet(
-                    filterValue.toStringList()
-                )
-            }
         }
     }
 

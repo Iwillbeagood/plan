@@ -63,7 +63,9 @@ internal fun HomeRoute(
         viewModel.homeEffect.collect { effect ->
             when (effect) {
                 HomeEffect.ShowIncomeAddScreen -> navigateAction.navigateToIncomeAdd()
-                HomeEffect.ShowSpendingAddScreen -> navigateAction.navigateToSpendingPlanAdd()
+                HomeEffect.ShowSpendingAddScreen -> {
+
+                }
                 HomeEffect.ShowConsumptionAddScreen -> navigateAction.navigateToConsumptionAdd()
                 HomeEffect.ShowSaveAddScreen -> navigateAction.navigateToSavingAdd()
                 is HomeEffect.ShowMainNavScreen -> navigateAction.navigateBottomNav(effect.navItem)
@@ -87,7 +89,6 @@ private fun HomeContent(
             HomeScreen(
                 balance = homeState.balanceString,
                 incomeTotal = homeState.incomeList.totalString,
-                spendTotal = homeState.spendingPlanList.totalString,
                 saveTotal = homeState.savePlanList.totalString,
                 homeList = emptyList(),
                 onShowMenu = onShowMenu,
@@ -103,7 +104,6 @@ private fun HomeContent(
 private fun HomeScreen(
     balance: String,
     incomeTotal: String,
-    spendTotal: String,
     saveTotal: String,
     homeList: List<HomeList>,
     onHomeListClick: (MainBottomNavItem) -> Unit,
@@ -174,11 +174,6 @@ private fun HomeScreen(
                             style = TypoTheme.typography.titleMediumM,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f)
-                        )
-                        Text(
-                            text = "- $spendTotal",
-                            style = TypoTheme.typography.titleMediumB,
-                            color = Red3
                         )
                     }
                     Row {
@@ -321,7 +316,6 @@ private fun HomeScreenPreview() {
         HomeScreen(
             balance = "300,000원",
             incomeTotal = "2,000,000원",
-            spendTotal = "1,000,000원",
             saveTotal = "700,000원",
             onShowMenu = {},
             onShowNotification = {},

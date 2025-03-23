@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.data_api.database.ConsumptionRepository
 import jun.money.mate.domain.AddConsumptionUsecase
-import jun.money.mate.domain.GetSpendingConsumptionTitlesUsecase
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.argument.AddType
@@ -31,7 +30,6 @@ import javax.inject.Inject
 internal class ConsumptionAddViewModel @Inject constructor(
     private val addConsumptionUsecase: AddConsumptionUsecase,
     private val consumptionRepository: ConsumptionRepository,
-    private val getSpendingConsumptionTitlesUsecase: GetSpendingConsumptionTitlesUsecase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -151,8 +149,6 @@ internal class ConsumptionAddViewModel @Inject constructor(
 
     fun showCategoryBottomSheet() {
         viewModelScope.launch {
-            val consumptionPlanTitles = getSpendingConsumptionTitlesUsecase()
-            _consumptionModalEffect.update { ConsumptionModalEffect.ShowCategoryBottomSheet(consumptionPlanTitles) }
         }
     }
 

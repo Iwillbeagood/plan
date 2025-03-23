@@ -52,6 +52,7 @@ include(
     ":feature:income",
     ":feature:save",
     ":feature:challenge",
-    ":feature:spending-plan",
+    ":feature:cost",
+    ":feature:spending",
     ":feature:comsumption-spend",
 )

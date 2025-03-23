@@ -24,10 +24,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.Black
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.nonScaledSp
 import jun.money.mate.navigation.MainBottomNavItem
+import jun.money.mate.ui.interop.LocalNavigateActionInterop
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -35,9 +36,9 @@ import kotlinx.collections.immutable.toPersistentList
 internal fun MainBottomBar(
     visible: Boolean,
     bottomItems: PersistentList<MainBottomNavItem>,
-    currentItem: MainBottomNavItem?,
-    onBottomItemClicked: (MainBottomNavItem) -> Unit
+    currentItem: MainBottomNavItem?
 ) {
+    val navigateAction = LocalNavigateActionInterop.current
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn() + slideIn { IntOffset(0, it.height) },
@@ -73,7 +74,7 @@ internal fun MainBottomBar(
                                 style = TypoTheme.typography.labelMediumM.nonScaledSp
                             )
                         },
-                        onClick = { onBottomItemClicked(item) },
+                        onClick = { navigateAction.navigateBottomNav(item) },
                         selected = item == currentItem
                     )
                 }
@@ -90,7 +91,6 @@ private fun MainBottomBarPreview() {
             visible = true,
             bottomItems = MainBottomNavItem.entries.toPersistentList(),
             currentItem = MainBottomNavItem.Home,
-            onBottomItemClicked = { }
         )
     }
 }

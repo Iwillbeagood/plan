@@ -12,6 +12,8 @@ import androidx.navigation.navOptions
 import jun.money.mate.challenge.navigation.navigateToChallengeAdd
 import jun.money.mate.challenge.navigation.navigateToChallengeDetail
 import jun.money.mate.consumption_spend.navigation.navigateToConsumptionAdd
+import jun.money.mate.cost.navigation.navigateToCost
+import jun.money.mate.cost.navigation.navigateToCostAdd
 import jun.money.mate.finance.navigation.navigateToFinance
 import jun.money.mate.home.navigation.navigateToHome
 import jun.money.mate.income.navigation.navigateToIncomeAdd
@@ -24,9 +26,8 @@ import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.save.navigation.navigateToSaveAdd
 import jun.money.mate.save.navigation.navigateToSaveDetail
 import jun.money.mate.save.navigation.navigateToSaveList
-import jun.money.mate.spending_plan.navigation.navigateToSpendingPlanAdd
+import jun.money.mate.spending_plan.navigation.navigateToSpending
 import jun.money.mate.ui.interop.NavigateActionInterop
-import java.time.YearMonth
 
 class MainNavigator(
     val navController: NavHostController
@@ -58,9 +59,9 @@ class MainNavigator(
 
                 when (item) {
                     MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
-                    MainBottomNavItem.Finance -> navController.navigateToFinance(navOptions)
                     MainBottomNavItem.Calendar -> TODO()
-                    MainBottomNavItem.Budget -> TODO()
+                    MainBottomNavItem.Finance -> navController.navigateToFinance(navOptions)
+                    MainBottomNavItem.Budget -> navController.navigateToSpending(navOptions)
                 }
             }
 
@@ -68,37 +69,15 @@ class MainNavigator(
             override fun navigateToSaveList() = navController.navigateToSaveList()
             override fun navigateToIncomeAdd() = navController.navigateToIncomeAdd()
             override fun navigateToIncomeEdit(id: Long) = navController.navigateToIncomeEdit(id)
-            override fun navigateToSpendingPlanAdd() = navController.navigateToSpendingPlanAdd(AddType.New)
             override fun navigateToConsumptionAdd() = navController.navigateToConsumptionAdd(AddType.New)
             override fun navigateToConsumptionEdit(id: Long) = navController.navigateToConsumptionAdd(AddType.Edit(id))
-            override fun navigateToSpendingPlanEdit(id: Long) = navController.navigateToSpendingPlanAdd(AddType.Edit(id))
             override fun navigateToSavingAdd() = navController.navigateToSaveAdd()
             override fun navigateToSavingDetail(id: Long) = navController.navigateToSaveDetail(id)
             override fun navigateToChallengeAdd() = navController.navigateToChallengeAdd()
             override fun navigateToChallengeDetail(id: Long) = navController.navigateToChallengeDetail(id)
+            override fun navigateToCostAdd() = navController.navigateToCostAdd()
+            override fun navigateToCostDetail(id: Long) = navController.navigateToCost(id)
         }
-    }
-
-    fun navigateTo(menuItem: MainBottomNavItem) {
-        if (currentItem == menuItem) return
-
-        val navOptions = navOptions {
-            popUpTo(0) {
-                inclusive = true
-            }
-            restoreState = true
-        }
-
-        when (menuItem) {
-            MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
-            MainBottomNavItem.Finance -> navController.navigateToFinance(navOptions)
-            MainBottomNavItem.Calendar -> TODO()
-            MainBottomNavItem.Budget -> TODO()
-        }
-    }
-
-    fun navigateToSpendingPlanAdd() {
-        navController.navigateToSpendingPlanAdd(AddType.New)
     }
 
     fun navigateToConsumptionAdd() {
@@ -107,10 +86,6 @@ class MainNavigator(
 
     fun navigateToConsumptionEdit(id: Long) {
         navController.navigateToConsumptionAdd(AddType.Edit(id))
-    }
-
-    fun navigateToSpendingPlanEdit(id: Long) {
-        navController.navigateToSpendingPlanAdd(AddType.Edit(id))
     }
 
     fun popBackStackIfNotHome(): Boolean {

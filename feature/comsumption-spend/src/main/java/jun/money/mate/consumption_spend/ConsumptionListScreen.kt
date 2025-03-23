@@ -18,14 +18,12 @@ import jun.money.mate.consumption_spend.component.SpendingCategoryBottomSheet
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.TwoBtnDialog
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.model.consumption.Consumption
-import jun.money.mate.model.consumption.ConsumptionFilter.Companion.selectedFilter
 import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.ui.DateScaffold
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
 import jun.money.mate.ui.interop.rememberShowSnackBar
 import java.time.LocalDate
 
@@ -45,7 +43,6 @@ internal fun ConsumptionListRoute(
 
     ConsumptionListScreen(
         consumptionListState = consumptionListState,
-        filterValue = filterValue.selectedFilter().planTitle,
         consumptionListViewMode = consumptionListViewMode,
         selectedDate = selectedDate,
         onSpendingPlanEdit = viewModel::editSpending,
@@ -77,7 +74,7 @@ internal fun ConsumptionListRoute(
 @Composable
 private fun ConsumptionListScreen(
     consumptionListState: ConsumptionListState,
-    filterValue: String,
+    filterValue: String = "",
     consumptionListViewMode: ViewMode,
     selectedDate: LocalDate,
     onSpendingPlanEdit: () -> Unit,

@@ -20,7 +20,7 @@ fun NavController.navigateToConsumptionAdd(addType: AddType) {
 }
 
 fun NavGraphBuilder.consumptionNavGraph(
-    onShowSpendingPlanAdd: () -> Unit,
+    onShowSpendingPlanAdd: () -> Unit = {},
     onShowConsumptionAdd: () -> Unit,
     onShowConsumptionEdit: (id: Long) -> Unit,
 ) {

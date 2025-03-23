@@ -46,6 +46,16 @@ sealed interface Route {
         @Serializable
         data object Add : Challenge
     }
+
+    @Serializable
+    sealed interface Cost : Route {
+
+        @Serializable
+        data class Detail(val id: Long) : Cost
+
+        @Serializable
+        data object Add : Cost
+    }
 }
 
 sealed interface MainTabRoute : Route {
@@ -59,6 +69,8 @@ sealed interface MainTabRoute : Route {
     @Serializable
     data object Finance : MainTabRoute
 
+    @Serializable
+    data object Spending : MainTabRoute
 
     @Serializable
     sealed interface ConsumptionSpend : MainTabRoute {
@@ -70,15 +82,5 @@ sealed interface MainTabRoute : Route {
         data class Add(val addType: AddType) : ConsumptionSpend
     }
 
-
-    @Serializable
-    sealed interface SpendingPlan : MainTabRoute {
-
-        @Serializable
-        data object List : SpendingPlan
-
-        @Serializable
-        data class Add(val addType: AddType) : SpendingPlan
-    }
 }
 

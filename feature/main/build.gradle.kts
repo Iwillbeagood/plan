@@ -12,11 +12,12 @@ dependencies {
     implementation(projects.feature.splash)
     implementation(projects.feature.home)
     implementation(projects.feature.income)
-    implementation(projects.feature.spendingPlan)
+    implementation(projects.feature.spending)
     implementation(projects.feature.comsumptionSpend)
     implementation(projects.feature.save)
     implementation(projects.feature.finance)
     implementation(projects.feature.challenge)
+    implementation(projects.feature.cost)
 
     implementation(projects.core.network)
 }
