@@ -51,6 +51,9 @@ sealed interface Route {
     sealed interface Cost : Route {
 
         @Serializable
+        data object Main : Cost
+
+        @Serializable
         data class Detail(val id: Long) : Cost
 
         @Serializable

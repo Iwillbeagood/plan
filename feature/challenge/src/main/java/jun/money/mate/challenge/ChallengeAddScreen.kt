@@ -37,8 +37,8 @@ import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.model.save.ChallengeType
 import jun.money.mate.ui.AddScaffold
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.interop.rememberShowSnackBar
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.ui.number.ValueState
 

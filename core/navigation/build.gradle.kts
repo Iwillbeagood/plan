@@ -16,5 +16,6 @@ dependencies {
     implementation(libs.androidx.compose.navigation)
     implementation(libs.androidx.compose.material.icon)
     implementation(projects.core.res)
+    implementation(projects.core.model)
     implementation(projects.core.designsystem)
 }

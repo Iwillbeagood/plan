@@ -46,9 +46,9 @@ import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavingsType.Companion.title
 import jun.money.mate.save.contract.SaveDetailEffect
 import jun.money.mate.save.contract.SaveDetailModalEffect
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.ui.number.NumberKeyboard
-import jun.money.mate.ui.interop.rememberShowSnackBar
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 
 @Composable
 internal fun SaveDetailRoute(

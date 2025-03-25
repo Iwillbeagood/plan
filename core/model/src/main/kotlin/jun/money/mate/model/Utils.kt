@@ -34,5 +34,4 @@ object Utils {
         val formatter = DateTimeFormatter.ofPattern("M월 d일")
         return date.format(formatter)
     }
-
 }

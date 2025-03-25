@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -79,6 +80,7 @@ fun RegularButton(
     text: String = stringResource(id = R.string.btn_complete),
     color: Color = MaterialTheme.colorScheme.primary,
     style: TextStyle = TypoTheme.typography.titleMediumB,
+    elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
     inActiveColor: Color = Gray6,
     textColor: Color = White1,
     isActive: Boolean = true,
@@ -86,6 +88,7 @@ fun RegularButton(
     isPreventMultipleClicks: Boolean = true,
     borderStroke: Dp = 8.dp,
     verticalPadding: Dp = 12.dp,
+    horizontalPadding: Dp = 10.dp
 ) {
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
@@ -96,7 +99,8 @@ fun RegularButton(
             contentColor = textColor,
             disabledContainerColor = inActiveColor
         ),
-        contentPadding = PaddingValues(vertical = verticalPadding, horizontal = 10.dp),
+        contentPadding = PaddingValues(vertical = verticalPadding, horizontal = horizontalPadding),
+        elevation = elevation,
         enabled = enabled,
         onClick = {
             if (isPreventMultipleClicks) {

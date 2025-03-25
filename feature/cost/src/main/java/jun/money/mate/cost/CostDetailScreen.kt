@@ -1,4 +1,4 @@
-package jun.money.mate.challenge
+package jun.money.mate.cost
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,9 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.challenge.component.ChallengeLazyColumn
-import jun.money.mate.challenge.contract.ChallengeEffect
-import jun.money.mate.challenge.contract.ChallengeState
+import jun.money.mate.cost.contract.CostEffect
+import jun.money.mate.cost.contract.CostDetailState
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.RegularButton
@@ -45,14 +44,14 @@ import jun.money.mate.utils.currency.CurrencyFormatter
  * 목표 기간 내에
  * */
 @Composable
-internal fun ChallengeRoute(
-    viewModel: ChallengeViewModel = hiltViewModel()
+internal fun CostDetailRoute(
+    viewModel: CostDetailViewModel = hiltViewModel()
 ) {
     ChangeStatusBarColor()
 
     val navigateAction = LocalNavigateActionInterop.current
     val showSnackBar = rememberShowSnackBar()
-    val challengeState by viewModel.challengeState.collectAsStateWithLifecycle()
+    val challengeState by viewModel.costDetailState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -62,7 +61,7 @@ internal fun ChallengeRoute(
         },
         bottomBar = {
             val state = challengeState
-            if (state is ChallengeState.ChallengeData && !state.challenge.challengeCompleted) {
+            if (state is CostDetailState.CostDetailData && !state.challenge.challengeCompleted) {
                 RegularButton(
                     text = "챌린지 포기하기",
                     onClick = viewModel::giveUpChallenge,
@@ -81,17 +80,17 @@ internal fun ChallengeRoute(
                 .padding(it)
         ) {
             ChallengeContent(
-                challengeState = challengeState,
+                costDetailState = challengeState,
                 onAchieveChange = viewModel::changeAchieve
             )
         }
     }
 
     LaunchedEffect(Unit) {
-        viewModel.challengeEffect.collect { effect ->
+        viewModel.costEffect.collect { effect ->
             when (effect) {
-                is ChallengeEffect.EditSpendingPlan -> navigateAction.navigateToSavingDetail(effect.id)
-                is ChallengeEffect.ShowSnackBar -> showSnackBar(effect.messageType)
+                is CostEffect.EditSpendingPlan -> navigateAction.navigateToSavingDetail(effect.id)
+                is CostEffect.ShowSnackBar -> showSnackBar(effect.messageType)
             }
         }
     }
@@ -99,15 +98,15 @@ internal fun ChallengeRoute(
 
 @Composable
 private fun ChallengeContent(
-    challengeState: ChallengeState,
+    costDetailState: CostDetailState,
     onAchieveChange: (Boolean, Long) -> Unit,
 ) {
     FadeAnimatedVisibility(
-        challengeState is ChallengeState.ChallengeData,
+        costDetailState is CostDetailState.CostDetailData,
     ) {
-        if (challengeState is ChallengeState.ChallengeData) {
+        if (costDetailState is CostDetailState.CostDetailData) {
             ChallengeScreen(
-                challengeState = challengeState,
+                costDetailState = costDetailState,
                 onAchieveChange = onAchieveChange,
             )
         }
@@ -116,7 +115,7 @@ private fun ChallengeContent(
 
 @Composable
 private fun ChallengeScreen(
-    challengeState: ChallengeState.ChallengeData,
+    costDetailState: CostDetailState.CostDetailData,
     onAchieveChange: (Boolean, Long) -> Unit,
 ) {
     Column(
@@ -136,7 +135,7 @@ private fun ChallengeScreen(
                     style = TypoTheme.typography.headlineSmallM,
                 )
                 Text(
-                    text = CurrencyFormatter.formatAmountWon(challengeState.challenge.goalAmount),
+                    text = CurrencyFormatter.formatAmountWon(costDetailState.challenge.goalAmount),
                     style = TypoTheme.typography.displaySmallB,
                 )
             }
@@ -147,24 +146,19 @@ private fun ChallengeScreen(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = challengeState.challenge.achievedCount,
+                    text = costDetailState.challenge.achievedCount,
                     style = TypoTheme.typography.displaySmallB,
                     color = MaterialTheme.colorScheme.primary
                 )
                 HorizontalSpacer(2.dp)
                 Text(
-                    text = challengeState.challenge.totalTimes(),
+                    text = costDetailState.challenge.totalTimes(),
                     style = TypoTheme.typography.titleLargeM,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
         VerticalSpacer(30.dp)
-        ChallengeLazyColumn(
-            challenge = challengeState.challenge,
-            onAchieveChange = onAchieveChange,
-            modifier = Modifier.fillMaxWidth()
-        )
     }
 }
 
@@ -173,7 +167,7 @@ private fun ChallengeScreen(
 private fun SpendingListScreenPreview() {
     JunTheme {
         ChallengeScreen(
-            challengeState = ChallengeState.ChallengeData(Challenge.sample),
+            costDetailState = CostDetailState.CostDetailData(Challenge.sample),
             onAchieveChange = { _, _ -> }
         )
     }

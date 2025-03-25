@@ -13,6 +13,7 @@ import jun.money.mate.challenge.navigation.navigateToChallengeAdd
 import jun.money.mate.challenge.navigation.navigateToChallengeDetail
 import jun.money.mate.consumption_spend.navigation.navigateToConsumptionAdd
 import jun.money.mate.cost.navigation.navigateToCost
+import jun.money.mate.cost.navigation.navigateToCostDetail
 import jun.money.mate.cost.navigation.navigateToCostAdd
 import jun.money.mate.finance.navigation.navigateToFinance
 import jun.money.mate.home.navigation.navigateToHome
@@ -26,8 +27,7 @@ import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.save.navigation.navigateToSaveAdd
 import jun.money.mate.save.navigation.navigateToSaveDetail
 import jun.money.mate.save.navigation.navigateToSaveList
-import jun.money.mate.spending_plan.navigation.navigateToSpending
-import jun.money.mate.ui.interop.NavigateActionInterop
+import jun.money.mate.navigation.interop.NavigateActionInterop
 
 class MainNavigator(
     val navController: NavHostController
@@ -61,7 +61,7 @@ class MainNavigator(
                     MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
                     MainBottomNavItem.Calendar -> TODO()
                     MainBottomNavItem.Finance -> navController.navigateToFinance(navOptions)
-                    MainBottomNavItem.Budget -> navController.navigateToSpending(navOptions)
+                    MainBottomNavItem.Budget -> navController.navigateToCost(navOptions)
                 }
             }
 
@@ -76,7 +76,7 @@ class MainNavigator(
             override fun navigateToChallengeAdd() = navController.navigateToChallengeAdd()
             override fun navigateToChallengeDetail(id: Long) = navController.navigateToChallengeDetail(id)
             override fun navigateToCostAdd() = navController.navigateToCostAdd()
-            override fun navigateToCostDetail(id: Long) = navController.navigateToCost(id)
+            override fun navigateToCostDetail(id: Long) = navController.navigateToCostDetail(id)
         }
     }
 

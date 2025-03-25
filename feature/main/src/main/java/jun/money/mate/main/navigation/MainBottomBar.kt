@@ -28,7 +28,7 @@ import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.nonScaledSp
 import jun.money.mate.navigation.MainBottomNavItem
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 

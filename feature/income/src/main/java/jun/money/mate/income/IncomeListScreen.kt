@@ -37,8 +37,8 @@ import jun.money.mate.model.etc.EditMode
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.ui.EditModeButton
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.interop.rememberShowSnackBar
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.YearMonth
 

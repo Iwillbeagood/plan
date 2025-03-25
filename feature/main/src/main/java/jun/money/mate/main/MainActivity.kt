@@ -23,9 +23,9 @@ import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.main.navigation.MainNavigator
 import jun.money.mate.main.navigation.rememberMainNavigator
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.ui.interop.LocalMainActionInterop
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.interop.MainActionInterop
+import jun.money.mate.navigation.interop.LocalMainActionInterop
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.MainActionInterop
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 

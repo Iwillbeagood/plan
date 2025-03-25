@@ -20,10 +20,9 @@ import jun.money.mate.home.navigation.homeNavGraph
 import jun.money.mate.income.navigation.incomeNavGraph
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.Route
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.save.navigation.saveNavGraph
-import jun.money.mate.spending_plan.navigation.spendingNavGraph
 import jun.money.mate.splash.navigation.splashNavGraph
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
 
 @Composable
 internal fun MainNavHost(
@@ -50,7 +49,6 @@ internal fun MainNavHost(
             incomeNavGraph()
             challengeNavGraph()
             costNavGraph()
-            spendingNavGraph()
             consumptionNavGraph(
                 onShowConsumptionAdd = navigator::navigateToConsumptionAdd,
                 onShowConsumptionEdit = navigator::navigateToConsumptionEdit,

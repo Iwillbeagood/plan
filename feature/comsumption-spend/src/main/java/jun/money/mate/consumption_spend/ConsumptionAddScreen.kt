@@ -33,8 +33,8 @@ import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
 import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.AddTitleContent
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.interop.rememberShowSnackBar
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 import java.time.LocalDate
 
 @Composable

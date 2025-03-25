@@ -1,4 +1,4 @@
-package jun.money.mate.ui.interop
+package jun.money.mate.navigation.interop
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf

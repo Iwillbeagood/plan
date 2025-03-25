@@ -5,13 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.cost.contract.CostAddEffect
-import jun.money.mate.cost.contract.CostModalEffect
 import jun.money.mate.cost.contract.CostAddState
 import jun.money.mate.domain.AddCostUsecase
+import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.CostType
-import jun.money.mate.ui.number.ValueState
-import jun.money.mate.ui.number.ValueState.Companion.value
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,8 +17,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
-import kotlin.math.ceil
 
 @HiltViewModel
 internal class CostAddViewModel @Inject constructor(
@@ -36,9 +35,6 @@ internal class CostAddViewModel @Inject constructor(
     private val _costAddState = MutableStateFlow(CostAddState())
     val costAddState: StateFlow<CostAddState> get() = _costAddState
 
-    private val _costModalEffect = MutableStateFlow<CostModalEffect>(CostModalEffect.Idle)
-    val costModalEffect: StateFlow<CostModalEffect> get() = _costModalEffect
-
     private val _costAddEffect = MutableSharedFlow<CostAddEffect>()
     val costAddEffect: SharedFlow<CostAddEffect> get() = _costAddEffect.asSharedFlow()
 
@@ -46,16 +42,10 @@ internal class CostAddViewModel @Inject constructor(
         val state = costAddState.value
         when (val step = currentStep.value) {
             CostStep.CostType -> {
-                if (state.goalAmount <= 0) {
-                    showSnackBar(MessageType.Message(step.message))
-                    showNumberKeyboard()
-                    return
-                }
                 changeStep(CostStep.Amount)
-                dismiss()
             }
             CostStep.Amount -> {
-                if (state.amount.isEmpty()) {
+                if (state.amount <= 0) {
                     showSnackBar(MessageType.Message(step.message))
                     return
                 }
@@ -67,7 +57,6 @@ internal class CostAddViewModel @Inject constructor(
         }
 
         removeTextFocus()
-        scrollBottom()
     }
 
     private fun changeStep(step: CostStep) {
@@ -75,23 +64,20 @@ internal class CostAddViewModel @Inject constructor(
         addSteps.value += step
     }
 
+    private fun popBackStep(toStep: CostStep) {
+        currentStep.value = toStep
+        addSteps.value = addSteps.value.filter { it.ordinal <= toStep.ordinal }
+    }
+
     private fun addCost() {
         val state = costAddState.value
         viewModelScope.launch {
             addCostUsecase(
-                state.amount.toLong(),
-                state.costType,
-                state.dateType,
+                amount = state.amount,
+                costType = state.costType,
+                dateType = state.dateType,
                 onSuccess = ::complete,
                 onError = ::showSnackBar
-            )
-        }
-    }
-
-    fun goalAmountValueChange(value: ValueState) {
-        _costAddState.update {
-            it.copy(
-                goalAmount = value.value(it.goalAmountString).toLongOrNull() ?: 0
             )
         }
     }
@@ -100,45 +86,33 @@ internal class CostAddViewModel @Inject constructor(
         _costAddState.update {
             it.copy(costType = costType)
         }
+
+        if (costType == null) {
+            popBackStep(CostStep.CostType)
+        } else {
+            nextStep()
+        }
     }
 
     fun amountValueChange(value: String) {
         _costAddState.update {
             it.copy(
-                amount = value,
-                count = calculatePaymentCount(it.goalAmount, value.toLongOrNull() ?: 0).toString()
-            )
-        }
-    }
-
-    fun countValueChange(value: String) {
-        _costAddState.update {
-            it.copy(
-                amount = calculatePaymentAmount(it.goalAmount, value.toIntOrNull() ?: 0).toString(),
-                count = value
+                amount = value.toLongOrNull() ?: 0
             )
         }
     }
 
 
-    fun titleChange(value: String) {
+    fun dateSelected(date: LocalDate) {
         _costAddState.update {
-            it.copy(title = value)
+            it.copy(dateType = DateType.Specific(date))
         }
     }
 
-    fun showNumberKeyboard() {
-        removeTextFocus()
-        _costModalEffect.update { CostModalEffect.ShowNumberKeyboard }
-    }
-
-    private fun dismiss() {
-        _costModalEffect.update { CostModalEffect.Idle }
-    }
-
-    fun numberKeyboardDismiss() {
-        nextStep()
-        _costModalEffect.update { CostModalEffect.Idle }
+    fun daySelected(day: String) {
+        _costAddState.update {
+            it.copy(dateType = DateType.Monthly(day.toInt(), YearMonth.now()))
+        }
     }
 
     private fun showSnackBar(messageType: MessageType) {
@@ -153,24 +127,10 @@ internal class CostAddViewModel @Inject constructor(
         }
     }
 
-    private fun scrollBottom() {
-        viewModelScope.launch {
-            _costAddEffect.emit(CostAddEffect.ScrollToBottom)
-        }
-    }
-
     private fun complete() {
         viewModelScope.launch {
             _costAddEffect.emit(CostAddEffect.CostAddComplete)
         }
-    }
-
-    private fun calculatePaymentCount(targetAmount: Long, paymentAmount: Long): Int {
-        return ceil(targetAmount.toDouble() / paymentAmount.toDouble()).toInt()
-    }
-
-    private fun calculatePaymentAmount(targetAmount: Long, paymentCount: Int): Int {
-        return ceil(targetAmount.toDouble() / paymentCount.toDouble()).toInt()
     }
 }
 

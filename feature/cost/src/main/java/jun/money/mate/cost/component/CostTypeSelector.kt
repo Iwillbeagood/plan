@@ -44,7 +44,6 @@ import jun.money.mate.model.spending.CostType
 import jun.money.mate.model.spending.CostType.Companion.name
 import jun.money.mate.model.spending.NormalType
 import jun.money.mate.model.spending.SubscriptionType
-import jun.money.mate.res.R
 import jun.money.mate.utils.toImageRes
 
 @Composable
@@ -120,16 +119,18 @@ private fun CategoryField(
         VerticalSpacer(10.dp)
         LazyVerticalGrid(
             columns = GridCells.Fixed(
-                if (selectedTab == CostTypeTab.일반) 3 else 2
+                if (selectedTab == CostTypeTab.일반) 4 else 3
             ),
-            modifier = Modifier.heightIn(max = 300.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 1000.dp)
         ) {
             when (selectedTab) {
                 CostTypeTab.일반 -> {
                     items(NormalType.entries) {
                         NormalItem(
                             name = it.name,
-                            selected = costType is CostType.Normal && costType.type == it,
+                            selected = costType is CostType.Normal && costType.normalType == it,
                             modifier = Modifier
                                 .clip(RoundedCornerShape(8.dp))
                                 .clickable {
@@ -143,7 +144,7 @@ private fun CategoryField(
                     items(SubscriptionType.entries) {
                         SubscriptionTypeItem(
                             subscriptionType = it,
-                            selected = costType is CostType.Subscription && costType.type == it,
+                            selected = costType is CostType.Subscription && costType.subscriptionType == it,
                             modifier = Modifier
                                 .clip(RoundedCornerShape(8.dp))
                                 .clickable {
@@ -155,7 +156,10 @@ private fun CategoryField(
                 }
                 CostTypeTab.기타 -> {
                     item {
-                        Column {
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            VerticalSpacer(16.dp)
                             UnderlineTextField(
                                 value = etcValue,
                                 onValueChange = {
@@ -169,8 +173,10 @@ private fun CategoryField(
                                     onDone = {
                                         onSelected(CostType.Etc(etcValue))
                                     }
-                                )
+                                ),
+                                modifier = Modifier.fillMaxWidth()
                             )
+                            VerticalSpacer(10.dp)
                             RegularButton(
                                 text = "완료",
                                 onClick = {

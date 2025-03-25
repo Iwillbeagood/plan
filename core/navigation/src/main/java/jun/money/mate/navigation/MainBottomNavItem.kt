@@ -20,20 +20,20 @@ enum class MainBottomNavItem(
         icon = Icons.Default.Home,
         route = MainTabRoute.Home,
     ),
-    Calendar(
-        titleRes = R.string.tab_calendar,
-        icon = Icons.Default.CalendarMonth,
-        route = MainTabRoute.Calendar,
+    Budget(
+        titleRes = R.string.tab_cost,
+        icon = Icons.Default.AttachMoney,
+        route = MainTabRoute.Spending,
     ),
     Finance(
         titleRes = R.string.tab_finance,
         icon = Icons.Default.AccountBalanceWallet,
         route = MainTabRoute.Finance,
     ),
-    Budget(
-        titleRes = R.string.tab_budget,
-        icon = Icons.Default.AttachMoney,
-        route = MainTabRoute.Spending,
+    Calendar(
+        titleRes = R.string.tab_calendar,
+        icon = Icons.Default.CalendarMonth,
+        route = MainTabRoute.Calendar,
     );
 
     companion object {

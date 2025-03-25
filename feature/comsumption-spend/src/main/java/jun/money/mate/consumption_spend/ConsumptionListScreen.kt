@@ -24,7 +24,7 @@ import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.model.consumption.Consumption
 import jun.money.mate.model.etc.ViewMode
 import jun.money.mate.ui.DateScaffold
-import jun.money.mate.ui.interop.rememberShowSnackBar
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 import java.time.LocalDate
 
 @Composable

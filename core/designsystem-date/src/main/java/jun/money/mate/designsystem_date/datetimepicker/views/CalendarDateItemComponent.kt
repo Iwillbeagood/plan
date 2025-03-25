@@ -16,7 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
@@ -103,5 +105,20 @@ internal fun CalendarDateItemComponent(
                 textAlign = TextAlign.Center
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CalendarDateItemComponentPreview() {
+    JunTheme {
+        CalendarDateItemComponent(
+            orientation = LibOrientation.PORTRAIT,
+            data = CalendarDateData(
+                date = LocalDate.now(),
+                otherMonth = false,
+                selected = true,
+            )
+        )
     }
 }

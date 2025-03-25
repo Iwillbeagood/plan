@@ -34,8 +34,8 @@ import jun.money.mate.save.component.AcornFlowerBox
 import jun.money.mate.save.component.SaveListBody
 import jun.money.mate.save.contract.SavingListEffect
 import jun.money.mate.save.contract.SavingListState
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.interop.rememberShowSnackBar
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.YearMonth
 

@@ -51,8 +51,8 @@ import jun.money.mate.finance.contract.FinanceState
 import jun.money.mate.model.save.Challenge
 import jun.money.mate.ui.LeafIcon
 import jun.money.mate.ui.SeedIcon
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.interop.rememberShowSnackBar
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.utils.currency.CurrencyFormatter
 
 @Composable

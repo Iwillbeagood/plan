@@ -15,7 +15,4 @@ internal sealed interface CostAddEffect {
 
     @Immutable
     data object RemoveTextFocus : CostAddEffect
-
-    @Immutable
-    data object ScrollToBottom : CostAddEffect
 }

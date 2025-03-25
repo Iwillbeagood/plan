@@ -1,24 +1,35 @@
 package jun.money.mate.model.spending
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 sealed interface CostType {
 
-    data class Normal(val type: NormalType) : CostType
+    @Serializable
+    data class Normal(
+        val normalType: NormalType
+    ) : CostType
 
-    data class Subscription(val type: SubscriptionType) : CostType
+    @Serializable
+    data class Subscription(
+        val subscriptionType: SubscriptionType
+    ) : CostType
 
+    @Serializable
     data class Etc(val type: String) : CostType
 
     companion object {
 
         val CostType.name: String
             get() = when (this) {
-                is Normal -> type.name
-                is Subscription -> type.name
+                is Normal -> normalType.name
+                is Subscription -> subscriptionType.name
                 is Etc -> type
             }
     }
 }
 
+@Serializable
 enum class NormalType {
     교통비,
     교육,
@@ -31,6 +42,7 @@ enum class NormalType {
     렌트비,
 }
 
+@Serializable
 enum class SubscriptionType {
     넷플릭스,
     유튜브,

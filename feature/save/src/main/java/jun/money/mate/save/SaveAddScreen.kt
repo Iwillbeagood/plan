@@ -32,8 +32,8 @@ import jun.money.mate.save.contract.SaveAddEffect
 import jun.money.mate.save.contract.SaveAddModalEffect
 import jun.money.mate.save.contract.SaveAddState
 import jun.money.mate.ui.AddScaffold
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.interop.rememberShowSnackBar
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.ui.number.ValueState
 

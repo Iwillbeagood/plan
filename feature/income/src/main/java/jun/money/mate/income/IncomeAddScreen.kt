@@ -36,9 +36,9 @@ import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
 import jun.money.mate.model.etc.DateType
 import jun.money.mate.ui.AddScaffold
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.ui.number.NumberKeyboard
-import jun.money.mate.ui.interop.rememberShowSnackBar
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 import java.time.LocalDate
 import java.time.YearMonth
 

@@ -20,24 +20,4 @@ class CostTypeConverter {
     fun toCostType(value: String): CostType {
         return json.decodeFromString(value)
     }
-
-    @TypeConverter
-    fun fromNormalType(value: NormalType): String {
-        return value.name
-    }
-
-    @TypeConverter
-    fun toNormalType(value: String): NormalType {
-        return NormalType.valueOf(value)
-    }
-
-    @TypeConverter
-    fun fromSubscriptionType(value: SubscriptionType): String {
-        return value.name
-    }
-
-    @TypeConverter
-    fun toSubscriptionType(value: String): SubscriptionType {
-        return SubscriptionType.valueOf(value)
-    }
 }

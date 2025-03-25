@@ -37,8 +37,8 @@ import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.home.HomeState.HomeData.HomeList
 import jun.money.mate.navigation.MainBottomNavItem
-import jun.money.mate.ui.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.interop.rememberShowSnackBar
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 import java.time.LocalDate
 
 @Composable
