@@ -57,6 +57,9 @@ internal fun CostCalendar(
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(daysInWeek),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(350.dp)
     ) {
         items(daysInWeek) { index ->
             val dayOfWeek = LocalDate.now().plusDays(index.toLong()).dayOfWeek

@@ -54,7 +54,7 @@ internal fun CostTypeSelector(
 ) {
     Crossfade(
         targetState = costType == null,
-        modifier = modifier.padding(10.dp)
+        modifier = modifier
     ) {
         when (it) {
             true -> {
@@ -62,12 +62,11 @@ internal fun CostTypeSelector(
                     onSelected = onSelected,
                 )
             }
-
             false -> {
                 if (costType != null) {
                     Surface(
                         shape = MaterialTheme.shapes.medium,
-                        shadowElevation = 4.dp,
+                        shadowElevation = 1.dp,
                         border = BorderStroke(1.dp, Gray6),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -75,7 +74,7 @@ internal fun CostTypeSelector(
                     ) {
                         Text(
                             text = costType.name,
-                            style = TypoTheme.typography.titleLargeM,
+                            style = TypoTheme.typography.titleNormalM,
                             color = MaterialTheme.colorScheme.onSurface,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
@@ -83,7 +82,7 @@ internal fun CostTypeSelector(
                                 .clickable {
                                     onSelected(null)
                                 }
-                                .padding(vertical = 16.dp)
+                                .padding(vertical = 10.dp)
                         )
                     }
                 }
@@ -119,7 +118,11 @@ private fun CategoryField(
         VerticalSpacer(10.dp)
         LazyVerticalGrid(
             columns = GridCells.Fixed(
-                if (selectedTab == CostTypeTab.일반) 4 else 3
+                when (selectedTab) {
+                    CostTypeTab.일반 -> 4
+                    CostTypeTab.구독 -> 3
+                    CostTypeTab.기타 -> 1
+                }
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -184,7 +187,7 @@ private fun CategoryField(
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(10.dp),
+                                    .padding(vertical = 10.dp),
                             )
                         }
                     }
@@ -256,7 +259,7 @@ private fun SubscriptionTypeItem(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun CosTypeButtonPreview() {
     JunTheme {

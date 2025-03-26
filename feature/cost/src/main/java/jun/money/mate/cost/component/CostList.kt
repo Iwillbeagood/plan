@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -30,6 +31,7 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
+import jun.money.mate.designsystem.theme.nonScaledSp
 import jun.money.mate.model.Utils
 import jun.money.mate.model.etc.DateType.Companion.toDateString
 import jun.money.mate.model.spending.Cost
@@ -47,10 +49,10 @@ internal fun CostList(
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 10.dp)
     ) {
         items(costs) { cost ->
             CostItem(
@@ -64,14 +66,17 @@ internal fun CostList(
                     .clickable {
                         onCostClick(cost)
                     }
-                    .padding(vertical = 20.dp, horizontal = 30.dp)
+                    .padding(horizontal = 10.dp)
             )
+        }
+        item {
+            VerticalSpacer(10.dp)
         }
     }
 }
 
 @Composable
-private fun CostItem(
+internal fun CostItem(
     cost: Cost,
     @DrawableRes imageRes: Int,
     modifier: Modifier = Modifier
@@ -84,10 +89,9 @@ private fun CostItem(
 
     Surface(
         shape = MaterialTheme.shapes.medium,
-        shadowElevation = 4.dp,
+        shadowElevation = 2.dp,
         border = border,
-        modifier = Modifier
-            .padding(4.dp)
+        modifier = Modifier.height(90.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -97,23 +101,22 @@ private fun CostItem(
                 painter = painterResource(imageRes),
                 tint = Color.Unspecified,
                 contentDescription = null,
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(24.dp)
             )
-            HorizontalSpacer(16.dp)
+            HorizontalSpacer(8.dp)
             Column{
                 Text(
                     text = Utils.formatAmountWon(cost.amount),
-                    style = TypoTheme.typography.headlineSmallB,
+                    style = TypoTheme.typography.titleLargeB.nonScaledSp,
                 )
                 VerticalSpacer(4.dp)
                 Text(
-                    text = cost.costType.name,
-                    style = TypoTheme.typography.titleMediumM,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Text(
-                    text = cost.dateType.toDateString(),
-                    style = TypoTheme.typography.titleMediumM,
+                    text = cost.dateType.toDateString() + if (cost.costType !is CostType.Subscription) {
+                        " | ${cost.costType.name}"
+                    } else {
+                        ""
+                    },
+                    style = TypoTheme.typography.titleSmallM.nonScaledSp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }

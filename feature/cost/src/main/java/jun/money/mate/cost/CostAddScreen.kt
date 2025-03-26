@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,7 +66,7 @@ internal fun CostAddRoute(
         onGoBack = navigateAction::popBackStack,
         onComplete = viewModel::nextStep
     ) {
-        ChallengeAddScreen(
+        CostAddScreen(
             currentStep = viewModel.currentStep.value,
             steps = viewModel.addSteps.value,
             uiState = uiState,
@@ -89,7 +90,7 @@ internal fun CostAddRoute(
 }
 
 @Composable
-private fun ChallengeAddScreen(
+private fun CostAddScreen(
     currentStep: CostStep,
     steps: List<CostStep>,
     uiState: CostAddState,
@@ -111,11 +112,12 @@ private fun ChallengeAddScreen(
                 text = currentStep.message,
                 style = TypoTheme.typography.titleLargeM,
             )
-            VerticalSpacer(40.dp)
+            VerticalSpacer(20.dp)
         }
-        ChallengeAddField(
-            visible = CostStep.Date in steps,
+        CostAddField(
             title = "소비 날짜",
+            isCurrentStep = CostStep.Date == currentStep,
+            visible = CostStep.Date in steps,
         ) {
             DateAdd(
                 type = "소비",
@@ -123,9 +125,10 @@ private fun ChallengeAddScreen(
                 onDateSelected = onDateSelected,
             )
         }
-        ChallengeAddField(
-            visible = CostStep.Amount in steps,
+        CostAddField(
             title = "소비 금액",
+            isCurrentStep = currentStep == CostStep.Amount,
+            visible = CostStep.Amount in steps,
         ) {
             Column {
                 UnderlineTextField(
@@ -134,6 +137,7 @@ private fun ChallengeAddScreen(
                     hint = "금액을 입력해 주세요",
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next,
+                        keyboardType = KeyboardType.NumberPassword
                     ),
                     keyboardActions = KeyboardActions(
                         onNext = {
@@ -154,9 +158,10 @@ private fun ChallengeAddScreen(
                 }
             }
         }
-        ChallengeAddField(
-            visible = CostStep.CostType in steps,
+        CostAddField(
             title = "소비 유형",
+            isCurrentStep = currentStep == CostStep.CostType,
+            visible = CostStep.CostType in steps,
         ) {
             CostTypeSelector(
                 onSelected = onCostTypeSelected,
@@ -168,17 +173,20 @@ private fun ChallengeAddScreen(
 }
 
 @Composable
-private fun ChallengeAddField(
-    visible: Boolean = true,
+private fun CostAddField(
     title: String,
+    isCurrentStep: Boolean,
+    visible: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     TopToBottomAnimatedVisibility(visible) {
         Column {
-            Text(
-                text = title,
-                style = TypoTheme.typography.labelLargeM,
-            )
+            if (!isCurrentStep) {
+                Text(
+                    text = title,
+                    style = TypoTheme.typography.labelLargeM,
+                )
+            }
             VerticalSpacer(10.dp)
             content()
             VerticalSpacer(30.dp)
@@ -190,7 +198,7 @@ private fun ChallengeAddField(
 @Composable
 private fun CostAddScreenPreview() {
     JunTheme {
-        ChallengeAddScreen(
+        CostAddScreen(
             currentStep = CostStep.CostType,
             steps = CostStep.entries,
             uiState = CostAddState(),

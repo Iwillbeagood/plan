@@ -129,6 +129,9 @@ private fun FinanceScreen(
                     .background(MaterialTheme.colorScheme.background),
             ) {
                 item {
+                    VerticalSpacer(20.dp)
+                }
+                item {
                     FinanceInfos(
                         totalIncome = totalIncome,
                         totalSavings = totalSavings,
@@ -305,7 +308,7 @@ private fun FinanceBox(
         color = color,
         border = BorderStroke(1.dp, Gray7),
         onClick = onClick,
-        enabled = onClick != {},
+        enabled = onClick != { },
         shadowElevation = 2.dp,
         modifier = modifier,
     ) {

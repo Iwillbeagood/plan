@@ -75,6 +75,7 @@ fun AddScaffold(
         containerColor = MaterialTheme.colorScheme.surface,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         modifier = Modifier
+            .imePadding()
     ) { padding ->
         Box(
             modifier = Modifier
