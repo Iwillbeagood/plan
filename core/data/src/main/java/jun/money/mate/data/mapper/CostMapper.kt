@@ -4,6 +4,7 @@ import jun.money.mate.database.entity.CostEntity
 import jun.money.mate.model.spending.Cost
 
 internal fun Cost.toCostEntity() = CostEntity(
+    id = id,
     amount = amount,
     dateType = dateType,
     type = costType

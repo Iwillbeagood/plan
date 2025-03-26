@@ -5,11 +5,11 @@ import androidx.compose.runtime.Stable
 import jun.money.mate.model.etc.error.MessageType
 
 @Stable
-internal sealed interface CostEffect {
+internal sealed interface CostDetailEffect {
 
     @Immutable
-    data class ShowSnackBar(val messageType: MessageType) : CostEffect
+    data class ShowSnackBar(val messageType: MessageType) : CostDetailEffect
 
     @Immutable
-    data class NavigateToCostDetail(val id: Long) : CostEffect
+    data object EditComplete : CostDetailEffect
 }

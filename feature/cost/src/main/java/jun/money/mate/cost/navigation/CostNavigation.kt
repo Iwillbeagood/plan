@@ -7,28 +7,28 @@ import androidx.navigation.compose.composable
 import jun.money.mate.cost.CostAddRoute
 import jun.money.mate.cost.CostDetailRoute
 import jun.money.mate.cost.CostRoute
-import jun.money.mate.navigation.Route
+import jun.money.mate.navigation.MainTabRoute
 
 fun NavController.navigateToCost(navOptions: NavOptions) {
-    navigate(Route.Cost.Main, navOptions)
+    navigate(MainTabRoute.Cost.Main, navOptions)
 }
 
 fun NavController.navigateToCostDetail(id: Long) {
-    navigate(Route.Cost.Detail(id))
+    navigate(MainTabRoute.Cost.Detail(id))
 }
 
 fun NavController.navigateToCostAdd() {
-    navigate(Route.Cost.Add)
+    navigate(MainTabRoute.Cost.Add)
 }
 
 fun NavGraphBuilder.costNavGraph() {
-    composable<Route.Cost.Main> {
+    composable<MainTabRoute.Cost.Main> {
         CostRoute()
     }
-    composable<Route.Cost.Detail> {
+    composable<MainTabRoute.Cost.Detail> {
         CostDetailRoute()
     }
-    composable<Route.Cost.Add> {
+    composable<MainTabRoute.Cost.Add> {
         CostAddRoute()
     }
 }

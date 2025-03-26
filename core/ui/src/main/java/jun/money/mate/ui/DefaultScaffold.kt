@@ -20,9 +20,7 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.BottomToTopSlideFadeAnimatedVisibility
 import jun.money.mate.designsystem.component.CircleButton
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.TopAppbarType
-import jun.money.mate.designsystem.component.IconButton
-import jun.money.mate.designsystem.component.TopAppbar
+import jun.money.mate.designsystem.component.TextIconButton
 
 @Composable
 fun DefaultScaffold(
@@ -48,7 +46,7 @@ fun DefaultScaffold(
                     Row(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IconButton(
+                        TextIconButton(
                             icon = Icons.Default.EditNote,
                             text = "수정",
                             modifier = Modifier
@@ -56,7 +54,7 @@ fun DefaultScaffold(
                                 .clickable(onClick = onEdit)
                                 .padding(10.dp)
                         )
-                        IconButton(
+                        TextIconButton(
                             icon = Icons.Default.DeleteOutline,
                             text = "삭제",
                             modifier = Modifier

@@ -67,7 +67,7 @@ fun AddScaffold(
                     onClick = onComplete,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 10.dp)
+                        .padding(bottom = 20.dp)
                         .padding(horizontal = 10.dp),
                 )
             }

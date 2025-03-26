@@ -5,57 +5,117 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jun.money.mate.cost.contract.CostEffect
+import jun.money.mate.cost.contract.CostDetailEffect
 import jun.money.mate.cost.contract.CostDetailState
-import jun.money.mate.data_api.database.ChallengeRepository
+import jun.money.mate.cost.contract.CostEffect
+import jun.money.mate.data_api.database.CostRepository
+import jun.money.mate.domain.UpsertCostUsecase
+import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.error.MessageType
-import jun.money.mate.navigation.Route
+import jun.money.mate.model.spending.CostType
+import jun.money.mate.navigation.MainTabRoute
+import jun.money.mate.utils.flow.updateWithData
+import jun.money.mate.utils.flow.withData
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
 internal class CostDetailViewModel @Inject constructor(
-    private val challengeRepository: ChallengeRepository,
+    private val upsertCostUsecase: UpsertCostUsecase,
+    private val costRepository: CostRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val id = savedStateHandle.toRoute<Route.Challenge.Detail>().id
+    private val id = savedStateHandle.toRoute<MainTabRoute.Cost.Detail>().id
 
-    val costDetailState: StateFlow<CostDetailState> = challengeRepository.getChallengeById(id)
-        .map {
-            CostDetailState.CostDetailData(it)
-        }.stateIn(
+    private val _costAddState = MutableStateFlow<CostDetailState>(CostDetailState.Loading)
+    val costDetailState: StateFlow<CostDetailState> =_costAddState.onStart {
+        fetchCost()
+    }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.WhileSubscribed(),
         initialValue = CostDetailState.Loading
     )
 
-    private val _costEffect = MutableSharedFlow<CostEffect>()
-    val costEffect: SharedFlow<CostEffect> get() = _costEffect.asSharedFlow()
+    private val _costEffect = MutableSharedFlow<CostDetailEffect>()
+    val costEffect: SharedFlow<CostDetailEffect> get() = _costEffect.asSharedFlow()
 
-    fun changeAchieve(executed: Boolean, id: Long) {
+    private fun fetchCost() {
         viewModelScope.launch {
-            challengeRepository.updateChallengeAchieved(id, executed)
+            val cost = costRepository.getCostById(id)
+            _costAddState.update {
+                CostDetailState.UiData(
+                    id = cost.id,
+                    amount = cost.amount,
+                    dateType = cost.dateType,
+                    costType = cost.costType
+                )
+            }
         }
     }
 
-    fun giveUpChallenge() {
+    fun editCost() {
         viewModelScope.launch {
-            challengeRepository.deleteById(id)
-            showSnackBar(MessageType.Message("챌린지를 포기하였습니다"))
+            costDetailState.withData<CostDetailState.UiData> {
+                upsertCostUsecase(
+                    id = it.id,
+                    amount = it.amount,
+                    dateType = it.dateType,
+                    costType = it.costType,
+                    onSuccess = ::editComplete,
+                    onError = ::showSnackBar
+                )
+            }
+        }
+    }
+
+    fun costTypeSelected(costType: CostType?) {
+        _costAddState.updateWithData<CostDetailState, CostDetailState.UiData> {
+            it.copy(costType = costType)
+        }
+    }
+
+    fun amountValueChange(value: String) {
+        _costAddState.updateWithData<CostDetailState, CostDetailState.UiData> {
+            it.copy(
+                amount = value.toLongOrNull() ?: 0
+            )
+        }
+    }
+
+
+    fun dateSelected(date: LocalDate) {
+        _costAddState.updateWithData<CostDetailState, CostDetailState.UiData> {
+            it.copy(dateType = DateType.Specific(date))
+        }
+    }
+
+    fun daySelected(day: String) {
+        _costAddState.updateWithData<CostDetailState, CostDetailState.UiData> {
+            it.copy(dateType = DateType.Monthly(day.toInt(), YearMonth.now()))
+        }
+    }
+
+    private fun editComplete() {
+        viewModelScope.launch {
+            _costEffect.emit(CostDetailEffect.EditComplete)
         }
     }
 
     private fun showSnackBar(messageType: MessageType) {
         viewModelScope.launch {
-            _costEffect.emit(CostEffect.ShowSnackBar(messageType))
+            _costEffect.emit(CostDetailEffect.ShowSnackBar(messageType))
         }
     }
 }

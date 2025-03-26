@@ -18,5 +18,8 @@ internal sealed interface CostState {
         val costCalendarValues get() = costs.groupBy { it.dateType.date.dayOfMonth }.map {
             CostCalendarValue(it.key, it.value)
         }
+
+        val selectedCosts get() = costs.filter(Cost::selected).map(Cost::id)
+        val selectedCount get() = selectedCosts.count()
     }
 }

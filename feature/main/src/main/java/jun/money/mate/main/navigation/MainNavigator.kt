@@ -61,7 +61,7 @@ class MainNavigator(
                     MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
                     MainBottomNavItem.Calendar -> TODO()
                     MainBottomNavItem.Finance -> navController.navigateToFinance(navOptions)
-                    MainBottomNavItem.Budget -> navController.navigateToCost(navOptions)
+                    MainBottomNavItem.Cost -> navController.navigateToCost(navOptions)
                 }
             }
 

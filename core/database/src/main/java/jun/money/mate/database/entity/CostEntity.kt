@@ -8,7 +8,7 @@ import jun.money.mate.model.spending.CostType
 
 @Entity(tableName = AppDatabase.COST_TABLE_NAME)
 data class CostEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey val id: Long,
     val amount: Long,
     val type: CostType,
     val dateType: DateType,

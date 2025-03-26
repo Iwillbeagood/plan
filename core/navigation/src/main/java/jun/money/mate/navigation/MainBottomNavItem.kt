@@ -20,10 +20,10 @@ enum class MainBottomNavItem(
         icon = Icons.Default.Home,
         route = MainTabRoute.Home,
     ),
-    Budget(
+    Cost(
         titleRes = R.string.tab_cost,
         icon = Icons.Default.AttachMoney,
-        route = MainTabRoute.Spending,
+        route = MainTabRoute.Cost.Main,
     ),
     Finance(
         titleRes = R.string.tab_finance,

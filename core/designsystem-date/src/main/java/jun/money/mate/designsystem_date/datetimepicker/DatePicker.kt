@@ -52,6 +52,7 @@ fun DatePickerSheet(
 @Composable
 fun DatePicker(
     onDateSelect: (LocalDate) -> Unit,
+    selectedDate: LocalDate? = null,
     timeBoundary: ClosedRange<LocalDate> = LocalDate.now().let { now -> now.withDayOfMonth(1)..now.withDayOfMonth(now.lengthOfMonth()) },
 ) {
     Surface(
@@ -73,6 +74,7 @@ fun DatePicker(
                 onDisMissRequest = {  },
                 selection = CalendarSelection.Date(
                     withButtonView = false,
+                    selectedDate = selectedDate
                 ) { newDates ->
                     onDateSelect(newDates)
                 },

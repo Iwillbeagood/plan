@@ -17,6 +17,9 @@ interface CostDao {
     @Query("SELECT * FROM $COST_TABLE_NAME")
     fun getCostFlow(): Flow<List<CostEntity>>
 
+    @Query("SELECT * FROM $COST_TABLE_NAME")
+    suspend fun getCosts(): List<CostEntity>
+
     @Query("SELECT * FROM $COST_TABLE_NAME WHERE id = :costId")
     suspend fun getCostById(costId: Long): CostEntity
 

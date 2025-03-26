@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.BottomToTopSlideFadeAnimatedVisibility
 import jun.money.mate.designsystem.component.CircleButton
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.IconButton
+import jun.money.mate.designsystem.component.TextIconButton
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem_date.datetimepicker.YearMonthPickerScaffold
 import jun.money.mate.designsystem_date.datetimepicker.models.CalendarConfig
@@ -67,7 +67,7 @@ fun DateScaffold(
                     Row(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IconButton(
+                        TextIconButton(
                             icon = Icons.Default.EditNote,
                             text = "수정",
                             modifier = Modifier
@@ -75,7 +75,7 @@ fun DateScaffold(
                                 .clickable(onClick = onEdit)
                                 .padding(10.dp)
                         )
-                        IconButton(
+                        TextIconButton(
                             icon = Icons.Default.DeleteOutline,
                             text = "삭제",
                             modifier = Modifier

@@ -207,7 +207,7 @@ fun TextButton(
 }
 
 @Composable
-fun IconButton(
+fun TextIconButton(
     icon: ImageVector,
     text: String,
     modifier: Modifier = Modifier
@@ -278,7 +278,7 @@ fun TextButtonPreview() {
 @Composable
 private fun IconButtonPreview() {
     JunTheme {
-        IconButton(
+        TextIconButton(
             icon = Icons.Default.Add,
             text = "수정"
         )

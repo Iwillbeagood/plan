@@ -55,7 +55,7 @@ internal fun IncomeEditRoute(
     val focusManager = LocalFocusManager.current
 
     AddScaffold(
-        buttonText = "수정",
+        buttonText = "수정하기",
         onGoBack = navigateAction::popBackStack,
         onComplete = viewModel::editIncome,
     ) {
@@ -153,7 +153,7 @@ private fun IncomeEditBlock(
                 type = "수입",
                 onDaySelected = onDaySelected,
                 onDateSelected = onDateSelected,
-                originIsMonthly = uiState.dateType is DateType.Monthly,
+                originDateType = uiState.dateType
             )
         }
     }

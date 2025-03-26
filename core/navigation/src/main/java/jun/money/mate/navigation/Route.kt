@@ -46,19 +46,6 @@ sealed interface Route {
         @Serializable
         data object Add : Challenge
     }
-
-    @Serializable
-    sealed interface Cost : Route {
-
-        @Serializable
-        data object Main : Cost
-
-        @Serializable
-        data class Detail(val id: Long) : Cost
-
-        @Serializable
-        data object Add : Cost
-    }
 }
 
 sealed interface MainTabRoute : Route {
@@ -73,7 +60,17 @@ sealed interface MainTabRoute : Route {
     data object Finance : MainTabRoute
 
     @Serializable
-    data object Spending : MainTabRoute
+    sealed interface Cost : MainTabRoute {
+
+        @Serializable
+        data object Main : Cost
+
+        @Serializable
+        data class Detail(val id: Long) : Cost
+
+        @Serializable
+        data object Add : Cost
+    }
 
     @Serializable
     sealed interface ConsumptionSpend : MainTabRoute {

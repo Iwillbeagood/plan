@@ -43,7 +43,6 @@ internal class IncomeAddViewModel @Inject constructor(
     private val _incomeEffect = MutableSharedFlow<IncomeEffect>()
     val incomeEffect: SharedFlow<IncomeEffect> get() = _incomeEffect.asSharedFlow()
 
-
     private fun addIncome() {
         val state = incomeAddState.value
 

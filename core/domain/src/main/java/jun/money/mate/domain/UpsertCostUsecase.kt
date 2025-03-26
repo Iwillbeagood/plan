@@ -7,11 +7,12 @@ import jun.money.mate.model.spending.Cost
 import jun.money.mate.model.spending.CostType
 import javax.inject.Inject
 
-class AddCostUsecase @Inject constructor(
+class UpsertCostUsecase @Inject constructor(
     private val costRepository: CostRepository
 ) {
 
     suspend operator fun invoke(
+        id: Long = System.currentTimeMillis(),
         amount: Long,
         costType: CostType?,
         dateType: DateType?,
@@ -35,7 +36,7 @@ class AddCostUsecase @Inject constructor(
 
         costRepository.upsertCost(
             cost = Cost(
-                id = 0,
+                id = id,
                 amount = amount,
                 costType = costType,
                 dateType = dateType

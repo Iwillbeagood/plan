@@ -9,8 +9,11 @@ import kic.owner2.utils.etc.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.time.Duration
 import java.time.Duration.between
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.YearMonth
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -24,7 +27,7 @@ class SavingMonthlyWorker(
     lateinit var saveRepository: SaveRepository
 
     override fun doWork(): Result {
-        CoroutineScope(Dispatchers.IO).launch {
+        runBlocking {
             if (isLastDayOfMonth()) {
                 val list = saveRepository.getSavePlanListByMonth(YearMonth.now())
                 list.savePlans
@@ -50,16 +53,26 @@ class SavingMonthlyWorker(
 }
 
 fun scheduleSavingMonthlyWork(context: Context) {
-    val today = LocalDate.now()
-    val lastDayOfMonth = YearMonth.now().atEndOfMonth()
+    val now = LocalDateTime.now()
+    val targetTime = LocalDate.now().atTime(23, 59)
 
-    val delay = between(today.atStartOfDay(), lastDayOfMonth.atTime(23, 59)).toMillis()
+    val initialDelay = if (now.toLocalTime().isBefore(targetTime.toLocalTime())) {
+        between(now, targetTime)
+    } else {
+        between(now, targetTime.plusDays(1))
+    }
 
-    val workRequest = OneTimeWorkRequestBuilder<SavingMonthlyWorker>()
-        .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+    val workRequest = PeriodicWorkRequestBuilder<SavingMonthlyWorker>(
+        1, TimeUnit.DAYS
+    )
+        .setInitialDelay(initialDelay.toMillis(), TimeUnit.MILLISECONDS)
         .build()
 
-    WorkManager.getInstance(context).enqueue(workRequest)
+    WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+        "monthly_saving_worker",
+        ExistingPeriodicWorkPolicy.KEEP,
+        workRequest
+    )
 }
 
 private fun isLastDayOfMonth(): Boolean {

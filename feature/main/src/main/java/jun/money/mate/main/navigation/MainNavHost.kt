@@ -49,11 +49,11 @@ internal fun MainNavHost(
             incomeNavGraph()
             challengeNavGraph()
             costNavGraph()
+            saveNavGraph()
             consumptionNavGraph(
                 onShowConsumptionAdd = navigator::navigateToConsumptionAdd,
                 onShowConsumptionEdit = navigator::navigateToConsumptionEdit,
             )
-            saveNavGraph()
             splashNavGraph(
                 onShowHomeScreen = {
                     navigateAction.navigateBottomNav(MainBottomNavItem.Home)

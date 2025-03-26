@@ -42,10 +42,6 @@ import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.YearMonth
 
-/**
- *  정기 수입을 수정했을 떄가 문제가 될듯.
- *  이전 수입은 변경되면 안되고, 이후
- * */
 @Composable
 internal fun IncomeListRoute(
     viewModel: IncomeListViewModel = hiltViewModel()

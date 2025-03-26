@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.cost.contract.CostAddEffect
 import jun.money.mate.cost.contract.CostAddState
-import jun.money.mate.domain.AddCostUsecase
+import jun.money.mate.domain.UpsertCostUsecase
 import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.CostType
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class CostAddViewModel @Inject constructor(
-    private val addCostUsecase: AddCostUsecase
+    private val upsertCostUsecase: UpsertCostUsecase
 ) : ViewModel() {
 
     var currentStep = mutableStateOf(CostStep.entries.first())
@@ -72,7 +72,7 @@ internal class CostAddViewModel @Inject constructor(
     private fun addCost() {
         val state = costAddState.value
         viewModelScope.launch {
-            addCostUsecase(
+            upsertCostUsecase(
                 amount = state.amount,
                 costType = state.costType,
                 dateType = state.dateType,

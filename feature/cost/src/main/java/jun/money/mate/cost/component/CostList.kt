@@ -76,10 +76,16 @@ private fun CostItem(
     @DrawableRes imageRes: Int,
     modifier: Modifier = Modifier
 ) {
+    val border = if (cost.selected) {
+        BorderStroke(3.dp, MaterialTheme.colorScheme.primary)
+    } else {
+        BorderStroke(1.dp, Gray6)
+    }
+
     Surface(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 4.dp,
-        border = BorderStroke(1.dp, Gray6),
+        border = border,
         modifier = Modifier
             .padding(4.dp)
     ) {

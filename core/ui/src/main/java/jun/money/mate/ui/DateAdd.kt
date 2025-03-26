@@ -20,6 +20,7 @@ import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem_date.datetimepicker.DatePicker
 import jun.money.mate.designsystem_date.datetimepicker.DayPicker
 import jun.money.mate.designsystem_date.datetimepicker.TimeBoundaries
+import jun.money.mate.model.etc.DateType
 import java.time.LocalDate
 
 @Composable
@@ -27,9 +28,17 @@ fun DateAdd(
     type: String,
     onDaySelected: (String) -> Unit,
     onDateSelected: (LocalDate) -> Unit,
-    originIsMonthly: Boolean? = null
+    originDateType: DateType? = null,
 ) {
-    var isMonthly by remember { mutableStateOf(originIsMonthly) }
+    var isMonthly by remember {
+        mutableStateOf(
+            when (originDateType) {
+                is DateType.Monthly -> true
+                is DateType.Specific -> false
+                null -> null
+            }
+        )
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -63,7 +72,12 @@ fun DateAdd(
                 true -> {
                     DayPicker(
                         onDaySelected = onDaySelected,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        selectedDay = if (originDateType != null && originDateType is DateType.Monthly) {
+                            originDateType.day
+                        } else {
+                            LocalDate.now().dayOfMonth
+                        }.toString()
                     )
                 }
 
@@ -71,6 +85,11 @@ fun DateAdd(
                     DatePicker(
                         timeBoundary = TimeBoundaries.lastMonthToThisMonth,
                         onDateSelect = onDateSelected,
+                        selectedDate = if (originDateType != null && originDateType is DateType.Specific) {
+                            originDateType.date
+                        } else {
+                            null
+                        },
                     )
                 }
 

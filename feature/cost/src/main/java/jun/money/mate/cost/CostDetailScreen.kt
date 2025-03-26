@@ -1,48 +1,42 @@
 package jun.money.mate.cost
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.cost.contract.CostEffect
+import jun.money.mate.cost.component.CostTypeSelector
+import jun.money.mate.cost.contract.CostDetailEffect
 import jun.money.mate.cost.contract.CostDetailState
+import jun.money.mate.cost.contract.CostEffect
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
-import jun.money.mate.designsystem.component.HorizontalSpacer
-import jun.money.mate.designsystem.component.RegularButton
-import jun.money.mate.designsystem.component.TopAppbar
+import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
+import jun.money.mate.designsystem.component.UnderlineTextField
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
-import jun.money.mate.designsystem.theme.Gray4
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.model.save.Challenge
+import jun.money.mate.model.etc.DateType
+import jun.money.mate.model.spending.CostType
+import jun.money.mate.model.spending.NormalType
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
-import jun.money.mate.utils.currency.CurrencyFormatter
+import jun.money.mate.ui.AddScaffold
+import jun.money.mate.ui.DateAdd
+import java.time.LocalDate
+import java.time.YearMonth
 
-/**
- * 일단 이미 지나간 것들에 대해서는 날짜와 스위치가 보여야 함.
- * 현재 체크해야하는 것도 날짜와 스위치가 보여야하고, 강조 표시가 되어야 할듯
- * 아직 오지 않는 것들에 대해서는 날짜만 보여야 할듯
- * 가장 상단에는 목표 금액이 있으면 될듯.
- *
- * 목표 기간 내에
- * */
 @Composable
 internal fun CostDetailRoute(
     viewModel: CostDetailViewModel = hiltViewModel()
@@ -51,46 +45,24 @@ internal fun CostDetailRoute(
 
     val navigateAction = LocalNavigateActionInterop.current
     val showSnackBar = rememberShowSnackBar()
-    val challengeState by viewModel.costDetailState.collectAsStateWithLifecycle()
+    val uiState by viewModel.costDetailState.collectAsStateWithLifecycle()
 
-    Scaffold(
-        topBar = {
-            TopAppbar(
-                onBackEvent = navigateAction::popBackStack
-            )
-        },
-        bottomBar = {
-            val state = challengeState
-            if (state is CostDetailState.CostDetailData && !state.challenge.challengeCompleted) {
-                RegularButton(
-                    text = "챌린지 포기하기",
-                    onClick = viewModel::giveUpChallenge,
-                    color = Gray4,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                )
-            }
-
-        }
+    AddScaffold(
+        buttonText = "수정하기",
+        onGoBack = navigateAction::popBackStack,
+        onComplete = viewModel::editCost
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-        ) {
-            ChallengeContent(
-                costDetailState = challengeState,
-                onAchieveChange = viewModel::changeAchieve
-            )
-        }
+        ChallengeContent(
+            uiState = uiState,
+            viewModel = viewModel
+        )
     }
 
     LaunchedEffect(Unit) {
         viewModel.costEffect.collect { effect ->
             when (effect) {
-                is CostEffect.EditSpendingPlan -> navigateAction.navigateToSavingDetail(effect.id)
-                is CostEffect.ShowSnackBar -> showSnackBar(effect.messageType)
+                is CostDetailEffect.ShowSnackBar -> showSnackBar(effect.messageType)
+                CostDetailEffect.EditComplete -> navigateAction.popBackStack()
             }
         }
     }
@@ -98,16 +70,19 @@ internal fun CostDetailRoute(
 
 @Composable
 private fun ChallengeContent(
-    costDetailState: CostDetailState,
-    onAchieveChange: (Boolean, Long) -> Unit,
+    uiState: CostDetailState,
+    viewModel: CostDetailViewModel
 ) {
     FadeAnimatedVisibility(
-        costDetailState is CostDetailState.CostDetailData,
+        uiState is CostDetailState.UiData,
     ) {
-        if (costDetailState is CostDetailState.CostDetailData) {
+        if (uiState is CostDetailState.UiData) {
             ChallengeScreen(
-                costDetailState = costDetailState,
-                onAchieveChange = onAchieveChange,
+                uiState = uiState,
+                onCostTypeSelected = viewModel::costTypeSelected,
+                onAmountValueChange = viewModel::amountValueChange,
+                onDaySelected = viewModel::daySelected,
+                onDateSelected = viewModel::dateSelected,
             )
         }
     }
@@ -115,49 +90,72 @@ private fun ChallengeContent(
 
 @Composable
 private fun ChallengeScreen(
-    costDetailState: CostDetailState.CostDetailData,
-    onAchieveChange: (Boolean, Long) -> Unit,
+    uiState: CostDetailState.UiData,
+    onCostTypeSelected: (CostType?) -> Unit,
+    onAmountValueChange: (String) -> Unit,
+    onDaySelected: (String) -> Unit,
+    onDateSelected: (LocalDate) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .animateContentSize()
     ) {
-        VerticalSpacer(40.dp)
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(horizontal = 30.dp)
+        VerticalSpacer(50.dp)
+        ChallengeDetailField(
+            title = "소비 유형",
         ) {
-            Column {
-                Text(
-                    text = "챌린지 금액",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = TypoTheme.typography.headlineSmallM,
-                )
-                Text(
-                    text = CurrencyFormatter.formatAmountWon(costDetailState.challenge.goalAmount),
-                    style = TypoTheme.typography.displaySmallB,
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = costDetailState.challenge.achievedCount,
-                    style = TypoTheme.typography.displaySmallB,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                HorizontalSpacer(2.dp)
-                Text(
-                    text = costDetailState.challenge.totalTimes(),
-                    style = TypoTheme.typography.titleLargeM,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            CostTypeSelector(
+                onSelected = onCostTypeSelected,
+                costType = uiState.costType
+            )
+        }
+        ChallengeDetailField(
+            title = "소비 날짜",
+        ) {
+            DateAdd(
+                type = "소비",
+                onDaySelected = onDaySelected,
+                onDateSelected = onDateSelected,
+                originDateType = uiState.dateType
+            )
+        }
+        ChallengeDetailField(
+            title = "소비 금액",
+        ) {
+            UnderlineTextField(
+                value = uiState.amountString,
+                onValueChange = onAmountValueChange,
+                hint = "금액을 입력해 주세요"
+            )
+            TopToBottomAnimatedVisibility(uiState.amount != 0L) {
+                Column {
+                    VerticalSpacer(4.dp)
+                    Text(
+                        text = uiState.amountWon,
+                        style = TypoTheme.typography.labelLargeM,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+private fun ChallengeDetailField(
+    title: String,
+    content: @Composable () -> Unit,
+) {
+    Column {
+        Text(
+            text = title,
+            style = TypoTheme.typography.labelLargeM,
+        )
+        VerticalSpacer(10.dp)
+        content()
         VerticalSpacer(30.dp)
     }
 }
@@ -167,8 +165,16 @@ private fun ChallengeScreen(
 private fun SpendingListScreenPreview() {
     JunTheme {
         ChallengeScreen(
-            costDetailState = CostDetailState.CostDetailData(Challenge.sample),
-            onAchieveChange = { _, _ -> }
+            uiState = CostDetailState.UiData(
+                id = 0,
+                costType = CostType.Normal(NormalType.교통비),
+                dateType = DateType.Monthly(1, YearMonth.now()),
+                amount = 10000L,
+            ),
+            onCostTypeSelected = { },
+            onAmountValueChange = { },
+            onDaySelected = { },
+            onDateSelected = { },
         )
     }
 }

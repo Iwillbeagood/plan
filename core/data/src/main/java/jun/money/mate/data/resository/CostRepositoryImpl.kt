@@ -51,6 +51,13 @@ class CostRepositoryImpl @Inject constructor(
             }
     }
 
+    override suspend fun getCostsByMonthList(data: YearMonth): List<Cost> {
+        return costDao.getCosts()
+            .filter { cost ->
+                cost.dateType.isValidForMonth(data)
+            }.map(CostEntity::toCost)
+    }
+
     override suspend fun deleteById(id: Long) {
         try {
             costDao.deleteById(id)

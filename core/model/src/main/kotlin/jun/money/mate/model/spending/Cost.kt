@@ -9,6 +9,7 @@ data class Cost(
     val amount: Long,
     val costType: CostType,
     val dateType: DateType,
+    val selected: Boolean = false,
 ) {
     companion object {
         val samples = listOf(

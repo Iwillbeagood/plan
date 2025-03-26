@@ -1,24 +1,18 @@
 package jun.money.mate.cost
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -29,7 +23,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.cost.component.CostTypeSelector
 import jun.money.mate.cost.contract.CostAddEffect
 import jun.money.mate.cost.contract.CostAddState
-import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderlineTextField
 import jun.money.mate.designsystem.component.VerticalSpacer
@@ -55,7 +48,7 @@ internal enum class CostStep(
 internal fun CostAddRoute(
     viewModel: CostAddViewModel = hiltViewModel()
 ) {
-    ChangeStatusBarColor(MaterialTheme.colorScheme.background)
+    ChangeStatusBarColor()
 
     val focusManager = LocalFocusManager.current
     val navigateAction = LocalNavigateActionInterop.current
