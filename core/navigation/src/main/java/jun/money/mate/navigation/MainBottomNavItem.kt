@@ -2,9 +2,9 @@ package jun.money.mate.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ReceiptLong
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.AttachMoney
-import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -30,10 +30,10 @@ enum class MainBottomNavItem(
         icon = Icons.Default.AccountBalanceWallet,
         route = MainTabRoute.Finance,
     ),
-    Calendar(
-        titleRes = R.string.tab_calendar,
-        icon = Icons.Default.CalendarMonth,
-        route = MainTabRoute.Calendar,
+    Budget(
+        titleRes = R.string.tab_budget,
+        icon = Icons.AutoMirrored.Filled.ReceiptLong,
+        route = MainTabRoute.Budget.Main,
     );
 
     companion object {

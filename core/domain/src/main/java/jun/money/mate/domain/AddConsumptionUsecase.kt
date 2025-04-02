@@ -1,13 +1,13 @@
 package jun.money.mate.domain
 
-import jun.money.mate.data_api.database.ConsumptionRepository
-import jun.money.mate.model.consumption.Consumption
+import jun.money.mate.data_api.database.BudgetRepository
+import jun.money.mate.model.consumption.Budget
 import jun.money.mate.model.etc.error.MessageType
 import java.time.LocalDate
 import javax.inject.Inject
 
 class AddConsumptionUsecase @Inject constructor(
-    private val consumptionRepository: ConsumptionRepository
+    private val budgetRepository: BudgetRepository
 ) {
 
     suspend operator fun invoke(
@@ -34,15 +34,6 @@ class AddConsumptionUsecase @Inject constructor(
             return
         }
 
-        consumptionRepository.upsertConsumption(
-            consumption = Consumption(
-                id = id,
-                title = title,
-                amount = amount,
-                consumptionDate = date,
-                planTitle = planTitle
-            )
-        )
         onSuccess()
     }
 }

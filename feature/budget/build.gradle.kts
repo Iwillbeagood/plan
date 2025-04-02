@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    setNamespace("consumption_spend")
+    setNamespace("budget")
 }
 
 dependencies {

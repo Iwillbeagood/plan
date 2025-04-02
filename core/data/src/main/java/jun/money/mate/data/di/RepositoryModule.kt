@@ -5,12 +5,12 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import jun.money.mate.data.resository.ChallengeRepositoryImpl
-import jun.money.mate.data.resository.ConsumptionRepositoryImpl
+import jun.money.mate.data.resository.BudgetRepositoryImpl
 import jun.money.mate.data.resository.CostRepositoryImpl
 import jun.money.mate.data.resository.IncomeRepositoryImpl
 import jun.money.mate.data.resository.SaveRepositoryImpl
 import jun.money.mate.data_api.database.ChallengeRepository
-import jun.money.mate.data_api.database.ConsumptionRepository
+import jun.money.mate.data_api.database.BudgetRepository
 import jun.money.mate.data_api.database.CostRepository
 import jun.money.mate.data_api.database.IncomeRepository
 import jun.money.mate.data_api.database.SaveRepository
@@ -30,9 +30,9 @@ internal abstract class RepositoryModule {
     ): SaveRepository
 
     @Binds
-    abstract fun bindsConsumptionRepository(
-        repository: ConsumptionRepositoryImpl
-    ): ConsumptionRepository
+    abstract fun bindsBudgetRepository(
+        repository: BudgetRepositoryImpl
+    ): BudgetRepository
 
     @Binds
     abstract fun bindsChallengeRepository(

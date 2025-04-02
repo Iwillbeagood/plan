@@ -23,12 +23,14 @@ data class ChallengeEntity(
 
 @Entity(
     tableName = CHALLENGE_PROGRESS_TABLE_NAME,
-    foreignKeys = [ForeignKey(
-        entity = ChallengeEntity::class,
-        parentColumns = ["id"],
-        childColumns = ["challengeId"],
-        onDelete = ForeignKey.CASCADE
-    )],
+    foreignKeys = [
+        ForeignKey(
+            entity = ChallengeEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["challengeId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
     indices = [Index(value = ["challengeId"])]
 )
 data class ChallengeProgressEntity(

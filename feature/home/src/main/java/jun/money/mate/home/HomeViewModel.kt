@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.domain.GetHomeDataUsecase
-import jun.money.mate.model.consumption.ConsumptionList
+import jun.money.mate.model.consumption.Budget
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.navigation.MainBottomNavItem
@@ -30,7 +30,7 @@ internal class HomeViewModel @Inject constructor(
         HomeState.HomeData(
             incomeList = it.incomeList,
             savePlanList = it.savePlanList,
-            consumptionList = it.consumptionList
+            budgets = it.budgets
         )
     }.stateIn(
         scope = viewModelScope,
@@ -63,7 +63,7 @@ internal sealed interface HomeState {
     data class HomeData(
         val incomeList: IncomeList,
         val savePlanList: SavePlanList,
-        val consumptionList: ConsumptionList
+        val budgets: List<Budget>
     ) : HomeState {
 
 

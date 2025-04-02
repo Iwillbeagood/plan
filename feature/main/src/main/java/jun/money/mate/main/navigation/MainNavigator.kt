@@ -9,9 +9,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import jun.money.mate.budget.navigation.navigateToBudget
+import jun.money.mate.budget.navigation.navigateToBudgetAdd
+import jun.money.mate.budget.navigation.navigateToBudgetDetail
 import jun.money.mate.challenge.navigation.navigateToChallengeAdd
 import jun.money.mate.challenge.navigation.navigateToChallengeDetail
-import jun.money.mate.consumption_spend.navigation.navigateToConsumptionAdd
 import jun.money.mate.cost.navigation.navigateToCost
 import jun.money.mate.cost.navigation.navigateToCostDetail
 import jun.money.mate.cost.navigation.navigateToCostAdd
@@ -23,7 +25,6 @@ import jun.money.mate.income.navigation.navigateToIncomeList
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
-import jun.money.mate.navigation.argument.AddType
 import jun.money.mate.save.navigation.navigateToSaveAdd
 import jun.money.mate.save.navigation.navigateToSaveDetail
 import jun.money.mate.save.navigation.navigateToSaveList
@@ -59,9 +60,9 @@ class MainNavigator(
 
                 when (item) {
                     MainBottomNavItem.Home -> navController.navigateToHome(navOptions)
-                    MainBottomNavItem.Calendar -> TODO()
                     MainBottomNavItem.Finance -> navController.navigateToFinance(navOptions)
                     MainBottomNavItem.Cost -> navController.navigateToCost(navOptions)
+                    MainBottomNavItem.Budget -> navController.navigateToBudget(navOptions)
                 }
             }
 
@@ -69,8 +70,8 @@ class MainNavigator(
             override fun navigateToSaveList() = navController.navigateToSaveList()
             override fun navigateToIncomeAdd() = navController.navigateToIncomeAdd()
             override fun navigateToIncomeEdit(id: Long) = navController.navigateToIncomeEdit(id)
-            override fun navigateToConsumptionAdd() = navController.navigateToConsumptionAdd(AddType.New)
-            override fun navigateToConsumptionEdit(id: Long) = navController.navigateToConsumptionAdd(AddType.Edit(id))
+            override fun navigateToBudgetAdd() = navController.navigateToBudgetAdd()
+            override fun navigateToBudgetDetail(id: Long) = navController.navigateToBudgetDetail(id)
             override fun navigateToSavingAdd() = navController.navigateToSaveAdd()
             override fun navigateToSavingDetail(id: Long) = navController.navigateToSaveDetail(id)
             override fun navigateToChallengeAdd() = navController.navigateToChallengeAdd()
@@ -78,14 +79,6 @@ class MainNavigator(
             override fun navigateToCostAdd() = navController.navigateToCostAdd()
             override fun navigateToCostDetail(id: Long) = navController.navigateToCostDetail(id)
         }
-    }
-
-    fun navigateToConsumptionAdd() {
-        navController.navigateToConsumptionAdd(AddType.New)
-    }
-
-    fun navigateToConsumptionEdit(id: Long) {
-        navController.navigateToConsumptionAdd(AddType.Edit(id))
     }
 
     fun popBackStackIfNotHome(): Boolean {

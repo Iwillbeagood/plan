@@ -6,7 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import jun.money.mate.database.AppDatabase
 import jun.money.mate.database.dao.ChallengeDao
-import jun.money.mate.database.dao.ConsumptionDao
+import jun.money.mate.database.dao.BudgetDao
 import jun.money.mate.database.dao.CostDao
 import jun.money.mate.database.dao.IncomeDao
 import jun.money.mate.database.dao.SaveDao
@@ -30,9 +30,9 @@ internal object DaoModule {
 
     @Provides
     @Singleton
-    fun provideConsumptionDao(
+    fun provideBudgetDao(
         database: AppDatabase,
-    ) : ConsumptionDao = database.consumptionDao()
+    ) : BudgetDao = database.budgetDao()
 
     @Provides
     @Singleton

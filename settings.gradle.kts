@@ -53,5 +53,5 @@ include(
     ":feature:save",
     ":feature:challenge",
     ":feature:cost",
-    ":feature:comsumption-spend",
+    ":feature:budget",
 )

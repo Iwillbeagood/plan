@@ -66,7 +66,7 @@ internal fun HomeRoute(
                 HomeEffect.ShowSpendingAddScreen -> {
 
                 }
-                HomeEffect.ShowConsumptionAddScreen -> navigateAction.navigateToConsumptionAdd()
+                HomeEffect.ShowConsumptionAddScreen -> navigateAction.navigateToBudgetAdd()
                 HomeEffect.ShowSaveAddScreen -> navigateAction.navigateToSavingAdd()
                 is HomeEffect.ShowMainNavScreen -> navigateAction.navigateBottomNav(effect.navItem)
             }

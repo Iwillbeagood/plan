@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import jun.money.mate.challenge.navigation.challengeNavGraph
-import jun.money.mate.consumption_spend.navigation.consumptionNavGraph
+import jun.money.mate.budget.navigation.budgetNavGraph
 import jun.money.mate.cost.navigation.costNavGraph
 import jun.money.mate.finance.navigation.financeNavGraph
 import jun.money.mate.home.navigation.homeNavGraph
@@ -50,9 +50,7 @@ internal fun MainNavHost(
             challengeNavGraph()
             costNavGraph()
             saveNavGraph()
-            consumptionNavGraph(
-                onShowConsumptionAdd = navigator::navigateToConsumptionAdd,
-                onShowConsumptionEdit = navigator::navigateToConsumptionEdit,
+            budgetNavGraph(
             )
             splashNavGraph(
                 onShowHomeScreen = {
