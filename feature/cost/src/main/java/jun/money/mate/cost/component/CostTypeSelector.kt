@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,7 +41,6 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.model.spending.CostType
 import jun.money.mate.model.spending.CostType.Companion.name
 import jun.money.mate.model.spending.NormalType
@@ -105,6 +105,7 @@ private fun CategoryField(
 ) {
     var selectedTab by remember { mutableStateOf(CostTypeTab.일반) }
     var etcValue by remember { mutableStateOf("") }
+    val grouped = SubscriptionType.entries.groupBy { it.category }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -132,7 +133,8 @@ private fun CategoryField(
             when (selectedTab) {
                 CostTypeTab.일반 -> {
                     items(NormalType.entries) {
-                        NormalItem(
+                        TypeItem(
+                            imageRes = it.toImageRes(),
                             name = it.name,
                             selected = costType is CostType.Normal && costType.normalType == it,
                             modifier = Modifier
@@ -145,17 +147,30 @@ private fun CategoryField(
                     }
                 }
                 CostTypeTab.구독 -> {
-                    items(SubscriptionType.entries) {
-                        SubscriptionTypeItem(
-                            subscriptionType = it,
-                            selected = costType is CostType.Subscription && costType.subscriptionType == it,
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(8.dp))
-                                .clickable {
-                                    onSelected(CostType.Subscription(it))
-                                }
-                                .padding(vertical = 16.dp)
-                        )
+                    grouped.forEach { (category, types) ->
+                        item(span = { GridItemSpan(3) }) {
+                            Text(
+                                text = category.name,
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .padding(top = 12.dp, bottom = 4.dp)
+                            )
+                        }
+
+                        items(types) { type ->
+                            TypeItem(
+                                imageRes = type.toImageRes(),
+                                name = type.name,
+                                selected = costType is CostType.Subscription && costType.subscriptionType == type,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .clickable {
+                                        onSelected(CostType.Subscription(type))
+                                    }
+                                    .padding(vertical = 16.dp)
+                            )
+                        }
                     }
                 }
                 CostTypeTab.기타 -> {
@@ -199,7 +214,8 @@ private fun CategoryField(
 }
 
 @Composable
-private fun NormalItem(
+private fun TypeItem(
+    imageRes: Int,
     name: String,
     selected: Boolean,
     modifier: Modifier,
@@ -216,43 +232,15 @@ private fun NormalItem(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
         ) {
-            Text(
-                text = name ,
-                style = TypoTheme.typography.titleSmallB,
-                color = if (selected) White1 else MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
-            )
-        }
-    }
-}
-
-@Composable
-private fun SubscriptionTypeItem(
-    subscriptionType: SubscriptionType,
-    selected: Boolean,
-    modifier: Modifier,
-) {
-    Surface(
-        shape = MaterialTheme.shapes.medium,
-        shadowElevation = 4.dp,
-        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceDim,
-        border = BorderStroke(1.dp, if (selected) MaterialTheme.colorScheme.primary else Gray6),
-        modifier = Modifier
-            .padding(4.dp)
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
-        ) {
             Icon(
-                painter = painterResource(subscriptionType.toImageRes()),
+                painter = painterResource(imageRes),
                 tint = Color.Unspecified,
                 contentDescription = null,
                 modifier = Modifier.size(40.dp)
             )
             VerticalSpacer(8.dp)
             Text(
-                text = subscriptionType.name,
+                text = name,
                 style = TypoTheme.typography.labelLargeB,
                 textAlign = TextAlign.Center,
             )

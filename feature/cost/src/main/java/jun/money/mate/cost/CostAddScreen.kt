@@ -166,7 +166,6 @@ private fun CostAddScreen(
                 costType = uiState.costType
             )
         }
-        VerticalSpacer(100.dp)
     }
 }
 

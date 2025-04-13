@@ -3,6 +3,7 @@ package jun.money.mate.cost
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jun.money.mate.cost.component.CostCalendarValue
 import jun.money.mate.cost.contract.CostEffect
 import jun.money.mate.cost.contract.CostState
 import jun.money.mate.cost.contract.CostModalEffect
@@ -77,6 +78,16 @@ internal class CostViewModel @Inject constructor(
         }
     }
 
+    fun selectCalendarValue(costCalendarValue: CostCalendarValue?) {
+        viewModelScope.launch {
+            _costState.updateWithData<CostState, CostState.Data> { state ->
+                state.copy(
+                    selectedCalendarValue = costCalendarValue
+                )
+            }
+        }
+    }
+
     fun editCost() {
         viewModelScope.launch {
             _costState.withData<CostState.Data> { state ->
@@ -92,7 +103,7 @@ internal class CostViewModel @Inject constructor(
             _costState.withData<CostState.Data> { state ->
                 costRepository.deleteByIds(state.selectedCosts)
                 hideModal()
-                showSnackBar(MessageType.Message("${Title}가 삭제되었습니다"))
+                showSnackBar(MessageType.Message("${Title}이 삭제되었습니다"))
             }
         }
     }

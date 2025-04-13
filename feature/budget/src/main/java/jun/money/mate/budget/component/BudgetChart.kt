@@ -54,7 +54,7 @@ internal fun BudgetChart(budget: Long, amountUsed: Long) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .padding(start = max(barLength.value - 20.dp, 0.dp))
+                .padding(start = max(barLength.value - 40.dp, 0.dp))
         ) {
             Text(
                 text = CurrencyFormatter.formatAmountWon(amountUsed),

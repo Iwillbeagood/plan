@@ -10,8 +10,17 @@ internal sealed interface CostState {
     data object Loading : CostState
 
     data class Data(
-        val costs: List<Cost>
+        val costs: List<Cost>,
+        val selectedCalendarValue: CostCalendarValue? = null,
     ) : CostState {
+
+        val costsByCalendar get() = costs.filter {
+            if (selectedCalendarValue == null) {
+                true
+            } else {
+                it.day == selectedCalendarValue.date
+            }
+        }
 
         val totalCostString get() = Utils.formatAmountWon(costs.sumOf { it.amount })
 

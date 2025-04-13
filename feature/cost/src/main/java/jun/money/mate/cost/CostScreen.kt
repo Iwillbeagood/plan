@@ -1,5 +1,6 @@
 package jun.money.mate.cost
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.cost.component.CostCalendar
+import jun.money.mate.cost.component.CostCalendarValue
 import jun.money.mate.cost.component.CostItem
 import jun.money.mate.cost.contract.CostEffect
 import jun.money.mate.cost.contract.CostModalEffect
@@ -95,7 +97,8 @@ private fun CostContent(
             CostScreen(
                 uiState = it,
                 onSelectCost = viewModel::selectCost,
-                onShowCostAddScreen = onShowCostAddScreen
+                onShowCostAddScreen = onShowCostAddScreen,
+                onSelectedCalendarValue = viewModel::selectCalendarValue
             )
             EditSheet(
                 selectedCount = it.selectedCount,
@@ -115,6 +118,7 @@ private fun CostScreen(
     uiState: CostState.Data,
     onSelectCost: (Cost) -> Unit,
     onShowCostAddScreen: () -> Unit,
+    onSelectedCalendarValue: (CostCalendarValue?) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -162,27 +166,32 @@ private fun CostScreen(
                 Column {
                     VerticalSpacer(10.dp)
                     CostCalendar(
-                        costCalendarValue = uiState.costCalendarValues
+                        costCalendarValue = uiState.costCalendarValues,
+                        selectedCalendarValue = uiState.selectedCalendarValue,
+                        onSelectedCalendarValue = onSelectedCalendarValue,
                     )
-                    VerticalSpacer(10.dp)
+                    VerticalSpacer(16.dp)
                     if (uiState.costs.isNotEmpty()) {
-                        Text(
-                            text = "$Title 내역",
-                            style = TypoTheme.typography.titleNormalM,
-                            modifier = Modifier.padding(start = 16.dp)
-                        )
+                        Crossfade(
+                            uiState.selectedCalendarValue
+                        ) {
+                            Text(
+                                text = if (it != null)
+                                    "${it.date}일 $Title"
+                                else
+                                    "전체 $Title",                                    style = TypoTheme.typography.titleNormalM,
+                                modifier = Modifier.padding(start = 16.dp)
+                            )
+                        }
                         VerticalSpacer(10.dp)
                     }
                 }
             }
 
-            items(uiState.costs) { cost ->
+            items(uiState.costsByCalendar) { cost ->
                 CostItem(
                     cost = cost,
-                    imageRes = when (val type = cost.costType) {
-                        is CostType.Subscription -> type.subscriptionType.toImageRes()
-                        else -> R.drawable.ic_coin
-                    },
+                    imageRes = cost.costType.toImageRes(),
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
                         .clickable {
@@ -192,7 +201,7 @@ private fun CostScreen(
                 )
             }
             item {
-                VerticalSpacer(10.dp)
+                VerticalSpacer(100.dp)
             }
         }
     }
@@ -230,7 +239,8 @@ private fun CostScreenPreview() {
                 costs = Cost.samples
             ),
             onSelectCost = {},
-            onShowCostAddScreen = {}
+            onShowCostAddScreen = {},
+            onSelectedCalendarValue = {}
         )
     }
 }

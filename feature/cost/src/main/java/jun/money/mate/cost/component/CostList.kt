@@ -41,41 +41,6 @@ import jun.money.mate.res.R
 import jun.money.mate.utils.toImageRes
 
 @Composable
-internal fun CostList(
-    costs: List<Cost>,
-    onCostClick: (Cost) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp)
-    ) {
-        items(costs) { cost ->
-            CostItem(
-                cost = cost,
-                imageRes = when (val type = cost.costType) {
-                    is CostType.Subscription -> type.subscriptionType.toImageRes()
-                    else -> R.drawable.ic_coin
-                },
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable {
-                        onCostClick(cost)
-                    }
-                    .padding(horizontal = 10.dp)
-            )
-        }
-        item {
-            VerticalSpacer(10.dp)
-        }
-    }
-}
-
-@Composable
 internal fun CostItem(
     cost: Cost,
     @DrawableRes imageRes: Int,
@@ -91,7 +56,9 @@ internal fun CostItem(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 2.dp,
         border = border,
-        modifier = Modifier.height(90.dp)
+        modifier = Modifier
+            .height(90.dp)
+            .padding(vertical = 2.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -125,9 +92,9 @@ internal fun CostItem(
 @Composable
 private fun CostListPreview() {
     JunTheme {
-        CostList(
-            costs = Cost.samples,
-            onCostClick = {}
+        CostItem(
+            cost = Cost.samples.first(),
+            imageRes = R.drawable.ic_coin
         )
     }
 }

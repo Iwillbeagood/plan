@@ -26,8 +26,10 @@ class CostRepositoryImpl @Inject constructor(
 
     override fun getCostFlow(): Flow<List<Cost>> {
         return costDao.getCostFlow()
-            .map {
-                it.map(CostEntity::toCost)
+            .map { list ->
+                list
+                    .map(CostEntity::toCost)
+                    .sortedBy { it.day }
             }
             .catch {
                 Logger.e("getCostFlow error: $it")
