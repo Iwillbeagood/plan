@@ -1,33 +1,32 @@
-package kic.owner2.utils.etc
+package jun.money.mate.utils.etc
 
 import android.util.Log
 import jun.money.mate.utils.BuildConfig
-import jun.money.mate.utils.etc.AndroidLogger
 import java.lang.StringBuilder
 
 object Logger : AndroidLogger {
 
-    private const val TAG = "BAEKTONG"
+    private const val TAG = "JUN_LOG"
     private const val MAX_LOG_LENGTH = 1000
 
-    override fun e(msg: String) {
-        if (BuildConfig.DEBUG) logLongMessage(Log.ERROR, buildLogMsg(msg))
+    override fun e(msg: Any) {
+        if (BuildConfig.DEBUG) logLongMessage(Log.ERROR, buildLogMsg(msg.toString()))
     }
 
-    override fun w(msg: String) {
-        if (BuildConfig.DEBUG) logLongMessage(Log.WARN, buildLogMsg(msg))
+    override fun w(msg: Any) {
+        if (BuildConfig.DEBUG) logLongMessage(Log.WARN, buildLogMsg(msg.toString()))
     }
 
-    override fun i(msg: String) {
-        if (BuildConfig.DEBUG) logLongMessage(Log.INFO, buildLogMsg(msg))
+    override fun i(msg: Any) {
+        if (BuildConfig.DEBUG) logLongMessage(Log.INFO, buildLogMsg(msg.toString()))
     }
 
-    override fun d(msg: String) {
-        if (BuildConfig.DEBUG) logLongMessage(Log.DEBUG, buildLogMsg(msg))
+    override fun d(msg: Any) {
+        if (BuildConfig.DEBUG) logLongMessage(Log.DEBUG, buildLogMsg(msg.toString()))
     }
 
-    override fun v(msg: String) {
-        if (BuildConfig.DEBUG) logLongMessage(Log.VERBOSE, buildLogMsg(msg))
+    override fun v(msg: Any) {
+        if (BuildConfig.DEBUG) logLongMessage(Log.VERBOSE, buildLogMsg(msg.toString()))
     }
 
     private fun logLongMessage(logType: Int, message: String) {

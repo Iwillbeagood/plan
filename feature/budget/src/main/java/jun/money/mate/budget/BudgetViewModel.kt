@@ -5,6 +5,7 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jun.money.mate.budget.contract.BudgetState
 import jun.money.mate.data_api.database.BudgetRepository
 import jun.money.mate.model.consumption.Budget
 import jun.money.mate.model.etc.error.MessageType
@@ -47,12 +48,6 @@ internal class BudgetViewModel @Inject constructor(
         _consumptionModalEffect.update { BudgetCostEffect.Hidden }
     }
 
-    fun showBudgetAdd() {
-        viewModelScope.launch {
-            _budgetEffect.emit(BudgetEffect.NavigateToAdd)
-        }
-    }
-
     private fun showSnackBar(messageType: MessageType) {
         viewModelScope.launch {
             _budgetEffect.emit(BudgetEffect.ShowSnackBar(messageType))
@@ -60,21 +55,6 @@ internal class BudgetViewModel @Inject constructor(
     }
 }
 
-@Stable
-internal sealed interface BudgetState {
-
-    @Immutable
-    data object Loading : BudgetState
-
-    @Immutable
-    data class BudgetData(
-        val budgets: List<Budget>,
-    ) : BudgetState {
-
-        val totalBudget: Long
-            get() = budgets.sumOf { it.budget }
-    }
-}
 
 @Stable
 internal sealed interface BudgetEffect {
@@ -82,8 +62,6 @@ internal sealed interface BudgetEffect {
     @Immutable
     data class ShowSnackBar(val messageType: MessageType) : BudgetEffect
 
-    @Immutable
-    data object NavigateToAdd : BudgetEffect
 }
 
 @Stable

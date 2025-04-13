@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.cost.contract.CostAddEffect
 import jun.money.mate.cost.contract.CostAddState
 import jun.money.mate.domain.UpsertCostUsecase
-import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.CostType
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,8 +16,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
@@ -75,7 +72,7 @@ internal class CostAddViewModel @Inject constructor(
             upsertCostUsecase(
                 amount = state.amount,
                 costType = state.costType,
-                dateType = state.dateType,
+                day = state.day,
                 onSuccess = ::complete,
                 onError = ::showSnackBar
             )
@@ -102,16 +99,9 @@ internal class CostAddViewModel @Inject constructor(
         }
     }
 
-
-    fun dateSelected(date: LocalDate) {
-        _costAddState.update {
-            it.copy(dateType = DateType.Specific(date))
-        }
-    }
-
     fun daySelected(day: String) {
         _costAddState.update {
-            it.copy(dateType = DateType.Monthly(day.toInt(), YearMonth.now()))
+            it.copy(day = day.toInt())
         }
     }
 

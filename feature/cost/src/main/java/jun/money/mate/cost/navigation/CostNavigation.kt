@@ -32,3 +32,5 @@ fun NavGraphBuilder.costNavGraph() {
         CostAddRoute()
     }
 }
+
+const val Title = "고정 지출"

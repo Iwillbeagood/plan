@@ -11,5 +11,5 @@ data class CostEntity(
     @PrimaryKey val id: Long,
     val amount: Long,
     val type: CostType,
-    val dateType: DateType,
+    val day: Int,
 )

@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jun.money.mate.cost.navigation.Title
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.ScrollableTab
 import jun.money.mate.designsystem.component.UnderlineTextField
@@ -168,7 +169,7 @@ private fun CategoryField(
                                 onValueChange = {
                                     etcValue = it
                                 },
-                                hint = "소비를 설명해 주세요",
+                                hint = "${Title}를 설명해 주세요",
                                 keyboardOptions = KeyboardOptions(
                                     imeAction = ImeAction.Done,
                                 ),

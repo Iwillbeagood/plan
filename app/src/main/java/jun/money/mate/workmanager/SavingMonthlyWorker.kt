@@ -5,12 +5,8 @@ import androidx.work.*
 import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavingsType
-import kic.owner2.utils.etc.Logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import jun.money.mate.utils.etc.Logger
 import kotlinx.coroutines.runBlocking
-import java.time.Duration
 import java.time.Duration.between
 import java.time.LocalDate
 import java.time.LocalDateTime

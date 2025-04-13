@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -17,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
@@ -187,11 +189,11 @@ fun DefaultBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
         containerColor = MaterialTheme.colorScheme.surfaceDim,
+        contentWindowInsets = { WindowInsets(0) },
         shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-        properties = ModalBottomSheetProperties()
+        properties = ModalBottomSheetProperties(),
     ) {
         BackHandler(onBack = onDismissRequest)
-        
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.surfaceDim)

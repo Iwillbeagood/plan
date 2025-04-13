@@ -23,8 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.RegularButton
+import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.TopAppbarType
 import jun.money.mate.designsystem.component.VerticalSpacer
@@ -82,21 +82,19 @@ private fun HomeContent(
     onHomeListClick: (MainBottomNavItem) -> Unit,
     onShowAddScreen: (MainBottomNavItem) -> Unit,
 ) {
-    FadeAnimatedVisibility(
-        visible = homeState is HomeState.HomeData
+    StateAnimatedVisibility<HomeState.HomeData>(
+        target = homeState,
     ) {
-        if (homeState is HomeState.HomeData) {
-            HomeScreen(
-                balance = homeState.balanceString,
-                incomeTotal = homeState.incomeList.totalString,
-                saveTotal = homeState.savePlanList.totalString,
-                homeList = emptyList(),
-                onShowMenu = onShowMenu,
-                onShowNotification = onShowNotification,
-                onHomeListClick = onHomeListClick,
-                onShowAddScreen = onShowAddScreen,
-            )
-        }
+        HomeScreen(
+            balance = it.balanceString,
+            incomeTotal = it.incomeList.totalString,
+            saveTotal = it.savePlanList.totalString,
+            homeList = emptyList(),
+            onShowMenu = onShowMenu,
+            onShowNotification = onShowNotification,
+            onHomeListClick = onHomeListClick,
+            onShowAddScreen = onShowAddScreen,
+        )
     }
 }
 

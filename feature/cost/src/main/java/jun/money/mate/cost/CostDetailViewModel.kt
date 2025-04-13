@@ -7,7 +7,6 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.cost.contract.CostDetailEffect
 import jun.money.mate.cost.contract.CostDetailState
-import jun.money.mate.cost.contract.CostEffect
 import jun.money.mate.data_api.database.CostRepository
 import jun.money.mate.domain.UpsertCostUsecase
 import jun.money.mate.model.etc.DateType
@@ -58,7 +57,7 @@ internal class CostDetailViewModel @Inject constructor(
                 CostDetailState.UiData(
                     id = cost.id,
                     amount = cost.amount,
-                    dateType = cost.dateType,
+                    day = cost.day,
                     costType = cost.costType
                 )
             }
@@ -71,7 +70,7 @@ internal class CostDetailViewModel @Inject constructor(
                 upsertCostUsecase(
                     id = it.id,
                     amount = it.amount,
-                    dateType = it.dateType,
+                    day = it.day,
                     costType = it.costType,
                     onSuccess = ::editComplete,
                     onError = ::showSnackBar
@@ -94,16 +93,9 @@ internal class CostDetailViewModel @Inject constructor(
         }
     }
 
-
-    fun dateSelected(date: LocalDate) {
-        _costAddState.updateWithData<CostDetailState, CostDetailState.UiData> {
-            it.copy(dateType = DateType.Specific(date))
-        }
-    }
-
     fun daySelected(day: String) {
         _costAddState.updateWithData<CostDetailState, CostDetailState.UiData> {
-            it.copy(dateType = DateType.Monthly(day.toInt(), YearMonth.now()))
+            it.copy(day = day.toInt())
         }
     }
 

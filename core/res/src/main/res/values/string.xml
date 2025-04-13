@@ -11,9 +11,9 @@
     <string name="tab_income">수입</string>
     <string name="tab_budget">예산</string>
     <string name="tab_finance">수입/저축</string>
-    <string name="tab_spending_list">소비</string>
+    <string name="tab_spending_list">고정 지출</string>
     <string name="tab_save">저축</string>
-    <string name="tab_cost">소비</string>
+    <string name="tab_cost">고정지출</string>
 
     <string name="btn_complete">확인</string>
     <string name="btn_setting">설정</string>

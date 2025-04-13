@@ -9,18 +9,18 @@ fun BudgetWithUsed.toBudget() = Budget(
     id = budget.id,
     title = budget.title,
     budget = budget.budget,
-    amountUsed = budget.amountUsed,
-    pastBudgets = if (budget.lastBudget != null && budget.lastAmountUsed != null) {
+    pastBudgets = pastBudgets.map {
         PastBudget(
-            budget = budget.lastBudget!!,
-            amountUsed = budget.lastAmountUsed!!
+            budget = it.budget,
+            amountUsed = it.amountUsed,
+            date = it.date
         )
-    } else null,
+    },
     usedList = usedList.map {
         Used(
             id = it.id,
             budgetId = it.budgetId,
-            title = it.title,
+            meno = it.title,
             amount = it.amount,
             date = it.date
         )

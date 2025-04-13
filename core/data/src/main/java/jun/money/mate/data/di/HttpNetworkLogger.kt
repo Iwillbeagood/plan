@@ -1,6 +1,6 @@
 package jun.money.mate.data.di
 
-import kic.owner2.utils.etc.Logger
+import jun.money.mate.utils.etc.Logger
 import okhttp3.Interceptor
 import okhttp3.Response
 

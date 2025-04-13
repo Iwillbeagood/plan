@@ -24,25 +24,26 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.cost.component.CostTypeSelector
 import jun.money.mate.cost.contract.CostAddEffect
 import jun.money.mate.cost.contract.CostAddState
+import jun.money.mate.cost.navigation.Title
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderlineTextField
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
+import jun.money.mate.designsystem_date.datetimepicker.DayPicker
 import jun.money.mate.model.spending.CostType
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.ui.AddScaffold
-import jun.money.mate.ui.DateAdd
-import java.time.LocalDate
+
 
 internal enum class CostStep(
     val message: String
 ) {
-    CostType("소비의 종류를 입력해 주세요"),
-    Amount("소비 금액을 입력해 주세요"),
-    Date("소비가 발생할 날짜를 입력해 주세요"),
+    CostType("${Title}의 종류를 입력해 주세요"),
+    Amount("지출 금액을 입력해 주세요"),
+    Date("${Title}이 발생할 날짜를 입력해 주세요"),
 }
 
 @Composable
@@ -73,7 +74,6 @@ internal fun CostAddRoute(
             onCostTypeSelected = viewModel::costTypeSelected,
             onAmountValueChange = viewModel::amountValueChange,
             onDaySelected = viewModel::daySelected,
-            onDateSelected = viewModel::dateSelected,
             onNextStep = viewModel::nextStep,
         )
     }
@@ -97,7 +97,6 @@ private fun CostAddScreen(
     onCostTypeSelected: (CostType?) -> Unit,
     onAmountValueChange: (String) -> Unit,
     onDaySelected: (String) -> Unit,
-    onDateSelected: (LocalDate) -> Unit,
     onNextStep: () -> Unit,
 ) {
     Column(
@@ -115,18 +114,17 @@ private fun CostAddScreen(
             VerticalSpacer(20.dp)
         }
         CostAddField(
-            title = "소비 날짜",
+            title = "$Title 날짜",
             isCurrentStep = CostStep.Date == currentStep,
             visible = CostStep.Date in steps,
         ) {
-            DateAdd(
-                type = "소비",
+            DayPicker(
                 onDaySelected = onDaySelected,
-                onDateSelected = onDateSelected,
+                modifier = Modifier.fillMaxWidth(),
             )
         }
         CostAddField(
-            title = "소비 금액",
+            title = "지출 금액",
             isCurrentStep = currentStep == CostStep.Amount,
             visible = CostStep.Amount in steps,
         ) {
@@ -159,7 +157,7 @@ private fun CostAddScreen(
             }
         }
         CostAddField(
-            title = "소비 유형",
+            title = "지출 유형",
             isCurrentStep = currentStep == CostStep.CostType,
             visible = CostStep.CostType in steps,
         ) {
@@ -204,7 +202,6 @@ private fun CostAddScreenPreview() {
             uiState = CostAddState(),
             onCostTypeSelected = {},
             onDaySelected = {},
-            onDateSelected = {},
             onAmountValueChange = {},
             onNextStep = {},
         )

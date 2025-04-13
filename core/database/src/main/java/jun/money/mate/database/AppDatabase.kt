@@ -20,6 +20,7 @@ import jun.money.mate.database.entity.ChallengeEntity
 import jun.money.mate.database.entity.ChallengeProgressEntity
 import jun.money.mate.database.entity.CostEntity
 import jun.money.mate.database.entity.IncomeEntity
+import jun.money.mate.database.entity.PastBudgetEntity
 import jun.money.mate.database.entity.SaveEntity
 import jun.money.mate.database.entity.UsedEntity
 
@@ -29,6 +30,7 @@ import jun.money.mate.database.entity.UsedEntity
         IncomeEntity::class,
         BudgetEntity::class,
         UsedEntity::class,
+        PastBudgetEntity::class,
         ChallengeEntity::class,
         ChallengeProgressEntity::class,
         CostEntity::class
@@ -62,6 +64,7 @@ internal abstract class AppDatabase : RoomDatabase() {
         const val SAVING_PLAN_TABLE_NAME = "saving_plan"
         const val BUDGET_TABLE_NAME = "budget"
         const val BUDGET_USED_TABLE_NAME = "budget_used"
+        const val BUDGET_PAST_BUDGET_TABLE_NAME = "budget_past"
         const val CHALLENGE_TABLE_NAME = "challenge"
         const val CHALLENGE_PROGRESS_TABLE_NAME = "challenge_progress"
         const val COST_TABLE_NAME = "cost"

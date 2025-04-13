@@ -5,13 +5,11 @@ import jun.money.mate.data.mapper.toCostEntity
 import jun.money.mate.data_api.database.CostRepository
 import jun.money.mate.database.dao.CostDao
 import jun.money.mate.database.entity.CostEntity
-import jun.money.mate.model.etc.DateType.Companion.isValidForMonth
 import jun.money.mate.model.spending.Cost
-import kic.owner2.utils.etc.Logger
+import jun.money.mate.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import java.time.YearMonth
 import javax.inject.Inject
 
 class CostRepositoryImpl @Inject constructor(
@@ -38,24 +36,6 @@ class CostRepositoryImpl @Inject constructor(
 
     override suspend fun getCostById(id: Long): Cost {
         return costDao.getCostById(id).toCost()
-    }
-
-    override fun getCostsByMonth(data: YearMonth): Flow<List<Cost>> {
-        return costDao.getCostFlow()
-            .map {
-                it.filter { cost ->
-                    cost.dateType.isValidForMonth(data)
-                }.map(CostEntity::toCost)
-            }.catch {
-                Logger.e("getCostsByMonth error: $it")
-            }
-    }
-
-    override suspend fun getCostsByMonthList(data: YearMonth): List<Cost> {
-        return costDao.getCosts()
-            .filter { cost ->
-                cost.dateType.isValidForMonth(data)
-            }.map(CostEntity::toCost)
     }
 
     override suspend fun deleteById(id: Long) {

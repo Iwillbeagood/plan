@@ -59,7 +59,6 @@ fun DatePicker(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 4.dp,
         border = BorderStroke(1.dp, Gray6),
-        modifier = Modifier.height(430.dp)
     ) {
         Box(
             modifier = Modifier.padding(16.dp)

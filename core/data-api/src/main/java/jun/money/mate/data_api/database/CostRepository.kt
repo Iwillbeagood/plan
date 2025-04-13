@@ -14,14 +14,6 @@ interface CostRepository {
         id: Long
     ): Cost
 
-    fun getCostsByMonth(
-        data: YearMonth = YearMonth.now()
-    ): Flow<List<Cost>>
-
-    suspend fun getCostsByMonthList(
-        data: YearMonth = YearMonth.now()
-    ): List<Cost>
-
     suspend fun deleteById(id: Long)
 
     suspend fun deleteByIds(ids: List<Long>)

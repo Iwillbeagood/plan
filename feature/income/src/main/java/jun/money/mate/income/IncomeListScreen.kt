@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.R
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
+import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.TopAppbarIcon
 import jun.money.mate.designsystem.component.TwoBtnDialog
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
@@ -36,9 +36,9 @@ import jun.money.mate.model.LeafOrder
 import jun.money.mate.model.etc.EditMode
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
-import jun.money.mate.ui.EditModeButton
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
+import jun.money.mate.ui.EditModeButton
 import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.YearMonth
 
@@ -129,38 +129,29 @@ private fun IncomeListScreen(
                     modifier = Modifier.weight(6f)
                 )
             }
-            FadeAnimatedVisibility(
-                visible = incomeListState is IncomeListState.UiData,
+            StateAnimatedVisibility<IncomeListState.UiData>(
+                target = incomeListState,
                 modifier = Modifier.align(Alignment.TopStart)
             ) {
-                if (incomeListState is IncomeListState.UiData) {
-                    Column(
-                        modifier = Modifier.padding(start = 30.dp, top = 60.dp)
-                    ) {
-                        Text(
-                            text = "${formatDateBasedOnYear(month)} 수입",
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = TypoTheme.typography.headlineSmallM,
-                        )
-                        Text(
-                            text = incomeListState.incomeList.totalString,
-                            style = TypoTheme.typography.displaySmallB,
-                        )
-                    }
+                Column(
+                    modifier = Modifier.padding(start = 30.dp, top = 60.dp)
+                ) {
+                    Text(
+                        text = "${formatDateBasedOnYear(month)} 수입",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = TypoTheme.typography.headlineSmallM,
+                    )
+                    Text(
+                        text = it.incomeList.totalString,
+                        style = TypoTheme.typography.displaySmallB,
+                    )
                 }
             }
-            Box(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clickable(onClick = onGoBack)
-                    .align(Alignment.TopStart),
-            ) {
-                TopAppbarIcon(
-                    iconId = R.drawable.ic_back,
-                    tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
+            TopAppbarIcon(
+                iconId = R.drawable.ic_back,
+                onClick = onGoBack,
+                modifier = Modifier.align(Alignment.TopStart)
+            )
         }
     }
 }
@@ -174,19 +165,17 @@ private fun IncomeListContent(
     onIncomeClick: (Income) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    FadeAnimatedVisibility(
-        visible = incomeListState is IncomeListState.UiData,
+    StateAnimatedVisibility<IncomeListState.UiData>(
+        target = incomeListState,
         modifier = modifier
     ) {
-        if (incomeListState is IncomeListState.UiData) {
-            IncomeListBody(
-                month = month,
-                onPrev = onPrev,
-                onNext = onNext,
-                incomeList = incomeListState.incomeList,
-                onIncomeClick = onIncomeClick
-            )
-        }
+        IncomeListBody(
+            month = month,
+            onPrev = onPrev,
+            onNext = onNext,
+            incomeList = it.incomeList,
+            onIncomeClick = onIncomeClick
+        )
     }
 }
 

@@ -111,11 +111,7 @@ internal fun CostItem(
                 )
                 VerticalSpacer(4.dp)
                 Text(
-                    text = cost.dateType.toDateString() + if (cost.costType !is CostType.Subscription) {
-                        " | ${cost.costType.name}"
-                    } else {
-                        ""
-                    },
+                    text = "${cost.day}일 | ${cost.costType.name}",
                     style = TypoTheme.typography.titleSmallM.nonScaledSp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

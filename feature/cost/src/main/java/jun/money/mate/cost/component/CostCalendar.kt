@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -59,7 +60,7 @@ internal fun CostCalendar(
         columns = GridCells.Fixed(daysInWeek),
         modifier = Modifier
             .fillMaxWidth()
-            .height(350.dp)
+            .heightIn(max = 350.dp)
     ) {
         items(daysInWeek) { index ->
             val dayOfWeek = LocalDate.now().plusDays(index.toLong()).dayOfWeek

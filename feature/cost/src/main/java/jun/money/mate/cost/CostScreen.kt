@@ -28,17 +28,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.cost.component.CostCalendar
-import jun.money.mate.cost.component.CostEditSheet
 import jun.money.mate.cost.component.CostItem
-import jun.money.mate.cost.component.CostList
 import jun.money.mate.cost.contract.CostEffect
 import jun.money.mate.cost.contract.CostModalEffect
 import jun.money.mate.cost.contract.CostState
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
+import jun.money.mate.cost.navigation.Title
 import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TwoBtnDialog
+import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray9
 import jun.money.mate.designsystem.theme.JunTheme
@@ -48,6 +47,7 @@ import jun.money.mate.model.spending.CostType
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.res.R
+import jun.money.mate.ui.EditSheet
 import jun.money.mate.utils.toImageRes
 
 @Composable
@@ -86,28 +86,26 @@ private fun CostContent(
     viewModel: CostViewModel,
     onShowCostAddScreen: () -> Unit,
 ) {
-    FadeAnimatedVisibility(
-        visible = uiState is CostState.Data
+    StateAnimatedVisibility<CostState.Data>(
+        target = uiState,
     ) {
-        if (uiState is CostState.Data) {
-            Box(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                CostScreen(
-                    uiState = uiState,
-                    onSelectCost = viewModel::selectCost,
-                    onShowCostAddScreen = onShowCostAddScreen
-                )
-                CostEditSheet(
-                    selectedCount = uiState.selectedCount,
-                    onEdit = viewModel::editCost,
-                    onClose = viewModel::unselectCost,
-                    onDelete = viewModel::showDeleteDialog,
-                    modifier = Modifier
-                        .padding(vertical = 20.dp, horizontal = 16.dp)
-                        .align(Alignment.BottomCenter)
-                )
-            }
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            CostScreen(
+                uiState = it,
+                onSelectCost = viewModel::selectCost,
+                onShowCostAddScreen = onShowCostAddScreen
+            )
+            EditSheet(
+                selectedCount = it.selectedCount,
+                onEdit = viewModel::editCost,
+                onClose = viewModel::unselectCost,
+                onDelete = viewModel::showDeleteDialog,
+                modifier = Modifier
+                    .padding(vertical = 20.dp, horizontal = 16.dp)
+                    .align(Alignment.BottomCenter)
+            )
         }
     }
 }
@@ -131,7 +129,7 @@ private fun CostScreen(
                 modifier = Modifier.padding(start = 20.dp)
             ) {
                 Text(
-                    text = "이번달의 전체 소비",
+                    text = "이번달의 전체 $Title",
                     style = TypoTheme.typography.titleMediumM,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -143,7 +141,7 @@ private fun CostScreen(
             }
             HorizontalSpacer(1f)
             RegularButton(
-                text = "소비 추가",
+                text = "$Title 추가",
                 onClick = onShowCostAddScreen,
                 style = TypoTheme.typography.titleNormalM,
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
@@ -167,12 +165,14 @@ private fun CostScreen(
                         costCalendarValue = uiState.costCalendarValues
                     )
                     VerticalSpacer(10.dp)
-                    Text(
-                        text = "소비 내역",
-                        style = TypoTheme.typography.titleNormalM,
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
-                    VerticalSpacer(10.dp)
+                    if (uiState.costs.isNotEmpty()) {
+                        Text(
+                            text = "$Title 내역",
+                            style = TypoTheme.typography.titleNormalM,
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                        VerticalSpacer(10.dp)
+                    }
                 }
             }
 
@@ -208,7 +208,7 @@ private fun CostModalContent(
         CostModalEffect.ShowDeleteDialog -> {
             TwoBtnDialog(
                 onDismissRequest = viewModel::hideModal,
-                button2Text = stringResource(id = jun.money.mate.res.R.string.btn_yes),
+                button2Text = stringResource(id = R.string.btn_yes),
                 button2Click = viewModel::deleteCost,
                 content = {
                     Text(

@@ -22,10 +22,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.challenge.component.ChallengeLazyColumn
 import jun.money.mate.challenge.contract.ChallengeEffect
 import jun.money.mate.challenge.contract.ChallengeState
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbar
+import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.Gray4
@@ -36,14 +36,6 @@ import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.utils.currency.CurrencyFormatter
 
-/**
- * 일단 이미 지나간 것들에 대해서는 날짜와 스위치가 보여야 함.
- * 현재 체크해야하는 것도 날짜와 스위치가 보여야하고, 강조 표시가 되어야 할듯
- * 아직 오지 않는 것들에 대해서는 날짜만 보여야 할듯
- * 가장 상단에는 목표 금액이 있으면 될듯.
- *
- * 목표 기간 내에
- * */
 @Composable
 internal fun ChallengeRoute(
     viewModel: ChallengeViewModel = hiltViewModel()
@@ -102,15 +94,13 @@ private fun ChallengeContent(
     challengeState: ChallengeState,
     onAchieveChange: (Boolean, Long) -> Unit,
 ) {
-    FadeAnimatedVisibility(
-        challengeState is ChallengeState.ChallengeData,
+    StateAnimatedVisibility<ChallengeState.ChallengeData>(
+        target = challengeState,
     ) {
-        if (challengeState is ChallengeState.ChallengeData) {
-            ChallengeScreen(
-                challengeState = challengeState,
-                onAchieveChange = onAchieveChange,
-            )
-        }
+        ChallengeScreen(
+            challengeState = it,
+            onAchieveChange = onAchieveChange,
+        )
     }
 }
 

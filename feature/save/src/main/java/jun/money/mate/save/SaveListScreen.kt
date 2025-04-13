@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.R
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbarIcon
+import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
@@ -123,38 +123,29 @@ private fun SavingListScreen(
                     modifier = Modifier.weight(1f)
                 )
             }
-            FadeAnimatedVisibility(
-                visible = savingListState is SavingListState.SavingListData,
+            StateAnimatedVisibility<SavingListState.SavingListData>(
+                target = savingListState,
                 modifier = Modifier.align(Alignment.TopStart)
             ) {
-                if (savingListState is SavingListState.SavingListData) {
-                    Column(
-                        modifier = Modifier.padding(start = 30.dp, top = 60.dp)
-                    ) {
-                        Text(
-                            text = "${formatDateBasedOnYear(month)} 총 납입금액",
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = TypoTheme.typography.headlineSmallM,
-                        )
-                        Text(
-                            text = savingListState.savePlanList.totalString,
-                            style = TypoTheme.typography.displaySmallB,
-                        )
-                    }
+                Column(
+                    modifier = Modifier.padding(start = 30.dp, top = 60.dp)
+                ) {
+                    Text(
+                        text = "${formatDateBasedOnYear(month)} 총 납입금액",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = TypoTheme.typography.headlineSmallM,
+                    )
+                    Text(
+                        text = it.savePlanList.totalString,
+                        style = TypoTheme.typography.displaySmallB,
+                    )
                 }
             }
-            Box(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clickable(onClick = onGoBack)
-                    .align(Alignment.TopStart),
-            ) {
-                TopAppbarIcon(
-                    iconId = R.drawable.ic_back,
-                    tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
+            TopAppbarIcon(
+                iconId = R.drawable.ic_back,
+                onClick = onGoBack,
+                modifier = Modifier.align(Alignment.TopStart)
+            )
         }
     }
 }
@@ -170,21 +161,19 @@ private fun SavingListContent(
     onExecuteChange: (Boolean, Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    FadeAnimatedVisibility(
-        savingListState is SavingListState.SavingListData,
+    StateAnimatedVisibility<SavingListState.SavingListData>(
+        target = savingListState,
         modifier = modifier
     ) {
-        if (savingListState is SavingListState.SavingListData) {
-            SaveListBody(
-                month = month,
-                onPrev = onPrev,
-                onNext = onNext,
-                savePlanList = savingListState.savePlanList,
-                savingChallengeList = savingChallengeList,
-                onShowDetail = onShowDetail,
-                onExecuteChange = onExecuteChange,
-            )
-        }
+        SaveListBody(
+            month = month,
+            onPrev = onPrev,
+            onNext = onNext,
+            savePlanList = it.savePlanList,
+            savingChallengeList = savingChallengeList,
+            onShowDetail = onShowDetail,
+            onExecuteChange = onExecuteChange,
+        )
     }
 }
 

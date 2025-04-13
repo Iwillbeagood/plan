@@ -9,7 +9,7 @@ import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavingsType.PeriodType.Companion.periodEndYearMonth
-import kic.owner2.utils.etc.Logger
+import jun.money.mate.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

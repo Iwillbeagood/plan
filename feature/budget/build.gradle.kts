@@ -10,4 +10,5 @@ android {
 
 dependencies {
     implementation(projects.core.designsystemDate)
+    implementation(libs.compose.charts)
 }

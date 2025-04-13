@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
+import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderLineText
 import jun.money.mate.designsystem.component.UnderlineTextField
@@ -28,16 +28,16 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.ui.DateAdd
 import jun.money.mate.income.contract.EditState
 import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
 import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.income.Income
-import jun.money.mate.ui.AddScaffold
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.navigation.interop.rememberShowSnackBar
+import jun.money.mate.ui.AddScaffold
+import jun.money.mate.ui.DateAdd
+import jun.money.mate.ui.number.NumberKeyboard
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -87,16 +87,16 @@ private fun IncomeAddContent(
     editState: EditState,
     viewModel: IncomeEditViewModel
 ) {
-    FadeAnimatedVisibility(editState is EditState.UiData) {
-        if (editState is EditState.UiData) {
-            IncomeEditBlock(
-                uiState = editState,
-                onIncomeTitleChange = viewModel::titleValueChange,
-                onShowNumberBottomSheet = viewModel::showNumberKeyboard,
-                onDaySelected = viewModel::daySelected,
-                onDateSelected = viewModel::dateSelected,
-            )
-        }
+    StateAnimatedVisibility<EditState.UiData>(
+        target = editState,
+    ) {
+        IncomeEditBlock(
+            uiState = it,
+            onIncomeTitleChange = viewModel::titleValueChange,
+            onShowNumberBottomSheet = viewModel::showNumberKeyboard,
+            onDaySelected = viewModel::daySelected,
+            onDateSelected = viewModel::dateSelected,
+        )
     }
 }
 

@@ -36,9 +36,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.HorizontalSpacer
+import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.Gray7
@@ -49,10 +49,10 @@ import jun.money.mate.finance.component.MoneyChallengeItem
 import jun.money.mate.finance.component.PlusButton
 import jun.money.mate.finance.contract.FinanceState
 import jun.money.mate.model.save.Challenge
-import jun.money.mate.ui.LeafIcon
-import jun.money.mate.ui.SeedIcon
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
+import jun.money.mate.ui.LeafIcon
+import jun.money.mate.ui.SeedIcon
 import jun.money.mate.utils.currency.CurrencyFormatter
 
 @Composable
@@ -88,20 +88,18 @@ private fun FinanceContent(
     onShowChallengeAdd: () -> Unit,
     onShowChallengeDetail: (Long) -> Unit,
 ) {
-    FadeAnimatedVisibility(
-        visible = financeState is FinanceState.FinanceData
+    StateAnimatedVisibility<FinanceState.FinanceData>(
+        target = financeState,
     ) {
-        if (financeState is FinanceState.FinanceData) {
-            FinanceScreen(
-                totalIncome = financeState.incomeList.total,
-                totalSavings = financeState.savePlanList.executedTotal,
-                challengeList = financeState.challengeList,
-                onShowIncome = onShowIncome,
-                onShowSavings = onShowSavings,
-                onAddClick = onShowChallengeAdd,
-                onChallengeClick = onShowChallengeDetail
-            )
-        }
+        FinanceScreen(
+            totalIncome = it.incomeList.total,
+            totalSavings = it.savePlanList.executedTotal,
+            challengeList = it.challengeList,
+            onShowIncome = onShowIncome,
+            onShowSavings = onShowSavings,
+            onAddClick = onShowChallengeAdd,
+            onChallengeClick = onShowChallengeDetail
+        )
     }
 }
 

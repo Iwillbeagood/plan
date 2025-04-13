@@ -3,12 +3,9 @@ package jun.money.mate.designsystem.component
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.FiniteAnimationSpec
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -18,11 +15,14 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
+import kotlinx.coroutines.delay
 
 @Composable
 fun FadeAnimatedVisibility(
@@ -35,6 +35,25 @@ fun FadeAnimatedVisibility(
         enter = fadeIn(animationSpec = tween(300)),
         exit = fadeOut(animationSpec = tween(300)),
         content = content,
+        modifier = modifier
+    )
+}
+
+@Composable
+inline fun <reified T> StateAnimatedVisibility(
+    target: Any,
+    modifier: Modifier = Modifier,
+    noinline content: @Composable (T) -> Unit
+) {
+    AnimatedVisibility(
+        visible = target is T,
+        enter = fadeIn(animationSpec = tween(300)),
+        exit = fadeOut(animationSpec = tween(300)),
+        content = {
+            if (target is T) {
+                content(target)
+            }
+        },
         modifier = modifier
     )
 }
@@ -95,6 +114,34 @@ fun BottomToTopAnimatedVisibility(
 }
 
 @Composable
+fun BottomToTopAnimatedVisibility(
+    time: Long,
+    modifier: Modifier = Modifier,
+    content: @Composable() AnimatedVisibilityScope.() -> Unit
+) {
+    var isVisible by remember { mutableStateOf(false) }
+
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = slideInVertically(
+            initialOffsetY = { fullHeight -> fullHeight },
+            animationSpec = tween(300)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { fullHeight -> fullHeight },
+            animationSpec = tween(300)
+        ),
+        modifier = modifier,
+        content = content
+    )
+
+    LaunchedEffect(true) {
+        delay(time)
+        isVisible = true
+    }
+}
+
+@Composable
 fun BottomToTopSlideFadeAnimatedVisibility(
     visible: Boolean = true,
     modifier: Modifier = Modifier,
@@ -115,26 +162,54 @@ fun BottomToTopSlideFadeAnimatedVisibility(
     )
 }
 
-
 @Composable
 fun TopToBottomAnimatedVisibility(
     visible: Boolean,
     modifier: Modifier = Modifier,
+    duration: Int = 600,
     content: @Composable AnimatedVisibilityScope.() -> Unit
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = slideInVertically(
             initialOffsetY = { fullHeight -> -fullHeight },
-            animationSpec = tween(300)
-        ),
+            animationSpec = tween(duration)
+        ) + fadeIn(animationSpec = tween(duration)),
         exit = slideOutVertically(
             targetOffsetY = { fullHeight -> -fullHeight },
-            animationSpec = tween(300)
-        ),
+            animationSpec = tween(duration)
+        ) + fadeOut(animationSpec = tween(duration)),
         modifier = modifier,
         content = content
     )
+}
+
+@Composable
+fun TopToBottomAnimatedVisibility(
+    time: Long,
+    modifier: Modifier = Modifier,
+    duration: Int = 600,
+    content: @Composable AnimatedVisibilityScope.() -> Unit
+) {
+    var isVisible by remember { mutableStateOf(false) }
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = slideInVertically(
+            initialOffsetY = { fullHeight -> -fullHeight },
+            animationSpec = tween(duration)
+        ) + fadeIn(animationSpec = tween(duration)),
+        exit = slideOutVertically(
+            targetOffsetY = { fullHeight -> -fullHeight },
+            animationSpec = tween(duration)
+        ) + fadeOut(animationSpec = tween(duration)),
+        modifier = modifier,
+        content = content
+    )
+
+    LaunchedEffect(true) {
+        delay(time)
+        isVisible = true
+    }
 }
 
 @OptIn(ExperimentalAnimationApi::class)

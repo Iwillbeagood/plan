@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,23 +21,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.cost.component.CostTypeSelector
 import jun.money.mate.cost.contract.CostDetailEffect
 import jun.money.mate.cost.contract.CostDetailState
-import jun.money.mate.cost.contract.CostEffect
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
+import jun.money.mate.cost.navigation.Title
+import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderlineTextField
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.model.etc.DateType
+import jun.money.mate.designsystem_date.datetimepicker.DayPicker
 import jun.money.mate.model.spending.CostType
 import jun.money.mate.model.spending.NormalType
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.ui.AddScaffold
-import jun.money.mate.ui.DateAdd
-import java.time.LocalDate
-import java.time.YearMonth
 
 @Composable
 internal fun CostDetailRoute(
@@ -76,18 +72,15 @@ private fun ChallengeContent(
     uiState: CostDetailState,
     viewModel: CostDetailViewModel
 ) {
-    FadeAnimatedVisibility(
-        uiState is CostDetailState.UiData,
+    StateAnimatedVisibility<CostDetailState.UiData>(
+        target = uiState,
     ) {
-        if (uiState is CostDetailState.UiData) {
-            ChallengeScreen(
-                uiState = uiState,
-                onCostTypeSelected = viewModel::costTypeSelected,
-                onAmountValueChange = viewModel::amountValueChange,
-                onDaySelected = viewModel::daySelected,
-                onDateSelected = viewModel::dateSelected,
-            )
-        }
+        ChallengeScreen(
+            uiState = it,
+            onCostTypeSelected = viewModel::costTypeSelected,
+            onAmountValueChange = viewModel::amountValueChange,
+            onDaySelected = viewModel::daySelected,
+        )
     }
 }
 
@@ -97,7 +90,6 @@ private fun ChallengeScreen(
     onCostTypeSelected: (CostType?) -> Unit,
     onAmountValueChange: (String) -> Unit,
     onDaySelected: (String) -> Unit,
-    onDateSelected: (LocalDate) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -107,7 +99,7 @@ private fun ChallengeScreen(
     ) {
         VerticalSpacer(50.dp)
         ChallengeDetailField(
-            title = "소비 유형",
+            title = "$Title 유형",
         ) {
             CostTypeSelector(
                 onSelected = onCostTypeSelected,
@@ -115,17 +107,16 @@ private fun ChallengeScreen(
             )
         }
         ChallengeDetailField(
-            title = "소비 날짜",
+            title = "$Title 날짜",
         ) {
-            DateAdd(
-                type = "소비",
+            DayPicker(
                 onDaySelected = onDaySelected,
-                onDateSelected = onDateSelected,
-                originDateType = uiState.dateType
+                selectedDay = uiState.day.toString(),
+                modifier = Modifier.fillMaxWidth(),
             )
         }
         ChallengeDetailField(
-            title = "소비 금액",
+            title = "$Title 금액",
         ) {
             UnderlineTextField(
                 value = uiState.amountString,
@@ -174,13 +165,12 @@ private fun SpendingListScreenPreview() {
             uiState = CostDetailState.UiData(
                 id = 0,
                 costType = CostType.Normal(NormalType.교통비),
-                dateType = DateType.Monthly(1, YearMonth.now()),
+                day = 1,
                 amount = 10000L,
             ),
             onCostTypeSelected = { },
             onAmountValueChange = { },
             onDaySelected = { },
-            onDateSelected = { },
         )
     }
 }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,10 +17,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.budget.component.BudgetItem
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
+import jun.money.mate.budget.component.budgetList
+import jun.money.mate.budget.contract.BudgetState
+import jun.money.mate.budget.navigation.NAV_NAME
 import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.RegularButton
+import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray9
 import jun.money.mate.designsystem.theme.JunTheme
@@ -53,7 +54,8 @@ internal fun BudgetRoute(
     BudgetContent(
         budgetState = budgetUiState,
         viewModel = viewModel,
-        onShowDetail = navigateAction::navigateToBudgetDetail
+        onShowDetail = navigateAction::navigateToBudgetDetail,
+        onShowBudgetAdd = navigateAction::navigateToBudgetAdd
     )
 
     BudgetModalContent(
@@ -65,9 +67,6 @@ internal fun BudgetRoute(
         viewModel.budgetEffect.collect { effect ->
             when (effect) {
                 is BudgetEffect.ShowSnackBar -> showSnackBar(effect.messageType)
-                BudgetEffect.NavigateToAdd -> {
-
-                }
             }
         }
     }
@@ -79,15 +78,16 @@ private fun BudgetContent(
     budgetState: BudgetState,
     viewModel: BudgetViewModel,
     onShowDetail: (Long) -> Unit,
+    onShowBudgetAdd: () -> Unit,
 ) {
-    FadeAnimatedVisibility(budgetState is BudgetState.BudgetData) {
-        if (budgetState is BudgetState.BudgetData) {
-            BudgetScreen(
-                budgetState = budgetState,
-                onShowBudgetAdd = viewModel::showBudgetAdd,
-                onShowDetail = onShowDetail
-            )
-        }
+    StateAnimatedVisibility<BudgetState.BudgetData>(
+        target = budgetState,
+    ) {
+        BudgetScreen(
+            budgetState = it,
+            onShowBudgetAdd = onShowBudgetAdd,
+            onShowDetail = onShowDetail
+        )
     }
 }
 
@@ -105,7 +105,7 @@ private fun BudgetScreen(
             Column{
                 VerticalSpacer(50.dp)
                 Text(
-                    text = "전체 예산",
+                    text = "전체 $NAV_NAME",
                     style = TypoTheme.typography.titleMediumM,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(start = 20.dp)
@@ -118,7 +118,7 @@ private fun BudgetScreen(
                 )
                 VerticalSpacer(10.dp)
                 RegularButton(
-                    text = "예산 설정하기",
+                    text = "$NAV_NAME 설정하기",
                     onClick = onShowBudgetAdd,
                     style = TypoTheme.typography.titleNormalB,
                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
@@ -129,20 +129,19 @@ private fun BudgetScreen(
                 HorizontalDivider(10.dp, Gray9)
                 VerticalSpacer(30.dp)
                 Text(
-                    text = "예산 내역",
+                    text = "$NAV_NAME 내역",
                     style = TypoTheme.typography.titleNormalM,
                     modifier = Modifier.padding(start = 20.dp)
                 )
                 VerticalSpacer(4.dp)
             }
         }
-        items(budgetState.budgets) { budget ->
-            BudgetItem(
-                budget = budget,
-                onClick = {
-                    onShowDetail(budget.id)
-                }
-            )
+        budgetList(
+            budgets = budgetState.budgets,
+            onShowDetail = onShowDetail,
+        )
+        item {
+            VerticalSpacer(50.dp)
         }
     }
 }

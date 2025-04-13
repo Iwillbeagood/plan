@@ -15,7 +15,7 @@ internal sealed interface CostState {
 
         val totalCostString get() = Utils.formatAmountWon(costs.sumOf { it.amount })
 
-        val costCalendarValues get() = costs.groupBy { it.dateType.date.dayOfMonth }.map {
+        val costCalendarValues get() = costs.groupBy { it.day }.map {
             CostCalendarValue(it.key, it.value)
         }
 

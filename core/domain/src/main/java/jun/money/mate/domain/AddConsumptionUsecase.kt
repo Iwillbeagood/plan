@@ -25,12 +25,12 @@ class AddConsumptionUsecase @Inject constructor(
         }
 
         if (title.isEmpty()) {
-            onError(MessageType.Message("소비명을 입력해 주세요"))
+            onError(MessageType.Message("고정 지출명을 입력해 주세요"))
             return
         }
 
         if (amount <= 0) {
-            onError(MessageType.Message("소비액을 입력해 주세요"))
+            onError(MessageType.Message("고정 지출액을 입력해 주세요"))
             return
         }
 

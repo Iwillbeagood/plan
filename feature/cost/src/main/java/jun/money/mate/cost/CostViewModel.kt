@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.cost.contract.CostEffect
 import jun.money.mate.cost.contract.CostState
 import jun.money.mate.cost.contract.CostModalEffect
+import jun.money.mate.cost.navigation.Title
 import jun.money.mate.data_api.database.CostRepository
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.Cost
@@ -91,7 +92,7 @@ internal class CostViewModel @Inject constructor(
             _costState.withData<CostState.Data> { state ->
                 costRepository.deleteByIds(state.selectedCosts)
                 hideModal()
-                showSnackBar(MessageType.Message("소비가 삭제되었습니다"))
+                showSnackBar(MessageType.Message("${Title}가 삭제되었습니다"))
             }
         }
     }

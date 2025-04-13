@@ -14,7 +14,7 @@ import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.utils.flow.updateWithData
 import jun.money.mate.utils.flow.withData
-import kic.owner2.utils.etc.Logger
+import jun.money.mate.utils.etc.Logger
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

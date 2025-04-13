@@ -1,8 +1,8 @@
 package jun.money.mate.main.navigation
 
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,8 +12,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import jun.money.mate.challenge.navigation.challengeNavGraph
 import jun.money.mate.budget.navigation.budgetNavGraph
+import jun.money.mate.challenge.navigation.challengeNavGraph
 import jun.money.mate.cost.navigation.costNavGraph
 import jun.money.mate.finance.navigation.financeNavGraph
 import jun.money.mate.home.navigation.homeNavGraph
@@ -41,8 +41,24 @@ internal fun MainNavHost(
         NavHost(
             navController = navigator.navController,
             startDestination = Route.Splash,
-            enterTransition = { fadeIn(animationSpec = tween(300)) },
-            exitTransition = { fadeOut(animationSpec = tween(300)) }
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth }, // → 오른쪽에서 들어옴
+                    animationSpec = tween(600)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> -(fullWidth * 0.5f).toInt() },
+                    animationSpec = tween(durationMillis = 300) // 부드럽고 빠르게
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> fullWidth }, // ← 오른쪽으로 나감
+                    animationSpec = tween(1000)
+                )
+            }
         ) {
             homeNavGraph()
             financeNavGraph()

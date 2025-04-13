@@ -6,7 +6,7 @@ import jun.money.mate.data_api.database.SaveRepository
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.model.save.Challenge
 import jun.money.mate.model.save.SavePlanList
-import kic.owner2.utils.etc.Logger
+import jun.money.mate.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import java.time.YearMonth

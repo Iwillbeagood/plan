@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.designsystem.component.BottomToTopSlideFadeAnimatedVisibility
-import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.FixedText
 import jun.money.mate.designsystem.component.RegularButton
+import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.TextCheckBox
 import jun.money.mate.designsystem.component.TextDialog
 import jun.money.mate.designsystem.component.TopAppbar
@@ -44,11 +44,11 @@ import jun.money.mate.model.Utils
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavingsType.Companion.title
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.save.contract.SaveDetailEffect
 import jun.money.mate.save.contract.SaveDetailModalEffect
-import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.ui.number.NumberKeyboard
-import jun.money.mate.navigation.interop.rememberShowSnackBar
 
 @Composable
 internal fun SaveDetailRoute(
@@ -130,20 +130,17 @@ private fun SaveDetailContent(
     saveDetailState: SaveDetailState,
     viewModel: SaveDetailViewModel
 ) {
-    FadeAnimatedVisibility(
-        saveDetailState is SaveDetailState.Data
+    StateAnimatedVisibility<SaveDetailState.Data>(
+        target = saveDetailState,
     ) {
-        if (saveDetailState is SaveDetailState.Data) {
-            SaveDetailScreen(
-                isEdited = isEdited,
-                uiState = saveDetailState,
-                onShowNumberBottomSheet = viewModel::showNumberKeyboard,
-                onDaySelected = viewModel::daySelected,
-                onSetEditable = viewModel::setEditable,
-            )
-        }
+        SaveDetailScreen(
+            isEdited = isEdited,
+            uiState = it,
+            onShowNumberBottomSheet = viewModel::showNumberKeyboard,
+            onDaySelected = viewModel::daySelected,
+            onSetEditable = viewModel::setEditable,
+        )
     }
-
 }
 
 /**

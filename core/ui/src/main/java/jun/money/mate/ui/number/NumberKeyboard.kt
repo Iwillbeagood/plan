@@ -1,6 +1,6 @@
 package jun.money.mate.ui.number
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.BottomToTopAnimatedVisibility
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.Gray10
+import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main
@@ -45,12 +46,13 @@ fun NumberKeyboard(
         visible = visible
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
         ) {
             Column(
                 modifier = Modifier
                     .shadow(10.dp, RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-                    .clickable(enabled = false) {}
+                    .background(MaterialTheme.colorScheme.background)
                     .padding(vertical = 10.dp)
                     .align(Alignment.BottomCenter)
             ) {
@@ -88,7 +90,7 @@ private fun PriceButtonRow(
         PriceButton.entries.forEach { price ->
             RegularButton(
                 text = price.title,
-                color = Gray10,
+                color = Gray6,
                 style = TypoTheme.typography.titleSmallM.nonScaledSp,
                 isPreventMultipleClicks = false,
                 onClick = {

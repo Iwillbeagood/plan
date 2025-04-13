@@ -7,7 +7,7 @@ import jun.money.mate.data_api.database.ChallengeRepository
 import jun.money.mate.database.dao.ChallengeDao
 import jun.money.mate.database.entity.ChallengeWithProgress
 import jun.money.mate.model.save.Challenge
-import kic.owner2.utils.etc.Logger
+import jun.money.mate.utils.etc.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

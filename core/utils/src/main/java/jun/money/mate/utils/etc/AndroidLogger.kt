@@ -1,9 +1,9 @@
 package jun.money.mate.utils.etc
 
 interface AndroidLogger {
-    fun e(msg: String)
-    fun w(msg: String)
-    fun i(msg: String)
-    fun d(msg: String)
-    fun v(msg: String)
+    fun e(msg: Any)
+    fun w(msg: Any)
+    fun i(msg: Any)
+    fun d(msg: Any)
+    fun v(msg: Any)
 }

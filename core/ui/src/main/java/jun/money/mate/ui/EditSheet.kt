@@ -1,4 +1,4 @@
-package jun.money.mate.cost.component
+package jun.money.mate.ui
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,7 +26,7 @@ import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 
 @Composable
-internal fun CostEditSheet(
+fun EditSheet(
     selectedCount: Int,
     onEdit: () -> Unit,
     onClose: () -> Unit,
@@ -93,9 +93,9 @@ internal fun CostEditSheet(
 
 @Preview
 @Composable
-private fun CostEditSheetPreview() {
+private fun EditSheetPreview() {
     JunTheme {
-        CostEditSheet(
+        EditSheet(
             selectedCount = 1,
             onEdit = {},
             onClose = {},

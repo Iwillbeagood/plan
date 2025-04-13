@@ -10,6 +10,7 @@ import androidx.room.util.TableInfo
 import jun.money.mate.database.AppDatabase
 import jun.money.mate.model.consumption.PastBudget
 import java.time.LocalDate
+import java.time.YearMonth
 
 @Entity(
     tableName = AppDatabase.BUDGET_TABLE_NAME
@@ -17,9 +18,7 @@ import java.time.LocalDate
 data class BudgetEntity(
     @PrimaryKey val id: Long,
     val title: String,
-    val budget: Long,
-    val amountUsed: Long,
-    val pastBudgets: List<PastBudget>,
+    val budget: Long
 )
 
 @Entity(
@@ -42,11 +41,36 @@ data class UsedEntity(
     val date: LocalDate,
 )
 
+@Entity(
+    tableName = AppDatabase.BUDGET_PAST_BUDGET_TABLE_NAME,
+    foreignKeys = [
+        ForeignKey(
+            entity = BudgetEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["budgetId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index(value = ["budgetId"])]
+)
+data class PastBudgetEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val budgetId: Long,
+    val budget: Long,
+    val amountUsed: Long,
+    val date: YearMonth,
+)
+
 data class BudgetWithUsed(
     @Embedded val budget: BudgetEntity,
     @Relation(
         parentColumn = "id",
         entityColumn = "budgetId"
     )
-    val usedList: List<UsedEntity>
+    val usedList: List<UsedEntity>,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "budgetId"
+    )
+    val pastBudgets: List<PastBudgetEntity>
 )

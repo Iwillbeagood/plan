@@ -6,13 +6,13 @@ import jun.money.mate.model.spending.Cost
 internal fun Cost.toCostEntity() = CostEntity(
     id = id,
     amount = amount,
-    dateType = dateType,
+    day = day,
     type = costType
 )
 
 internal fun CostEntity.toCost() = Cost(
     id = id,
     amount = amount,
-    dateType = dateType,
+    day = day,
     costType = type
 )
