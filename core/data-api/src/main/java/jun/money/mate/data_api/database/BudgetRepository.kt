@@ -24,4 +24,6 @@ interface BudgetRepository {
     suspend fun deleteBudget(id: Long)
 
     suspend fun deleteUsed(vararg id: Long)
+
+    suspend fun resetBudgetUsed(budgetId: Long)
 }

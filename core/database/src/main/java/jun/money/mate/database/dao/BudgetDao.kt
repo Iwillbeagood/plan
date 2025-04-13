@@ -45,6 +45,9 @@ interface BudgetDao {
     @Query("DELETE FROM $BUDGET_TABLE_NAME WHERE id = :id")
     suspend fun delete(id: Long)
 
-    @Query("DELETE FROM $BUDGET_USED_TABLE_NAME WHERE budgetId = :id")
+    @Query("DELETE FROM $BUDGET_USED_TABLE_NAME WHERE id = :id")
     suspend fun deleteUsed(id: Long)
+
+    @Query("DELETE FROM $BUDGET_USED_TABLE_NAME WHERE budgetId = :budgetId")
+    suspend fun deleteBudgetUsed(budgetId: Long)
 }

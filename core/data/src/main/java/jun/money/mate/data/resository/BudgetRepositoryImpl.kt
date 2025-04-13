@@ -116,4 +116,12 @@ class BudgetRepositoryImpl @Inject constructor(
             Logger.e("deleteUsed error: $e")
         }
     }
+
+    override suspend fun resetBudgetUsed(budgetId: Long) {
+        try {
+            budgetDao.deleteBudgetUsed(budgetId)
+        } catch (e: Exception) {
+            Logger.e("resetBudgetUsed error: $e")
+        }
+    }
 }

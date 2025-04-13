@@ -2,7 +2,10 @@ package jun.money.mate.workmanager
 
 import android.content.Context
 import androidx.work.*
+import jun.money.mate.data_api.database.BudgetRepository
 import jun.money.mate.data_api.database.SaveRepository
+import jun.money.mate.model.consumption.Budget
+import jun.money.mate.model.consumption.PastBudget
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.utils.etc.Logger
@@ -15,44 +18,48 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
- * 매월 반복되는 계획의 경우 오늘이 이번달의 마지막 날일 경우 다음 달의 날짜에 해당 저축 추가
+ * 달의 마지막 날, 시간일 경우 사용 기록은 초기화하고 기록은 저장함
  * */
-class SavingMonthlyWorker(
+class BudgetMonthlyWorker(
     appContext: Context,
     workerParams: WorkerParameters
 ) : Worker(appContext, workerParams) {
 
     @Inject
-    lateinit var saveRepository: SaveRepository
+    lateinit var budgetRepository: BudgetRepository
 
     override fun doWork(): Result {
         runBlocking {
             if (isLastDayOfMonth()) {
-                val list = saveRepository.getSavePlanListByMonth(YearMonth.now())
-                list.savePlans
-                    .filter { it.savingsType is SavingsType.PaidCount }
-                    .forEach {
-                        addNextMonthSavePlan(it)
+                budgetRepository.getBudgetsFlow().collect {
+                    it.forEach { budget ->
+                        resetBudget(budget)
+                        addPastBudget(budget)
                     }
+                }
             }
         }
         return Result.success()
     }
 
-    private suspend fun addNextMonthSavePlan(savePlan: SavePlan) {
-        Logger.d("addNextMonthSavePlan: $savePlan")
-        saveRepository.upsertSavePlan(
-            savePlan.copy(
-                id = System.currentTimeMillis(),
-                addYearMonth = YearMonth.now().plusMonths(1),
-                executed = true
-            )
+    private suspend fun resetBudget(budget: Budget) {
+        Logger.d("resetBudget: $budget")
+        budgetRepository.resetBudgetUsed(budget.id)
+    }
+
+    private suspend fun addPastBudget(budget: Budget) {
+        val pastBudget = PastBudget(
+            budget = budget.budget,
+            amountUsed = budget.amountUsed,
+            date = YearMonth.now()
         )
+        Logger.d("addPastBudget: $pastBudget")
+        budgetRepository.insertPastBudget(pastBudget, budget.id)
     }
 }
 
 // 매일 밤 11시 59분에 작업이 진행
-fun scheduleSavingMonthlyWork(context: Context) {
+fun scheduleBudgetMonthlyWork(context: Context) {
     val now = LocalDateTime.now()
     val targetTime = LocalDate.now().atTime(23, 59)
 
@@ -62,14 +69,14 @@ fun scheduleSavingMonthlyWork(context: Context) {
         between(now, targetTime.plusDays(1))
     }
 
-    val workRequest = PeriodicWorkRequestBuilder<SavingMonthlyWorker>(
+    val workRequest = PeriodicWorkRequestBuilder<BudgetMonthlyWorker>(
         1, TimeUnit.DAYS
     )
         .setInitialDelay(initialDelay.toMillis(), TimeUnit.MILLISECONDS)
         .build()
 
     WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-        "monthly_saving_worker",
+        "monthly_budget_worker",
         ExistingPeriodicWorkPolicy.KEEP,
         workRequest
     )
