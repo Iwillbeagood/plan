@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -96,11 +98,11 @@ private fun SavingListScreen(
                     .padding(16.dp)
             )
         },
-        containerColor = main10
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(main10)
         ) {
             Column(
                 modifier = Modifier
@@ -142,9 +144,9 @@ private fun SavingListScreen(
                 }
             }
             TopAppbarIcon(
-                iconId = R.drawable.ic_back,
+                icon = Icons.Default.ArrowBackIosNew,
                 onClick = onGoBack,
-                modifier = Modifier.align(Alignment.TopStart)
+                modifier = Modifier.padding(start = 8.dp)
             )
         }
     }

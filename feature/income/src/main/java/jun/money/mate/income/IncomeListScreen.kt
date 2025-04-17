@@ -1,11 +1,13 @@
 package jun.money.mate.income
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -105,11 +107,11 @@ private fun IncomeListScreen(
                 onEdit = onEditSelectedIncome,
             )
         },
-        containerColor = main10
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(main10)
         ) {
             Column(
                 modifier = Modifier
@@ -148,9 +150,9 @@ private fun IncomeListScreen(
                 }
             }
             TopAppbarIcon(
-                iconId = R.drawable.ic_back,
+                icon = Icons.Default.ArrowBackIosNew,
                 onClick = onGoBack,
-                modifier = Modifier.align(Alignment.TopStart)
+                modifier = Modifier.padding(start = 8.dp)
             )
         }
     }

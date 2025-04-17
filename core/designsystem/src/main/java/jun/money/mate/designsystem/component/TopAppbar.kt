@@ -46,7 +46,7 @@ fun TopAppbar(
             .height(50.dp)
             .background(backgroundColor)
             .statusBarsPadding()
-            .padding(end = 4.dp)
+            .padding(horizontal = 8.dp)
     ) {
         Row(
             modifier = modifier.fillMaxSize(),

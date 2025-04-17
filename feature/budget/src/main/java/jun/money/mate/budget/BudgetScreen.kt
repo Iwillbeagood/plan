@@ -128,11 +128,13 @@ private fun BudgetScreen(
                 )
                 HorizontalDivider(10.dp, Gray9)
                 VerticalSpacer(30.dp)
-                Text(
-                    text = "$NAV_NAME 내역",
-                    style = TypoTheme.typography.titleNormalM,
-                    modifier = Modifier.padding(start = 20.dp)
-                )
+                if (budgetState.budgets.isNotEmpty()) {
+                    Text(
+                        text = "$NAV_NAME 내역",
+                        style = TypoTheme.typography.titleNormalM,
+                        modifier = Modifier.padding(start = 20.dp)
+                    )
+                }
                 VerticalSpacer(4.dp)
             }
         }

@@ -44,19 +44,25 @@ internal fun MainNavHost(
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { fullWidth -> fullWidth }, // → 오른쪽에서 들어옴
-                    animationSpec = tween(600)
+                    animationSpec = tween(400)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -(fullWidth * 0.2f).toInt() },
+                    animationSpec = tween(400)
                 )
             },
             popEnterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { fullWidth -> -(fullWidth * 0.5f).toInt() },
-                    animationSpec = tween(durationMillis = 300) // 부드럽고 빠르게
+                    animationSpec = tween(durationMillis = 400) // 부드럽고 빠르게
                 )
             },
             popExitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { fullWidth -> fullWidth }, // ← 오른쪽으로 나감
-                    animationSpec = tween(1000)
+                    animationSpec = tween(400)
                 )
             }
         ) {
