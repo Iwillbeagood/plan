@@ -5,7 +5,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:configChanges="uiMode"
-            android:theme="@style/Theme.Hmm_cargo_user_v3_android.TransparentSystemBar">
+            android:theme="@style/Theme.Quokka_android.TransparentSystemBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

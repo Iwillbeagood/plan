@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">머니 메이트</string>
-    <string name="main_title">Money Mate</string>
+    <string name="app_name">Quokka</string>
+    <string name="main_title">Quokka</string>
 
-    <string name="app_copyright">Copyright 머니 메이트 All Right Reserved</string>
-    <string name="app_copyright2">이 프로그램의 저작권은 머니 메이트에 있습니다.\n이 프로그램은 저작권법과 프로그램 보호법에 의해 보호받고 있으며\n무단 개작, 복사, 재배포 등을 금지합니다.</string>
+    <string name="app_copyright">Copyright Quokka All Right Reserved</string>
+    <string name="app_copyright2">이 프로그램의 저작권은 Quokka에 있습니다.\n이 프로그램은 저작권법과 프로그램 보호법에 의해 보호받고 있으며\n무단 개작, 복사, 재배포 등을 금지합니다.</string>
 
     <string name="tab_home">홈</string>
     <string name="tab_income">수입</string>

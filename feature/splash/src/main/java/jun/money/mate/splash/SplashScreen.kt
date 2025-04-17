@@ -18,6 +18,7 @@ internal fun SplashRoute(
     SplashScreen()
 
     LaunchedEffect(Unit) {
+        delay(2000)
         onShowHomeScreen()
     }
 }
