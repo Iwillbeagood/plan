@@ -7,3 +7,7 @@ plugins {
 android {
     setNamespace("home")
 }
+
+dependencies {
+    implementation(libs.compose.charts)
+}

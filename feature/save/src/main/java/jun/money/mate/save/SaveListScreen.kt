@@ -133,7 +133,7 @@ private fun SavingListScreen(
                     modifier = Modifier.padding(start = 30.dp, top = 60.dp)
                 ) {
                     Text(
-                        text = "${formatDateBasedOnYear(month)} 총 납입금액",
+                        text = "${formatDateBasedOnYear(month)} 총 저축금액",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = TypoTheme.typography.headlineSmallM,
                     )

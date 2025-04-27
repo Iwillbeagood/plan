@@ -85,7 +85,7 @@ data class SavePlanList(
 ) {
 
     val executedTotal get() = savePlans.filter { it.executed }.sumOf { it.amount }
-    val total get() = savePlans.filter { !it.executed }.sumOf { it.amount }
+    val total get() = savePlans.filter { it.executed }.sumOf { it.amount }
     val totalString get() = Utils.formatAmountWon(executedTotal)
     val isEmpty get() = savePlans.isEmpty()
 

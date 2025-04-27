@@ -45,11 +45,17 @@ object CurrencyFormatter {
         return "${formatter.format(amount)}$CURRENCY_UNIT"
     }
 
-    fun formatAmount(amount: Int?): String {
-        if (amount == null) return "0"
+    fun formatAmount(amount: Any?): String {
+        val tempAmount = when (amount) {
+            is String -> amount.toDoubleOrNull()
+            is Int -> amount.toDouble()
+            is Long -> amount.toDouble()
+            is Double -> amount
+            else -> null
+        }
 
         val formatter = DecimalFormat(DECIMAL_PATTERN)
-        return formatter.format(amount)
+        return formatter.format(tempAmount)
     }
 
     fun formatAmount(amount: Double?): String {

@@ -1,6 +1,8 @@
 package jun.money.mate.main.navigation
 
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
@@ -41,30 +43,8 @@ internal fun MainNavHost(
         NavHost(
             navController = navigator.navController,
             startDestination = Route.Splash,
-            enterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { fullWidth -> fullWidth }, // → 오른쪽에서 들어옴
-                    animationSpec = tween(400)
-                )
-            },
-            exitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { fullWidth -> -(fullWidth * 0.2f).toInt() },
-                    animationSpec = tween(400)
-                )
-            },
-            popEnterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { fullWidth -> -(fullWidth * 0.5f).toInt() },
-                    animationSpec = tween(durationMillis = 400) // 부드럽고 빠르게
-                )
-            },
-            popExitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { fullWidth -> fullWidth }, // ← 오른쪽으로 나감
-                    animationSpec = tween(400)
-                )
-            }
+            enterTransition = { fadeIn(animationSpec = tween(300)) },
+            exitTransition = { fadeOut(animationSpec = tween(300)) }
         ) {
             homeNavGraph()
             financeNavGraph()
@@ -72,8 +52,7 @@ internal fun MainNavHost(
             challengeNavGraph()
             costNavGraph()
             saveNavGraph()
-            budgetNavGraph(
-            )
+            budgetNavGraph()
             splashNavGraph(
                 onShowHomeScreen = {
                     navigateAction.navigateBottomNav(MainBottomNavItem.Home)

@@ -9,6 +9,7 @@ import jun.money.mate.domain.GetHomeDataUsecase
 import jun.money.mate.model.consumption.Budget
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.model.save.SavePlanList
+import jun.money.mate.model.spending.Cost
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.utils.currency.CurrencyFormatter
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -30,7 +31,8 @@ internal class HomeViewModel @Inject constructor(
         HomeState.HomeData(
             incomeList = it.incomeList,
             savePlanList = it.savePlanList,
-            budgets = it.budgets
+            budgets = it.budgets,
+            costs = it.costs
         )
     }.stateIn(
         scope = viewModelScope,
@@ -63,11 +65,14 @@ internal sealed interface HomeState {
     data class HomeData(
         val incomeList: IncomeList,
         val savePlanList: SavePlanList,
-        val budgets: List<Budget>
+        val budgets: List<Budget>,
+        val costs: List<Cost>,
     ) : HomeState {
 
+        val budgetTotal get() = budgets.sumOf { it.budget }
+        val costTotal get() = costs.sumOf { it.amount }
 
-        val balance get() = 0
+        val balance get() = incomeList.total - budgetTotal - costTotal - savePlanList.total
         val balanceString get() = CurrencyFormatter.formatAmountWon(balance)
 
         data class HomeList(

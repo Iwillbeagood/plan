@@ -1,5 +1,7 @@
 package jun.money.mate.home
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,29 +25,45 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.designsystem.component.RegularButton
+import jun.money.mate.designsystem.component.HorizontalDivider
+import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.StateAnimatedVisibility
-import jun.money.mate.designsystem.component.TopAppbar
-import jun.money.mate.designsystem.component.TopAppbarType
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Black
+import jun.money.mate.designsystem.theme.Blue1
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
-import jun.money.mate.designsystem.theme.Gray9
+import jun.money.mate.designsystem.theme.Gray7
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem.theme.main
-import jun.money.mate.home.HomeState.HomeData.HomeList
+import jun.money.mate.home.component.HomePieChart
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
-import java.time.LocalDate
+import jun.money.mate.res.R
+import jun.money.mate.utils.currency.CurrencyFormatter
 
+/**
+ * 홈 화면 어떻게 구성할 지
+ * 일단 가장 상단에 쿼카 아이콘 넣자
+ * 내 엡에 있는 모든 기능
+ * 고정 지출, 저축, 예산 3개르 추가적으로 보여줘야함.
+ *
+ *
+ *
+ * 수입을 바탕으로 수입에서의 나머지 항목들을 오벼주고 챌린지는 별도로 보여주면 될듯.
+ * 이거를 원 그래프로 보여주는 것은 별로인거 같고,
+ *
+ * 좀 한눈에 수익과 지출을 보여주고 싶은데,, 수익에서 얼마나 지출하고 있는지 또 오바하고 있으면 그것을 보여주면 좋겠어. 아이디어를..
+ *
+ * 수익의 얼마만큼을 저축하고있고, 얼마를 소비하고 있는지 보여주면 좋겠음.
+ * */
 @Composable
 internal fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
+
     val showSnackBar = rememberShowSnackBar()
     val navigateAction = LocalNavigateActionInterop.current
 
@@ -53,7 +71,6 @@ internal fun HomeRoute(
 
     HomeContent(
         homeState = homeState,
-        onShowMenu = {  },
         onShowNotification = {  },
         onHomeListClick = viewModel::navigateTo,
         onShowAddScreen = viewModel::navigateToAdd,
@@ -77,7 +94,6 @@ internal fun HomeRoute(
 @Composable
 private fun HomeContent(
     homeState: HomeState,
-    onShowMenu: () -> Unit,
     onShowNotification: () -> Unit,
     onHomeListClick: (MainBottomNavItem) -> Unit,
     onShowAddScreen: (MainBottomNavItem) -> Unit,
@@ -86,57 +102,31 @@ private fun HomeContent(
         target = homeState,
     ) {
         HomeScreen(
-            balance = it.balanceString,
-            incomeTotal = it.incomeList.totalString,
-            saveTotal = it.savePlanList.totalString,
-            homeList = emptyList(),
-            onShowMenu = onShowMenu,
-            onShowNotification = onShowNotification,
-            onHomeListClick = onHomeListClick,
-            onShowAddScreen = onShowAddScreen,
+            balance = it.balance,
+            incomeTotal = it.incomeList.total,
+            saveTotal = it.savePlanList.total,
+            budgetTotal = it.budgetTotal,
+            costTotal = it.costTotal,
         )
     }
 }
 
 @Composable
 private fun HomeScreen(
-    balance: String,
-    incomeTotal: String,
-    saveTotal: String,
-    homeList: List<HomeList>,
-    onHomeListClick: (MainBottomNavItem) -> Unit,
-    onShowAddScreen: (MainBottomNavItem) -> Unit,
-    onShowMenu: () -> Unit,
-    onShowNotification: () -> Unit,
+    balance: Long,
+    incomeTotal: Long,
+    saveTotal: Long,
+    budgetTotal: Long,
+    costTotal: Long,
 ) {
     Scaffold(
         topBar = {
-            TopAppbar(
-                title = "${LocalDate.now().monthValue}월의 " + stringResource(jun.money.mate.res.R.string.app_name),
-                navigationType = TopAppbarType.Custom {
-//                    Row(
-//                        modifier = Modifier.fillMaxHeight(),
-//                    ) {
-//                        Icon(
-//                            imageVector = Icons.Default.Notifications,
-//                            contentDescription = null,
-//                            tint = MaterialTheme.colorScheme.onSurface,
-//                            modifier = Modifier
-//                                .fillMaxHeight()
-//                                .clickable(onClick = onShowNotification)
-//                                .padding(horizontal = 5.dp),
-//                        )
-//                        Icon(
-//                            imageVector = Icons.Default.Menu,
-//                            contentDescription = null,
-//                            tint = MaterialTheme.colorScheme.onSurface,
-//                            modifier = Modifier
-//                                .fillMaxHeight()
-//                                .clickable(onClick = onShowMenu)
-//                                .padding(horizontal = 5.dp),
-//                        )
-//                    }
-                }
+            Text(
+                text = stringResource(R.string.app_name),
+                style = TypoTheme.typography.titleLargeB,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(16.dp)
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,
@@ -147,164 +137,95 @@ private fun HomeScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(it)
         ) {
-            VerticalSpacer(20.dp)
-            HomeTitle(title = "월간 계획")
-            HomeContentBox {
-                Column(
-                    modifier = Modifier.padding(14.dp)
-                ) {
-                    Row {
-                        Text(
-                            text = "수입",
-                            style = TypoTheme.typography.titleMediumM,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.weight(1f)
-                        )
-                        Text(
-                            text = "+ $incomeTotal",
-                            style = TypoTheme.typography.titleMediumB,
-                            color = main
-                        )
-                    }
-                    Row {
-                        Text(
-                            text = "지출",
-                            style = TypoTheme.typography.titleMediumM,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-                    Row {
-                        Text(
-                            text = "저축",
-                            style = TypoTheme.typography.titleMediumM,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.weight(1f)
-                        )
-                        Text(
-                            text = "- $saveTotal",
-                            style = TypoTheme.typography.titleMediumB,
-                            color = Red3
-                        )
-                    }
-                }
-            }
-            VerticalSpacer(10.dp)
-            HomeContentBox {
-                Column(
-                    modifier = Modifier.padding(8.dp)
-                ) {
-                    Row {
-                        Text(
-                            text = "잔액",
-                            style = TypoTheme.typography.titleMediumM,
-                            modifier = Modifier.weight(1f)
-                        )
-                        Text(
-                            text = balance,
-                            style = TypoTheme.typography.titleMediumB,
-                        )
-                    }
-                }
-            }
+            BalanceText(
+                balance = balance,
+                incomeTotal = incomeTotal,
+            )
+            VerticalSpacer(40.dp)
+            HorizontalDivider(10.dp)
             VerticalSpacer(30.dp)
-            HomeTitle(title = "월간 내역")
-            HomeContentBox {
-                Column {
-                    homeList.forEach { data ->
-                        HomeItem(
-                            title = stringResource(data.type.titleRes),
-                            value = data.value,
-                            type = data.type,
-                            onClick = { onHomeListClick(data.type) },
-                            onAdd = { onShowAddScreen(data.type) },
+            Column(
+                 modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    border = BorderStroke(1.dp, Gray7),
+                    shadowElevation = 1.dp,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column {
+                        Text(
+                            text = "자금 구성",
+                            style = TypoTheme.typography.titleNormalM,
+                            modifier = Modifier.padding(start = 20.dp, top = 20.dp)
                         )
-                        VerticalSpacer(10.dp)
+                        HomePieChart(
+                            budgetTotal = budgetTotal,
+                            costTotal = costTotal,
+                            saveTotal = saveTotal
+                        )
                     }
                 }
+                VerticalSpacer(30.dp)
             }
         }
     }
 }
 
 @Composable
-fun HomeContentBox(
-    content: @Composable () -> Unit,
+internal fun BalanceText(
+    balance: Long,
+    incomeTotal: Long,
 ) {
-    Surface(
-        shape = RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.surfaceDim,
-        contentColor = MaterialTheme.colorScheme.onSurface,
+    Column(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxWidth(),
-    ) {
-        Column(
-            modifier = Modifier.padding(10.dp)
-        ) {
-            content()
-        }
-    }
-}
-
-@Composable
-private fun HomeItem(
-    title: String,
-    value: String,
-    type: MainBottomNavItem,
-    onClick: () -> Unit,
-    onAdd: () -> Unit,
-) {
-    Surface(
-        onClick = onClick,
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surfaceDim,
-        contentColor = MaterialTheme.colorScheme.onSurface,
+            .padding(horizontal = 20.dp)
+            .padding(top = 20.dp),
+        horizontalAlignment = Alignment.Start,
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 16.dp)
-            ) {
-                Text(
-                    text = value,
-                    style = TypoTheme.typography.titleNormalB,
-                    textAlign = TextAlign.End,
-                )
-                Text(
-                    text = title,
-                    style = TypoTheme.typography.titleSmallM,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            RegularButton(
-                onClick = onAdd,
-                text = "추가",
-                textColor = Black,
-                color = Gray9,
-                style = TypoTheme.typography.labelLargeM,
+            Text(
+                text = "잔액",
+                style = TypoTheme.typography.headlineSmallM,
+            )
+            HorizontalSpacer(10.dp)
+            Text(
+                text = CurrencyFormatter.formatAmountWon(balance),
+                style = TypoTheme.typography.headlineLargeB,
+                color = if (balance > 0) Black else Red3,
+            )
+        }
+        VerticalSpacer(4.dp)
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "이번달의 총 수익은 ",
+                style = TypoTheme.typography.titleSmallM,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.End,
+            )
+            Text(
+                text = CurrencyFormatter.formatAmountWon(incomeTotal),
+                style = TypoTheme.typography.titleSmallB,
+                color = Blue1,
+                textAlign = TextAlign.End,
+            )
+            Text(
+                text = " 이였어요",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = TypoTheme.typography.titleSmallM,
+                textAlign = TextAlign.End,
             )
         }
     }
-}
-
-@Composable
-private fun HomeTitle(
-    title: String,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = title,
-        style = TypoTheme.typography.titleNormalM,
-        modifier = modifier.padding(horizontal = 20.dp),
-    )
-    VerticalSpacer(10.dp)
 }
 
 @Preview(showBackground = true)
@@ -312,15 +233,11 @@ private fun HomeTitle(
 private fun HomeScreenPreview() {
     JunTheme {
         HomeScreen(
-            balance = "300,000원",
-            incomeTotal = "2,000,000원",
-            saveTotal = "700,000원",
-            onShowMenu = {},
-            onShowNotification = {},
-            homeList = listOf(
-            ),
-            onHomeListClick = {},
-            onShowAddScreen = {},
+            balance = 300000,
+            incomeTotal = 1000000,
+            saveTotal = 10000,
+            budgetTotal = 100000,
+            costTotal = 1000000,
         )
     }
 }
