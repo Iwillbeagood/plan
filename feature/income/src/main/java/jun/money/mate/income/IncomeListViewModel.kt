@@ -21,6 +21,9 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -58,14 +61,15 @@ internal class IncomeListViewModel @Inject constructor(
 
     private fun loadIncomes() {
         viewModelScope.launch {
-            incomeRepository.getIncomesByMonth(month.value)
-                .collect { list ->
-                    Logger.d("loadIncomes: $list")
-                    _incomeListState.update {
-                        makeLeaves(list)
-                        IncomeListState.UiData(list)
-                    }
+            month.flatMapLatest {
+                incomeRepository.getIncomesByMonth(it)
+            }.collect { list ->
+                Logger.d("loadIncomes: $list")
+                _incomeListState.update {
+                    makeLeaves(list)
+                    IncomeListState.UiData(list)
                 }
+            }
         }
     }
 
