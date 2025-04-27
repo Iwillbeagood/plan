@@ -121,13 +121,6 @@ private fun HomeScreen(
 ) {
     Scaffold(
         topBar = {
-            Text(
-                text = stringResource(R.string.app_name),
-                style = TypoTheme.typography.titleLargeB,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .padding(16.dp)
-            )
         },
         containerColor = MaterialTheme.colorScheme.surface,
     ) {
@@ -181,7 +174,7 @@ internal fun BalanceText(
     Column(
         modifier = Modifier
             .padding(horizontal = 20.dp)
-            .padding(top = 20.dp),
+            .padding(top = 60.dp),
         horizontalAlignment = Alignment.Start,
     ) {
         Row(

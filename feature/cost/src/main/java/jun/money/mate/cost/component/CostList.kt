@@ -28,8 +28,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.VerticalSpacer
+import jun.money.mate.designsystem.theme.Blue1
+import jun.money.mate.designsystem.theme.Gray10
 import jun.money.mate.designsystem.theme.Gray6
+import jun.money.mate.designsystem.theme.Gray9
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.LightBlue1
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.nonScaledSp
 import jun.money.mate.model.Utils
@@ -49,11 +53,12 @@ internal fun CostItem(
     val border = if (cost.selected) {
         BorderStroke(3.dp, MaterialTheme.colorScheme.primary)
     } else {
-        BorderStroke(1.dp, Gray6)
+        null
     }
 
     Surface(
         shape = MaterialTheme.shapes.medium,
+        color = Gray10,
         shadowElevation = 2.dp,
         border = border,
         modifier = Modifier
@@ -68,9 +73,9 @@ internal fun CostItem(
                 painter = painterResource(imageRes),
                 tint = Color.Unspecified,
                 contentDescription = null,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(30.dp)
             )
-            HorizontalSpacer(8.dp)
+            HorizontalSpacer(30.dp)
             Column{
                 Text(
                     text = Utils.formatAmountWon(cost.amount),
@@ -83,7 +88,12 @@ internal fun CostItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            HorizontalSpacer(10.dp)
+            HorizontalSpacer(1f)
+            Text(
+                text = cost.daysRemainingFormatted,
+                style = TypoTheme.typography.titleSmallM.nonScaledSp,
+                color = Blue1,
+            )
         }
     }
 }
@@ -94,7 +104,8 @@ private fun CostListPreview() {
     JunTheme {
         CostItem(
             cost = Cost.samples.first(),
-            imageRes = R.drawable.ic_coin
+            imageRes = R.drawable.ic_coin,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

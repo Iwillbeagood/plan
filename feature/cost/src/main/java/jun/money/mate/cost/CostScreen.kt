@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -154,15 +156,13 @@ private fun CostScreen(
         }
         VerticalSpacer(50.dp)
         HorizontalDivider(10.dp, Gray9)
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        LazyColumn(
             verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp)
         ) {
-            item(span = { GridItemSpan(2) }) {
+            item {
                 Column {
                     VerticalSpacer(10.dp)
                     CostCalendar(
@@ -193,11 +193,12 @@ private fun CostScreen(
                     cost = cost,
                     imageRes = cost.costType.toImageRes(),
                     modifier = Modifier
+                        .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
                         .clickable {
                             onSelectCost(cost)
                         }
-                        .padding(horizontal = 10.dp)
+                        .padding(horizontal = 16.dp)
                 )
             }
             item {

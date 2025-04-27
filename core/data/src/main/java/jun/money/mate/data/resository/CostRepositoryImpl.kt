@@ -29,7 +29,7 @@ class CostRepositoryImpl @Inject constructor(
             .map { list ->
                 list
                     .map(CostEntity::toCost)
-                    .sortedBy { it.day }
+                    .sortedBy(Cost::daysRemaining)
             }
             .catch {
                 Logger.e("getCostFlow error: $it")
