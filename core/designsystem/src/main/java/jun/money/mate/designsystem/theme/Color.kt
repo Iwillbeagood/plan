@@ -2,7 +2,7 @@ package jun.money.mate.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
-val main = Color(0xFF225fa1)
+val main = Color(0xFF336AAB)
 val main10 = Color(0x1A225FA1)
 val mainBackground = Color(0xFFFCFCFC)
 

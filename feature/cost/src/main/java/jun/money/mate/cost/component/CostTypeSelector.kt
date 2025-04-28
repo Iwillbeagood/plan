@@ -92,38 +92,31 @@ internal fun CostTypeSelector(
     }
 }
 
-private enum class CostTypeTab {
-    일반,
-    구독,
-    기타
-}
-
 @Composable
 private fun CategoryField(
     onSelected: (CostType?) -> Unit,
     costType: CostType? = null,
 ) {
-    var selectedTab by remember { mutableStateOf(CostTypeTab.일반) }
+    var selectedTab by remember { mutableStateOf(CostOption.일반) }
     var etcValue by remember { mutableStateOf("") }
     val grouped = SubscriptionType.entries.groupBy { it.category }
 
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        ScrollableTab(
-            tabs = CostTypeTab.entries.map { it.name },
-            selectedTabIndex = selectedTab.ordinal,
+        CostOptionTab(
+            selectedOption = selectedTab,
             onTabClick = {
-                selectedTab = CostTypeTab.entries[it]
-             },
+                selectedTab = it
+            },
         )
         VerticalSpacer(10.dp)
         LazyVerticalGrid(
             columns = GridCells.Fixed(
                 when (selectedTab) {
-                    CostTypeTab.일반 -> 4
-                    CostTypeTab.구독 -> 3
-                    CostTypeTab.기타 -> 1
+                    CostOption.일반 -> 4
+                    CostOption.구독 -> 3
+                    CostOption.기타 -> 1
                 }
             ),
             modifier = Modifier
@@ -131,7 +124,7 @@ private fun CategoryField(
                 .heightIn(max = 1000.dp)
         ) {
             when (selectedTab) {
-                CostTypeTab.일반 -> {
+                CostOption.일반 -> {
                     items(NormalType.entries) {
                         TypeItem(
                             imageRes = it.toImageRes(),
@@ -146,7 +139,7 @@ private fun CategoryField(
                         )
                     }
                 }
-                CostTypeTab.구독 -> {
+                CostOption.구독 -> {
                     grouped.forEach { (category, types) ->
                         item(span = { GridItemSpan(3) }) {
                             Text(
@@ -173,7 +166,7 @@ private fun CategoryField(
                         }
                     }
                 }
-                CostTypeTab.기타 -> {
+                CostOption.기타 -> {
                     item {
                         Column(
                             modifier = Modifier.fillMaxWidth()
