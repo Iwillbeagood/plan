@@ -36,7 +36,7 @@ import jun.money.mate.designsystem.theme.TypoTheme
 fun TopAppbar(
     modifier: Modifier = Modifier,
     title: String = "",
-    backgroundColor: Color = MaterialTheme.colorScheme.background,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
     navigationType: TopAppbarType = TopAppbarType.Default,
     onBackEvent: () -> Unit = {}
 ) {

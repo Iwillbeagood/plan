@@ -20,8 +20,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
-                    android:host="baektong.com"
-                    android:scheme="baektong" />
+                    android:host="jun.com"
+                    android:scheme="jun" />
             </intent-filter>
         </activity>
 

@@ -10,7 +10,7 @@ val Purple1 = Color(0xFF7030A0)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-val White1 = Color(0xFCFFFFFF)
+val White1 = Color(0xFFFFFFFF)
 val White2 = Color(0xFCEEEEEE)
 
 val Gray1 = Color(0xFF545454)
@@ -23,7 +23,7 @@ val Gray7 = Color(0xFFE6E6E6)
 val Gray8 = Color(0xFFDCDCDC)
 val Gray9  = Color(0xFFF2F3F6)
 val Gray10 = Color(0xFFf8f8f8)
-val Gray11 = Color(0xFF777777)
+val Gray11 = Color(0xFFf6f7f9)
 val Gray12 = Color(0xFF909090)
 val Gray14 = Color(0xFF8D8D8D)
 

@@ -121,14 +121,11 @@ private fun FinanceScreen(
                 .padding(it)
         ) {
             LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background),
             ) {
-                item {
-                    VerticalSpacer(20.dp)
-                }
                 item {
                     FinanceInfos(
                         totalIncome = totalIncome,
@@ -143,7 +140,7 @@ private fun FinanceScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(MaterialTheme.colorScheme.background)
-                            .padding(top = 28.dp, bottom = 6.dp, start = 20.dp)
+                            .padding(top = 16.dp, bottom = 6.dp, start = 20.dp)
                     ) {
                         Row(
                             verticalAlignment = Alignment.Bottom,
@@ -190,13 +187,13 @@ private fun FinanceInfos(
     onShowSavings: () -> Unit,
 ) {
     Column {
-        VerticalSpacer(20.dp)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
                 .padding(16.dp)
         ) {
+            VerticalSpacer(8.dp)
             FinanceBox(
                 onClick = onShowIncome,
                 modifier = Modifier
@@ -234,7 +231,7 @@ private fun FinanceInfos(
                 )
                 VerticalSpacer(10.dp)
             }
-            HorizontalSpacer(16.dp)
+            HorizontalSpacer(8.dp)
             FinanceBox(
                 onClick = onShowSavings,
                 modifier = Modifier
@@ -270,9 +267,9 @@ private fun FinanceInfos(
                         .fillMaxWidth()
                         .padding(end = 16.dp)
                 )
-                VerticalSpacer(10.dp)
             }
         }
+        VerticalSpacer(10.dp)
         FinanceBox(
             modifier = Modifier
                 .fillMaxWidth()
@@ -289,25 +286,20 @@ private fun FinanceInfos(
                 savings = totalSavings
             )
         }
-        VerticalSpacer(30.dp)
-        HorizontalDivider(10.dp)
+        VerticalSpacer(10.dp)
     }
 }
 
 @Composable
 private fun FinanceBox(
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.surfaceDim,
     onClick: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Surface(
         shape = RoundedCornerShape(8.dp),
-        color = color,
-        border = BorderStroke(1.dp, Gray7),
         onClick = onClick,
         enabled = onClick != { },
-        shadowElevation = 2.dp,
         modifier = modifier,
     ) {
         Column(

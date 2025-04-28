@@ -1,6 +1,5 @@
 package jun.money.mate.finance.component
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,14 +24,13 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.Scrim
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red2
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.model.save.ChallengeType
-import jun.money.mate.model.save.ChallengeType.Companion.dayString
 import jun.money.mate.model.save.Challenge
 import jun.money.mate.model.save.ChallengeProgress
+import jun.money.mate.model.save.ChallengeType
+import jun.money.mate.model.save.ChallengeType.Companion.dayString
 import jun.money.mate.utils.currency.CurrencyFormatter
 import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.LocalDate
@@ -44,7 +42,6 @@ internal fun MoneyChallengeItem(
 ) {
     Surface(
         shape = RoundedCornerShape(6.dp),
-        border = BorderStroke(1.dp, Gray6),
         shadowElevation = 1.dp,
         modifier = Modifier
             .fillMaxWidth()

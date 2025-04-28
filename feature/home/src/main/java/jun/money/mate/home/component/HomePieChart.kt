@@ -54,53 +54,54 @@ internal fun HomePieChart(
     if (budgetTotal == 0L && costTotal == 0L && saveTotal == 0L) {
         return
     }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        PieChart(
-            modifier = Modifier.size(120.dp),
-            data = data,
-            onPieClick = {
-                println("${it.label} Clicked")
-                val pieIndex = data.indexOf(it)
-                data = data.mapIndexed { mapIndex, pie -> pie.copy(selected = pieIndex == mapIndex) }
-            },
-            selectedScale = 1.2f,
-            scaleAnimEnterSpec = spring<Float>(
-                dampingRatio = Spring.DampingRatioMediumBouncy,
-                stiffness = Spring.StiffnessLow
-            ),
-            colorAnimEnterSpec = tween(300),
-            colorAnimExitSpec = tween(300),
-            scaleAnimExitSpec = tween(300),
-            spaceDegreeAnimExitSpec = tween(300),
-            style = Pie.Style.Stroke(width = 20.dp)
+    Column {
+        Text(
+            text = "자금 구성",
+            style = TypoTheme.typography.titleNormalM,
+            modifier = Modifier.padding(start = 20.dp, top = 20.dp)
         )
-
-        HorizontalSpacer(1f)
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            LegendItem(
-                color = costColor,
-                label = "지출",
-                amount = costTotal
+            PieChart(
+                modifier = Modifier.size(120.dp),
+                data = data,
+                selectedScale = 1.2f,
+                scaleAnimEnterSpec = spring<Float>(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                ),
+                colorAnimEnterSpec = tween(300),
+                colorAnimExitSpec = tween(300),
+                scaleAnimExitSpec = tween(300),
+                spaceDegreeAnimExitSpec = tween(300),
+                style = Pie.Style.Stroke(width = 20.dp)
             )
-            LegendItem(
-                color = saveColor,
-                label = "저축",
-                amount = saveTotal
-            )
-            LegendItem(
-                color = budgetColor,
-                label = "예산",
-                amount = budgetTotal
-            )
+
+            HorizontalSpacer(1f)
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                LegendItem(
+                    color = costColor,
+                    label = "지출",
+                    amount = costTotal
+                )
+                LegendItem(
+                    color = saveColor,
+                    label = "저축",
+                    amount = saveTotal
+                )
+                LegendItem(
+                    color = budgetColor,
+                    label = "예산",
+                    amount = budgetTotal
+                )
+            }
         }
     }
 }

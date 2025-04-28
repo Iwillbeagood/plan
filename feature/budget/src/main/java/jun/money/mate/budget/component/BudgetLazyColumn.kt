@@ -1,6 +1,7 @@
 package jun.money.mate.budget.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.VerticalSpacer
+import jun.money.mate.designsystem.theme.Blue1
+import jun.money.mate.designsystem.theme.Gray10
 import jun.money.mate.designsystem.theme.Gray7
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
@@ -43,7 +47,7 @@ private fun BudgetItem(
 ) {
     Surface(
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(1.dp, Gray7),
+        color = Gray10,
         onClick = onClick,
         shadowElevation = 2.dp,
         modifier = Modifier
@@ -55,27 +59,25 @@ private fun BudgetItem(
                 .padding(horizontal = 16.dp, vertical = 10.dp)
         ) {
             VerticalSpacer(10.dp)
+            Text(
+                text = budget.title,
+                style = TypoTheme.typography.headlineSmallM,
+            )
+            VerticalSpacer(4.dp)
             Row(
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.Bottom
             ) {
                 Text(
-                    text = budget.title,
-                    style = TypoTheme.typography.titleNormalB,
+                    text = CurrencyFormatter.formatAmountWon(budget.budgetLeft),
+                    style = TypoTheme.typography.titleNormalM,
+                    color = Blue1
                 )
                 Text(
-                    text = CurrencyFormatter.formatAmountWon(budget.budgetLeft),
-                    style = TypoTheme.typography.headlineSmallB,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth()
+                    text = " 남았어요",
+                    style = TypoTheme.typography.titleMediumR,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Text(
-                text = "남았어요",
-                style = TypoTheme.typography.titleLargeM,
-                textAlign = TextAlign.End,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.fillMaxWidth()
-            )
             VerticalSpacer(20.dp)
             BudgetChart(
                 budget = budget.budget,
