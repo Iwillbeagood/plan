@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -39,8 +38,8 @@ import jun.money.mate.designsystem.etc.BooleanProvider
 import jun.money.mate.designsystem.etc.MultipleEventsCutter
 import jun.money.mate.designsystem.etc.get
 import jun.money.mate.designsystem.theme.Gray6
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
 import jun.money.mate.res.R
@@ -115,64 +114,6 @@ fun RegularButton(
         Box(
             modifier = Modifier
         ) {
-            Text(
-                text = text,
-                style = style,
-                color = textColor,
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
-    }
-}
-
-@Composable
-fun IconRegularButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    text: String = stringResource(id = R.string.btn_complete),
-    color: Color = MaterialTheme.colorScheme.primary,
-    style: TextStyle = TypoTheme.typography.titleMediumB,
-    elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
-    inActiveColor: Color = Gray6,
-    textColor: Color = White1,
-    isActive: Boolean = true,
-    enabled: Boolean = true,
-    isPreventMultipleClicks: Boolean = true,
-    borderStroke: Dp = 8.dp,
-    verticalPadding: Dp = 8.dp,
-    horizontalPadding: Dp = 10.dp
-) {
-    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
-
-    Button(
-        shape = RoundedCornerShape(borderStroke),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = if (isActive) color else inActiveColor,
-            contentColor = textColor,
-            disabledContainerColor = inActiveColor
-        ),
-        contentPadding = PaddingValues(vertical = verticalPadding, horizontal = horizontalPadding),
-        elevation = elevation,
-        enabled = enabled,
-        onClick = {
-            if (isPreventMultipleClicks) {
-                multipleEventsCutter.processEvent(onClick)
-            } else {
-                onClick()
-            }
-        },
-        modifier = modifier.fillMaxWidth()
-    ) {
-        Box(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_logo_small),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(30.dp)
-                    .align(Alignment.CenterStart)
-            )
             Text(
                 text = text,
                 style = style,

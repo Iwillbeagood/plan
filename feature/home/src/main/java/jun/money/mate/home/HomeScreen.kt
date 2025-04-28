@@ -1,6 +1,7 @@
 package jun.money.mate.home
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -20,6 +23,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,18 +43,23 @@ import jun.money.mate.designsystem.theme.Gray9
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem.theme.TypoTheme
+import jun.money.mate.designsystem.theme.White1
+import jun.money.mate.designsystem.theme.main
+import jun.money.mate.designsystem.theme.main10
 import jun.money.mate.designsystem.theme.mainBackground
+import jun.money.mate.designsystem.theme.nonScaledSp
 import jun.money.mate.home.component.HomePieChart
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
+import jun.money.mate.res.R
 import jun.money.mate.utils.currency.CurrencyFormatter
 
 @Composable
 internal fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
+    ChangeStatusBarColor()
 
     val showSnackBar = rememberShowSnackBar()
     val navigateAction = LocalNavigateActionInterop.current
@@ -108,20 +118,28 @@ private fun HomeScreen(
 ) {
     Scaffold(
         topBar = {
+            Row(
+                modifier = Modifier.padding(start = 20.dp, top = 4.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.logo),
+                    contentDescription = null,
+                    modifier = Modifier.width(60.dp)
+                )
+            }
         },
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(it)
         ) {
-            VerticalSpacer(6.dp)
             BalanceText(
                 balance = balance,
                 incomeTotal = incomeTotal,
             )
+            VerticalSpacer(16.dp)
             Surface(
                 shape = RoundedCornerShape(12.dp),
                 border = BorderStroke(1.dp, Gray9),
