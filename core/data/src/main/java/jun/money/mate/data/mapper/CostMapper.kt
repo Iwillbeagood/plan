@@ -7,12 +7,12 @@ internal fun Cost.toCostEntity() = CostEntity(
     id = id,
     amount = amount,
     day = day,
-    type = costType
+    type = costType,
 )
 
 internal fun CostEntity.toCost() = Cost(
     id = id,
     amount = amount,
     day = day,
-    costType = type
+    costType = type,
 )

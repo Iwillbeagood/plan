@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.domain.AddIncomeUsecase
+import jun.money.mate.income.contract.EditState
 import jun.money.mate.income.contract.IncomeAddState
 import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
@@ -12,6 +13,7 @@ import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.ui.number.ValueState
 import jun.money.mate.ui.number.ValueState.Companion.value
+import jun.money.mate.utils.flow.updateWithData
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -25,7 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class IncomeAddViewModel @Inject constructor(
-    private val addIncomeUsecase: AddIncomeUsecase
+    private val addIncomeUsecase: AddIncomeUsecase,
 ) : ViewModel() {
 
     var addStep = mutableStateOf(IncomeAddStep.Title)
@@ -35,7 +37,7 @@ internal class IncomeAddViewModel @Inject constructor(
         private set
 
     private val _incomeAddState = MutableStateFlow(IncomeAddState())
-    val incomeAddState: StateFlow<IncomeAddState>  get() = _incomeAddState
+    val incomeAddState: StateFlow<IncomeAddState> get() = _incomeAddState
 
     private val _incomeModalEffect = MutableStateFlow<IncomeModalEffect>(IncomeModalEffect.Idle)
     val incomeModalEffect: StateFlow<IncomeModalEffect> get() = _incomeModalEffect
@@ -51,11 +53,12 @@ internal class IncomeAddViewModel @Inject constructor(
                 title = state.title,
                 amount = state.amount,
                 dateType = state.dateType,
+                day = state.date,
                 onSuccess = {
                     showSnackBar(MessageType.Message("수입이 추가되었습니다."))
                     incomeAddComplete()
                 },
-                onError = ::showSnackBar
+                onError = ::showSnackBar,
             )
         }
     }
@@ -84,6 +87,8 @@ internal class IncomeAddViewModel @Inject constructor(
                 dismiss()
             }
             IncomeAddStep.Type -> {
+                dismissKeyboard()
+
                 if (state.dateType == null) {
                     showSnackBar(MessageType.Message(step.message))
                     return
@@ -107,24 +112,25 @@ internal class IncomeAddViewModel @Inject constructor(
     fun amountValueChange(value: ValueState) {
         _incomeAddState.update {
             it.copy(
-                amount = value.value(it.amountString).toLongOrNull() ?: 0
+                amount = value.value(it.amountString).toLongOrNull() ?: 0,
             )
         }
     }
 
-    fun dateSelected(date: LocalDate) {
+    fun daySelected(day: Int) {
         _incomeAddState.update {
-            it.copy(dateType = DateType.Specific(date))
+            it.copy(date = day)
         }
     }
 
-    fun daySelected(day: String) {
+    fun dateTypeSelected(dateType: DateType) {
         _incomeAddState.update {
-            it.copy(dateType = DateType.Monthly(day.toInt(), YearMonth.now()))
+            it.copy(dateType = dateType)
         }
     }
 
     fun showNumberKeyboard() {
+        dismissKeyboard()
         _incomeModalEffect.update { IncomeModalEffect.ShowNumberKeyboard }
     }
 
@@ -156,4 +162,3 @@ internal class IncomeAddViewModel @Inject constructor(
         }
     }
 }
-

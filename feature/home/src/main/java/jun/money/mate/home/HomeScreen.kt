@@ -2,14 +2,11 @@ package jun.money.mate.home
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,30 +21,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Black
 import jun.money.mate.designsystem.theme.Blue1
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
-import jun.money.mate.designsystem.theme.Gray10
-import jun.money.mate.designsystem.theme.Gray7
 import jun.money.mate.designsystem.theme.Gray9
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red3
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem.theme.White1
-import jun.money.mate.designsystem.theme.main
-import jun.money.mate.designsystem.theme.main10
-import jun.money.mate.designsystem.theme.mainBackground
-import jun.money.mate.designsystem.theme.nonScaledSp
 import jun.money.mate.home.component.HomePieChart
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
@@ -57,7 +45,7 @@ import jun.money.mate.utils.currency.CurrencyFormatter
 
 @Composable
 internal fun HomeRoute(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     ChangeStatusBarColor()
 
@@ -68,7 +56,7 @@ internal fun HomeRoute(
 
     HomeContent(
         homeState = homeState,
-        onShowNotification = {  },
+        onShowNotification = { },
         onHomeListClick = viewModel::navigateTo,
         onShowAddScreen = viewModel::navigateToAdd,
     )
@@ -78,7 +66,6 @@ internal fun HomeRoute(
             when (effect) {
                 HomeEffect.ShowIncomeAddScreen -> navigateAction.navigateToIncomeAdd()
                 HomeEffect.ShowSpendingAddScreen -> {
-
                 }
                 HomeEffect.ShowConsumptionAddScreen -> navigateAction.navigateToBudgetAdd()
                 HomeEffect.ShowSaveAddScreen -> navigateAction.navigateToSavingAdd()
@@ -119,12 +106,12 @@ private fun HomeScreen(
     Scaffold(
         topBar = {
             Row(
-                modifier = Modifier.padding(start = 20.dp, top = 4.dp)
+                modifier = Modifier.padding(start = 20.dp, top = 4.dp),
             ) {
                 Image(
                     painter = painterResource(R.drawable.logo),
                     contentDescription = null,
-                    modifier = Modifier.width(60.dp)
+                    modifier = Modifier.width(60.dp),
                 )
             }
         },
@@ -133,7 +120,7 @@ private fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(it)
+                .padding(it),
         ) {
             BalanceText(
                 balance = balance,
@@ -145,12 +132,12 @@ private fun HomeScreen(
                 border = BorderStroke(1.dp, Gray9),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 16.dp),
             ) {
                 HomePieChart(
                     budgetTotal = budgetTotal,
                     costTotal = costTotal,
-                    saveTotal = saveTotal
+                    saveTotal = saveTotal,
                 )
             }
             VerticalSpacer(30.dp)
@@ -168,12 +155,10 @@ internal fun BalanceText(
         border = BorderStroke(1.dp, Gray9),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
     ) {
         Column(
-            modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 40.dp)
-            ,
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 40.dp),
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
@@ -184,29 +169,29 @@ internal fun BalanceText(
             Text(
                 text = CurrencyFormatter.formatAmount(balance),
                 style = TypoTheme.typography.headlineLargeB,
-                color = if (balance >=-+ 0) Black else Red3,
+                color = if (balance >= -+0) Black else Red3,
             )
             VerticalSpacer(4.dp)
             Row(
                 verticalAlignment = Alignment.Bottom,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
                     text = "이번달의 총 수익은 ",
-                    style = TypoTheme.typography.titleSmallM,
+                    style = TypoTheme.typography.labelLargeM,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.End,
                 )
                 Text(
                     text = CurrencyFormatter.formatAmountWon(incomeTotal),
-                    style = TypoTheme.typography.titleSmallB,
+                    style = TypoTheme.typography.labelLargeB,
                     color = Blue1,
                     textAlign = TextAlign.End,
                 )
                 Text(
                     text = " 이였어요",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = TypoTheme.typography.titleSmallM,
+                    style = TypoTheme.typography.labelLargeM,
                     textAlign = TextAlign.End,
                 )
             }

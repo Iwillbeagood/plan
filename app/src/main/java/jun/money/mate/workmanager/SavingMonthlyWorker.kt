@@ -1,8 +1,12 @@
 package jun.money.mate.workmanager
 
 import android.content.Context
-import androidx.work.*
-import jun.money.mate.data_api.database.SaveRepository
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.Worker
+import androidx.work.WorkerParameters
+import jun.money.mate.dataApi.database.SaveRepository
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.utils.etc.Logger
@@ -41,13 +45,15 @@ class SavingMonthlyWorker(
 
     private suspend fun addNextMonthSavePlan(savePlan: SavePlan) {
         Logger.d("addNextMonthSavePlan: $savePlan")
-        saveRepository.upsertSavePlan(
-            savePlan.copy(
-                id = System.currentTimeMillis(),
-                addYearMonth = YearMonth.now().plusMonths(1),
-                executed = true
+        if (savePlan.addYearMonth == YearMonth.now()) {
+            saveRepository.upsertSavePlan(
+                savePlan.copy(
+                    id = System.currentTimeMillis(),
+                    addYearMonth = YearMonth.now().plusMonths(1),
+                    executed = true
+                )
             )
-        )
+        }
     }
 }
 

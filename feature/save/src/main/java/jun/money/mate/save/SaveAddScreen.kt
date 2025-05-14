@@ -49,7 +49,7 @@ internal enum class SaveAddStep(
 internal fun SaveAddRoute(
     viewModel: SaveAddViewModel = hiltViewModel()
 ) {
-    ChangeStatusBarColor(MaterialTheme.colorScheme.background)
+    ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
 
     val showSnackBar = rememberShowSnackBar()
     val navigateAction = LocalNavigateActionInterop.current

@@ -136,26 +136,34 @@ private fun CostScreen(
             ) {
                 Text(
                     text = "이번달의 전체 $Title",
-                    style = TypoTheme.typography.titleMediumM,
+                    style = TypoTheme.typography.titleSmallM,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 VerticalSpacer(4.dp)
-                Text(
-                    text = uiState.totalCostString,
-                    style = TypoTheme.typography.displayLargeB,
-                )
+                Row {
+                    Text(
+                        text = uiState.totalCostString,
+                        style = TypoTheme.typography.displayLargeB,
+                    )
+                    Text(
+                        text = "원",
+                        style = TypoTheme.typography.displayLargeM,
+                    )
+                }
             }
-            HorizontalSpacer(1f)
-            RegularButton(
-                text = "$Title 추가",
-                onClick = onShowCostAddScreen,
-                style = TypoTheme.typography.titleNormalM,
-                elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
-            )
-            HorizontalSpacer(16.dp)
         }
-        VerticalSpacer(50.dp)
-        HorizontalDivider(10.dp, Gray9)
+        VerticalSpacer(16.dp)
+        RegularButton(
+            text = "$Title 추가",
+            onClick = onShowCostAddScreen,
+            style = TypoTheme.typography.titleNormalB,
+            elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
+            borderStroke = 12.dp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        )
+        VerticalSpacer(10.dp)
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier
@@ -170,7 +178,7 @@ private fun CostScreen(
                         selectedCalendarValue = uiState.selectedCalendarValue,
                         onSelectedCalendarValue = onSelectedCalendarValue,
                     )
-                    VerticalSpacer(16.dp)
+                    VerticalSpacer(30.dp)
                     if (uiState.costs.isNotEmpty()) {
                         Crossfade(
                             uiState.selectedCalendarValue
@@ -179,11 +187,12 @@ private fun CostScreen(
                                 text = if (it != null)
                                     "${it.date}일 $Title"
                                 else
-                                    "전체 $Title",                                    style = TypoTheme.typography.titleNormalM,
-                                modifier = Modifier.padding(start = 16.dp)
+                                    "전체 $Title",
+                                style = TypoTheme.typography.titleMediumM,
+                                modifier = Modifier.padding(start = 10.dp)
                             )
                         }
-                        VerticalSpacer(10.dp)
+                        VerticalSpacer(4.dp)
                     }
                 }
             }

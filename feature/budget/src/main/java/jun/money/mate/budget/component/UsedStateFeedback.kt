@@ -33,7 +33,7 @@ internal fun UsedStateFeedback(
     usedState: BudgetUsedState,
     maxUse: Long,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (usedState == BudgetUsedState.NormalUsed) return
 
@@ -45,14 +45,13 @@ internal fun UsedStateFeedback(
             shadowElevation = 2.dp,
             onClick = onClick,
             shape = RoundedCornerShape(12.dp),
-            color = White1
+            color = White1,
         ) {
-
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
+                    .padding(10.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.Info,
@@ -68,7 +67,7 @@ internal fun UsedStateFeedback(
                             else -> ""
                         },
                         style = TypoTheme.typography.titleSmallM,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     VerticalSpacer(6.dp)
                     Row {
@@ -102,7 +101,7 @@ private fun FeedbackPreview() {
             UsedStateFeedback(
                 usedState = BudgetUsedState.OverUsed(4),
                 onClick = {},
-                maxUse = 1000000L
+                maxUse = 1000000L,
             )
         }
     }

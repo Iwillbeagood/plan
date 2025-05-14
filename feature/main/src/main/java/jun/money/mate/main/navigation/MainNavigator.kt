@@ -15,8 +15,8 @@ import jun.money.mate.budget.navigation.navigateToBudgetDetail
 import jun.money.mate.challenge.navigation.navigateToChallengeAdd
 import jun.money.mate.challenge.navigation.navigateToChallengeDetail
 import jun.money.mate.cost.navigation.navigateToCost
-import jun.money.mate.cost.navigation.navigateToCostDetail
 import jun.money.mate.cost.navigation.navigateToCostAdd
+import jun.money.mate.cost.navigation.navigateToCostDetail
 import jun.money.mate.finance.navigation.navigateToFinance
 import jun.money.mate.home.navigation.navigateToHome
 import jun.money.mate.income.navigation.navigateToIncomeAdd
@@ -25,13 +25,13 @@ import jun.money.mate.income.navigation.navigateToIncomeList
 import jun.money.mate.navigation.MainBottomNavItem
 import jun.money.mate.navigation.MainTabRoute
 import jun.money.mate.navigation.Route
+import jun.money.mate.navigation.interop.NavigateActionInterop
 import jun.money.mate.save.navigation.navigateToSaveAdd
 import jun.money.mate.save.navigation.navigateToSaveDetail
 import jun.money.mate.save.navigation.navigateToSaveList
-import jun.money.mate.navigation.interop.NavigateActionInterop
 
 class MainNavigator(
-    val navController: NavHostController
+    val navController: NavHostController,
 ) {
     private val currentDestination: NavDestination?
         @Composable get() = navController

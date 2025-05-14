@@ -1,13 +1,16 @@
 package jun.money.mate.budget
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,7 +47,7 @@ import jun.money.mate.utils.currency.CurrencyFormatter
  * */
 @Composable
 internal fun BudgetRoute(
-    viewModel: BudgetViewModel = hiltViewModel()
+    viewModel: BudgetViewModel = hiltViewModel(),
 ) {
     val showSnackBar = rememberShowSnackBar()
     val budgetUiState by viewModel.budgetState.collectAsStateWithLifecycle()
@@ -55,12 +58,12 @@ internal fun BudgetRoute(
         budgetState = budgetUiState,
         viewModel = viewModel,
         onShowDetail = navigateAction::navigateToBudgetDetail,
-        onShowBudgetAdd = navigateAction::navigateToBudgetAdd
+        onShowBudgetAdd = navigateAction::navigateToBudgetAdd,
     )
 
     BudgetModalContent(
         modalEffect = consumptionModalEffect,
-        viewModel = viewModel
+        viewModel = viewModel,
     )
 
     LaunchedEffect(Unit) {
@@ -71,7 +74,6 @@ internal fun BudgetRoute(
         }
     }
 }
-
 
 @Composable
 private fun BudgetContent(
@@ -86,7 +88,7 @@ private fun BudgetContent(
         BudgetScreen(
             budgetState = it,
             onShowBudgetAdd = onShowBudgetAdd,
-            onShowDetail = onShowDetail
+            onShowDetail = onShowDetail,
         )
     }
 }
@@ -99,43 +101,55 @@ private fun BudgetScreen(
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         item {
-            Column{
-                VerticalSpacer(50.dp)
-                Text(
-                    text = "전체 $NAV_NAME",
-                    style = TypoTheme.typography.titleMediumM,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(start = 20.dp)
-                )
-                VerticalSpacer(4.dp)
-                Text(
-                    text = CurrencyFormatter.formatToWon(budgetState.totalBudget),
-                    style = TypoTheme.typography.displayLargeB,
-                    modifier = Modifier.padding(start = 20.dp)
-                )
-                VerticalSpacer(10.dp)
-                RegularButton(
-                    text = "$NAV_NAME 설정하기",
-                    onClick = onShowBudgetAdd,
-                    style = TypoTheme.typography.titleNormalB,
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(1.dp, Gray9),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
-                )
-                HorizontalDivider(10.dp, Gray9)
-                VerticalSpacer(30.dp)
-                if (budgetState.budgets.isNotEmpty()) {
+                        .padding(16.dp),
+                ) {
+                    VerticalSpacer(50.dp)
                     Text(
-                        text = "$NAV_NAME 내역",
-                        style = TypoTheme.typography.titleNormalM,
-                        modifier = Modifier.padding(start = 20.dp)
+                        text = "전체 $NAV_NAME",
+                        style = TypoTheme.typography.titleMediumM,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(start = 4.dp),
                     )
+                    VerticalSpacer(4.dp)
+                    Text(
+                        text = CurrencyFormatter.formatToWon(budgetState.totalBudget),
+                        style = TypoTheme.typography.displayLargeB,
+                        modifier = Modifier.padding(start = 4.dp),
+                    )
+                    VerticalSpacer(20.dp)
+                    RegularButton(
+                        text = "$NAV_NAME 설정하기",
+                        onClick = onShowBudgetAdd,
+                        style = TypoTheme.typography.titleNormalB,
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp),
+                    )
+                    VerticalSpacer(4.dp)
                 }
-                VerticalSpacer(4.dp)
+            }
+        }
+        item {
+            if (budgetState.budgets.isNotEmpty()) {
+                Text(
+                    text = "$NAV_NAME 내역",
+                    style = TypoTheme.typography.titleNormalM,
+                    modifier = Modifier.padding(start = 20.dp),
+                )
             }
         }
         budgetList(
@@ -148,8 +162,6 @@ private fun BudgetScreen(
     }
 }
 
-
-
 @Composable
 private fun BudgetModalContent(
     modalEffect: BudgetCostEffect,
@@ -157,7 +169,6 @@ private fun BudgetModalContent(
 ) {
     when (modalEffect) {
         BudgetCostEffect.Hidden -> {
-
         }
     }
 }
@@ -172,10 +183,10 @@ private fun SpendingListScreenPreview() {
                     Budget.sample,
                     Budget.sample,
                     Budget.sample,
-                )
+                ),
             ),
             onShowBudgetAdd = {},
-            onShowDetail = {}
+            onShowDetail = {},
         )
     }
 }

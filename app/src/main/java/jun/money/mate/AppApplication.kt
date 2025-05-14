@@ -3,6 +3,7 @@ package jun.money.mate
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import jun.money.mate.workmanager.scheduleBudgetMonthlyWork
+import jun.money.mate.workmanager.scheduleIncomeMonthlyWork
 import jun.money.mate.workmanager.scheduleSavingMonthlyWork
 
 @HiltAndroidApp
@@ -12,5 +13,6 @@ class AppApplication : Application() {
         super.onCreate()
         scheduleSavingMonthlyWork(this)
         scheduleBudgetMonthlyWork(this)
+        scheduleIncomeMonthlyWork(this)
     }
 }

@@ -35,7 +35,7 @@ internal fun SavingChallengeItem(
             .animateContentSize()
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .shadow(2.dp, shape = RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.surfaceDim, shape = RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

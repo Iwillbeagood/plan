@@ -3,7 +3,7 @@ package jun.money.mate.income
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jun.money.mate.data_api.database.IncomeRepository
+import jun.money.mate.dataApi.database.IncomeRepository
 import jun.money.mate.domain.DeleteIncomeUsecase
 import jun.money.mate.income.contract.IncomeListEffect
 import jun.money.mate.income.contract.IncomeListModalEffect
@@ -12,17 +12,15 @@ import jun.money.mate.model.LeafOrder
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
+import jun.money.mate.utils.etc.Logger
 import jun.money.mate.utils.flow.updateWithData
 import jun.money.mate.utils.flow.withData
-import jun.money.mate.utils.etc.Logger
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -47,7 +45,7 @@ internal class IncomeListViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = IncomeListState.Loading
+        initialValue = IncomeListState.Loading,
     )
 
     private val _incomeListEffect = MutableSharedFlow<IncomeListEffect>()
@@ -98,8 +96,8 @@ internal class IncomeListViewModel @Inject constructor(
                         } else {
                             incomeItem
                         }
-                    }
-                )
+                    },
+                ),
             )
         }
     }
@@ -110,8 +108,8 @@ internal class IncomeListViewModel @Inject constructor(
                 incomeList = it.incomeList.copy(
                     incomes = it.incomeList.incomes.map { incomeItem ->
                         incomeItem.copy(isSelected = false)
-                    }
-                )
+                    },
+                ),
             )
         }
     }
@@ -121,7 +119,10 @@ internal class IncomeListViewModel @Inject constructor(
             incomeListState.withData<IncomeListState.UiData> {
                 deleteIncomeUsecase(
                     incomes = it.selectedIncomes,
-                    onSuccess = ::unselectedIncomes
+                    onSuccess = {
+                        unselectedIncomes()
+                        hideModal()
+                    }
                 )
             }
         }
@@ -169,8 +170,3 @@ internal class IncomeListViewModel @Inject constructor(
         }
     }
 }
-
-
-
-
-

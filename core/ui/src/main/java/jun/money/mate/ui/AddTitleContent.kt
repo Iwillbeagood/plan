@@ -11,7 +11,7 @@ import jun.money.mate.designsystem.theme.TypoTheme
 fun AddTitleContent(
     title: String,
     visible: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     if (visible) {
         Column {

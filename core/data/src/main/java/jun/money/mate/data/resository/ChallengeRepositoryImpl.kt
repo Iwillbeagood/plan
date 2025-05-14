@@ -3,7 +3,7 @@ package jun.money.mate.data.resository
 import jun.money.mate.data.mapper.toChallengeEntity
 import jun.money.mate.data.mapper.toChallengeProgressEntity
 import jun.money.mate.data.mapper.toMoneyChallenge
-import jun.money.mate.data_api.database.ChallengeRepository
+import jun.money.mate.dataApi.database.ChallengeRepository
 import jun.money.mate.database.dao.ChallengeDao
 import jun.money.mate.database.entity.ChallengeWithProgress
 import jun.money.mate.model.save.Challenge
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ChallengeRepositoryImpl @Inject constructor(
-    private val challengeDao: ChallengeDao
+    private val challengeDao: ChallengeDao,
 ) : ChallengeRepository {
 
     override suspend fun upsertChallenge(challenge: Challenge) {

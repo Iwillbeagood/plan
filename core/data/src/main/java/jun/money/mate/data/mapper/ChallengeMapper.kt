@@ -3,8 +3,8 @@ package jun.money.mate.data.mapper
 import jun.money.mate.database.entity.ChallengeEntity
 import jun.money.mate.database.entity.ChallengeProgressEntity
 import jun.money.mate.database.entity.ChallengeWithProgress
-import jun.money.mate.model.save.ChallengeProgress
 import jun.money.mate.model.save.Challenge
+import jun.money.mate.model.save.ChallengeProgress
 
 fun Challenge.toChallengeEntity() = ChallengeEntity(
     id = id,
@@ -12,7 +12,7 @@ fun Challenge.toChallengeEntity() = ChallengeEntity(
     startDate = startDate,
     count = count,
     goalAmount = goalAmount,
-    type = type
+    type = type,
 )
 
 fun Challenge.toChallengeProgressEntity() = progress.map {
@@ -21,7 +21,7 @@ fun Challenge.toChallengeProgressEntity() = progress.map {
         challengeId = id,
         amount = it.amount,
         isAchieved = it.isAchieved,
-        date = it.date
+        date = it.date,
     )
 }
 
@@ -41,5 +41,5 @@ fun ChallengeWithProgress.toMoneyChallenge() = Challenge(
             isAchieved = it.isAchieved,
             date = it.date,
         )
-    }
+    },
 )

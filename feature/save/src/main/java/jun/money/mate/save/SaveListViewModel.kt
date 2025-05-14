@@ -3,7 +3,7 @@ package jun.money.mate.save
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jun.money.mate.data_api.database.SaveRepository
+import jun.money.mate.dataApi.database.SaveRepository
 import jun.money.mate.domain.GetChallengeProgressUsecase
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavingChallenge

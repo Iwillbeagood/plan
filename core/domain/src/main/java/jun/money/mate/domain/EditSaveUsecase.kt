@@ -1,6 +1,6 @@
 package jun.money.mate.domain
 
-import jun.money.mate.data_api.database.SaveRepository
+import jun.money.mate.dataApi.database.SaveRepository
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavingsType
 import javax.inject.Inject
@@ -10,7 +10,7 @@ class EditSaveUsecase @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        savePlan: SavePlan
+        savePlan: SavePlan,
     ) {
         when (savePlan.savingsType) {
             is SavingsType.보험저축 -> editPeriodic(savePlan)
@@ -30,7 +30,7 @@ class EditSaveUsecase @Inject constructor(
                 it.copy(
                     amount = savePlan.amount,
                     day = savePlan.day,
-                )
+                ),
             )
         }
     }

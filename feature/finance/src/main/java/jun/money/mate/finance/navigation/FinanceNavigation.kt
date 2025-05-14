@@ -11,8 +11,7 @@ fun NavController.navigateToFinance(navOptions: NavOptions) {
     navigate(MainTabRoute.Finance, navOptions)
 }
 
-fun NavGraphBuilder.financeNavGraph(
-) {
+fun NavGraphBuilder.financeNavGraph() {
     composable<MainTabRoute.Finance> {
         FinanceRoute()
     }

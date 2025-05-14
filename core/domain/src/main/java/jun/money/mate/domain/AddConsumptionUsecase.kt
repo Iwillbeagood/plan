@@ -1,13 +1,12 @@
 package jun.money.mate.domain
 
-import jun.money.mate.data_api.database.BudgetRepository
-import jun.money.mate.model.consumption.Budget
+import jun.money.mate.dataApi.database.BudgetRepository
 import jun.money.mate.model.etc.error.MessageType
 import java.time.LocalDate
 import javax.inject.Inject
 
 class AddConsumptionUsecase @Inject constructor(
-    private val budgetRepository: BudgetRepository
+    private val budgetRepository: BudgetRepository,
 ) {
 
     suspend operator fun invoke(
@@ -17,7 +16,7 @@ class AddConsumptionUsecase @Inject constructor(
         date: LocalDate,
         planTitle: String,
         onSuccess: () -> Unit,
-        onError: (MessageType) -> Unit
+        onError: (MessageType) -> Unit,
     ) {
         if (planTitle.isEmpty()) {
             onError(MessageType.Message("계획한 지출을 선택해 주세요"))

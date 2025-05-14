@@ -113,7 +113,7 @@ fun DayPicker(
                 count = 28,
                 rowCount = 5,
                 size = DpSize(100.dp, 150.dp),
-                startIndex = dates.indexOf(selectedDay),
+                startIndex = dates.indexOf(selectedDay).takeIf { it < 29 } ?: dates.lastIndex,
                 onItemSelected = onDaySelected,
                 timeFormat = TimeFormat.DAY,
                 modifier = Modifier.fillMaxWidth()

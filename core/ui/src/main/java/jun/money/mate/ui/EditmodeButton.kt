@@ -22,7 +22,7 @@ fun EditModeButton(
     onEdit: () -> Unit,
 ) {
     Box(
-        modifier = Modifier.background(White1)
+        modifier = Modifier.background(White1),
     ) {
         CrossfadeWithSlide(
             targetState = editMode,
@@ -34,26 +34,26 @@ fun EditModeButton(
                         onClick = onAdd,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp)
+                            .padding(16.dp),
                     )
                 }
                 EditMode.EDIT -> {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp)
+                            .padding(16.dp),
                     ) {
                         RegularButton(
                             text = "삭제",
                             onClick = onDelete,
                             isActive = false,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         )
                         HorizontalSpacer(10.dp)
                         RegularButton(
                             text = "수정",
                             onClick = onEdit,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         )
                     }
                 }
@@ -64,7 +64,7 @@ fun EditModeButton(
                         isActive = false,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp)
+                            .padding(16.dp),
                     )
                 }
             }

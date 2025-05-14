@@ -9,7 +9,7 @@ import jun.money.mate.budget.contract.BudgetDetailEffect
 import jun.money.mate.budget.contract.BudgetDetailModalState
 import jun.money.mate.budget.contract.BudgetDetailState
 import jun.money.mate.budget.navigation.NAV_NAME
-import jun.money.mate.data_api.database.BudgetRepository
+import jun.money.mate.dataApi.database.BudgetRepository
 import jun.money.mate.model.consumption.Used
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.MainTabRoute
@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -30,7 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class BudgetDetailViewModel @Inject constructor(
     private val budgetRepository: BudgetRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val id = savedStateHandle.toRoute<MainTabRoute.Budget.Detail>().id
@@ -41,7 +40,7 @@ internal class BudgetDetailViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = BudgetDetailState.Loading
+        initialValue = BudgetDetailState.Loading,
     )
 
     private val _budgetDetailEffect = MutableSharedFlow<BudgetDetailEffect>()
@@ -71,10 +70,10 @@ internal class BudgetDetailViewModel @Inject constructor(
                                         !it.isSelected
                                     } else {
                                         it.isSelected
-                                    }
+                                    },
                                 )
-                            }
-                        )
+                            },
+                        ),
                     )
                 }
             }
@@ -87,8 +86,8 @@ internal class BudgetDetailViewModel @Inject constructor(
                 _budgetDetailState.update {
                     state.copy(
                         budget = state.budget.copy(
-                            usedList = state.budget.usedList.map { it.copy(isSelected = false) }
-                        )
+                            usedList = state.budget.usedList.map { it.copy(isSelected = false) },
+                        ),
                     )
                 }
             }
@@ -114,7 +113,6 @@ internal class BudgetDetailViewModel @Inject constructor(
         }
     }
 
-
     fun editBudget(budget: String) {
         budgetDetailState.withData<BudgetDetailState.BudgetDetailData> {
             viewModelScope.launch {
@@ -138,8 +136,8 @@ internal class BudgetDetailViewModel @Inject constructor(
             viewModelScope.launch {
                 budgetRepository.insertUsed(
                     used.copy(
-                        budgetId = it.budget.id
-                    )
+                        budgetId = it.budget.id,
+                    ),
                 )
                 showSnackBar(MessageType.Message("사용 내역을 추가했습니다."))
             }
@@ -151,8 +149,8 @@ internal class BudgetDetailViewModel @Inject constructor(
             viewModelScope.launch {
                 budgetRepository.updateUsed(
                     used.copy(
-                        budgetId = it.budget.id
-                    )
+                        budgetId = it.budget.id,
+                    ),
                 )
                 showSnackBar(MessageType.Message("사용 내역을 수정했습니다."))
             }

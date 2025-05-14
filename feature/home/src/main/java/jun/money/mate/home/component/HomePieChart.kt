@@ -47,7 +47,7 @@ internal fun HomePieChart(
                 Pie(label = "예산", data = budgetTotal.toDouble(), color = budgetColor, selectedColor = Color.Green, selected = false),
                 Pie(label = "지출", data = costTotal.toDouble(), color = costColor, selectedColor = Color.Blue, selected = false),
                 Pie(label = "저축", data = saveTotal.toDouble(), color = saveColor, selectedColor = Color.Yellow, selected = false),
-            )
+            ),
         )
     }
 
@@ -58,13 +58,13 @@ internal fun HomePieChart(
         Text(
             text = "자금 구성",
             style = TypoTheme.typography.titleNormalM,
-            modifier = Modifier.padding(start = 20.dp, top = 20.dp)
+            modifier = Modifier.padding(start = 20.dp, top = 20.dp),
         )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             PieChart(
                 modifier = Modifier.size(120.dp),
@@ -72,34 +72,34 @@ internal fun HomePieChart(
                 selectedScale = 1.2f,
                 scaleAnimEnterSpec = spring<Float>(
                     dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessLow
+                    stiffness = Spring.StiffnessLow,
                 ),
                 colorAnimEnterSpec = tween(300),
                 colorAnimExitSpec = tween(300),
                 scaleAnimExitSpec = tween(300),
                 spaceDegreeAnimExitSpec = tween(300),
-                style = Pie.Style.Stroke(width = 20.dp)
+                style = Pie.Style.Stroke(width = 20.dp),
             )
 
             HorizontalSpacer(1f)
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 LegendItem(
                     color = costColor,
                     label = "지출",
-                    amount = costTotal
+                    amount = costTotal,
                 )
                 LegendItem(
                     color = saveColor,
                     label = "저축",
-                    amount = saveTotal
+                    amount = saveTotal,
                 )
                 LegendItem(
                     color = budgetColor,
                     label = "예산",
-                    amount = budgetTotal
+                    amount = budgetTotal,
                 )
             }
         }
@@ -110,10 +110,10 @@ internal fun HomePieChart(
 private fun LegendItem(
     color: Color,
     label: String,
-    amount: Long
+    amount: Long,
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         // 색상 동그라미
         Canvas(modifier = Modifier.size(12.dp)) {
@@ -126,7 +126,7 @@ private fun LegendItem(
         Text(
             text = label,
             style = TypoTheme.typography.titleMediumR,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
 
         Spacer(modifier = Modifier.width(12.dp))
@@ -135,10 +135,11 @@ private fun LegendItem(
         Text(
             text = CurrencyFormatter.formatAmountWon(amount),
             style = TypoTheme.typography.titleMediumB,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 private fun HomePieChartPreview() {
@@ -146,7 +147,7 @@ private fun HomePieChartPreview() {
         HomePieChart(
             budgetTotal = 1000000,
             costTotal = 500000,
-            saveTotal = 200000
+            saveTotal = 200000,
         )
     }
 }

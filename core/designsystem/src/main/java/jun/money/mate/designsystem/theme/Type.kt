@@ -48,6 +48,15 @@ val Typography = JUNTypography(
         lineHeight = 40.sp,
         fontWeight = FontWeight.Bold
     ),
+    displayLargeM = notoanskrStyle.copy(
+        fontSize = 32.sp,
+        lineHeight = 40.sp,
+        fontWeight = FontWeight.Medium,
+    ),
+    displayLargeR = notoanskrStyle.copy(
+        fontSize = 32.sp,
+        lineHeight = 40.sp,
+    ),
     displayMediumB = notoanskrStyle.copy(
         fontSize = 30.sp,
         lineHeight = 38.sp,
@@ -201,6 +210,8 @@ val Typography = JUNTypography(
 @Immutable
 data class JUNTypography(
     val displayLargeB: TextStyle,
+    val displayLargeM: TextStyle,
+    val displayLargeR: TextStyle,
     val displayMediumB: TextStyle,
     val displaySmallB: TextStyle,
 
@@ -241,6 +252,8 @@ data class JUNTypography(
 val LocalTypography = staticCompositionLocalOf {
     JUNTypography(
         displayLargeB = notoanskrStyle,
+        displayLargeM = notoanskrStyle,
+        displayLargeR = notoanskrStyle,
         displayMediumB = notoanskrStyle,
         displaySmallB = notoanskrStyle,
         headlineLargeB = notoanskrStyle,

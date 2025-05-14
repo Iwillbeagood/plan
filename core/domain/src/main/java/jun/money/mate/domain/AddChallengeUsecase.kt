@@ -1,16 +1,16 @@
 package jun.money.mate.domain
 
-import jun.money.mate.data_api.database.ChallengeRepository
+import jun.money.mate.dataApi.database.ChallengeRepository
 import jun.money.mate.model.etc.error.MessageType
+import jun.money.mate.model.save.Challenge
 import jun.money.mate.model.save.ChallengeProgress
 import jun.money.mate.model.save.ChallengeType
 import jun.money.mate.model.save.ChallengeType.Companion.nthPaymentDate
-import jun.money.mate.model.save.Challenge
 import java.time.LocalDate
 import javax.inject.Inject
 
 class AddChallengeUsecase @Inject constructor(
-    private val challengeRepository: ChallengeRepository
+    private val challengeRepository: ChallengeRepository,
 ) {
 
     suspend operator fun invoke(
@@ -20,9 +20,8 @@ class AddChallengeUsecase @Inject constructor(
         count: Int,
         challengeType: ChallengeType?,
         onSuccess: () -> Unit,
-        onError: (MessageType) -> Unit
+        onError: (MessageType) -> Unit,
     ) {
-
         if (goalAmount <= 0) {
             onError(MessageType.Message("챌린지 금액을 입력해 주세요"))
             return
@@ -48,8 +47,8 @@ class AddChallengeUsecase @Inject constructor(
                 startDate = LocalDate.now(),
                 goalAmount = goalAmount,
                 type = challengeType,
-                progress = getProgress(parentId, count, amount, goalAmount, challengeType)
-            )
+                progress = getProgress(parentId, count, amount, goalAmount, challengeType),
+            ),
         )
         onSuccess()
     }
@@ -64,7 +63,6 @@ class AddChallengeUsecase @Inject constructor(
         val remainAmount = goalAmount - amount * count
         val progress = mutableListOf<ChallengeProgress>()
 
-
         for (i in 1..count) {
             if (i == count && remainAmount != 0L) {
                 progress.add(
@@ -73,7 +71,7 @@ class AddChallengeUsecase @Inject constructor(
                         index = i,
                         amount = remainAmount,
                         date = challengeType.nthPaymentDate(i),
-                    )
+                    ),
                 )
             } else {
                 progress.add(
@@ -82,7 +80,7 @@ class AddChallengeUsecase @Inject constructor(
                         index = i,
                         amount = amount,
                         date = challengeType.nthPaymentDate(i),
-                    )
+                    ),
                 )
             }
         }

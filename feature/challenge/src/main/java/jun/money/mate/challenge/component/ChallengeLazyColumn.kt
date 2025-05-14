@@ -43,7 +43,7 @@ data class ChallengeItemParam(
 internal fun ChallengeLazyColumn(
     challenge: Challenge,
     onAchieveChange: (Boolean, Long) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val nextIndex = challenge.nextProgress?.index
     LazyColumn(
@@ -61,7 +61,7 @@ internal fun ChallengeLazyColumn(
                     else -> UPCOMING
                 },
                 onAchieveChange = { onAchieveChange(it, item.id) },
-                modifier = modifier
+                modifier = modifier,
             )
         }
         item {
@@ -80,7 +80,7 @@ private fun ChallengeItem(
     val param = when (challengeProgressType) {
         Now -> ChallengeItemParam(
             textColor = Black,
-            iconSize = 48
+            iconSize = 48,
         )
         PAST -> ChallengeItemParam()
         UPCOMING -> ChallengeItemParam()
@@ -92,39 +92,39 @@ private fun ChallengeItem(
         border = BorderStroke(1.dp, Gray7),
         shadowElevation = 2.dp,
         modifier = modifier
-            .padding(vertical = if (challengeProgressType == Now) 16.dp else 0.dp)
+            .padding(vertical = if (challengeProgressType == Now) 16.dp else 0.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             FlowerImage(
                 size = param.iconSize,
                 isAchieved = challengeProgress.isAchieved,
-                modifier = Modifier.padding(10.dp)
+                modifier = Modifier.padding(10.dp),
             )
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 Text(
                     text = "${challengeProgress.index}회차",
-                    style = if (challengeProgress.isAchieved)
+                    style = if (challengeProgress.isAchieved) {
                         TypoTheme.typography.titleLargeB
-                    else
+                    } else
                         TypoTheme.typography.titleMediumM,
-                    color = param.textColor
+                    color = param.textColor,
                 )
                 Text(
                     text = formatDateBasedOnYear(challengeProgress.date),
                     style = TypoTheme.typography.titleSmallM,
-                    color = param.textColor
+                    color = param.textColor,
                 )
             }
             if (challengeProgressType == Now) {
                 DefaultSwitch(
                     checked = challengeProgress.isAchieved,
                     onCheckedChange = onAchieveChange,
-                    modifier = Modifier.padding(end = 10.dp)
+                    modifier = Modifier.padding(end = 10.dp),
                 )
             }
         }
@@ -137,7 +137,7 @@ private fun ChallengeLazyColumnPreview() {
     JunTheme {
         ChallengeLazyColumn(
             challenge = Challenge.sample,
-            onAchieveChange = { _, _ -> }
+            onAchieveChange = { _, _ -> },
         )
     }
 }

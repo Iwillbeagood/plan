@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -37,10 +38,13 @@ import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
+import jun.money.mate.designsystem_date.datetimepicker.DatePicker
+import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
 import jun.money.mate.designsystem_date.datetimepicker.PeriodPicker
 import jun.money.mate.designsystem_date.datetimepicker.YearMonthPicker
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavingsType.Companion.title
+import java.time.LocalDate
 import java.time.YearMonth
 
 @Composable
@@ -51,7 +55,7 @@ internal fun SaveCategories(
 ) {
     Crossfade(
         targetState = selectedCategory == null,
-        modifier = modifier.padding(10.dp)
+        modifier = modifier.padding(vertical = 10.dp)
     ) {
         when (it) {
             true -> {
@@ -75,15 +79,14 @@ internal fun SaveCategories(
                                 is SavingsType.기타 -> selectedCategory.etc
                                 else -> selectedCategory.title
                             },
-                            style = TypoTheme.typography.titleLargeM,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            style = TypoTheme.typography.titleNormalM,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
                                     onCategorySelected(null)
                                 }
-                                .padding(vertical = 16.dp)
+                                .padding(vertical = 12.dp)
                         )
                     }
                 }
@@ -92,14 +95,16 @@ internal fun SaveCategories(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CategoryField(
     onCategorySelected: (SavingsType) -> Unit,
 ) {
-    var startDate by remember { mutableStateOf(YearMonth.now()) }
+    var startDate by remember { mutableStateOf(LocalDate.now()) }
     var period by remember { mutableIntStateOf(0) }
     var etc by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf<SavingsType?>(null) }
+    var showDatePicker by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -116,9 +121,6 @@ private fun CategoryField(
                         .clip(RoundedCornerShape(10))
                         .clickable {
                             selectedCategory = category
-                            if (category is SavingsType.PaidCount) {
-                                onCategorySelected(category)
-                            }
                         }
                         .padding(vertical = 20.dp)
                 )
@@ -137,24 +139,33 @@ private fun CategoryField(
                         etc = it
                     },
                     hint = "원하는 저축 종류를 입력하세요",
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    )
                 )
             }
             CategoryAdditionalField(
                 visible = smartSelectedCategory is SavingsType.PeriodType,
                 title = "시작일",
             ) {
-                YearMonthPicker(
-                    onDateSelected = { year, month ->
-                        startDate = YearMonth.of(year, month)
-                    }
-                )
+                Surface(
+                    shape = MaterialTheme.shapes.medium,
+                    shadowElevation = 4.dp,
+                    onClick = {
+                        showDatePicker = true
+                    },
+                    border = BorderStroke(1.dp, Gray6),
+                ) {
+                    Text(
+                        text = startDate.toString(),
+                        style = TypoTheme.typography.titleNormalM,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 12.dp)
+                    )
+                }
             }
             CategoryAdditionalField(
                 visible = smartSelectedCategory is SavingsType.PeriodType,
-                title = "만기일",
+                title = "기간",
             ) {
                 PeriodPicker(
                     onPeriodSelected = {
@@ -199,6 +210,19 @@ private fun CategoryField(
             }
         }
     }
+
+    if (showDatePicker) {
+        DatePickerSheet(
+            timeBoundary = LocalDate.now().let { now -> now.minusYears(2).withDayOfMonth(1)..now.withDayOfMonth(now.lengthOfMonth()) },
+            onDateSelect = {
+                startDate = it
+                showDatePicker = false
+            },
+            onDismissRequest = {
+                showDatePicker = false
+            }
+        )
+    }
 }
 
 @Composable
@@ -230,7 +254,7 @@ private fun CategoryItem(
     Surface(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 4.dp,
-        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceDim,
+        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, if (selected) MaterialTheme.colorScheme.primary else Gray6),
         modifier = Modifier
             .padding(4.dp)

@@ -1,17 +1,16 @@
 package jun.money.mate.save
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,23 +21,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.designsystem.R
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopAppbarIcon
 import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.Pink40
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.main10
+import jun.money.mate.designsystem.theme.main2
+import jun.money.mate.designsystem.theme.main210
 import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.model.save.SavingChallenge
-import jun.money.mate.save.component.AcornFlowerBox
+import jun.money.mate.save.component.AcornBox
 import jun.money.mate.save.component.SaveListBody
 import jun.money.mate.save.contract.SavingListEffect
 import jun.money.mate.save.contract.SavingListState
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
-import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.YearMonth
 
 @Composable
@@ -89,27 +89,31 @@ private fun SavingListScreen(
 ) {
     Scaffold(
         bottomBar = {
-            RegularButton(
-                text = "추가",
-                onClick = onSavingAdd,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceDim)
-                    .padding(16.dp)
-            )
+            Surface(
+                shadowElevation = 4.dp,
+            ) {
+                RegularButton(
+                    text = "추가",
+                    color = main2,
+                    onClick = onSavingAdd,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 10.dp)
+                )
+            }
         },
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(main10)
+                .background(main210)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(it)
             ) {
-                AcornFlowerBox(
+                AcornBox(
                     count = (savingListState as? SavingListState.SavingListData)?.acornCount ?: 0,
                     goldCount = (savingListState as? SavingListState.SavingListData)?.goldAcornCount ?: 0,
                     flowerCount = savingChallengeList.size,
@@ -133,9 +137,9 @@ private fun SavingListScreen(
                     modifier = Modifier.padding(start = 30.dp, top = 60.dp)
                 ) {
                     Text(
-                        text = "${formatDateBasedOnYear(month)} 총 저축금액",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = TypoTheme.typography.headlineSmallM,
+                        text = "전체 저축",
+                        style = TypoTheme.typography.titleMediumM,
+
                     )
                     Text(
                         text = it.savePlanList.totalString,

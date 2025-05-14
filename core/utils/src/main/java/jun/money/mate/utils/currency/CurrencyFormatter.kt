@@ -20,7 +20,6 @@ object CurrencyFormatter {
 
         if (tempAmount == null) return "0$CURRENCY_UNIT"
 
-
         val formatter = DecimalFormat(DECIMAL_PATTERN)
         return "${formatter.format(tempAmount)}$CURRENCY_UNIT"
     }

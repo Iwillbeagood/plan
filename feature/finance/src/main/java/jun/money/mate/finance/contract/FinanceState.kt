@@ -16,6 +16,6 @@ internal sealed interface FinanceState {
     data class FinanceData(
         val incomeList: IncomeList,
         val savePlanList: SavePlanList,
-        val challengeList: List<Challenge>
+        val challengeList: List<Challenge>,
     ) : FinanceState
 }

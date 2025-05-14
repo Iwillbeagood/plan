@@ -50,7 +50,7 @@ internal fun FinanceChart(totalIncome: Long, savings: Long) {
         coroutineScope.launch {
             animatedProgress.animateTo(
                 targetValue = savingsRatio,
-                animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
+                animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing),
             )
         }
     }
@@ -69,16 +69,16 @@ internal fun FinanceChart(totalIncome: Long, savings: Long) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(30.dp),
-            contentAlignment = Alignment.CenterStart
+            contentAlignment = Alignment.CenterStart,
         ) {
             Canvas(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 val barWidth = size.width * animatedProgress.value
                 val cornerRadius = 15f
@@ -87,7 +87,7 @@ internal fun FinanceChart(totalIncome: Long, savings: Long) {
                     color = Gray8,
                     topLeft = Offset(0f, 0f),
                     size = Size(size.width, size.height),
-                    cornerRadius = CornerRadius(cornerRadius, cornerRadius)
+                    cornerRadius = CornerRadius(cornerRadius, cornerRadius),
                 )
 
                 val actualCornerRadius =
@@ -97,7 +97,7 @@ internal fun FinanceChart(totalIncome: Long, savings: Long) {
                     color = Green3,
                     topLeft = Offset(0f, 0f),
                     size = Size(barWidth, size.height),
-                    cornerRadius = actualCornerRadius
+                    cornerRadius = actualCornerRadius,
                 )
             }
 
@@ -106,7 +106,7 @@ internal fun FinanceChart(totalIncome: Long, savings: Long) {
                 text = "${(animatedProgress.value * 100).toInt()}%",
                 style = TypoTheme.typography.titleMediumM,
                 color = Color.White,
-                modifier = Modifier.padding(start = textPadding)
+                modifier = Modifier.padding(start = textPadding),
             )
         }
         VerticalSpacer(6.dp)
@@ -115,7 +115,7 @@ internal fun FinanceChart(totalIncome: Long, savings: Long) {
         Text(
             text = savingsMessage,
             style = TypoTheme.typography.labelLargeR,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

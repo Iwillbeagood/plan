@@ -32,20 +32,18 @@ import jun.money.mate.income.contract.EditState
 import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
 import jun.money.mate.model.etc.DateType
-import jun.money.mate.model.income.Income
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.DateAdd
 import jun.money.mate.ui.number.NumberKeyboard
 import java.time.LocalDate
-import java.time.YearMonth
 
 @Composable
 internal fun IncomeEditRoute(
-    viewModel: IncomeEditViewModel = hiltViewModel()
+    viewModel: IncomeEditViewModel = hiltViewModel(),
 ) {
-    ChangeStatusBarColor(MaterialTheme.colorScheme.background)
+    ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
 
     val showSnackBar = rememberShowSnackBar()
     val navigateAction = LocalNavigateActionInterop.current
@@ -61,13 +59,13 @@ internal fun IncomeEditRoute(
     ) {
         IncomeAddContent(
             editState = editState,
-            viewModel = viewModel
+            viewModel = viewModel,
         )
     }
 
     IncomeModalContent(
         incomeModalEffect = incomeModalEffect,
-        viewModel = viewModel
+        viewModel = viewModel,
     )
 
     LaunchedEffect(true) {
@@ -85,7 +83,7 @@ internal fun IncomeEditRoute(
 @Composable
 private fun IncomeAddContent(
     editState: EditState,
-    viewModel: IncomeEditViewModel
+    viewModel: IncomeEditViewModel,
 ) {
     StateAnimatedVisibility<EditState.UiData>(
         target = editState,
@@ -95,7 +93,7 @@ private fun IncomeAddContent(
             onIncomeTitleChange = viewModel::titleValueChange,
             onShowNumberBottomSheet = viewModel::showNumberKeyboard,
             onDaySelected = viewModel::daySelected,
-            onDateSelected = viewModel::dateSelected,
+            onDateTypeSelected = viewModel::dateTypeSelected,
         )
     }
 }
@@ -105,8 +103,8 @@ private fun IncomeEditBlock(
     uiState: EditState.UiData,
     onIncomeTitleChange: (String) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
-    onDaySelected: (String) -> Unit,
-    onDateSelected: (LocalDate) -> Unit,
+    onDaySelected: (Int) -> Unit,
+    onDateTypeSelected: (DateType) -> Unit,
 ) {
     val listState = rememberScrollState()
 
@@ -114,7 +112,7 @@ private fun IncomeEditBlock(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(listState)
-            .animateContentSize()
+            .animateContentSize(),
     ) {
         VerticalSpacer(50.dp)
         EditContent(
@@ -123,7 +121,7 @@ private fun IncomeEditBlock(
             UnderlineTextField(
                 value = uiState.title,
                 onValueChange = onIncomeTitleChange,
-                hint = "수입 제목"
+                hint = "수입 제목",
             )
         }
         EditContent(
@@ -140,10 +138,9 @@ private fun IncomeEditBlock(
                         text = uiState.amountWon,
                         style = TypoTheme.typography.labelLargeM,
                         textAlign = TextAlign.End,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
-
             }
         }
         EditContent(
@@ -151,9 +148,11 @@ private fun IncomeEditBlock(
         ) {
             DateAdd(
                 type = "수입",
-                onDaySelected = onDaySelected,
-                onDateSelected = onDateSelected,
-                originDateType = uiState.dateType
+                onDateSelected = onDaySelected,
+                onDateTypeSelected = onDateTypeSelected,
+                dateType = uiState.dateType,
+                date = uiState.date,
+                disableTypeChange = true
             )
         }
     }
@@ -177,7 +176,7 @@ private fun EditContent(
 @Composable
 private fun IncomeModalContent(
     incomeModalEffect: IncomeModalEffect,
-    viewModel: IncomeEditViewModel
+    viewModel: IncomeEditViewModel,
 ) {
     when (incomeModalEffect) {
         IncomeModalEffect.Idle -> {}
@@ -200,13 +199,14 @@ private fun IncomeAddScreenPreview() {
                 id = 1L,
                 title = "수입 제목",
                 amount = 1000L,
-                dateType = DateType.Monthly(1, YearMonth.now()),
-                originIncome = Income.regularSample
+                addDate = LocalDate.now(),
+                date = 1,
+                dateType = DateType.Specific,
             ),
             onIncomeTitleChange = {},
             onShowNumberBottomSheet = {},
             onDaySelected = {},
-            onDateSelected = {},
+            onDateTypeSelected = {},
         )
     }
 }

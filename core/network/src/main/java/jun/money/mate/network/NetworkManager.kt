@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class NetworkManager @Inject constructor(
-    private val context: Context
+    private val context: Context,
 ) {
 
     fun connectivityFlow(): Flow<ConnectionState> {

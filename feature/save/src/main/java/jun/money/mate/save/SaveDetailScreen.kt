@@ -66,6 +66,7 @@ internal fun SaveDetailRoute(
             TopAppbar(
                 onBackEvent = navigateAction::popBackStack,
                 title = "저축 수정",
+                backgroundColor = MaterialTheme.colorScheme.background,
                 navigationType = TopAppbarType.Custom {
                     Text(
                         text = "삭제하기",

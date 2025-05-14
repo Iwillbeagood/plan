@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jun.money.mate.data_api.database.IncomeRepository
+import jun.money.mate.dataApi.database.IncomeRepository
 import jun.money.mate.domain.EditIncomeUsecase
 import jun.money.mate.income.contract.EditState
 import jun.money.mate.income.contract.IncomeEffect
@@ -35,7 +35,7 @@ import javax.inject.Inject
 internal class IncomeEditViewModel @Inject constructor(
     private val editIncomeUsecase: EditIncomeUsecase,
     private val incomeRepository: IncomeRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val originId = savedStateHandle.toRoute<Route.Income.Edit>().id
@@ -46,7 +46,7 @@ internal class IncomeEditViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = EditState.Loading
+        initialValue = EditState.Loading,
     )
 
     private val _incomeModalEffect = MutableStateFlow<IncomeModalEffect>(IncomeModalEffect.Idle)
@@ -63,8 +63,9 @@ internal class IncomeEditViewModel @Inject constructor(
                         id = it.id,
                         title = it.title,
                         amount = it.amount,
+                        date = it.date,
                         dateType = it.dateType,
-                        originIncome = it
+                        addDate = it.addDate
                     )
                 }
             }
@@ -78,15 +79,16 @@ internal class IncomeEditViewModel @Inject constructor(
                     id = it.id,
                     title = it.title,
                     amount = it.amount,
+                    date = it.date,
                     dateType = it.dateType,
-                    originIncome = it.originIncome,
+                    addDate = it.addDate,
                     onSuccess = {
                         showSnackBar(
-                            MessageType.Message("수입이 수정 되었습니다.")
+                            MessageType.Message("수입이 수정 되었습니다."),
                         )
                         incomeAddComplete()
                     },
-                    onError = ::showSnackBar
+                    onError = ::showSnackBar,
                 )
             }
         }
@@ -101,25 +103,23 @@ internal class IncomeEditViewModel @Inject constructor(
     fun amountValueChange(value: ValueState) {
         _editState.updateWithData<EditState, EditState.UiData> {
             it.copy(
-                amount = value.value(it.amountString).toLongOrNull() ?: 0
+                amount = value.value(it.amountString).toLongOrNull() ?: 0,
             )
         }
     }
 
-    fun dateSelected(date: LocalDate) {
+    fun daySelected(day: Int) {
         _editState.updateWithData<EditState, EditState.UiData> {
-            it.copy(dateType = DateType.Specific(date))
+            it.copy(date = day)
         }
 
         dismiss()
     }
 
-    fun daySelected(day: String) {
+    fun dateTypeSelected(dateType: DateType) {
         _editState.updateWithData<EditState, EditState.UiData> {
-            it.copy(dateType = DateType.Monthly(day.toInt(), YearMonth.now()))
+            it.copy(dateType = dateType)
         }
-
-        dismiss()
     }
 
     fun showNumberKeyboard() {
@@ -142,5 +142,3 @@ internal class IncomeEditViewModel @Inject constructor(
         }
     }
 }
-
-

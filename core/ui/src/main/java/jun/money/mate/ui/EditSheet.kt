@@ -31,32 +31,32 @@ fun EditSheet(
     onEdit: () -> Unit,
     onClose: () -> Unit,
     onDelete: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     BottomToTopAnimatedVisibility(
         visible = selectedCount > 0,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Surface(
             shape = RoundedCornerShape(12.dp),
             shadowElevation = 4.dp,
-            color = Gray3
+            color = Gray3,
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 4.dp)
-                    .padding(vertical = 4.dp)
+                    .padding(vertical = 4.dp),
             ) {
                 Text(
                     text = "${selectedCount}개 선택",
                     style = TypoTheme.typography.titleMediumM,
-                    color = White1
+                    color = White1,
                 )
                 HorizontalSpacer(1f)
                 FadeAnimatedVisibility(
-                    selectedCount < 2
+                    selectedCount < 2,
                 ) {
                     IconButton(
                         onClick = onEdit,
@@ -64,7 +64,7 @@ fun EditSheet(
                         Icon(
                             imageVector = Icons.Default.Edit,
                             contentDescription = null,
-                            tint = White1
+                            tint = White1,
                         )
                     }
                 }
@@ -74,7 +74,7 @@ fun EditSheet(
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = null,
-                        tint = White1
+                        tint = White1,
                     )
                 }
                 IconButton(
@@ -83,7 +83,7 @@ fun EditSheet(
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = null,
-                        tint = White1
+                        tint = White1,
                     )
                 }
             }
@@ -99,7 +99,7 @@ private fun EditSheetPreview() {
             selectedCount = 1,
             onEdit = {},
             onClose = {},
-            onDelete = {}
+            onDelete = {},
         )
     }
 }

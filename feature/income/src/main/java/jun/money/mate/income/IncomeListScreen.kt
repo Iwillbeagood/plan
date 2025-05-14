@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,12 +38,11 @@ import jun.money.mate.model.income.IncomeList
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.ui.EditModeButton
-import jun.money.mate.utils.formatDateBasedOnYear
 import java.time.YearMonth
 
 @Composable
 internal fun IncomeListRoute(
-    viewModel: IncomeListViewModel = hiltViewModel()
+    viewModel: IncomeListViewModel = hiltViewModel(),
 ) {
     ChangeStatusBarColor(main10)
     val navigateAction = LocalNavigateActionInterop.current
@@ -70,7 +68,7 @@ internal fun IncomeListRoute(
 
     IncomeListModalContent(
         modalEffect = modalEffect,
-        viewModel = viewModel
+        viewModel = viewModel,
     )
 
     LaunchedEffect(Unit) {
@@ -109,16 +107,16 @@ private fun IncomeListScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(main10)
+                .background(main10),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(it)
+                    .padding(it),
             ) {
                 LeavesBox(
                     leaves = leaves,
-                    modifier = Modifier.weight(4f)
+                    modifier = Modifier.weight(4f),
                 )
                 IncomeListContent(
                     month = month,
@@ -126,20 +124,19 @@ private fun IncomeListScreen(
                     onNext = onNext,
                     incomeListState = incomeListState,
                     onIncomeClick = onIncomeClick,
-                    modifier = Modifier.weight(6f)
+                    modifier = Modifier.weight(6f),
                 )
             }
             StateAnimatedVisibility<IncomeListState.UiData>(
                 target = incomeListState,
-                modifier = Modifier.align(Alignment.TopStart)
+                modifier = Modifier.align(Alignment.TopStart),
             ) {
                 Column(
-                    modifier = Modifier.padding(start = 30.dp, top = 60.dp)
+                    modifier = Modifier.padding(start = 30.dp, top = 60.dp),
                 ) {
                     Text(
-                        text = "${formatDateBasedOnYear(month)} 수입",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = TypoTheme.typography.headlineSmallM,
+                        text = "전체 수입",
+                        style = TypoTheme.typography.titleMediumM,
                     )
                     Text(
                         text = it.incomeList.totalString,
@@ -150,7 +147,7 @@ private fun IncomeListScreen(
             TopAppbarIcon(
                 icon = Icons.Default.ArrowBackIosNew,
                 onClick = onGoBack,
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier.padding(start = 8.dp),
             )
         }
     }
@@ -163,18 +160,18 @@ private fun IncomeListContent(
     onNext: () -> Unit,
     incomeListState: IncomeListState,
     onIncomeClick: (Income) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     StateAnimatedVisibility<IncomeListState.UiData>(
         target = incomeListState,
-        modifier = modifier
+        modifier = modifier,
     ) {
         IncomeListBody(
             month = month,
             onPrev = onPrev,
             onNext = onNext,
             incomeList = it.incomeList,
-            onIncomeClick = onIncomeClick
+            onIncomeClick = onIncomeClick,
         )
     }
 }
@@ -182,7 +179,7 @@ private fun IncomeListContent(
 @Composable
 private fun IncomeListModalContent(
     modalEffect: IncomeListModalEffect,
-    viewModel: IncomeListViewModel
+    viewModel: IncomeListViewModel,
 ) {
     when (modalEffect) {
         IncomeListModalEffect.Hidden -> {}
@@ -194,9 +191,9 @@ private fun IncomeListModalContent(
                 content = {
                     Text(
                         text = "선택한 수입을 삭제하시겠습니까?",
-                        style = TypoTheme.typography.titleMediumM
+                        style = TypoTheme.typography.titleMediumM,
                     )
-                }
+                },
             )
         }
     }
@@ -209,7 +206,7 @@ private fun IncomeListScreenPreview() {
         IncomeListScreen(
             leaves = List(5) { LeafOrder(isRed = it % 2 == 0) },
             incomeListState = IncomeListState.UiData(
-                incomeList = IncomeList.sample
+                incomeList = IncomeList.sample,
             ),
             month = YearMonth.now(),
             onPrev = {},

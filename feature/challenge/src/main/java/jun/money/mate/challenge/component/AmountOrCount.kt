@@ -22,20 +22,20 @@ internal fun AmountOrCount(
     onAmountValueChange: (String) -> Unit,
     countValue: String,
     onCountValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         TextBox(
             value = amountValue,
             onValueChange = onAmountValueChange,
             label = "1회 납입 금액",
             unit = "원",
-            modifier = modifier
+            modifier = modifier,
         )
         Text(
             text = "=",
@@ -46,7 +46,7 @@ internal fun AmountOrCount(
             onValueChange = onCountValueChange,
             label = "횟수",
             unit = "회",
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }
@@ -80,7 +80,7 @@ private fun AmountOrCountPreview() {
             onAmountValueChange = {},
             countValue = "3",
             onCountValueChange = {},
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

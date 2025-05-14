@@ -4,19 +4,11 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.HorizontalSpacer
-import jun.money.mate.designsystem.component.TextButton
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.Gray6
-import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem_date.datetimepicker.DatePicker
 import jun.money.mate.designsystem_date.datetimepicker.DayPicker
 import jun.money.mate.designsystem_date.datetimepicker.TimeBoundaries
@@ -26,70 +18,55 @@ import java.time.LocalDate
 @Composable
 fun DateAdd(
     type: String,
-    onDaySelected: (String) -> Unit,
-    onDateSelected: (LocalDate) -> Unit,
-    originDateType: DateType? = null,
+    onDateSelected: (Int) -> Unit,
+    onDateTypeSelected: (DateType) -> Unit,
+    dateType: DateType?,
+    date: Int = LocalDate.now().dayOfMonth,
+    disableTypeChange: Boolean = false
 ) {
-    var isMonthly by remember {
-        mutableStateOf(
-            when (originDateType) {
-                is DateType.Monthly -> true
-                is DateType.Specific -> false
-                null -> null
-            }
-        )
-    }
-
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            TypeButton(
-                text = "정기 $type",
-                isType = isMonthly == true,
-                onApplyType = {
-                    isMonthly = true
-                },
-                modifier = Modifier.weight(1f)
-            )
-            HorizontalSpacer(10.dp)
-            TypeButton(
-                text = "단기 $type",
-                isType = isMonthly == false,
-                onApplyType = {
-                    isMonthly = false
-                },
-                modifier = Modifier.weight(1f)
-            )
+        if (!disableTypeChange) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                TypeButton(
+                    text = "정기 $type",
+                    isType = dateType == DateType.Monthly,
+                    onApplyType = {
+                        onDateTypeSelected(DateType.Monthly)
+                    },
+                    modifier = Modifier.weight(1f),
+                )
+                HorizontalSpacer(10.dp)
+                TypeButton(
+                    text = "단기 $type",
+                    isType = dateType == DateType.Specific,
+                    onApplyType = {
+                        onDateTypeSelected(DateType.Specific)
+                    },
+                    modifier = Modifier.weight(1f),
+                )
+            }
+            VerticalSpacer(16.dp)
         }
-        VerticalSpacer(16.dp)
         Crossfade(
-            isMonthly
+            dateType,
         ) {
             when (it) {
-                true -> {
+                DateType.Monthly -> {
                     DayPicker(
-                        onDaySelected = onDaySelected,
+                        onDaySelected = { onDateSelected(it.toInt()) },
                         modifier = Modifier.fillMaxWidth(),
-                        selectedDay = if (originDateType != null && originDateType is DateType.Monthly) {
-                            originDateType.day
-                        } else {
-                            LocalDate.now().dayOfMonth
-                        }.toString()
+                        selectedDay = date.toString(),
                     )
                 }
-
-                false -> {
+                DateType.Specific -> {
                     DatePicker(
                         timeBoundary = TimeBoundaries.lastMonthToThisMonth,
-                        onDateSelect = onDateSelected,
-                        selectedDate = if (originDateType != null && originDateType is DateType.Specific) {
-                            originDateType.date
-                        } else {
-                            null
-                        },
+                        onDateSelect = { onDateSelected(it.dayOfMonth) },
+                        selectedDate = LocalDate.of(LocalDate.now().year, LocalDate.now().monthValue, date),
                     )
                 }
 

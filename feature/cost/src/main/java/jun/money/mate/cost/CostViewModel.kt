@@ -8,7 +8,7 @@ import jun.money.mate.cost.contract.CostEffect
 import jun.money.mate.cost.contract.CostState
 import jun.money.mate.cost.contract.CostModalEffect
 import jun.money.mate.cost.navigation.Title
-import jun.money.mate.data_api.database.CostRepository
+import jun.money.mate.dataApi.database.CostRepository
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.Cost
 import jun.money.mate.utils.flow.updateWithData

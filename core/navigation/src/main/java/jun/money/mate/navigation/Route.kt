@@ -33,8 +33,6 @@ sealed interface Route {
         @Serializable
         data object Add : Save
 
-        @Serializable
-        data class Edit(val id: Long): Save
     }
 
     @Serializable

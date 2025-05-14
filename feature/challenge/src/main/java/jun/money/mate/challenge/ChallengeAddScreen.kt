@@ -26,8 +26,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.challenge.component.AmountOrCount
 import jun.money.mate.challenge.component.ChallengeDateType
 import jun.money.mate.challenge.contract.ChallengeAddEffect
-import jun.money.mate.challenge.contract.ChallengeModalEffect
 import jun.money.mate.challenge.contract.ChallengeAddState
+import jun.money.mate.challenge.contract.ChallengeModalEffect
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.UnderLineText
 import jun.money.mate.designsystem.component.UnderlineTextField
@@ -36,14 +36,14 @@ import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.model.save.ChallengeType
-import jun.money.mate.ui.AddScaffold
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
+import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.ui.number.ValueState
 
 internal enum class ChallengeStep(
-    val message: String
+    val message: String,
 ) {
     GoalAmount("챌린지 금액을 입력해 주세요"),
     AmountCount("1회 납입 금액이나 횟수를 선택해 주세요"),
@@ -52,9 +52,9 @@ internal enum class ChallengeStep(
 
 @Composable
 internal fun ChallengeAddRoute(
-    viewModel: ChallengeAddViewModel = hiltViewModel()
+    viewModel: ChallengeAddViewModel = hiltViewModel(),
 ) {
-    ChangeStatusBarColor(MaterialTheme.colorScheme.background)
+    ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
 
     val focusManager = LocalFocusManager.current
     val navigateAction = LocalNavigateActionInterop.current
@@ -69,7 +69,7 @@ internal fun ChallengeAddRoute(
             else -> "다음"
         },
         onGoBack = navigateAction::popBackStack,
-        onComplete = viewModel::nextStep
+        onComplete = viewModel::nextStep,
     ) {
         ChallengeAddScreen(
             scrollState = scrollState,
@@ -82,7 +82,7 @@ internal fun ChallengeAddRoute(
             onAmountValueChange = viewModel::amountValueChange,
             onCountValueChange = viewModel::countValueChange,
             onComplete = viewModel::nextStep,
-            isGoalAmountSelected = modalState == ChallengeModalEffect.ShowNumberKeyboard
+            isGoalAmountSelected = modalState == ChallengeModalEffect.ShowNumberKeyboard,
         )
     }
 
@@ -116,13 +116,13 @@ private fun ChallengeAddScreen(
     onAmountValueChange: (String) -> Unit,
     onCountValueChange: (String) -> Unit,
     onComplete: () -> Unit,
-    isGoalAmountSelected: Boolean = false
+    isGoalAmountSelected: Boolean = false,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .animateContentSize()
+            .animateContentSize(),
     ) {
         VerticalSpacer(50.dp)
         if (currentStep.message.isNotBlank()) {
@@ -150,7 +150,7 @@ private fun ChallengeAddScreen(
                             text = uiState.goalAmountWon,
                             style = TypoTheme.typography.labelLargeM,
                             textAlign = TextAlign.End,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                 }
@@ -165,7 +165,7 @@ private fun ChallengeAddScreen(
                 onAmountValueChange = onAmountValueChange,
                 countValue = uiState.count,
                 onCountValueChange = onCountValueChange,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
         TopToBottomAnimatedVisibility(ChallengeStep.Remaining in steps) {
@@ -175,7 +175,7 @@ private fun ChallengeAddScreen(
                 ) {
                     ChallengeDateType(
                         onChallengeTypeSelected = onChallengeTypeSelected,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
                 ChallengeAddField(
@@ -191,8 +191,8 @@ private fun ChallengeAddScreen(
                         keyboardActions = KeyboardActions(
                             onDone = {
                                 onComplete()
-                            }
-                        )
+                            },
+                        ),
                     )
                 }
             }

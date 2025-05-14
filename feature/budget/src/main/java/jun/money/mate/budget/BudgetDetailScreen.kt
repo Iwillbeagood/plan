@@ -50,6 +50,7 @@ import jun.money.mate.designsystem.component.TopAppbarIcon
 import jun.money.mate.designsystem.component.TopAppbarType
 import jun.money.mate.designsystem.component.TwoBtnDialog
 import jun.money.mate.designsystem.component.VerticalSpacer
+import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.Gray4
 import jun.money.mate.designsystem.theme.Gray9
 import jun.money.mate.designsystem.theme.JunTheme
@@ -66,6 +67,8 @@ import jun.money.mate.utils.currency.CurrencyFormatter
 internal fun BudgetDetailRoute(
     viewModel: BudgetDetailViewModel = hiltViewModel(),
 ) {
+    ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
+
     val navigateAction = LocalNavigateActionInterop.current
     val showSnackBar = rememberShowSnackBar()
     val uiState by viewModel.budgetDetailState.collectAsStateWithLifecycle()
@@ -87,7 +90,7 @@ internal fun BudgetDetailRoute(
 
     ModalContent(
         modalState = modalState,
-        viewModel = viewModel
+        viewModel = viewModel,
     )
 
     LaunchedEffect(Unit) {
@@ -124,20 +127,21 @@ private fun BudgetDetailScreen(
                         icon = Icons.Default.Delete,
                         onClick = onDeleteBudget,
                     )
-                }
+                },
             )
         },
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(it),
         ) {
             StateAnimatedVisibility<BudgetDetailState.BudgetDetailData>(
                 target = uiState,
             ) { state ->
                 Box(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 ) {
                     BudgetDetailContent(
                         budget = state.budget,
@@ -154,7 +158,7 @@ private fun BudgetDetailScreen(
                         onDelete = onDeleteUsed,
                         modifier = Modifier
                             .padding(vertical = 20.dp, horizontal = 16.dp)
-                            .align(Alignment.BottomCenter)
+                            .align(Alignment.BottomCenter),
                     )
                 }
             }
@@ -174,7 +178,7 @@ private fun BudgetDetailContent(
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         stickyHeader {
             BudgetDetailHeader(
@@ -186,18 +190,18 @@ private fun BudgetDetailContent(
 
         item {
             if (budget.pastBudgets.isNotEmpty()) {
-                Column{
+                Column {
                     PastBudgetChart(
                         originBudget = budget.budget,
                         pastBudgetGroup = budget.groupedPastBudget,
                         modifier = Modifier
-                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                            .padding(horizontal = 8.dp, vertical = 2.dp),
                     )
                     UsedStateFeedback(
                         usedState = budget.usedState,
                         maxUse = budget.maxUse,
                         onClick = onEditBudgetByFeedback,
-                        modifier = Modifier.padding(8.dp)
+                        modifier = Modifier.padding(8.dp),
                     )
                 }
             }
@@ -211,7 +215,7 @@ private fun BudgetDetailContent(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
+                        .padding(horizontal = 20.dp),
                 ) {
                     Text(
                         text = "내역",
@@ -236,23 +240,23 @@ private fun BudgetDetailContent(
 private fun BudgetDetailHeader(
     budget: Budget,
     isEditingBudget: Boolean,
-    onEditBudget: () -> Unit
+    onEditBudget: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 20.dp),
     ) {
         VerticalSpacer(20.dp)
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = "잔액",
                 style = TypoTheme.typography.titleNormalM,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
+                modifier = Modifier,
             )
             HorizontalSpacer(1f)
             Text(
@@ -263,26 +267,26 @@ private fun BudgetDetailHeader(
         }
         VerticalSpacer(4.dp)
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = NAV_NAME,
                 style = TypoTheme.typography.titleNormalM,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
+                modifier = Modifier,
             )
             HorizontalSpacer(1f)
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .clickable(onClick = onEditBudget)
-                    .background(if (isEditingBudget) Gray4.copy(alpha = 0.2f) else Color.Transparent)
+                    .background(if (isEditingBudget) Gray4.copy(alpha = 0.2f) else Color.Transparent),
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(18.dp),
                 )
                 HorizontalSpacer(4.dp)
                 Text(
@@ -300,7 +304,7 @@ private fun BudgetDetailHeader(
 @Composable
 private fun ModalContent(
     modalState: BudgetDetailModalState,
-    viewModel: BudgetDetailViewModel
+    viewModel: BudgetDetailViewModel,
 ) {
     when (modalState) {
         BudgetDetailModalState.Hidden -> {}
@@ -308,7 +312,7 @@ private fun ModalContent(
             EditBudgetSheet(
                 recommend = modalState.recommend,
                 onDismissRequest = viewModel::hideModal,
-                onEditBudget = viewModel::editBudget
+                onEditBudget = viewModel::editBudget,
             )
         }
         BudgetDetailModalState.ShowDeleteDialog -> {
@@ -319,16 +323,16 @@ private fun ModalContent(
                 content = {
                     Text(
                         text = "${NAV_NAME}를 삭제하시겠습니까?",
-                        style = TypoTheme.typography.titleMediumM
+                        style = TypoTheme.typography.titleMediumM,
                     )
-                }
+                },
             )
         }
         BudgetDetailModalState.ShowAddUsedSheet -> {
             UsedAddSheet(
                 mode = UsedAddSheetMode.ADD,
                 onDismissRequest = viewModel::hideModal,
-                onComplete = viewModel::addUsed
+                onComplete = viewModel::addUsed,
             )
         }
         is BudgetDetailModalState.ShowEditUsedSheet -> {
@@ -336,7 +340,7 @@ private fun ModalContent(
                 mode = UsedAddSheetMode.EDIT,
                 originUsed = modalState.originUsed,
                 onDismissRequest = viewModel::hideModal,
-                onComplete = viewModel::editUsed
+                onComplete = viewModel::editUsed,
             )
         }
     }

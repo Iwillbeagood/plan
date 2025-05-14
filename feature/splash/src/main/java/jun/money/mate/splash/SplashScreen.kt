@@ -11,17 +11,17 @@ import kotlinx.coroutines.delay
 
 @Composable
 internal fun SplashRoute(
-    onShowHomeScreen: () -> Unit
+    onShowHomeScreen: () -> Unit,
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.primary)
 
     SplashScreen()
 
     LaunchedEffect(Unit) {
+        delay(1500)
         onShowHomeScreen()
     }
 }
-
 
 @Preview
 @Composable

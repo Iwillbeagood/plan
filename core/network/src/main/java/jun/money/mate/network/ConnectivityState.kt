@@ -31,7 +31,7 @@ private val Context.currentConnectivityState: ConnectionState
 
 @SuppressLint("MissingPermission")
 fun getCurrentConnectivityState(
-    connectivityManager: ConnectivityManager
+    connectivityManager: ConnectivityManager,
 ): ConnectionState {
     val activeNetwork = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         connectivityManager.activeNetwork
@@ -43,7 +43,6 @@ fun getCurrentConnectivityState(
 
     return if (connected) ConnectionState.Available else ConnectionState.Unavailable
 }
-
 
 @SuppressLint("MissingPermission")
 fun Context.observeConnectivityAsFlow() = callbackFlow {

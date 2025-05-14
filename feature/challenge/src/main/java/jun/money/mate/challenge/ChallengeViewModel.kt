@@ -7,7 +7,7 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.challenge.contract.ChallengeEffect
 import jun.money.mate.challenge.contract.ChallengeState
-import jun.money.mate.data_api.database.ChallengeRepository
+import jun.money.mate.dataApi.database.ChallengeRepository
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.navigation.Route
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ChallengeViewModel @Inject constructor(
     private val challengeRepository: ChallengeRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val id = savedStateHandle.toRoute<Route.Challenge.Detail>().id
@@ -32,10 +32,10 @@ internal class ChallengeViewModel @Inject constructor(
         .map {
             ChallengeState.ChallengeData(it)
         }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ChallengeState.Loading
-    )
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = ChallengeState.Loading,
+        )
 
     private val _challengeEffect = MutableSharedFlow<ChallengeEffect>()
     val challengeEffect: SharedFlow<ChallengeEffect> get() = _challengeEffect.asSharedFlow()

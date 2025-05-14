@@ -44,7 +44,7 @@ fun DefaultScaffold(
                     shadowElevation = 20.dp,
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         TextIconButton(
                             icon = Icons.Default.EditNote,
@@ -52,7 +52,7 @@ fun DefaultScaffold(
                             modifier = Modifier
                                 .weight(1f)
                                 .clickable(onClick = onEdit)
-                                .padding(10.dp)
+                                .padding(10.dp),
                         )
                         TextIconButton(
                             icon = Icons.Default.DeleteOutline,
@@ -60,11 +60,10 @@ fun DefaultScaffold(
                             modifier = Modifier
                                 .weight(1f)
                                 .clickable(onClick = onDelete)
-                                .padding(5.dp)
+                                .padding(5.dp),
                         )
                     }
                 }
-
             }
         },
         floatingActionButton = {
@@ -76,14 +75,14 @@ fun DefaultScaffold(
                     icon = Icons.Default.Add,
                     elevation = 8.dp,
                     color = color,
-                    onClick = onAdd
+                    onClick = onAdd,
                 )
             }
         },
-        containerColor = containerColor
+        containerColor = containerColor,
     ) {
         Box(
-            modifier = Modifier.padding(it)
+            modifier = Modifier.padding(it),
         ) {
             content()
         }

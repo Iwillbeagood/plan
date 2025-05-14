@@ -3,8 +3,6 @@ package jun.money.mate.main.navigation
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,7 +34,7 @@ internal fun MainNavHost(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surfaceDim)
-            .padding(paddingValues)
+            .padding(paddingValues),
     ) {
         val navigateAction = LocalNavigateActionInterop.current
 
@@ -44,7 +42,7 @@ internal fun MainNavHost(
             navController = navigator.navController,
             startDestination = Route.Splash,
             enterTransition = { fadeIn(animationSpec = tween(300)) },
-            exitTransition = { fadeOut(animationSpec = tween(300)) }
+            exitTransition = { fadeOut(animationSpec = tween(300)) },
         ) {
             homeNavGraph()
             financeNavGraph()
@@ -56,7 +54,7 @@ internal fun MainNavHost(
             splashNavGraph(
                 onShowHomeScreen = {
                     navigateAction.navigateBottomNav(MainBottomNavItem.Home)
-                }
+                },
             )
         }
     }

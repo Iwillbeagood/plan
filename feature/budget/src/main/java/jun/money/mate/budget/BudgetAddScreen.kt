@@ -40,7 +40,7 @@ import jun.money.mate.ui.AddScaffold
 import jun.money.mate.ui.number.NumberKeyboard
 
 internal enum class BudgetAddStep(
-    val message: String
+    val message: String,
 ) {
     Title("어떤 ${NAV_NAME}인지 설명해 주세요"),
     Amount("한달 ${NAV_NAME}을 설정해 주세요"),
@@ -48,9 +48,9 @@ internal enum class BudgetAddStep(
 
 @Composable
 internal fun BudgetAddRoute(
-    viewModel: BudgetAddViewModel = hiltViewModel()
+    viewModel: BudgetAddViewModel = hiltViewModel(),
 ) {
-    ChangeStatusBarColor(MaterialTheme.colorScheme.background)
+    ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
 
     val showSnackBar = rememberShowSnackBar()
     val navigateAction = LocalNavigateActionInterop.current
@@ -66,7 +66,7 @@ internal fun BudgetAddRoute(
             BudgetAddStep.Amount -> "추가"
         },
         onGoBack = navigateAction::popBackStack,
-        onComplete = viewModel::nextStep
+        onComplete = viewModel::nextStep,
     ) {
         BudgetAddScreen(
             addStep = viewModel.addStep.value,
@@ -80,7 +80,7 @@ internal fun BudgetAddRoute(
 
     ModalContent(
         budgetAddModalEffect = incomeModalEffect,
-        viewModel = viewModel
+        viewModel = viewModel,
     )
 
     LaunchedEffect(true) {
@@ -108,7 +108,7 @@ private fun BudgetAddScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .animateContentSize()
+            .animateContentSize(),
     ) {
         VerticalSpacer(36.dp)
         Text(
@@ -133,11 +133,10 @@ private fun BudgetAddScreen(
                             text = uiState.amountWon,
                             style = TypoTheme.typography.labelLargeM,
                             textAlign = TextAlign.End,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                 }
-
             }
         }
         BudgetField(
@@ -154,8 +153,8 @@ private fun BudgetAddScreen(
                 keyboardActions = KeyboardActions(
                     onNext = {
                         onNextStep()
-                    }
-                )
+                    },
+                ),
             )
         }
         VerticalSpacer(400.dp)
@@ -184,7 +183,7 @@ private fun BudgetField(
 @Composable
 private fun ModalContent(
     budgetAddModalEffect: BudgetAddModalEffect,
-    viewModel: BudgetAddViewModel
+    viewModel: BudgetAddViewModel,
 ) {
     when (budgetAddModalEffect) {
         BudgetAddModalEffect.Idle -> {}

@@ -1,7 +1,5 @@
 package jun.money.mate.budget.component
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,11 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Blue1
 import jun.money.mate.designsystem.theme.Gray10
-import jun.money.mate.designsystem.theme.Gray7
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.model.consumption.Budget
@@ -35,7 +31,7 @@ internal fun LazyListScope.budgetList(
     items(budgets) { used ->
         BudgetItem(
             budget = used,
-            onClick = { onShowDetail(used.id) }
+            onClick = { onShowDetail(used.id) },
         )
     }
 }
@@ -52,11 +48,11 @@ private fun BudgetItem(
         shadowElevation = 2.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
     ) {
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 10.dp)
+                .padding(horizontal = 16.dp, vertical = 10.dp),
         ) {
             VerticalSpacer(10.dp)
             Text(
@@ -65,12 +61,12 @@ private fun BudgetItem(
             )
             VerticalSpacer(4.dp)
             Row(
-                verticalAlignment = Alignment.Bottom
+                verticalAlignment = Alignment.Bottom,
             ) {
                 Text(
                     text = CurrencyFormatter.formatAmountWon(budget.budgetLeft),
                     style = TypoTheme.typography.titleNormalM,
-                    color = Blue1
+                    color = Blue1,
                 )
                 Text(
                     text = " 남았어요",
@@ -89,7 +85,7 @@ private fun BudgetItem(
                 style = TypoTheme.typography.titleSmallB,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.End,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
@@ -101,7 +97,7 @@ private fun BudgetLazyColumnPreview() {
     JunTheme {
         BudgetItem(
             Budget.sample,
-            onClick = {}
+            onClick = {},
         )
     }
 }

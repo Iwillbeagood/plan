@@ -32,6 +32,7 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.res)
 
+
     implementation(projects.feature.main)
 
     implementation(libs.firebase.core)
@@ -39,4 +40,8 @@ dependencies {
     implementation(libs.gson)
 
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.work.testing)
+    androidTestImplementation(libs.androidx.work.runtime.ktx)
+    androidTestImplementation(projects.core.testing)
+    androidTestImplementation(libs.androidx.work.test)
 }

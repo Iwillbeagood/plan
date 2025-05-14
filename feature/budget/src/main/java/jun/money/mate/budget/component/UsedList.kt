@@ -27,7 +27,7 @@ import jun.money.mate.utils.formatDateBasedOnYear
 
 internal fun LazyListScope.usedList(
     usedList: List<Used>,
-    onClickUsed: (Used) -> Unit
+    onClickUsed: (Used) -> Unit,
 ) {
     usedList
         .asSequence()
@@ -41,12 +41,12 @@ internal fun LazyListScope.usedList(
                         .padding(horizontal = 10.dp, vertical = 4.dp),
                     shape = RoundedCornerShape(12.dp),
                     tonalElevation = 2.dp,
-                    color = MaterialTheme.colorScheme.surface
+                    color = MaterialTheme.colorScheme.surface,
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 14.dp, vertical = 16.dp)
+                            .padding(horizontal = 14.dp, vertical = 16.dp),
                     ) {
                         Text(
                             text = formatDateBasedOnYear(date),
@@ -54,7 +54,7 @@ internal fun LazyListScope.usedList(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding()
+                                .padding(),
                         )
                         VerticalSpacer(10.dp)
 
@@ -66,7 +66,7 @@ internal fun LazyListScope.usedList(
                                     .clickable {
                                         onClickUsed(used)
                                     }
-                                    .padding(vertical = 4.dp)
+                                    .padding(vertical = 4.dp),
                             )
                         }
                     }
@@ -79,11 +79,11 @@ internal fun LazyListScope.usedList(
 @Composable
 private fun UsedItem(
     used: Used,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.Bottom,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Text(
             text = used.meno,
@@ -93,7 +93,7 @@ private fun UsedItem(
         Text(
             text = "- " + CurrencyFormatter.formatAmountWon(used.amount),
             style = TypoTheme.typography.titleNormalB,
-            color = MaterialTheme.colorScheme.error
+            color = MaterialTheme.colorScheme.error,
         )
     }
 }
@@ -105,7 +105,7 @@ private fun Preview() {
         LazyColumn {
             usedList(
                 listOf(Budget.usedSample),
-                onClickUsed = {}
+                onClickUsed = {},
             )
         }
     }

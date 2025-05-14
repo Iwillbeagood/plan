@@ -31,20 +31,20 @@ fun SplashScreen() {
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding()
-            .background(MaterialTheme.colorScheme.primary)
+            .background(MaterialTheme.colorScheme.primary),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.TopCenter)
+                .align(Alignment.TopCenter),
         ) {
             VerticalSpacer(150.dp)
             Icon(
                 painter = painterResource(R.drawable.logo_white),
                 contentDescription = null,
                 tint = Color.Unspecified,
-                modifier = Modifier.padding(horizontal = 100.dp)
+                modifier = Modifier.padding(horizontal = 100.dp),
             )
         }
         Text(
@@ -53,7 +53,7 @@ fun SplashScreen() {
             style = TypoTheme.typography.titleSmallR.nonScaledSp,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 20.dp)
+                .padding(bottom = 20.dp),
         )
     }
 }

@@ -1,7 +1,7 @@
 package jun.money.mate.data.resository
 
 import jun.money.mate.data.mapper.toBudget
-import jun.money.mate.data_api.database.BudgetRepository
+import jun.money.mate.dataApi.database.BudgetRepository
 import jun.money.mate.database.dao.BudgetDao
 import jun.money.mate.database.entity.BudgetEntity
 import jun.money.mate.database.entity.BudgetWithUsed
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class BudgetRepositoryImpl @Inject constructor(
-     private val budgetDao: BudgetDao
+    private val budgetDao: BudgetDao,
 ) : BudgetRepository {
 
     override suspend fun upsert(budget: Budget) {
@@ -27,7 +27,7 @@ class BudgetRepositoryImpl @Inject constructor(
                     id = budget.id,
                     title = budget.title,
                     budget = budget.budget,
-                )
+                ),
             )
         } catch (e: Exception) {
             Logger.e("upsert error: $e")
@@ -42,7 +42,7 @@ class BudgetRepositoryImpl @Inject constructor(
                     budgetId = used.budgetId,
                     date = used.date,
                     amount = used.amount,
-                )
+                ),
             )
         } catch (e: Exception) {
             Logger.e("insertUsed error: $e")
@@ -57,7 +57,7 @@ class BudgetRepositoryImpl @Inject constructor(
                     budget = pastBudget.budget,
                     amountUsed = pastBudget.amountUsed,
                     date = pastBudget.date,
-                )
+                ),
             )
         } catch (e: Exception) {
             Logger.e("insertPastBudget error: $e")
@@ -92,7 +92,7 @@ class BudgetRepositoryImpl @Inject constructor(
                     budgetId = used.budgetId,
                     date = used.date,
                     amount = used.amount,
-                )
+                ),
             )
         } catch (e: Exception) {
             Logger.e("updateUsed error: $e")

@@ -31,7 +31,7 @@ fun AddScaffold(
         onGoBack = onGoBack,
         onComplete = onComplete,
         buttonVisible = buttonVisible,
-        content = content
+        content = content,
     )
 }
 
@@ -54,7 +54,7 @@ fun AddScaffold(
         bottomBar = {
             BottomToTopSlideFadeAnimatedVisibility(
                 visible = buttonVisible,
-                modifier = Modifier
+                modifier = Modifier,
             ) {
                 RegularButton(
                     text = buttonText,
@@ -69,14 +69,14 @@ fun AddScaffold(
         containerColor = MaterialTheme.colorScheme.surface,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         modifier = Modifier
-            .imePadding()
+            .imePadding(),
     ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .consumeWindowInsets(padding)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp),
         ) {
             content()
         }

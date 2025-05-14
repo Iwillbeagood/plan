@@ -162,7 +162,7 @@ fun TextButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     hint: String = "",
-    color: Color = MaterialTheme.colorScheme.surfaceDim,
+    color: Color = MaterialTheme.colorScheme.surface,
     textStyle: TextStyle = TypoTheme.typography.titleMediumM,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
     borderColor: Color = Gray6,

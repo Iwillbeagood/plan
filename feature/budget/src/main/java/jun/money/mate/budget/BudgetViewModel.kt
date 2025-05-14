@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.budget.contract.BudgetState
-import jun.money.mate.data_api.database.BudgetRepository
-import jun.money.mate.model.consumption.Budget
+import jun.money.mate.dataApi.database.BudgetRepository
 import jun.money.mate.model.etc.error.MessageType
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +33,7 @@ internal class BudgetViewModel @Inject constructor(
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(1000),
-            initialValue = BudgetState.Loading
+            initialValue = BudgetState.Loading,
         )
 
     private val _consumptionModalEffect = MutableStateFlow<BudgetCostEffect>(BudgetCostEffect.Hidden)
@@ -42,7 +41,6 @@ internal class BudgetViewModel @Inject constructor(
 
     private val _budgetEffect = MutableSharedFlow<BudgetEffect>()
     val budgetEffect: SharedFlow<BudgetEffect> get() = _budgetEffect.asSharedFlow()
-
 
     fun hideModal() {
         _consumptionModalEffect.update { BudgetCostEffect.Hidden }
@@ -55,13 +53,11 @@ internal class BudgetViewModel @Inject constructor(
     }
 }
 
-
 @Stable
 internal sealed interface BudgetEffect {
 
     @Immutable
     data class ShowSnackBar(val messageType: MessageType) : BudgetEffect
-
 }
 
 @Stable
@@ -69,5 +65,4 @@ internal sealed interface BudgetCostEffect {
 
     @Immutable
     data object Hidden : BudgetCostEffect
-
 }

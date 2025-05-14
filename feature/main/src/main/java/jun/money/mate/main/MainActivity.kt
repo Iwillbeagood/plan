@@ -18,8 +18,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import jun.money.mate.designsystem.component.TwoBtnDialog
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.main.navigation.MainNavigator
 import jun.money.mate.main.navigation.rememberMainNavigator
 import jun.money.mate.model.etc.error.MessageType
@@ -31,7 +31,6 @@ import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +59,7 @@ class MainActivity : ComponentActivity() {
 
             CompositionLocalProvider(
                 LocalMainActionInterop provides mainActionInterop,
-                LocalNavigateActionInterop provides navigator.navigationInteropImpl()
+                LocalNavigateActionInterop provides navigator.navigationInteropImpl(),
             ) {
                 JunTheme {
                     MainScreen(
@@ -76,7 +75,7 @@ class MainActivity : ComponentActivity() {
 
                     MainBackHandler(
                         navigator = navigator,
-                        onShowAppCloseDialog = viewModel::onShowAppCloseDialog
+                        onShowAppCloseDialog = viewModel::onShowAppCloseDialog,
                     )
                 }
             }
@@ -99,7 +98,6 @@ private fun DialogContent(
     onDismissRequest: () -> Unit,
     onFinishApp: () -> Unit,
 ) {
-
     when (mainDialogEffect) {
         MainDialogEffect.Idle -> {}
         MainDialogEffect.AppClose -> {
@@ -112,9 +110,9 @@ private fun DialogContent(
                 content = {
                     Text(
                         text = stringResource(id = R.string.app_close_dialog_content),
-                        style = TypoTheme.typography.titleMediumR
+                        style = TypoTheme.typography.titleMediumR,
                     )
-                }
+                },
             )
         }
     }
@@ -123,7 +121,7 @@ private fun DialogContent(
 @Composable
 private fun MainBackHandler(
     navigator: MainNavigator,
-    onShowAppCloseDialog: () -> Unit
+    onShowAppCloseDialog: () -> Unit,
 ) {
     val isShowBottomBar = navigator.shouldShowBottomBar()
 

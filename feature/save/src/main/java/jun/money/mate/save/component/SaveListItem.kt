@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,16 +21,19 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.component.CheckIcon
+import jun.money.mate.designsystem.Label
 import jun.money.mate.designsystem.component.DefaultSwitch
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.VerticalSpacer
+import jun.money.mate.designsystem.theme.Gray3
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.Red2
 import jun.money.mate.designsystem.theme.TypoTheme
+import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavingsType.Companion.title
 import jun.money.mate.ui.SeedIcon
+import jun.money.mate.utils.toRemainingDayString
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -45,7 +49,7 @@ internal fun SaveListItem(
             .animateContentSize()
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .shadow(2.dp, shape = RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.surfaceDim, shape = RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
             .combinedClickable(
                 onClick = { onClick(savePlan.id) },
             )
@@ -90,17 +94,21 @@ internal fun SaveListItem(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    HorizontalSpacer(1f)
                     val period = savePlan.getRemainingPeriod()
                     if (period == null) {
+                        HorizontalSpacer(1f)
                         DefaultSwitch(
                             checked = savePlan.executed,
                             onCheckedChange = onExecuteChange
                         )
                     } else {
-                        Text(
+                        Label(
                             text = period,
-                            style = TypoTheme.typography.titleMediumR,
+                            color = Gray3,
+                        )
+                        HorizontalSpacer(4.dp)
+                        Label(
+                            text = savePlan.day.toRemainingDayString(),
                             color = Red2,
                         )
                     }

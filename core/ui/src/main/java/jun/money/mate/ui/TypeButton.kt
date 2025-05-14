@@ -12,14 +12,14 @@ fun TypeButton(
     text: String,
     isType: Boolean,
     onApplyType: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     TextButton(
         text = text,
         onClick = onApplyType,
-        color = if (isType) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceDim,
+        color = if (isType) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
         textColor = if (isType) White1 else MaterialTheme.colorScheme.onSurface,
         borderColor = if (isType) MaterialTheme.colorScheme.primary else Gray6,
-        modifier = modifier
+        modifier = modifier,
     )
 }

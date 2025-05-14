@@ -46,23 +46,23 @@ internal fun MoneyChallengeItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .height(IntrinsicSize.Min)
+            .height(IntrinsicSize.Min),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Min)
+                .height(IntrinsicSize.Min),
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(IntrinsicSize.Min)
                     .clickable(onClick = onClick)
-                    .padding(vertical = 20.dp, horizontal = 16.dp)
+                    .padding(vertical = 20.dp, horizontal = 16.dp),
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxHeight()
+                        .fillMaxHeight(),
                 ) {
                     Text(
                         text = challenge.title.ifBlank {
@@ -74,13 +74,13 @@ internal fun MoneyChallengeItem(
                     Text(
                         text = challenge.type.dayString(),
                         style = TypoTheme.typography.titleMediumM,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 Column(
                     horizontalAlignment = Alignment.End,
                     modifier = Modifier
-                        .fillMaxHeight()
+                        .fillMaxHeight(),
                 ) {
                     val nextDate = challenge.nextDate
                     if (!challenge.challengeCompleted && nextDate != null) {
@@ -95,24 +95,24 @@ internal fun MoneyChallengeItem(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.End,
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     ) {
                         Text(
                             text = challenge.achievedCount,
                             style = TypoTheme.typography.headlineMediumB,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.primary,
                         )
                         HorizontalSpacer(2.dp)
                         Text(
                             text = challenge.totalTimes(),
                             style = TypoTheme.typography.titleSmallM,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
             }
             CompleteMark(
-                visible = challenge.challengeCompleted
+                visible = challenge.challengeCompleted,
             )
         }
     }
@@ -120,10 +120,10 @@ internal fun MoneyChallengeItem(
 
 @Composable
 private fun BoxScope.CompleteMark(
-    visible: Boolean
+    visible: Boolean,
 ) {
     Scrim(
-        visible = visible
+        visible = visible,
     )
     if (visible) {
         Text(
@@ -132,13 +132,12 @@ private fun BoxScope.CompleteMark(
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .graphicsLayer(
-                    rotationZ = -15f
+                    rotationZ = -15f,
                 )
-                .align(Alignment.Center)
+                .align(Alignment.Center),
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -159,11 +158,11 @@ private fun MoneyChallengePreview() {
                         challengeId = 0,
                         amount = 100000,
                         date = LocalDate.now(),
-                        isAchieved = false
-                    )
-                )
+                        isAchieved = false,
+                    ),
+                ),
             ),
-            onClick = {}
+            onClick = {},
         )
     }
 }

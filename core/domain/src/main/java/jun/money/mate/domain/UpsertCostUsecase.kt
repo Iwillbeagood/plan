@@ -1,13 +1,13 @@
 package jun.money.mate.domain
 
-import jun.money.mate.data_api.database.CostRepository
+import jun.money.mate.dataApi.database.CostRepository
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.spending.Cost
 import jun.money.mate.model.spending.CostType
 import javax.inject.Inject
 
 class UpsertCostUsecase @Inject constructor(
-    private val costRepository: CostRepository
+    private val costRepository: CostRepository,
 ) {
 
     suspend operator fun invoke(
@@ -16,7 +16,7 @@ class UpsertCostUsecase @Inject constructor(
         costType: CostType?,
         day: Int,
         onSuccess: () -> Unit,
-        onError: (MessageType) -> Unit
+        onError: (MessageType) -> Unit,
     ) {
         if (costType == null) {
             onError(MessageType.Message("고정 지출 유형을 선택해 주세요"))
@@ -38,8 +38,8 @@ class UpsertCostUsecase @Inject constructor(
                 id = id,
                 amount = amount,
                 costType = costType,
-                day = day
-            )
+                day = day,
+            ),
         )
         onSuccess()
     }

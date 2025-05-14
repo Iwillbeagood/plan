@@ -216,7 +216,7 @@ private fun TypeItem(
     Surface(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 4.dp,
-        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceDim,
+        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, if (selected) MaterialTheme.colorScheme.primary else Gray6),
         modifier = Modifier
             .padding(4.dp)

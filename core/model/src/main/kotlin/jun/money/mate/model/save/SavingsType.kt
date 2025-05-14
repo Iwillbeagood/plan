@@ -1,9 +1,9 @@
 package jun.money.mate.model.save
 
 import jun.money.mate.model.serializer.YearMonthSerializer
-import jun.money.mate.model.save.SavingsType.PeriodType.Companion.periodEndYearMonth
+import jun.money.mate.model.save.SavingsType.PeriodType.Companion.periodEndDate
 import kotlinx.serialization.Serializable
-import java.time.YearMonth
+import java.time.LocalDate
 
 @Serializable
 sealed interface SavingsType {
@@ -13,11 +13,11 @@ sealed interface SavingsType {
     }
 
     interface PeriodType {
-        @Serializable(with = YearMonthSerializer::class) val periodStart: YearMonth
+        @Serializable(with = YearMonthSerializer::class) val periodStart: LocalDate
         val periodMonth: Int
 
         companion object {
-            val PeriodType.periodEndYearMonth: YearMonth
+            val PeriodType.periodEndDate: LocalDate
                 get() = periodStart.plusMonths(periodMonth.toLong())
         }
     }
@@ -39,13 +39,13 @@ sealed interface SavingsType {
 
     @Serializable
     data class 적금(
-        @Serializable(with = YearMonthSerializer::class) override val periodStart: YearMonth = YearMonth.now(),
+        @Serializable(with = YearMonthSerializer::class) override val periodStart: LocalDate = LocalDate.now(),
         override val periodMonth: Int = 0
     ) : SavingsType, PeriodType
 
     @Serializable
     data class 보험저축(
-        @Serializable(with = YearMonthSerializer::class) override val periodStart: YearMonth = YearMonth.now(),
+        @Serializable(with = YearMonthSerializer::class) override val periodStart: LocalDate = LocalDate.now(),
         override val periodMonth: Int = 0
     ) : SavingsType, PeriodType
 
@@ -65,10 +65,10 @@ sealed interface SavingsType {
         val SavingsType.title: String
             get() = this::class.simpleName ?: ""
 
-        val SavingsType.periodEnd: YearMonth?
+        val SavingsType.periodEnd: LocalDate?
             get() = when (this) {
-                is 적금 -> periodEndYearMonth
-                is 보험저축 -> periodEndYearMonth
+                is 적금 -> periodEndDate
+                is 보험저축 -> periodEndDate
                 else -> null
             }
 

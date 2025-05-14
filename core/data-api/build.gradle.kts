@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    setNamespace("data_api")
+    setNamespace("dataApi")
 }
 
 dependencies {

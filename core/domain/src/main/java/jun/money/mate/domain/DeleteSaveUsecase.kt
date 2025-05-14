@@ -1,16 +1,16 @@
 package jun.money.mate.domain
 
-import jun.money.mate.data_api.database.SaveRepository
+import jun.money.mate.dataApi.database.SaveRepository
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavingsType
 import javax.inject.Inject
 
 class DeleteSaveUsecase @Inject constructor(
-    private val saveRepository: SaveRepository
+    private val saveRepository: SaveRepository,
 ) {
 
     suspend operator fun invoke(
-        savePlan: SavePlan
+        savePlan: SavePlan,
     ) {
         when (savePlan.savingsType) {
             is SavingsType.보험저축 -> deletePeriodic(savePlan)

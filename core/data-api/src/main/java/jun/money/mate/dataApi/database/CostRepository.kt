@@ -1,8 +1,7 @@
-package jun.money.mate.data_api.database
+package jun.money.mate.dataApi.database
 
 import jun.money.mate.model.spending.Cost
 import kotlinx.coroutines.flow.Flow
-import java.time.YearMonth
 
 interface CostRepository {
 
@@ -11,7 +10,7 @@ interface CostRepository {
     fun getCostFlow(): Flow<List<Cost>>
 
     suspend fun getCostById(
-        id: Long
+        id: Long,
     ): Cost
 
     suspend fun deleteById(id: Long)

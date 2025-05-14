@@ -36,7 +36,7 @@ private data class Acorn(
 )
 
 @Composable
-internal fun AcornFlowerBox(
+internal fun AcornBox(
     modifier: Modifier = Modifier,
     goldCount: Int = 0,
     count: Int = 20,
@@ -72,9 +72,9 @@ internal fun AcornFlowerBox(
         acorns.forEachIndexed { _, (x, count, rotation, iconId) ->
             val animatedY = remember { Animatable(-50f) }
 
-            LaunchedEffect(maxDropHeight) { // 40% 높이에서만 애니메이션 동작
+            LaunchedEffect(maxDropHeight) {
                 animatedY.animateTo(
-                    targetValue = maxDropHeight - (count * 10f), // 최대 높이를 40%로 제한
+                    targetValue = maxDropHeight - (count * 10f),
                     animationSpec = tween(
                         durationMillis = Random.nextInt(1000, 3000),
                         easing = EaseOutBounce
@@ -142,6 +142,6 @@ internal fun AcornFlowerBox(
 @Composable
 private fun AcornBoxPreview() {
     JunTheme {
-        AcornFlowerBox(count = 20)
+        AcornBox(count = 20)
     }
 }

@@ -43,35 +43,35 @@ fun NumberKeyboard(
     onDismissRequest: () -> Unit,
 ) {
     BottomToTopAnimatedVisibility(
-        visible = visible
+        visible = visible,
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             Column(
                 modifier = Modifier
                     .shadow(10.dp, RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(vertical = 10.dp)
-                    .align(Alignment.BottomCenter)
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(vertical = 16.dp)
+                    .align(Alignment.BottomCenter),
             ) {
                 PriceButtonRow(
                     onChangeNumber = onChangeNumber,
-                    modifier = Modifier.padding(horizontal = 10.dp)
+                    modifier = Modifier.padding(horizontal = 10.dp),
                 )
-                VerticalSpacer(8.dp)
+                VerticalSpacer(16.dp)
                 NumberField(
                     numberPadding = 4.dp,
                     isReset = true,
-                    onChangeNumber = onChangeNumber
+                    onChangeNumber = onChangeNumber,
                 )
                 VerticalSpacer(8.dp)
                 RegularButton(
                     text = buttonText,
                     color = main,
                     onClick = onDismissRequest,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
                 )
             }
         }
@@ -81,28 +81,27 @@ fun NumberKeyboard(
 @Composable
 private fun PriceButtonRow(
     onChangeNumber: (ValueState) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         PriceButton.entries.forEach { price ->
             RegularButton(
                 text = price.title,
-                color = Gray6,
-                style = TypoTheme.typography.titleSmallM.nonScaledSp,
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                style = TypoTheme.typography.labelLargeB.nonScaledSp,
                 isPreventMultipleClicks = false,
                 onClick = {
                     onChangeNumber(ValueState.Plus(price.price))
                 },
-                verticalPadding = 4.dp,
-                modifier = Modifier.weight(1f)
+                verticalPadding = 2.dp,
+                modifier = Modifier.weight(1f),
             )
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -111,7 +110,7 @@ private fun NumberKeyboardPreview() {
         NumberKeyboard(
             visible = true,
             onChangeNumber = {},
-            onDismissRequest = {}
+            onDismissRequest = {},
         )
     }
 }

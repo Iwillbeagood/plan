@@ -8,16 +8,20 @@ internal fun Income.toIncomeEntity() = IncomeEntity(
     id = id,
     title = title,
     amount = amount,
+    addDate = addDate,
     dateType = dateType,
+    date = date
 )
 
 internal fun IncomeEntity.toIncome() = Income(
     id = id,
     title = title,
     amount = amount,
+    addDate = addDate,
     dateType = dateType,
+    date = date,
 )
 
 internal fun List<IncomeEntity>.toIncomeList() = IncomeList(
-    map(IncomeEntity::toIncome)
+    map(IncomeEntity::toIncome),
 )

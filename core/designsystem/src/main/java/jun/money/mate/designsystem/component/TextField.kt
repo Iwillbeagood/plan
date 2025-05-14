@@ -198,6 +198,7 @@ fun UnderlineTextField(
     focusRequester: FocusRequester = FocusRequester(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    onFocus: () -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
     var isFocus by remember { mutableStateOf(false) }
@@ -245,6 +246,12 @@ fun UnderlineTextField(
     LaunchedEffect(focus) {
         if (focus) {
             focusRequester.requestFocus()
+        }
+    }
+
+    LaunchedEffect(isFocus) {
+        if (isFocus) {
+            onFocus()
         }
     }
 }

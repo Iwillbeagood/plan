@@ -1,8 +1,8 @@
 package jun.money.mate.domain
 
-import jun.money.mate.data_api.database.ChallengeRepository
-import jun.money.mate.data_api.database.IncomeRepository
-import jun.money.mate.data_api.database.SaveRepository
+import jun.money.mate.dataApi.database.ChallengeRepository
+import jun.money.mate.dataApi.database.IncomeRepository
+import jun.money.mate.dataApi.database.SaveRepository
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.model.save.Challenge
 import jun.money.mate.model.save.SavePlanList
@@ -15,16 +15,16 @@ import javax.inject.Inject
 class GetFinanceUsecase @Inject constructor(
     private val incomeRepository: IncomeRepository,
     private val saveRepository: SaveRepository,
-    private val challengeRepository: ChallengeRepository
+    private val challengeRepository: ChallengeRepository,
 ) {
 
     operator fun invoke(
-        month: YearMonth = YearMonth.now()
+        month: YearMonth = YearMonth.now(),
     ): Flow<FinanceData> {
         return combine(
             incomeRepository.getIncomesByMonth(month),
             saveRepository.getSavingFlow(month),
-            challengeRepository.getChallengeList()
+            challengeRepository.getChallengeList(),
         ) { incomes, savingPlans, challenge ->
             Logger.d("incomes: $incomes")
             Logger.d("savingPlans: $savingPlans")
@@ -32,7 +32,7 @@ class GetFinanceUsecase @Inject constructor(
             FinanceData(
                 incomeList = incomes,
                 savePlanList = savingPlans,
-                challenge = challenge
+                challenge = challenge,
             )
         }
     }
@@ -41,5 +41,5 @@ class GetFinanceUsecase @Inject constructor(
 data class FinanceData(
     val incomeList: IncomeList,
     val savePlanList: SavePlanList,
-    val challenge: List<Challenge>
+    val challenge: List<Challenge>,
 )

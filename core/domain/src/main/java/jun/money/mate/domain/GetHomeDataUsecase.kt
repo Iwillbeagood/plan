@@ -1,9 +1,9 @@
 package jun.money.mate.domain
 
-import jun.money.mate.data_api.database.BudgetRepository
-import jun.money.mate.data_api.database.CostRepository
-import jun.money.mate.data_api.database.IncomeRepository
-import jun.money.mate.data_api.database.SaveRepository
+import jun.money.mate.dataApi.database.BudgetRepository
+import jun.money.mate.dataApi.database.CostRepository
+import jun.money.mate.dataApi.database.IncomeRepository
+import jun.money.mate.dataApi.database.SaveRepository
 import jun.money.mate.model.consumption.Budget
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.model.save.SavePlanList
@@ -16,7 +16,7 @@ class GetHomeDataUsecase @Inject constructor(
     private val incomeRepository: IncomeRepository,
     private val saveRepository: SaveRepository,
     private val budgetRepository: BudgetRepository,
-    private val costRepository: CostRepository
+    private val costRepository: CostRepository,
 ) {
 
     operator fun invoke(): Flow<HomeData> {
@@ -24,13 +24,13 @@ class GetHomeDataUsecase @Inject constructor(
             incomeRepository.getIncomesByMonth(),
             saveRepository.getSavePlanListFlow(),
             budgetRepository.getBudgetsFlow(),
-            costRepository.getCostFlow()
+            costRepository.getCostFlow(),
         ) { incomes, savingPlans, budgets, costs ->
             HomeData(
                 incomeList = incomes,
                 savePlanList = savingPlans,
                 budgets = budgets,
-                costs = costs
+                costs = costs,
             )
         }
     }
@@ -40,5 +40,5 @@ data class HomeData(
     val incomeList: IncomeList,
     val savePlanList: SavePlanList,
     val budgets: List<Budget>,
-    val costs: List<Cost>
+    val costs: List<Cost>,
 )

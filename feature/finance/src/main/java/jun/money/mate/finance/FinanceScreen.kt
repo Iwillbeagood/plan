@@ -1,6 +1,5 @@
 package jun.money.mate.finance
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -30,23 +28,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
-import jun.money.mate.designsystem.theme.Gray7
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.finance.component.FinanceChart
-import jun.money.mate.finance.component.MoneyChallengeItem
-import jun.money.mate.finance.component.PlusButton
 import jun.money.mate.finance.contract.FinanceState
 import jun.money.mate.model.save.Challenge
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
@@ -57,7 +50,7 @@ import jun.money.mate.utils.currency.CurrencyFormatter
 
 @Composable
 internal fun FinanceRoute(
-    viewModel: FinanceViewModel = hiltViewModel()
+    viewModel: FinanceViewModel = hiltViewModel(),
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.background)
 
@@ -71,7 +64,7 @@ internal fun FinanceRoute(
         onShowIncome = navigateAction::navigateToIncomeList,
         onShowSavings = navigateAction::navigateToSaveList,
         onShowChallengeAdd = navigateAction::navigateToChallengeAdd,
-        onShowChallengeDetail = navigateAction::navigateToChallengeDetail
+        onShowChallengeDetail = navigateAction::navigateToChallengeDetail,
     )
 
     LaunchedEffect(Unit) {
@@ -98,7 +91,7 @@ private fun FinanceContent(
             onShowIncome = onShowIncome,
             onShowSavings = onShowSavings,
             onAddClick = onShowChallengeAdd,
-            onChallengeClick = onShowChallengeDetail
+            onChallengeClick = onShowChallengeDetail,
         )
     }
 }
@@ -114,11 +107,11 @@ private fun FinanceScreen(
     onAddClick: () -> Unit,
     onChallengeClick: (Long) -> Unit,
 ) {
-    Scaffold{
+    Scaffold {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(it),
         ) {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -134,46 +127,46 @@ private fun FinanceScreen(
                         onShowSavings = onShowSavings,
                     )
                 }
-                stickyHeader {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.background)
-                            .padding(top = 16.dp, bottom = 6.dp, start = 20.dp)
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.Bottom,
-                        ) {
-                            Text(
-                                text = "저축 챌린지",
-                                style = TypoTheme.typography.titleNormalM,
-                            )
-                            HorizontalSpacer(16.dp)
-                            Text(
-                                text = "목표를 세우고 도전해보세요!",
-                                style = TypoTheme.typography.titleSmallM,
-                                color = MaterialTheme.colorScheme.primary,
-                            )
-                        }
-                    }
-                }
-                items(challengeList) { item ->
-                    MoneyChallengeItem(
-                        challenge = item,
-                        onClick = {
-                            onChallengeClick(item.id)
-                        },
-                    )
-                }
-                item {
-                    Column {
-                        PlusButton(
-                            onClick = onAddClick,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                }
+//                stickyHeader {
+//                    Row(
+//                        verticalAlignment = Alignment.CenterVertically,
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .background(MaterialTheme.colorScheme.background)
+//                            .padding(top = 16.dp, bottom = 6.dp, start = 20.dp)
+//                    ) {
+//                        Row(
+//                            verticalAlignment = Alignment.Bottom,
+//                        ) {
+//                            Text(
+//                                text = "저축 챌린지",
+//                                style = TypoTheme.typography.titleNormalM,
+//                            )
+//                            HorizontalSpacer(16.dp)
+//                            Text(
+//                                text = "목표를 세우고 도전해보세요!",
+//                                style = TypoTheme.typography.titleSmallM,
+//                                color = MaterialTheme.colorScheme.primary,
+//                            )
+//                        }
+//                    }
+//                }
+//                items(challengeList) { item ->
+//                    MoneyChallengeItem(
+//                        challenge = item,
+//                        onClick = {
+//                            onChallengeClick(item.id)
+//                        },
+//                    )
+//                }
+//                item {
+//                    Column {
+//                        PlusButton(
+//                            onClick = onAddClick,
+//                            modifier = Modifier.fillMaxWidth()
+//                        )
+//                    }
+//                }
             }
         }
     }
@@ -191,33 +184,33 @@ private fun FinanceInfos(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             VerticalSpacer(8.dp)
             FinanceBox(
                 onClick = onShowIncome,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(1f)
+                    .weight(1f),
             ) {
                 VerticalSpacer(10.dp)
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "이번달 수입",
                         style = TypoTheme.typography.titleMediumM,
-                        modifier = Modifier.padding(start = 10.dp)
+                        modifier = Modifier.padding(start = 10.dp),
                     )
                     HorizontalSpacer(4.dp)
                     LeafIcon(
-                        modifier = Modifier.size(14.dp)
+                        modifier = Modifier.size(14.dp),
                     )
                     HorizontalSpacer(1f)
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 VerticalSpacer(1f)
@@ -227,7 +220,7 @@ private fun FinanceInfos(
                     textAlign = TextAlign.End,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(end = 16.dp)
+                        .padding(end = 16.dp),
                 )
                 VerticalSpacer(10.dp)
             }
@@ -236,26 +229,26 @@ private fun FinanceInfos(
                 onClick = onShowSavings,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(1f)
+                    .weight(1f),
             ) {
                 VerticalSpacer(10.dp)
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "이번달 저축",
                         style = TypoTheme.typography.titleMediumM,
-                        modifier = Modifier.padding(start = 10.dp)
+                        modifier = Modifier.padding(start = 10.dp),
                     )
                     HorizontalSpacer(2.dp)
                     SeedIcon(
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                     HorizontalSpacer(1f)
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 VerticalSpacer(30.dp)
@@ -265,7 +258,7 @@ private fun FinanceInfos(
                     textAlign = TextAlign.End,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(end = 16.dp)
+                        .padding(end = 16.dp),
                 )
             }
         }
@@ -279,11 +272,11 @@ private fun FinanceInfos(
             Text(
                 text = "저축 비율",
                 style = TypoTheme.typography.titleMediumM,
-                modifier = Modifier.padding(start = 16.dp)
+                modifier = Modifier.padding(start = 16.dp),
             )
             FinanceChart(
                 totalIncome = totalIncome,
-                savings = totalSavings
+                savings = totalSavings,
             )
         }
         VerticalSpacer(10.dp)
@@ -293,17 +286,17 @@ private fun FinanceInfos(
 @Composable
 private fun FinanceBox(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
+    onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Surface(
         shape = RoundedCornerShape(8.dp),
-        onClick = onClick,
-        enabled = onClick != { },
+        enabled = onClick != null,
+        onClick = onClick ?: {},
         modifier = modifier,
     ) {
         Column(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(10.dp),
         ) {
             content()
         }
@@ -321,7 +314,7 @@ private fun FinanceScreenPreview() {
             onShowIncome = {},
             onShowSavings = {},
             onAddClick = {},
-            onChallengeClick = {}
+            onChallengeClick = {},
         )
     }
 }

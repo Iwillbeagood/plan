@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -67,11 +68,15 @@ internal fun CostCalendar(
     val startDay = firstDayOfMonth.dayOfWeek.ordinal
     val totalRows = ceil((startDay + totalDaysInMonth) / daysInWeek.toFloat()).toInt()
 
-    Box {
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surface
+    ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(daysInWeek),
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(vertical = 10.dp)
                 .heightIn(max = 350.dp)
         ) {
             items(daysInWeek) { index ->
@@ -129,7 +134,7 @@ private fun DayCell(
                 if (selected)
                     MaterialTheme.colorScheme.primary
                 else
-                    MaterialTheme.colorScheme.background
+                    MaterialTheme.colorScheme.surface
             )
         ,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -185,7 +190,7 @@ private fun DayCell(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun CalendarScreenPreview() {
     JunTheme {

@@ -24,8 +24,8 @@ import jun.money.mate.challenge.contract.ChallengeEffect
 import jun.money.mate.challenge.contract.ChallengeState
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.RegularButton
-import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.StateAnimatedVisibility
+import jun.money.mate.designsystem.component.TopAppbar
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.Gray4
@@ -38,9 +38,9 @@ import jun.money.mate.utils.currency.CurrencyFormatter
 
 @Composable
 internal fun ChallengeRoute(
-    viewModel: ChallengeViewModel = hiltViewModel()
+    viewModel: ChallengeViewModel = hiltViewModel(),
 ) {
-    ChangeStatusBarColor()
+    ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
 
     val navigateAction = LocalNavigateActionInterop.current
     val showSnackBar = rememberShowSnackBar()
@@ -49,7 +49,7 @@ internal fun ChallengeRoute(
     Scaffold(
         topBar = {
             TopAppbar(
-                onBackEvent = navigateAction::popBackStack
+                onBackEvent = navigateAction::popBackStack,
             )
         },
         bottomBar = {
@@ -61,20 +61,20 @@ internal fun ChallengeRoute(
                     color = Gray4,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
                 )
             }
-
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(it),
         ) {
             ChallengeContent(
                 challengeState = challengeState,
-                onAchieveChange = viewModel::changeAchieve
+                onAchieveChange = viewModel::changeAchieve,
             )
         }
     }
@@ -111,13 +111,13 @@ private fun ChallengeScreen(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         VerticalSpacer(40.dp)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(horizontal = 30.dp)
+                .padding(horizontal = 30.dp),
         ) {
             Column {
                 Text(
@@ -134,18 +134,18 @@ private fun ChallengeScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             ) {
                 Text(
                     text = challengeState.challenge.achievedCount,
                     style = TypoTheme.typography.displaySmallB,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
                 HorizontalSpacer(2.dp)
                 Text(
                     text = challengeState.challenge.totalTimes(),
                     style = TypoTheme.typography.titleLargeM,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -153,7 +153,7 @@ private fun ChallengeScreen(
         ChallengeLazyColumn(
             challenge = challengeState.challenge,
             onAchieveChange = onAchieveChange,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -164,7 +164,7 @@ private fun SpendingListScreenPreview() {
     JunTheme {
         ChallengeScreen(
             challengeState = ChallengeState.ChallengeData(Challenge.sample),
-            onAchieveChange = { _, _ -> }
+            onAchieveChange = { _, _ -> },
         )
     }
 }

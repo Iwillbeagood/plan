@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class BudgetAddViewModel @Inject constructor(
-    private val addBudgetUsecase: AddBudgetUsecase
+    private val addBudgetUsecase: AddBudgetUsecase,
 ) : ViewModel() {
 
     var addStep = mutableStateOf(BudgetAddStep.Title)
@@ -33,7 +33,7 @@ internal class BudgetAddViewModel @Inject constructor(
         private set
 
     private val _budgetAddUiState = MutableStateFlow(BudgetAddUiState())
-    val budgetAddUiState: StateFlow<BudgetAddUiState>  get() = _budgetAddUiState
+    val budgetAddUiState: StateFlow<BudgetAddUiState> get() = _budgetAddUiState
 
     private val _budgetAddModalEffect = MutableStateFlow<BudgetAddModalEffect>(BudgetAddModalEffect.Idle)
     val budgetAddModalEffect: StateFlow<BudgetAddModalEffect> get() = _budgetAddModalEffect
@@ -52,7 +52,7 @@ internal class BudgetAddViewModel @Inject constructor(
                     showSnackBar(MessageType.Message("${NAV_NAME}이 설정되었습니다."))
                     addComplete()
                 },
-                onError = ::showSnackBar
+                onError = ::showSnackBar,
             )
         }
     }
@@ -97,7 +97,7 @@ internal class BudgetAddViewModel @Inject constructor(
     fun amountValueChange(value: ValueState) {
         _budgetAddUiState.update {
             it.copy(
-                budget = value.value(it.amountString).toLongOrNull() ?: 0
+                budget = value.value(it.amountString).toLongOrNull() ?: 0,
             )
         }
     }
@@ -133,4 +133,3 @@ internal class BudgetAddViewModel @Inject constructor(
         }
     }
 }
-

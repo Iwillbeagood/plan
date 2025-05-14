@@ -30,7 +30,7 @@ import kotlin.math.sin
 internal fun WaterProgress(
     currentAmount: Long,
     goalAmount: Long,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val challengeRatio = if (goalAmount == 0L && currentAmount > 0L) {
         1f
@@ -49,7 +49,7 @@ internal fun WaterProgress(
         coroutineScope.launch {
             animatedProgress.animateTo(
                 targetValue = challengeRatio,
-                animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
+                animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing),
             )
         }
     }
@@ -62,8 +62,8 @@ internal fun WaterProgress(
                     targetValue = 1f,
                     animationSpec = infiniteRepeatable(
                         animation = tween(durationMillis = 2000, easing = LinearEasing),
-                        repeatMode = RepeatMode.Reverse
-                    )
+                        repeatMode = RepeatMode.Reverse,
+                    ),
                 )
             }
         }
@@ -71,16 +71,15 @@ internal fun WaterProgress(
 
     Box(
         modifier = modifier
-            .fillMaxHeight()
-            ,
-        contentAlignment = Alignment.Center
+            .fillMaxHeight(),
+        contentAlignment = Alignment.Center,
     ) {
         // 퍼센트 텍스트
 
         Canvas(
             modifier = Modifier
                 .matchParentSize()
-                .align(Alignment.BottomCenter)
+                .align(Alignment.BottomCenter),
         ) {
             val waveHeight = 15f // 물결 높이 (크기 조절 가능)
             val waveWidth = size.width / 4 // 물결 폭
@@ -100,7 +99,7 @@ internal fun WaterProgress(
 
             drawPath(
                 path = path,
-                color = Color.Blue.copy(alpha = 0.6f)
+                color = Color.Blue.copy(alpha = 0.6f),
             )
         }
         val percent = (animatedProgress.value * 100).toInt()
@@ -110,7 +109,7 @@ internal fun WaterProgress(
             color = if (percent > 50) Color.White else Color.Black,
             modifier = Modifier
                 .padding(8.dp)
-                .align(Alignment.Center)
+                .align(Alignment.Center),
         )
     }
 }
@@ -122,7 +121,7 @@ private fun WaterProgressPreview() {
         WaterProgress(
             goalAmount = 100000L,
             currentAmount = 60000L,
-            modifier = Modifier
+            modifier = Modifier,
         )
     }
 }

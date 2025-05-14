@@ -22,16 +22,16 @@ import java.time.LocalDate
 @Composable
 fun ChallengeDateType(
     onChallengeTypeSelected: (ChallengeType) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var isMonthly by remember { mutableStateOf<Boolean?>(null) }
     var selectedWeek by remember { mutableStateOf(LocalDate.now().dayOfWeek) }
 
     Column(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             TypeButton(
                 text = "한달마다",
@@ -39,7 +39,7 @@ fun ChallengeDateType(
                 onApplyType = {
                     isMonthly = true
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
             HorizontalSpacer(10.dp)
             TypeButton(
@@ -48,12 +48,12 @@ fun ChallengeDateType(
                 onApplyType = {
                     isMonthly = false
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
         }
         VerticalSpacer(16.dp)
         Crossfade(
-            isMonthly
+            isMonthly,
         ) {
             when (it) {
                 true -> {
@@ -61,7 +61,7 @@ fun ChallengeDateType(
                         onDaySelected = { day ->
                             onChallengeTypeSelected(ChallengeType.Monthly(day.toInt()))
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
 
@@ -72,7 +72,7 @@ fun ChallengeDateType(
                             onChallengeTypeSelected(ChallengeType.Weekly(week))
                         },
                         selectedDayOfWeek = selectedWeek,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
                 else -> {}

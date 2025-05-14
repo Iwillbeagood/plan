@@ -13,7 +13,7 @@ internal sealed interface BudgetDetailState {
 
     @Immutable
     data class BudgetDetailData(
-        val budget: Budget
+        val budget: Budget,
     ) : BudgetDetailState {
 
         val selectedUsed get() = budget.usedList.filter(Used::isSelected).map(Used::id)

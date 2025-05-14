@@ -15,6 +15,6 @@ fun SeedIcon(
         painter = painterResource(R.drawable.ic_acorn),
         contentDescription = null,
         tint = Color.Unspecified,
-        modifier = modifier
+        modifier = modifier,
     )
 }

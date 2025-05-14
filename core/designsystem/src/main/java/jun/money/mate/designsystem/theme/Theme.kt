@@ -29,6 +29,7 @@ private val DarkColorScheme = darkColorScheme(
     onSurfaceVariant = Gray9,
     onTertiary = White2,
     surface = Black3,
+    surfaceVariant = Black3,
     secondary = Gray3,
     tertiary = Gray3,
     error = Red3,
@@ -36,17 +37,18 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    surfaceDim = Gray11,
+    surfaceDim = mainBackground,
     primary = main,
     onPrimary = main,
     secondary = Color(0xFFc7dcdc),
     tertiary = White1,
     surface = White1,
+    surfaceVariant = Gray8,
     onSurface = Black, // 텍스트 색상
     onSurfaceVariant = Gray4,
     onSecondary = White,
     onTertiary = Black,
-    background = Gray11,
+    background = mainBackground,
     error = Red3,
     onBackground = Color(0xFF1C1B1F),
 )

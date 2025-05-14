@@ -23,11 +23,13 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.CheckIcon
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem_date.datetimepicker.MonthBar
+import jun.money.mate.model.Utils.formatDateToKorean
 import jun.money.mate.model.etc.DateType
-import jun.money.mate.model.etc.DateType.Companion.toDateString
+import jun.money.mate.model.etc.DateType.Monthly
+import jun.money.mate.model.etc.DateType.Specific
 import jun.money.mate.model.income.Income
 import jun.money.mate.model.income.IncomeList
 import jun.money.mate.ui.LeafIcon
@@ -41,13 +43,12 @@ internal fun IncomeListBody(
     onNext: () -> Unit,
     incomeList: IncomeList,
     onIncomeClick: (Income) -> Unit,
-    modifier : Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-        color = MaterialTheme.colorScheme.surfaceDim,
         shadowElevation = 2.dp,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         Column {
             VerticalSpacer(20.dp)
@@ -55,12 +56,12 @@ internal fun IncomeListBody(
                 month = month,
                 onPrev = onPrev,
                 onNext = onNext,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
             VerticalSpacer(20.dp)
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 item {
                     VerticalSpacer(10.dp)
@@ -69,7 +70,7 @@ internal fun IncomeListBody(
                     IncomeItem(
                         income = income,
                         onIncomeClick = { onIncomeClick(income) },
-                        modifier = Modifier.animateContentSize()
+                        modifier = Modifier.animateContentSize(),
                     )
                 }
             }
@@ -81,12 +82,11 @@ internal fun IncomeListBody(
 private fun IncomeItem(
     income: Income,
     onIncomeClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         shape = RoundedCornerShape(8.dp),
         shadowElevation = 2.dp,
-        color = MaterialTheme.colorScheme.surfaceDim,
         onClick = onIncomeClick,
         contentColor = MaterialTheme.colorScheme.onSurface,
         modifier = modifier
@@ -98,21 +98,21 @@ private fun IncomeItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     if (income.isSelected) {
                         CheckIcon()
                     } else {
                         LeafIcon(
-                            isRed = income.dateType is DateType.Specific,
-                            modifier = Modifier.size(14.dp)
+                            isRed = income.dateType == DateType.Specific,
+                            modifier = Modifier.size(14.dp),
                         )
                     }
                     HorizontalSpacer(6.dp)
@@ -120,11 +120,16 @@ private fun IncomeItem(
                         Text(
                             text = income.title,
                             style = TypoTheme.typography.titleMediumM,
+                            maxLines = 1,
                         )
                         Text(
-                            text = income.dateType.toDateString(),
+                            text =
+                                when (income.dateType) {
+                                    Monthly -> "매월 ${income.date}일"
+                                    Specific -> formatDateToKorean(income.localDate)
+                                },
                             style = TypoTheme.typography.titleSmallR,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
@@ -132,7 +137,7 @@ private fun IncomeItem(
             Text(
                 text = income.amountString,
                 style = TypoTheme.typography.titleNormalB,
-                textAlign = TextAlign.End
+                textAlign = TextAlign.End,
             )
         }
     }
@@ -152,7 +157,7 @@ private fun IncomeListBodyPreview() {
                     Income.variableSample,
                 ),
             ),
-            onIncomeClick = {}
+            onIncomeClick = {},
         )
     }
 }
@@ -166,9 +171,11 @@ private fun IncomeItemPreview() {
                 id = 1,
                 title = "Title",
                 amount = 1000,
-                dateType = DateType.Monthly(1, YearMonth.now()),
+                date = 1,
+                addDate = LocalDate.now(),
+                dateType = Monthly,
             ),
-            onIncomeClick = {}
+            onIncomeClick = {},
         )
     }
 }

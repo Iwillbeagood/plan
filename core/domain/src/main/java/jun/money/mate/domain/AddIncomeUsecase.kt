@@ -1,21 +1,23 @@
 package jun.money.mate.domain
 
-import jun.money.mate.data_api.database.IncomeRepository
+import jun.money.mate.dataApi.database.IncomeRepository
 import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
+import java.time.LocalDate
 import javax.inject.Inject
 
 class AddIncomeUsecase @Inject constructor(
-    private val incomeRepository: IncomeRepository
+    private val incomeRepository: IncomeRepository,
 ) {
 
     suspend operator fun invoke(
         title: String,
         amount: Long,
+        day: Int,
         dateType: DateType?,
         onSuccess: () -> Unit,
-        onError: (MessageType) -> Unit
+        onError: (MessageType) -> Unit,
     ) {
         if (title.isEmpty()) {
             onError(MessageType.Message("수입명을 입력해 주세요"))
@@ -32,13 +34,15 @@ class AddIncomeUsecase @Inject constructor(
             return
         }
 
-        incomeRepository.upsertIncome(
+        incomeRepository.insertIncome(
             Income(
                 id = System.currentTimeMillis(),
                 title = title,
                 amount = amount,
+                date = day,
                 dateType = dateType,
-            )
+                addDate = LocalDate.now()
+            ),
         )
         onSuccess()
     }

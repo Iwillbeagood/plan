@@ -39,3 +39,27 @@ fun formatYearMonth(date: YearMonth): String {
 
     return date.format(DateTimeFormatter.ofPattern("M월")) // "2월"
 }
+
+fun LocalDate.toYearMonth(): YearMonth =
+    YearMonth.of(this.year, this.month)
+
+fun Int.toDaysRemaining(): Int {
+    val today = LocalDate.now()
+    val thisMonth = today.withDayOfMonth(coerceAtMost(today.lengthOfMonth()))
+    val nextMonth = today.plusMonths(1).withDayOfMonth(coerceAtMost(today.plusMonths(1).lengthOfMonth()))
+
+    return if (today.dayOfMonth <= this) {
+        thisMonth.dayOfMonth - today.dayOfMonth
+    } else {
+        (nextMonth.toEpochDay() - today.toEpochDay()).toInt()
+    }
+}
+
+fun Int.toRemainingDayString(): String {
+    val daysRemaining = toDaysRemaining()
+    return when {
+        daysRemaining == 0 -> "오늘"
+        daysRemaining > 0 -> "${daysRemaining}일 후"
+        else -> "지남"
+    }
+}

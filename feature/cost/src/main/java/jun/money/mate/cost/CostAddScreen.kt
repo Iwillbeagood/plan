@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,7 +51,7 @@ internal enum class CostStep(
 internal fun CostAddRoute(
     viewModel: CostAddViewModel = hiltViewModel()
 ) {
-    ChangeStatusBarColor()
+    ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
 
     val focusManager = LocalFocusManager.current
     val navigateAction = LocalNavigateActionInterop.current
@@ -105,7 +106,7 @@ private fun CostAddScreen(
             .verticalScroll(rememberScrollState())
             .animateContentSize()
     ) {
-        VerticalSpacer(50.dp)
+        VerticalSpacer(30.dp)
         if (currentStep.message.isNotBlank()) {
             Text(
                 text = currentStep.message,

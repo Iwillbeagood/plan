@@ -30,18 +30,18 @@ import kotlin.random.Random
 @Composable
 internal fun LeavesBox(
     leaves: List<LeafOrder>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     FallingLeaves(
         leaves = leaves,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 private fun FallingLeaves(
     leaves: List<LeafOrder>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp - 50
@@ -54,7 +54,7 @@ private fun FallingLeaves(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height((screenHeight * 0.4f).dp)
+            .height((screenHeight * 0.4f).dp),
     ) {
         leaves.forEachIndexed { index, leafOrder ->
             val leaf = Leaf(
@@ -62,7 +62,7 @@ private fun FallingLeaves(
                 startY = -50f,
                 endY = -50f,
                 swingAmount = Random.nextFloat() * 200f - 100f,
-                isRed = leafOrder.isRed
+                isRed = leafOrder.isRed,
             )
 
             val animatedY = remember { Animatable(leaf.startY) }
@@ -76,8 +76,8 @@ private fun FallingLeaves(
                         targetValue = endYPosition * 2,
                         animationSpec = tween(
                             durationMillis = Random.nextInt(1000, 3000),
-                            easing = LinearEasing
-                        )
+                            easing = LinearEasing,
+                        ),
                     )
                     isFalling.value = false
                 }
@@ -86,11 +86,11 @@ private fun FallingLeaves(
                     if (isFalling.value) {
                         animatedX.animateTo(
                             targetValue = leaf.startX + leaf.swingAmount,
-                            animationSpec = tween(durationMillis = 2000, easing = FastOutSlowInEasing)
+                            animationSpec = tween(durationMillis = 2000, easing = FastOutSlowInEasing),
                         )
                         animatedX.animateTo(
                             targetValue = leaf.startX - leaf.swingAmount,
-                            animationSpec = tween(durationMillis = 2000, easing = FastOutSlowInEasing)
+                            animationSpec = tween(durationMillis = 2000, easing = FastOutSlowInEasing),
                         )
                     }
                 }
@@ -99,7 +99,7 @@ private fun FallingLeaves(
                 isRed = leaf.isRed,
                 modifier = Modifier
                     .offset { IntOffset(animatedX.value.toInt(), animatedY.value.toInt()) }
-                    .size(50.dp)
+                    .size(50.dp),
             )
         }
     }
@@ -111,9 +111,9 @@ private fun MoneyBoxPreview() {
     JunTheme {
         LeavesBox(
             leaves = listOf(
-                LeafOrder(false)
+                LeafOrder(false),
             ),
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier.fillMaxHeight(),
         )
     }
 }

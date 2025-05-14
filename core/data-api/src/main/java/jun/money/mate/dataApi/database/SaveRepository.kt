@@ -1,4 +1,4 @@
-package jun.money.mate.data_api.database
+package jun.money.mate.dataApi.database
 
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList

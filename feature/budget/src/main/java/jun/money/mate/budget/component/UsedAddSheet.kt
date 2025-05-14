@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.DefaultBottomSheet
 import jun.money.mate.designsystem.component.DefaultTextField
 import jun.money.mate.designsystem.component.HorizontalSpacer
-import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JunTheme
@@ -78,11 +77,11 @@ internal fun UsedAddSheet(
                             amount = amount.toLongOrNull() ?: 0L,
                             date = date,
                             budgetId = 0,
-                        )
+                        ),
                     )
-                }
+                },
             )
-        }
+        },
     )
 }
 
@@ -94,10 +93,10 @@ private fun AddUsedSheetContent(
     onMenoValueChange: (String) -> Unit,
     onAmountValueChange: (String) -> Unit,
     onDateSelected: (LocalDate) -> Unit,
-    onComplete: () -> Unit
+    onComplete: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Row {
             Text(
@@ -111,12 +110,12 @@ private fun AddUsedSheetContent(
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .padding(horizontal = 10.dp, vertical = 4.dp)
-                    .clickable(onClick = onComplete)
+                    .clickable(onClick = onComplete),
             )
         }
         VerticalSpacer(10.dp)
         AddUsedField(
-            title = "메모"
+            title = "메모",
         ) {
             Column {
                 DefaultTextField(
@@ -125,7 +124,7 @@ private fun AddUsedSheetContent(
                     hint = "메모를 입력해 주세요",
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next,
-                    )
+                    ),
                 )
             }
         }
@@ -139,8 +138,8 @@ private fun AddUsedSheetContent(
                     hint = "금액을 입력해 주세요",
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next,
-                        keyboardType = KeyboardType.NumberPassword
-                    )
+                        keyboardType = KeyboardType.NumberPassword,
+                    ),
                 )
                 TopToBottomAnimatedVisibility(amount != "0") {
                     Column {
@@ -149,7 +148,7 @@ private fun AddUsedSheetContent(
                             text = CurrencyFormatter.formatAmountWon(amount),
                             style = TypoTheme.typography.labelLargeM,
                             textAlign = TextAlign.End,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                 }

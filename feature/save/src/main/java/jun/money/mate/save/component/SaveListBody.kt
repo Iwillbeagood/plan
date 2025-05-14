@@ -34,7 +34,6 @@ internal fun SaveListBody(
 ) {
     Surface(
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-        color = MaterialTheme.colorScheme.surfaceDim,
         shadowElevation = 2.dp,
         modifier = modifier.fillMaxWidth()
     ) {

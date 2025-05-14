@@ -14,7 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -30,31 +33,29 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.ui.DateAdd
 import jun.money.mate.income.contract.IncomeAddState
 import jun.money.mate.income.contract.IncomeEffect
 import jun.money.mate.income.contract.IncomeModalEffect
 import jun.money.mate.model.etc.DateType
-import jun.money.mate.ui.AddScaffold
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
-import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.navigation.interop.rememberShowSnackBar
-import java.time.LocalDate
-import java.time.YearMonth
+import jun.money.mate.ui.AddScaffold
+import jun.money.mate.ui.DateAdd
+import jun.money.mate.ui.number.NumberKeyboard
 
 internal enum class IncomeAddStep(
-    val message: String
+    val message: String,
 ) {
     Title("어떤 수입인지 설명해 주세요"),
     Amount("수입이 얼마나 발생됐는지 금액을 입력해 주세요"),
-    Type("수입이 발생한 날짜를 선택해 주세요");
+    Type("수입이 발생한 날짜를 선택해 주세요"),
 }
 
 @Composable
 internal fun IncomeAddRoute(
-    viewModel: IncomeAddViewModel = hiltViewModel()
+    viewModel: IncomeAddViewModel = hiltViewModel(),
 ) {
-    ChangeStatusBarColor(MaterialTheme.colorScheme.background)
+    ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
 
     val showSnackBar = rememberShowSnackBar()
     val navigateAction = LocalNavigateActionInterop.current
@@ -71,23 +72,24 @@ internal fun IncomeAddRoute(
             IncomeAddStep.Type -> "추가"
         },
         onGoBack = navigateAction::popBackStack,
-        onComplete = viewModel::nextStep
+        onComplete = viewModel::nextStep,
     ) {
         IncomeAddScreen(
             addStep = viewModel.addStep.value,
             addSteps = viewModel.addSteps.value,
             uiState = incomeAddState,
             onNextStep = viewModel::nextStep,
+            onDismiss = viewModel::dismiss,
             onIncomeTitleChange = viewModel::titleValueChange,
             onShowNumberBottomSheet = viewModel::showNumberKeyboard,
             onDaySelected = viewModel::daySelected,
-            onDateSelected = viewModel::dateSelected,
+            onDateTypeSelected = viewModel::dateTypeSelected,
         )
     }
 
     IncomeModalContent(
         incomeModalEffect = incomeModalEffect,
-        viewModel = viewModel
+        viewModel = viewModel,
     )
 
     LaunchedEffect(true) {
@@ -108,16 +110,18 @@ private fun IncomeAddScreen(
     addSteps: List<IncomeAddStep>,
     uiState: IncomeAddState,
     onNextStep: () -> Unit,
+    onDismiss: () -> Unit,
     onIncomeTitleChange: (String) -> Unit,
     onShowNumberBottomSheet: () -> Unit,
-    onDaySelected: (String) -> Unit,
-    onDateSelected: (LocalDate) -> Unit,
+    onDaySelected: (Int) -> Unit,
+    onDateTypeSelected: (DateType) -> Unit,
 ) {
+    val requester by remember { mutableStateOf(FocusRequester()) }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .animateContentSize()
+            .animateContentSize(),
     ) {
         VerticalSpacer(50.dp)
         Text(
@@ -131,8 +135,9 @@ private fun IncomeAddScreen(
         ) {
             DateAdd(
                 type = "수입",
-                onDaySelected = onDaySelected,
-                onDateSelected = onDateSelected,
+                onDateSelected = onDaySelected,
+                onDateTypeSelected = onDateTypeSelected,
+                dateType = uiState.dateType,
             )
         }
         IncomeAddField(
@@ -152,11 +157,10 @@ private fun IncomeAddScreen(
                             text = uiState.amountWon,
                             style = TypoTheme.typography.labelLargeM,
                             textAlign = TextAlign.End,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                 }
-
             }
         }
         IncomeAddField(
@@ -166,6 +170,7 @@ private fun IncomeAddScreen(
             UnderlineTextField(
                 value = uiState.title,
                 onValueChange = onIncomeTitleChange,
+                focusRequester = requester,
                 hint = "수입 제목",
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next,
@@ -173,11 +178,16 @@ private fun IncomeAddScreen(
                 keyboardActions = KeyboardActions(
                     onNext = {
                         onNextStep()
-                    }
-                )
+                    },
+                ),
+                onFocus = onDismiss
             )
         }
         VerticalSpacer(400.dp)
+    }
+
+    LaunchedEffect(Unit) {
+        requester.requestFocus()
     }
 }
 
@@ -203,7 +213,7 @@ private fun IncomeAddField(
 @Composable
 private fun IncomeModalContent(
     incomeModalEffect: IncomeModalEffect,
-    viewModel: IncomeAddViewModel
+    viewModel: IncomeAddViewModel,
 ) {
     when (incomeModalEffect) {
         IncomeModalEffect.Idle -> {}
@@ -230,13 +240,14 @@ private fun IncomeAddScreenPreview() {
             uiState = IncomeAddState(
                 title = "월급",
                 amount = 1000000,
-                dateType = DateType.Monthly(1, YearMonth.now()),
+                dateType = DateType.Monthly,
             ),
             onIncomeTitleChange = {},
             onShowNumberBottomSheet = {},
             onNextStep = {},
             onDaySelected = {},
-            onDateSelected = {},
+            onDateTypeSelected = {},
+            onDismiss = {},
         )
     }
 }

@@ -47,7 +47,7 @@ private fun MainScreenContent(
             MainBottomBar(
                 visible = navigator.shouldShowBottomBar(),
                 bottomItems = MainBottomNavItem.entries.toPersistentList(),
-                currentItem = navigator.currentItem
+                currentItem = navigator.currentItem,
             )
         },
         content = {
@@ -59,8 +59,8 @@ private fun MainScreenContent(
         snackbarHost = {
             SnackbarHost(
                 hostState = snackBarHostState,
-                modifier = Modifier.imePadding()
+                modifier = Modifier.imePadding(),
             )
-        }
+        },
     )
 }

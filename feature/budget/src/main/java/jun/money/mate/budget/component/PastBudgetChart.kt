@@ -84,7 +84,7 @@ private val dividerProperties = DividerProperties(
         thickness = .2.dp,
         color = SolidColor(Color.Gray.copy(alpha = .5f)),
         style = StrokeStyle.Dashed(intervals = floatArrayOf(15f, 15f), phase = 10f),
-    )
+    ),
 )
 
 @Composable
@@ -106,23 +106,23 @@ internal fun PastBudgetChart(
             .border(1.dp, Gray5, RoundedCornerShape(12.dp)),
         elevation = CardDefaults.elevatedCardElevation(2.dp),
         colors = CardDefaults.cardColors(
-            containerColor = White1
-        )
+            containerColor = White1,
+        ),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp, bottom = 16.dp)
+                .padding(top = 8.dp, bottom = 16.dp),
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             ) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Box(
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(40.dp),
                     ) {
                         FadeAnimatedVisibility(
                             visible = isThisYear && lastYearBudgets.isNotEmpty(),
@@ -135,21 +135,21 @@ internal fun PastBudgetChart(
                                     .clickable {
                                         isThisYear = false
                                     }
-                                    .padding(10.dp)
+                                    .padding(10.dp),
                             )
                         }
                     }
                     Text(
                         text = if (isThisYear) thisYear else { lastYear }.toString(),
                         style = TypoTheme.typography.titleMediumM,
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                        modifier = Modifier.padding(horizontal = 16.dp),
                     )
                     Box(
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(40.dp),
                     ) {
                         FadeAnimatedVisibility(
                             visible = !isThisYear && lastYearBudgets.isNotEmpty(),
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier.size(40.dp),
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ChevronRight,
@@ -159,11 +159,10 @@ internal fun PastBudgetChart(
                                     .clickable {
                                         isThisYear = true
                                     }
-                                    .padding(10.dp)
+                                    .padding(10.dp),
                             )
                         }
                     }
-
                 }
                 VerticalSpacer(10.dp)
                 PastBudgetChartContent(
@@ -172,7 +171,7 @@ internal fun PastBudgetChart(
                         thisYearBudgets
                     } else {
                         lastYearBudgets
-                    }
+                    },
                 )
             }
         }
@@ -196,7 +195,7 @@ fun PastBudgetChartContent(
                     drawStyle = DrawStyle.Stroke(width = 3.dp),
                     strokeAnimationSpec = tween(2000, easing = EaseInOutCubic),
                     gradientAnimationDelay = 1000,
-                    popupProperties = PopupProperties(enabled = false)
+                    popupProperties = PopupProperties(enabled = false),
                 ),
                 Line(
                     label = "사용량",
@@ -208,8 +207,8 @@ fun PastBudgetChartContent(
                         width = 3.dp,
                         strokeStyle = StrokeStyle.Dashed(
                             intervals = floatArrayOf(10f, 10f),
-                            phase = 15f
-                        )
+                            phase = 15f,
+                        ),
                     ),
                     dotProperties = DotProperties(
                         enabled = true,
@@ -226,9 +225,9 @@ fun PastBudgetChartContent(
                     drawStyle = DrawStyle.Stroke(),
                     strokeAnimationSpec = tween(2000, easing = EaseInOutCubic),
                     gradientAnimationDelay = 1000,
-                    popupProperties = PopupProperties(enabled = false)
+                    popupProperties = PopupProperties(enabled = false),
                 ),
-            )
+            ),
         )
     }
 
@@ -249,8 +248,8 @@ fun PastBudgetChartContent(
                 CurrencyFormatter.formatAmount((it / 90.0) * (originBudget))
             },
             containerColor = MaterialTheme.colorScheme.background.copy(
-                alpha = 0.2f
-            )
+                alpha = 0.2f,
+            ),
         ),
         indicatorProperties = HorizontalIndicatorProperties(enabled = false),
         labelProperties = LabelProperties(
@@ -259,7 +258,7 @@ fun PastBudgetChartContent(
             textStyle = TypoTheme.typography.labelLargeM,
         ),
         labelHelperProperties = LabelHelperProperties(textStyle = TypoTheme.typography.labelLargeR),
-        curvedEdges = true
+        curvedEdges = true,
     )
 }
 
@@ -268,11 +267,11 @@ fun PastBudgetChartContent(
 private fun Preview() {
     JunTheme {
         Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
+            modifier = Modifier.verticalScroll(rememberScrollState()),
         ) {
             PastBudgetChart(
                 originBudget = 1000000,
-                pastBudgetGroup = Budget.sample.groupedPastBudget
+                pastBudgetGroup = Budget.sample.groupedPastBudget,
             )
         }
     }

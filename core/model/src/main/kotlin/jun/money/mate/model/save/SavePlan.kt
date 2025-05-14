@@ -2,7 +2,7 @@ package jun.money.mate.model.save
 
 import jun.money.mate.model.Utils
 import jun.money.mate.model.save.SavingsType.Companion.periodEnd
-import jun.money.mate.model.save.SavingsType.PeriodType.Companion.periodEndYearMonth
+import jun.money.mate.model.save.SavingsType.PeriodType.Companion.periodEndDate
 import jun.money.mate.model.save.SavingsType.보험저축
 import jun.money.mate.model.save.SavingsType.적금
 import java.time.LocalDate
@@ -22,8 +22,8 @@ data class SavePlan(
 
     val period: String
         get() = when (savingsType) {
-            is 적금 -> "${savingsType.periodStart} ~ ${savingsType.periodEndYearMonth} (${savingsType.periodMonth}개월)"
-            is 보험저축 -> "${savingsType.periodStart} ~ ${savingsType.periodEndYearMonth} (${savingsType.periodMonth}개월)"
+            is 적금 -> "${savingsType.periodStart} ~ ${savingsType.periodEndDate} (${savingsType.periodMonth}개월)"
+            is 보험저축 -> "${savingsType.periodStart} ~ ${savingsType.periodEndDate} (${savingsType.periodMonth}개월)"
             else -> "$addYearMonth ~ "
         }
 
@@ -54,13 +54,13 @@ data class SavePlan(
         val periodEnd = savingsType.periodEnd ?: return null
         val endDate = LocalDate.of(periodEnd.year, periodEnd.month, day).minusDays(1)
 
-        if (today.isAfter(endDate)) return "만기가 지났어요!"
+        if (today.isAfter(endDate)) return ""
         val months = ChronoUnit.MONTHS.between(today, endDate)
         val daysUntilEnd = ChronoUnit.DAYS.between(today, endDate)
 
         return when {
-            months >= 1 -> "만기까지 ${months}개월 남았어요!"
-            else -> "만기까지 ${daysUntilEnd}일만 기다려요!"
+            months >= 1 -> "${months}개월 남음"
+            else -> "${daysUntilEnd}일 남음"
         }
     }
 
@@ -72,7 +72,7 @@ data class SavePlan(
             day = 1,
             addYearMonth = YearMonth.now(),
             savingsType = SavingsType.적금(
-                periodStart = YearMonth.now(),
+                periodStart = LocalDate.now(),
                 periodMonth = 6
             ),
             executed = false,

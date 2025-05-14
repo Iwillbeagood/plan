@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-   setNamespace("datastore")
+    setNamespace("datastore")
 }
 
 dependencies {

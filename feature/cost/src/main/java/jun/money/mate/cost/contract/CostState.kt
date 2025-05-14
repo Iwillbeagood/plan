@@ -1,9 +1,8 @@
 package jun.money.mate.cost.contract
 
 import jun.money.mate.cost.component.CostCalendarValue
-import jun.money.mate.model.Utils
-import jun.money.mate.model.etc.DateType.Companion.date
 import jun.money.mate.model.spending.Cost
+import jun.money.mate.utils.currency.CurrencyFormatter
 
 internal sealed interface CostState {
 
@@ -22,7 +21,7 @@ internal sealed interface CostState {
             }
         }
 
-        val totalCostString get() = Utils.formatAmountWon(costs.sumOf { it.amount })
+        val totalCostString get() = CurrencyFormatter.formatAmount(costs.sumOf { it.amount })
 
         val costCalendarValues get() = costs.groupBy { it.day }.map {
             CostCalendarValue(it.key, it.value)

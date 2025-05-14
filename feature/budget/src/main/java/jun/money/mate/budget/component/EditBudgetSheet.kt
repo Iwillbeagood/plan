@@ -41,7 +41,7 @@ internal fun EditBudgetSheet(
 ) {
     val value = remember {
         mutableStateOf(
-            if (recommend == 0L) "" else recommend.toString()
+            if (recommend == 0L) "" else recommend.toString(),
         )
     }
 
@@ -54,31 +54,31 @@ internal fun EditBudgetSheet(
                 value = value.value,
                 textStyle = TypoTheme.typography.titleMediumB.copy(color = MaterialTheme.colorScheme.onSurface),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.NumberPassword
+                    keyboardType = KeyboardType.NumberPassword,
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
                         onEditBudget(value.value)
                         onDismissRequest()
-                    }
+                    },
                 ),
                 onValueChange = {
                     value.value = it
                 },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface)
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
             ) { innerTextField ->
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .border(BorderStroke(1.dp, Gray6), RoundedCornerShape(5.dp))
-                        .padding(horizontal = 16.dp, vertical = 10.dp)
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
                 ) {
                     if (value.value.isEmpty()) {
                         Text(
                             text = "${NAV_NAME}을 입력하세요",
-                            style = TypoTheme.typography.titleMediumR
+                            style = TypoTheme.typography.titleMediumR,
                         )
                     }
                     innerTextField()
@@ -90,7 +90,7 @@ internal fun EditBudgetSheet(
                 text = "취소",
                 onClick = onDismissRequest,
                 isActive = false,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
         },
         sheetButton2 = {
@@ -100,9 +100,9 @@ internal fun EditBudgetSheet(
                     onEditBudget(value.value)
                     onDismissRequest()
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
-        }
+        },
     )
 }
 
@@ -115,7 +115,7 @@ private fun EditSheetPreview() {
             sheetState = SheetState(true, Density(1f), SheetValue.Expanded, { true }, false),
             onDismissRequest = {},
             onEditBudget = {},
-            recommend = 0L
+            recommend = 0L,
         )
     }
 }

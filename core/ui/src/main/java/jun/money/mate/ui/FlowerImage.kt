@@ -13,19 +13,19 @@ import jun.money.mate.res.R
 fun FlowerImage(
     size: Int,
     isAchieved: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Crossfade(
         targetState = isAchieved,
         label = "flower_animation",
-        modifier = modifier
+        modifier = modifier,
     ) { achieved ->
         Image(
             painter = painterResource(
-                id = if (achieved) R.drawable.ic_smile_flower else R.drawable.ic_upset_flower
+                id = if (achieved) R.drawable.ic_smile_flower else R.drawable.ic_upset_flower,
             ),
             contentDescription = "Flower Image",
-            modifier = Modifier.size(size.dp)
+            modifier = Modifier.size(size.dp),
         )
     }
 }

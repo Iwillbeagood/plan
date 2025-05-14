@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
-    getHomeDataUsecase: GetHomeDataUsecase
+    getHomeDataUsecase: GetHomeDataUsecase,
 ) : ViewModel() {
 
     val homeState: StateFlow<HomeState> = getHomeDataUsecase().map {
@@ -32,12 +32,12 @@ internal class HomeViewModel @Inject constructor(
             incomeList = it.incomeList,
             savePlanList = it.savePlanList,
             budgets = it.budgets,
-            costs = it.costs
+            costs = it.costs,
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = HomeState.Loading
+        initialValue = HomeState.Loading,
     )
 
     private val _homeEffect = MutableSharedFlow<HomeEffect>()
@@ -51,7 +51,6 @@ internal class HomeViewModel @Inject constructor(
 
     fun navigateToAdd(navItem: MainBottomNavItem) {
         navigateTo(navItem)
-
     }
 }
 
@@ -77,7 +76,7 @@ internal sealed interface HomeState {
 
         data class HomeList(
             val value: String,
-            val type: MainBottomNavItem
+            val type: MainBottomNavItem,
         )
     }
 }
@@ -99,5 +98,4 @@ internal sealed interface HomeEffect {
 
     @Immutable
     data object ShowSaveAddScreen : HomeEffect
-
 }

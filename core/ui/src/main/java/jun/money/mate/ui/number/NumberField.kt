@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.FadeAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.nonScaledSp
 
 sealed interface ValueState {
@@ -91,7 +91,7 @@ fun NumberField(
     val groups = listOf(
         randomNumbers.subList(0, 3),
         randomNumbers.subList(3, 6),
-        randomNumbers.subList(6, 9)
+        randomNumbers.subList(6, 9),
     )
     val lastNumber = randomNumbers[9]
 
@@ -103,7 +103,7 @@ fun NumberField(
         groups.forEach { group ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(4.dp)
+                modifier = Modifier.padding(4.dp),
             ) {
                 group.forEach { number ->
                     NumberItem(
@@ -115,13 +115,13 @@ fun NumberField(
                                 onChangeNumber(ValueState.Substring(number))
                             }
                             .padding(numberPadding)
-                            .weight(1f)
+                            .weight(1f),
                     )
                 }
             }
         }
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             if (isReset) {
                 Text(
@@ -134,7 +134,7 @@ fun NumberField(
                             onChangeNumber(ValueState.Reset)
                         }
                         .padding(numberPadding)
-                        .weight(1f)
+                        .weight(1f),
                 )
             } else {
                 Spacer(modifier = Modifier.weight(1f))
@@ -148,14 +148,14 @@ fun NumberField(
                         onChangeNumber(ValueState.Substring(lastNumber))
                     }
                     .padding(numberPadding)
-                    .weight(1f)
+                    .weight(1f),
             )
             Box(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 FadeAnimatedVisibility(
                     visible = isBack,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text(
                         text = "←",
@@ -166,7 +166,7 @@ fun NumberField(
                             .clickable {
                                 onChangeNumber(ValueState.Remove)
                             }
-                            .padding(numberPadding)
+                            .padding(numberPadding),
                     )
                 }
             }
@@ -185,7 +185,7 @@ private fun NumberItem(
         text = number.toString(),
         style = style,
         textAlign = TextAlign.Center,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -196,7 +196,7 @@ private fun NumberFieldPreview() {
         NumberField(
             onChangeNumber = {},
             isReset = true,
-            isBack = true
+            isBack = true,
         )
     }
 }

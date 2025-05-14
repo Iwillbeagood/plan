@@ -2,14 +2,15 @@ package jun.money.mate.data.resository
 
 import jun.money.mate.data.mapper.toSaveEntity
 import jun.money.mate.data.mapper.toSavePlan
-import jun.money.mate.data_api.database.SaveRepository
+import jun.money.mate.dataApi.database.SaveRepository
 import jun.money.mate.database.dao.SaveDao
 import jun.money.mate.database.entity.SaveEntity
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.model.save.SavingsType
-import jun.money.mate.model.save.SavingsType.PeriodType.Companion.periodEndYearMonth
+import jun.money.mate.model.save.SavingsType.PeriodType.Companion.periodEndDate
 import jun.money.mate.utils.etc.Logger
+import jun.money.mate.utils.toYearMonth
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -18,7 +19,7 @@ import java.time.YearMonth
 import javax.inject.Inject
 
 internal class SaveRepositoryImpl @Inject constructor(
-    private val saveDao: SaveDao
+    private val saveDao: SaveDao,
 ) : SaveRepository {
 
     override suspend fun upsertSavePlan(savePlan: SavePlan) {
@@ -42,7 +43,7 @@ internal class SaveRepositoryImpl @Inject constructor(
             SavePlanList(
                 savePlans = list
                     .filterSaveList(date)
-                    .map(SaveEntity::toSavePlan)
+                    .map(SaveEntity::toSavePlan),
             )
         }.catch {
             Logger.e("getSavePlanListFlow error: $it")
@@ -53,7 +54,7 @@ internal class SaveRepositoryImpl @Inject constructor(
         return SavePlanList(
             savePlans = saveDao.getSavingList()
                 .filterSaveList(date)
-                .map(SaveEntity::toSavePlan)
+                .map(SaveEntity::toSavePlan),
         )
     }
 
@@ -105,7 +106,7 @@ internal class SaveRepositoryImpl @Inject constructor(
         return this.filter {
             if (it.savingsType is SavingsType.PeriodType) {
                 val periodType = it.savingsType as SavingsType.PeriodType
-                date in periodType.periodStart..periodType.periodEndYearMonth
+                date in periodType.periodStart.toYearMonth()..periodType.periodEndDate.toYearMonth()
             } else {
                 it.addYearMonth == date
             }

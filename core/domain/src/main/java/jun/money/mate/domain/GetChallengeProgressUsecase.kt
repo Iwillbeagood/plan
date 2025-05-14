@@ -1,6 +1,6 @@
 package jun.money.mate.domain
 
-import jun.money.mate.data_api.database.ChallengeRepository
+import jun.money.mate.dataApi.database.ChallengeRepository
 import jun.money.mate.model.save.SavingChallenge
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -8,7 +8,7 @@ import java.time.YearMonth
 import javax.inject.Inject
 
 class GetChallengeProgressUsecase @Inject constructor(
-    private val challengeRepository: ChallengeRepository
+    private val challengeRepository: ChallengeRepository,
 ) {
 
     operator fun invoke(yearMonth: YearMonth): Flow<List<SavingChallenge>> = flow {
@@ -22,8 +22,8 @@ class GetChallengeProgressUsecase @Inject constructor(
                         SavingChallenge(
                             title = challenge.title + " ${it.index}회차",
                             day = it.date.dayOfMonth,
-                            amount = it.amount
-                        )
+                            amount = it.amount,
+                        ),
                     )
                 }
             }

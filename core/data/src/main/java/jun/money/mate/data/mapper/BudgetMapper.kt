@@ -13,7 +13,7 @@ fun BudgetWithUsed.toBudget() = Budget(
         PastBudget(
             budget = it.budget,
             amountUsed = it.amountUsed,
-            date = it.date
+            date = it.date,
         )
     },
     usedList = usedList.map {
@@ -22,7 +22,7 @@ fun BudgetWithUsed.toBudget() = Budget(
             budgetId = it.budgetId,
             meno = it.title,
             amount = it.amount,
-            date = it.date
+            date = it.date,
         )
-    }
+    },
 )

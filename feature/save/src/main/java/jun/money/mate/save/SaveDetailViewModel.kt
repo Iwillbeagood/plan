@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jun.money.mate.data_api.database.SaveRepository
+import jun.money.mate.dataApi.database.SaveRepository
 import jun.money.mate.domain.DeleteSaveUsecase
 import jun.money.mate.domain.EditSaveUsecase
 import jun.money.mate.model.etc.error.MessageType

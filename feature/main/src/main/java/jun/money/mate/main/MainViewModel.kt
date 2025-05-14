@@ -10,8 +10,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-) : ViewModel() {
+class MainViewModel @Inject constructor() : ViewModel() {
 
     private val _mainDialogEffect = MutableStateFlow<MainDialogEffect>(MainDialogEffect.Idle)
     val mainDialogEffect: StateFlow<MainDialogEffect> get() = _mainDialogEffect

@@ -7,7 +7,6 @@ import jun.money.mate.navigation.Route
 import jun.money.mate.save.SaveAddRoute
 import jun.money.mate.save.SaveDetailRoute
 import jun.money.mate.save.SaveListRoute
-import java.time.YearMonth
 
 fun NavController.navigateToSaveList() {
     navigate(Route.Save.List)
@@ -26,11 +25,9 @@ fun NavGraphBuilder.saveNavGraph(
     composable<Route.Save.List> {
         SaveListRoute()
     }
-
     composable<Route.Save.Detail> {
         SaveDetailRoute()
     }
-
     composable<Route.Save.Add> {
         SaveAddRoute()
     }

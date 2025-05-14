@@ -16,6 +16,6 @@ fun LeafIcon(
         painter = painterResource(id = if (isRed) R.drawable.ic_red_leaf else R.drawable.ic_leaf),
         contentDescription = null,
         tint = Color.Unspecified,
-        modifier = modifier
+        modifier = modifier,
     )
 }

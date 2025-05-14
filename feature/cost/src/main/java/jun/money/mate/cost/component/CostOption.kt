@@ -14,15 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.Gray6
-import jun.money.mate.designsystem.theme.Gray9
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
+import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
 
 internal enum class CostOption {
@@ -40,13 +39,13 @@ internal fun CostOptionTab(
 ) {
     Surface(
         shape = CircleShape,
-        color =  Gray,
+        color =  White1,
         border = BorderStroke(1.dp, Gray6),
         modifier = modifier.fillMaxWidth()
     ) {
         TabRow(
             selectedTabIndex = selectedOption.ordinal,
-            containerColor = Gray9,
+            containerColor = White1,
             contentColor = MaterialTheme.colorScheme.onSurface,
             indicator = { tabPositions ->
                 Box(

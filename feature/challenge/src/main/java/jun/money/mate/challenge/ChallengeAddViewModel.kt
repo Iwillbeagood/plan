@@ -24,7 +24,7 @@ import kotlin.math.ceil
 
 @HiltViewModel
 internal class ChallengeAddViewModel @Inject constructor(
-    private val addChallengeUsecase: AddChallengeUsecase
+    private val addChallengeUsecase: AddChallengeUsecase,
 ) : ViewModel() {
 
     var currentStep = mutableStateOf(ChallengeStep.entries.first())
@@ -92,7 +92,7 @@ internal class ChallengeAddViewModel @Inject constructor(
                     showSnackBar(MessageType.Message("챌린지가 추가되었습니다."))
                     complete()
                 },
-                onError = ::showSnackBar
+                onError = ::showSnackBar,
             )
         }
     }
@@ -100,7 +100,7 @@ internal class ChallengeAddViewModel @Inject constructor(
     fun goalAmountValueChange(value: ValueState) {
         _challengeAddState.update {
             it.copy(
-                goalAmount = value.value(it.goalAmountString).toLongOrNull() ?: 0
+                goalAmount = value.value(it.goalAmountString).toLongOrNull() ?: 0,
             )
         }
     }
@@ -115,7 +115,7 @@ internal class ChallengeAddViewModel @Inject constructor(
         _challengeAddState.update {
             it.copy(
                 amount = value,
-                count = calculatePaymentCount(it.goalAmount, value.toLongOrNull() ?: 0).toString()
+                count = calculatePaymentCount(it.goalAmount, value.toLongOrNull() ?: 0).toString(),
             )
         }
     }
@@ -124,11 +124,10 @@ internal class ChallengeAddViewModel @Inject constructor(
         _challengeAddState.update {
             it.copy(
                 amount = calculatePaymentAmount(it.goalAmount, value.toIntOrNull() ?: 0).toString(),
-                count = value
+                count = value,
             )
         }
     }
-
 
     fun titleChange(value: String) {
         _challengeAddState.update {
@@ -182,7 +181,3 @@ internal class ChallengeAddViewModel @Inject constructor(
         return ceil(targetAmount.toDouble() / paymentCount.toDouble()).toInt()
     }
 }
-
-
-
-

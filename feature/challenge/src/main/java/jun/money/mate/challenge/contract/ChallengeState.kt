@@ -13,8 +13,5 @@ internal sealed interface ChallengeState {
     @Immutable
     data class ChallengeData(
         val challenge: Challenge,
-    ) : ChallengeState {
-
-
-    }
+    ) : ChallengeState
 }
