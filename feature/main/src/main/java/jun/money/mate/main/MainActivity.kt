@@ -27,6 +27,7 @@ import jun.money.mate.navigation.interop.LocalMainActionInterop
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.MainActionInterop
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.system.exitProcess
 
 @AndroidEntryPoint

@@ -1,11 +1,10 @@
 package jun.money.mate
 
-import android.util.Log
-import androidx.test.InstrumentationRegistry
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.work.Configuration
-import androidx.work.testing.SynchronousExecutor
-import androidx.work.testing.WorkManagerTestInitHelper
+import androidx.work.testing.TestListenableWorkerBuilder
+import jun.money.mate.workmanager.IncomeMonthlyWorker
 import org.junit.Before
 import org.junit.runner.RunWith
 
@@ -14,13 +13,8 @@ class IncomeMonthlyWorkerTest {
 
     @Before
     fun setup() {
-        val context = InstrumentationRegistry.getTargetContext()
-        val config = Configuration.Builder()
-            .setMinimumLoggingLevel(Log.DEBUG)
-            .setExecutor(SynchronousExecutor())
-            .build()
+        val context = ApplicationProvider.getApplicationContext<Context>()
 
-        // Initialize WorkManager for instrumentation tests.
-        WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
+        val worker = TestListenableWorkerBuilder<IncomeMonthlyWorker>(context = context).build()
     }
 }

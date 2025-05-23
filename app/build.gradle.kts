@@ -39,9 +39,9 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.gson)
 
-    implementation(libs.androidx.work.runtime.ktx)
-    implementation(libs.androidx.work.testing)
-    androidTestImplementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.work.runtime)
+    implementation(libs.work.hilt)
+    androidTestImplementation(libs.work.testing)
+    androidTestImplementation(libs.work.runtime)
     androidTestImplementation(projects.core.testing)
-    androidTestImplementation(libs.androidx.work.test)
 }

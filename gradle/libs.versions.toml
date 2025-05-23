@@ -40,7 +40,7 @@ ksp = "2.0.0-1.0.22"
 okhttp = "4.12.0"
 # Retrofit
 # # https://github.com/square/retrofit
-retrofit = "2.11.0"
+retrofit = "3.0.0"
 
 kotlinxCoroutines = "1.8.1"
 
@@ -99,16 +99,14 @@ accompanistPermission = "0.34.0"
 firebaseCore = "21.1.1"
 firebaseMessaging = "24.0.1"
 googleGson = "2.10.1"
-workRuntimeKtx = "2.10.0"
-workManager = "2.5.0"
+workRuntime = "2.10.0"
 workTesting = "2.10.1"
+workHilt = "1.0.0"
 
 [libraries]
 # Gradle
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
-androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
-androidx-work-test = { module = "androidx.work:work-testing", version.ref = "workManager" }
 compose-charts = { module = "io.github.ehsannarmani:compose-charts", version.ref = "composeCharts" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradle-dependency-graph-generator-plugin = { module = "com.vanniktech:gradle-dependency-graph-generator-plugin", version.ref = "gradleDependencyGraphGeneratorPlugin" }
@@ -219,7 +217,9 @@ firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging
 
 #Gson
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "googleGson"}
-androidx-work-testing = { group = "androidx.work", name = "work-testing", version.ref = "workTesting" }
+work-testing = { group = "androidx.work", name = "work-testing", version.ref = "workTesting" }
+work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntime" }
+work-hilt = { module = "androidx.hilt:hilt-work", version.ref = "workHilt" }
 
 
 [bundles]

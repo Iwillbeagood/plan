@@ -1,6 +1,7 @@
 package jun.money.mate.cost
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,6 +44,7 @@ import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.TwoBtnDialog
 import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
+import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.Gray9
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
@@ -58,6 +60,8 @@ import jun.money.mate.utils.toImageRes
 internal fun CostRoute(
     viewModel: CostViewModel = hiltViewModel()
 ) {
+    ChangeStatusBarColor()
+
     val uiState by viewModel.costState.collectAsStateWithLifecycle()
     val modalEffect by viewModel.costModalEffect.collectAsStateWithLifecycle()
     val navigateAction = LocalNavigateActionInterop.current
@@ -123,7 +127,9 @@ private fun CostScreen(
     onSelectedCalendarValue: (CostCalendarValue?) -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
         VerticalSpacer(50.dp)
         Row(

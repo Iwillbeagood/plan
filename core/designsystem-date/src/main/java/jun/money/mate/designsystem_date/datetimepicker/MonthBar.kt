@@ -57,7 +57,6 @@ fun MonthBar(
                 shape = RoundedCornerShape(10.dp),
                 onClick = onPrev,
                 enabled = canMoveToYearBefore(month),
-                color = MaterialTheme.colorScheme.surfaceDim,
                 shadowElevation = 4.dp,
                 modifier = Modifier.align(Alignment.CenterEnd)
             ) {
@@ -86,7 +85,6 @@ fun MonthBar(
                 shape = RoundedCornerShape(10.dp),
                 onClick = onNext,
                 enabled = canMoveToNextMonth(month),
-                color = MaterialTheme.colorScheme.surfaceDim,
                 shadowElevation = 4.dp,
                 modifier = Modifier.align(Alignment.CenterEnd)
             ) {
