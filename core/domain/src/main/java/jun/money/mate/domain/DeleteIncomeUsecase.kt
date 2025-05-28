@@ -1,9 +1,7 @@
 package jun.money.mate.domain
 
 import jun.money.mate.dataApi.database.IncomeRepository
-import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.income.Income
-import java.time.YearMonth
 import javax.inject.Inject
 
 class DeleteIncomeUsecase @Inject constructor(

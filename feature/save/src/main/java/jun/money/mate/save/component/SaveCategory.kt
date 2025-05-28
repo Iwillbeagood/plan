@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -25,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,14 +36,11 @@ import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
-import jun.money.mate.designsystem_date.datetimepicker.DatePicker
-import jun.money.mate.designsystem_date.datetimepicker.DatePickerSheet
-import jun.money.mate.designsystem_date.datetimepicker.PeriodPicker
-import jun.money.mate.designsystem_date.datetimepicker.YearMonthPicker
+import jun.money.mate.designsystemDate.datetimepicker.DatePickerSheet
+import jun.money.mate.designsystemDate.datetimepicker.PeriodPicker
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.model.save.SavingsType.Companion.title
 import java.time.LocalDate
-import java.time.YearMonth
 
 @Composable
 internal fun SaveCategories(
@@ -55,7 +50,7 @@ internal fun SaveCategories(
 ) {
     Crossfade(
         targetState = selectedCategory == null,
-        modifier = modifier.padding(vertical = 10.dp)
+        modifier = modifier.padding(vertical = 10.dp),
     ) {
         when (it) {
             true -> {
@@ -72,7 +67,7 @@ internal fun SaveCategories(
                         border = BorderStroke(1.dp, Gray6),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(4.dp)
+                            .padding(4.dp),
                     ) {
                         Text(
                             text = when (selectedCategory) {
@@ -86,7 +81,7 @@ internal fun SaveCategories(
                                 .clickable {
                                     onCategorySelected(null)
                                 }
-                                .padding(vertical = 12.dp)
+                                .padding(vertical = 12.dp),
                         )
                     }
                 }
@@ -107,11 +102,11 @@ private fun CategoryField(
     var showDatePicker by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(4),
-            modifier = Modifier.heightIn(max = 300.dp)
+            modifier = Modifier.heightIn(max = 300.dp),
         ) {
             items(SavingsType.allTypes) { category ->
                 CategoryItem(
@@ -122,7 +117,7 @@ private fun CategoryField(
                         .clickable {
                             selectedCategory = category
                         }
-                        .padding(vertical = 20.dp)
+                        .padding(vertical = 20.dp),
                 )
             }
         }
@@ -159,7 +154,7 @@ private fun CategoryField(
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 12.dp)
+                            .padding(vertical = 12.dp),
                     )
                 }
             }
@@ -170,11 +165,11 @@ private fun CategoryField(
                 PeriodPicker(
                     onPeriodSelected = {
                         period = it
-                    }
+                    },
                 )
             }
             BottomToTopSlideFadeAnimatedVisibility(
-                visible = smartSelectedCategory !is SavingsType.기타 || etc.isNotEmpty()
+                visible = smartSelectedCategory !is SavingsType.기타 || etc.isNotEmpty(),
             ) {
                 RegularButton(
                     text = "다음",
@@ -189,16 +184,16 @@ private fun CategoryField(
                                 onCategorySelected(
                                     SavingsType.적금(
                                         periodStart = startDate,
-                                        periodMonth = period
-                                    )
+                                        periodMonth = period,
+                                    ),
                                 )
                             }
                             is SavingsType.보험저축 -> {
                                 onCategorySelected(
                                     SavingsType.보험저축(
                                         periodStart = startDate,
-                                        periodMonth = period
-                                    )
+                                        periodMonth = period,
+                                    ),
                                 )
                             }
                         }
@@ -220,7 +215,7 @@ private fun CategoryField(
             },
             onDismissRequest = {
                 showDatePicker = false
-            }
+            },
         )
     }
 }
@@ -244,7 +239,6 @@ private fun CategoryAdditionalField(
     }
 }
 
-
 @Composable
 private fun CategoryItem(
     category: SavingsType,
@@ -257,11 +251,11 @@ private fun CategoryItem(
         color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, if (selected) MaterialTheme.colorScheme.primary else Gray6),
         modifier = Modifier
-            .padding(4.dp)
+            .padding(4.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
+            modifier = modifier,
         ) {
             Text(
                 text = category.title,
@@ -278,7 +272,7 @@ private fun CategoryItem(
 private fun SaveCategoriesPreview() {
     JunTheme {
         SaveCategories(
-            onCategorySelected = {}
+            onCategorySelected = {},
         )
     }
 }

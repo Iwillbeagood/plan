@@ -20,7 +20,7 @@ import java.time.YearMonth
 class SavingMonthlyWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val saveRepository: SaveRepository
+    private val saveRepository: SaveRepository,
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
@@ -43,8 +43,8 @@ class SavingMonthlyWorker @AssistedInject constructor(
                 savePlan.copy(
                     id = System.currentTimeMillis(),
                     addYearMonth = YearMonth.now().plusMonths(1),
-                    executed = true
-                )
+                    executed = true,
+                ),
             )
         }
     }

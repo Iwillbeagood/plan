@@ -24,21 +24,21 @@ val TextStyle.nonScaledSp
     @ReadOnlyComposable
     get() = this.copy(
         fontSize = this.fontSize.nonScaledSp,
-        lineHeight = this.lineHeight.nonScaledSp
+        lineHeight = this.lineHeight.nonScaledSp,
     )
 
 val notosanKr = FontFamily(
     Font(R.font.pretendard_bold, FontWeight.Bold),
     Font(R.font.pretendard_medium, FontWeight.Medium),
-    Font(R.font.pretendard_reqular, FontWeight.Normal)
+    Font(R.font.pretendard_reqular, FontWeight.Normal),
 )
 
 private val notoanskrStyle = TextStyle(
     fontFamily = notosanKr,
     fontWeight = FontWeight.Normal,
     platformStyle = PlatformTextStyle(
-        includeFontPadding = false
-    )
+        includeFontPadding = false,
+    ),
 )
 
 // Set of Material typography styles to start with
@@ -46,7 +46,7 @@ val Typography = JUNTypography(
     displayLargeB = notoanskrStyle.copy(
         fontSize = 32.sp,
         lineHeight = 40.sp,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
     ),
     displayLargeM = notoanskrStyle.copy(
         fontSize = 32.sp,
@@ -205,8 +205,9 @@ val Typography = JUNTypography(
     bodySmallR = notoanskrStyle.copy(
         fontSize = 12.sp,
         lineHeight = 16.sp,
-    )
+    ),
 )
+
 @Immutable
 data class JUNTypography(
     val displayLargeB: TextStyle,

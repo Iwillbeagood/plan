@@ -24,7 +24,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jun.money.mate.budget.component.budgetList
 import jun.money.mate.budget.contract.BudgetState
 import jun.money.mate.budget.navigation.NAV_NAME
-import jun.money.mate.designsystem.component.HorizontalDivider
 import jun.money.mate.designsystem.component.RegularButton
 import jun.money.mate.designsystem.component.StateAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
@@ -104,7 +103,7 @@ private fun BudgetScreen(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background),
     ) {
         item {
             Surface(
@@ -112,7 +111,7 @@ private fun BudgetScreen(
                 border = BorderStroke(1.dp, Gray9),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(16.dp),
             ) {
                 Column(
                     modifier = Modifier

@@ -12,5 +12,4 @@ class UserPreferenceDataSource @Inject constructor(
     val userPreferenceDataFlow = userPreferences.data
 
     suspend fun getUserPreferenceData() = userPreferenceDataFlow.first()
-
 }

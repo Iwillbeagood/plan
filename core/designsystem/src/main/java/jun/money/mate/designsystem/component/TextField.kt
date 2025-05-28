@@ -72,7 +72,7 @@ fun DefaultTextField(
             .focusRequester(requester)
             .onFocusChanged {
                 isFocus = it.isFocused
-            }
+            },
     ) { innerTextField ->
         Surface(
             shape = RoundedCornerShape(8.dp),
@@ -82,44 +82,43 @@ fun DefaultTextField(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
             ) {
                 Column {
                     if (label.isNotEmpty()) {
                         Text(
                             text = label,
                             style = TypoTheme.typography.labelMediumM.copy(
-                                textAlign = textAlign
+                                textAlign = textAlign,
                             ),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                     VerticalSpacer(2.dp)
-                    Box{
+                    Box {
                         if (value.isEmpty() && !isFocus) {
                             Text(
                                 text = hint,
                                 style = textStyle.copy(
-                                    textAlign = textAlign
-                                )
+                                    textAlign = textAlign,
+                                ),
                             )
                         }
                         Row(
                             horizontalArrangement = if (textAlign == TextAlign.Start) Arrangement.Start else Arrangement.End,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         ) {
                             innerTextField()
                             Text(
                                 text = unit,
                                 style = textStyle.copy(
-                                    textAlign = textAlign
-                                )
+                                    textAlign = textAlign,
+                                ),
                             )
                         }
                     }
                 }
-
             }
         }
     }
@@ -150,7 +149,7 @@ fun PasswordTextField(
             .focusRequester(requester)
             .onFocusChanged {
                 isFocus = it.isFocused
-            }
+            },
     ) { innerTextField ->
         Surface(
             shape = RoundedCornerShape(5.dp),
@@ -159,15 +158,15 @@ fun PasswordTextField(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
             ) {
                 Box(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 ) {
                     if (value.isEmpty() && !isFocus) {
                         Text(
                             text = hint,
-                            style = textStyle
+                            style = textStyle,
                         )
                     }
                     innerTextField()
@@ -179,7 +178,7 @@ fun PasswordTextField(
                     contentDescription = null,
                     modifier = Modifier.clickable {
                         passwordVisibility = !passwordVisibility
-                    }
+                    },
                 )
             }
         }
@@ -199,7 +198,7 @@ fun UnderlineTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     onFocus: () -> Unit = {},
-    content: @Composable () -> Unit = {}
+    content: @Composable () -> Unit = {},
 ) {
     var isFocus by remember { mutableStateOf(false) }
 
@@ -221,10 +220,10 @@ fun UnderlineTextField(
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
             ) {
                 Box(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 ) {
                     if (value.isEmpty() && !isFocus) {
                         Text(
@@ -232,7 +231,7 @@ fun UnderlineTextField(
                             style = textStyle,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                     innerTextField()
@@ -265,7 +264,7 @@ private fun DefaultTextFieldPreview() {
             onValueChange = {},
             hint = "인증번호 입력",
             label = "인증번호",
-            modifier = Modifier
+            modifier = Modifier,
         )
     }
 }
@@ -278,7 +277,7 @@ private fun PasswordTextFieldPreview() {
             value = "a124124",
             onValueChange = {},
             hint = "인증번호 입력",
-            modifier = Modifier
+            modifier = Modifier,
         )
     }
 }
@@ -291,7 +290,7 @@ private fun UnderlineTextFieldPreview() {
             value = "",
             onValueChange = {},
             hint = "인증번호 입력",
-            modifier = Modifier
+            modifier = Modifier,
         )
     }
 }

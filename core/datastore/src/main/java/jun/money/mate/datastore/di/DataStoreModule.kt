@@ -19,12 +19,13 @@ object DataStoreModule {
     private const val USER_PREFERENCES_DATASTORE_NAME = "USER_PREFERENCES"
 
     private val Context.userPreferenceDataStore by dataStore(
-        USER_PREFERENCES_DATASTORE_NAME, UserPreferencesSerializer
+        USER_PREFERENCES_DATASTORE_NAME,
+        UserPreferencesSerializer,
     )
 
     @Provides
     @Singleton
     fun provideUserPreferenceDataStore(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): DataStore<UserPreferences> = context.userPreferenceDataStore
 }

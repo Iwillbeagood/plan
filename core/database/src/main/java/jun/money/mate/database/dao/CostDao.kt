@@ -5,7 +5,6 @@ import androidx.room.Query
 import androidx.room.Upsert
 import jun.money.mate.database.AppDatabase.Companion.COST_TABLE_NAME
 import jun.money.mate.database.entity.CostEntity
-import jun.money.mate.database.entity.IncomeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

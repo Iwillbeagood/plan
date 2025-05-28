@@ -35,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.cost.navigation.Title
 import jun.money.mate.designsystem.component.RegularButton
-import jun.money.mate.designsystem.component.ScrollableTab
 import jun.money.mate.designsystem.component.UnderlineTextField
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.Gray6
@@ -55,7 +54,7 @@ internal fun CostTypeSelector(
 ) {
     Crossfade(
         targetState = costType == null,
-        modifier = modifier
+        modifier = modifier,
     ) {
         when (it) {
             true -> {
@@ -71,7 +70,7 @@ internal fun CostTypeSelector(
                         border = BorderStroke(1.dp, Gray6),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(4.dp)
+                            .padding(4.dp),
                     ) {
                         Text(
                             text = costType.name,
@@ -83,7 +82,7 @@ internal fun CostTypeSelector(
                                 .clickable {
                                     onSelected(null)
                                 }
-                                .padding(vertical = 10.dp)
+                                .padding(vertical = 10.dp),
                         )
                     }
                 }
@@ -102,7 +101,7 @@ private fun CategoryField(
     val grouped = SubscriptionType.entries.groupBy { it.category }
 
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         CostOptionTab(
             selectedOption = selectedTab,
@@ -117,11 +116,11 @@ private fun CategoryField(
                     CostOption.일반 -> 4
                     CostOption.구독 -> 3
                     CostOption.기타 -> 1
-                }
+                },
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(max = 1000.dp)
+                .heightIn(max = 1000.dp),
         ) {
             when (selectedTab) {
                 CostOption.일반 -> {
@@ -135,7 +134,7 @@ private fun CategoryField(
                                 .clickable {
                                     onSelected(CostType.Normal(it))
                                 }
-                                .padding(vertical = 16.dp)
+                                .padding(vertical = 16.dp),
                         )
                     }
                 }
@@ -147,7 +146,7 @@ private fun CategoryField(
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier
                                     .padding(horizontal = 16.dp)
-                                    .padding(top = 12.dp, bottom = 4.dp)
+                                    .padding(top = 12.dp, bottom = 4.dp),
                             )
                         }
 
@@ -161,7 +160,7 @@ private fun CategoryField(
                                     .clickable {
                                         onSelected(CostType.Subscription(type))
                                     }
-                                    .padding(vertical = 16.dp)
+                                    .padding(vertical = 16.dp),
                             )
                         }
                     }
@@ -169,7 +168,7 @@ private fun CategoryField(
                 CostOption.기타 -> {
                     item {
                         Column(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         ) {
                             VerticalSpacer(16.dp)
                             UnderlineTextField(
@@ -184,9 +183,9 @@ private fun CategoryField(
                                 keyboardActions = KeyboardActions(
                                     onDone = {
                                         onSelected(CostType.Etc(etcValue))
-                                    }
+                                    },
                                 ),
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth(),
                             )
                             VerticalSpacer(10.dp)
                             RegularButton(
@@ -219,17 +218,17 @@ private fun TypeItem(
         color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, if (selected) MaterialTheme.colorScheme.primary else Gray6),
         modifier = Modifier
-            .padding(4.dp)
+            .padding(4.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
+            modifier = modifier,
         ) {
             Icon(
                 painter = painterResource(imageRes),
                 tint = Color.Unspecified,
                 contentDescription = null,
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(40.dp),
             )
             VerticalSpacer(8.dp)
             Text(
@@ -246,7 +245,7 @@ private fun TypeItem(
 private fun CosTypeButtonPreview() {
     JunTheme {
         CostTypeSelector(
-            onSelected = {}
+            onSelected = {},
         )
     }
 }

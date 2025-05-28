@@ -27,7 +27,7 @@ import jun.money.mate.ui.FlowerImage
 @Composable
 internal fun SavingChallengeItem(
     savingChallenge: SavingChallenge,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
@@ -35,13 +35,13 @@ internal fun SavingChallengeItem(
             .animateContentSize()
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .shadow(2.dp, shape = RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp)),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             FlowerImage(
                 size = 18,
@@ -49,13 +49,13 @@ internal fun SavingChallengeItem(
             )
             HorizontalSpacer(6.dp)
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     ) {
                         Text(
                             text = savingChallenge.title,
@@ -64,13 +64,13 @@ internal fun SavingChallengeItem(
                         Text(
                             text = "${savingChallenge.day}일",
                             style = TypoTheme.typography.titleSmallR,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                     Text(
                         text = Utils.formatAmountWon(savingChallenge.amount),
                         style = TypoTheme.typography.titleNormalB,
-                        textAlign = TextAlign.End
+                        textAlign = TextAlign.End,
                     )
                 }
             }
@@ -83,7 +83,7 @@ internal fun SavingChallengeItem(
 private fun SavingChallengeItemPreview() {
     JunTheme {
         SavingChallengeItem(
-            savingChallenge = SavingChallenge.sample
+            savingChallenge = SavingChallenge.sample,
         )
     }
 }

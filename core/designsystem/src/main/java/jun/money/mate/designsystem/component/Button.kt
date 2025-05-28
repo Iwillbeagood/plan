@@ -60,15 +60,16 @@ fun LargeButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isActive) color else inActiveColor,
             contentColor = textColor,
-            disabledContainerColor = inActiveColor
+            disabledContainerColor = inActiveColor,
         ),
         contentPadding = PaddingValues(vertical = 14.dp),
         enabled = enabled,
         onClick = onClick,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         Text(
-            text = text, style = TypoTheme.typography.titleLargeB
+            text = text,
+            style = TypoTheme.typography.titleLargeB,
         )
     }
 }
@@ -88,7 +89,7 @@ fun RegularButton(
     isPreventMultipleClicks: Boolean = true,
     borderStroke: Dp = 8.dp,
     verticalPadding: Dp = 12.dp,
-    horizontalPadding: Dp = 10.dp
+    horizontalPadding: Dp = 10.dp,
 ) {
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
@@ -97,7 +98,7 @@ fun RegularButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isActive) color else inActiveColor,
             contentColor = textColor,
-            disabledContainerColor = inActiveColor
+            disabledContainerColor = inActiveColor,
         ),
         contentPadding = PaddingValues(vertical = verticalPadding, horizontal = horizontalPadding),
         elevation = elevation,
@@ -109,16 +110,16 @@ fun RegularButton(
                 onClick()
             }
         },
-        modifier = modifier
+        modifier = modifier,
     ) {
         Box(
-            modifier = Modifier
+            modifier = Modifier,
         ) {
             Text(
                 text = text,
                 style = style,
                 color = textColor,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
             )
         }
     }
@@ -132,26 +133,26 @@ fun CircleButton(
     size: Dp = 56.dp,
     elevation: Dp = 0.dp,
     onClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Button(
         modifier = modifier.size(size),
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = color,
-            disabledContainerColor = color
+            disabledContainerColor = color,
         ),
         enabled = enabled,
         elevation = ButtonDefaults.buttonElevation(elevation),
         contentPadding = PaddingValues(0.dp),
-        onClick = onClick
+        onClick = onClick,
     ) {
         Icon(
             imageVector = icon,
             tint = White1,
             contentDescription = "circle button",
             modifier = Modifier
-                .size(35.dp)
+                .size(35.dp),
         )
     }
 }
@@ -174,14 +175,14 @@ fun TextButton(
         color = color,
         shadowElevation = 2.dp,
         border = BorderStroke(1.dp, borderColor),
-        modifier = modifier
+        modifier = modifier,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
         ) {
             Box(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 icon?.let {
                     it()
@@ -189,20 +190,20 @@ fun TextButton(
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
                 ) {
                     Text(
                         text = text,
                         style = textStyle,
                         textAlign = TextAlign.Center,
-                        color = textColor
+                        color = textColor,
                     )
                     if (hint.isNotEmpty()) {
                         Text(
                             text = hint,
                             style = TypoTheme.typography.labelLargeR,
                             textAlign = TextAlign.Center,
-                            color = textColor
+                            color = textColor,
                         )
                     }
                 }
@@ -215,20 +216,20 @@ fun TextButton(
 fun TextIconButton(
     icon: ImageVector,
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = null
+            contentDescription = null,
         )
         Text(
             text = text,
-            style = TypoTheme.typography.titleSmallM
+            style = TypoTheme.typography.titleSmallM,
         )
     }
 }
@@ -236,11 +237,11 @@ fun TextIconButton(
 @Preview
 @Composable
 fun LargeButtonPreview(
-    @PreviewParameter(BooleanProvider::class) isActive: Boolean
+    @PreviewParameter(BooleanProvider::class) isActive: Boolean,
 ) {
     JunTheme {
         LargeButton(
-            onClick = {}
+            onClick = {},
         )
     }
 }
@@ -248,11 +249,13 @@ fun LargeButtonPreview(
 @Preview
 @Composable
 fun RegularButtonPreview(
-    @PreviewParameter(BooleanProvider::class) isActive: Boolean
+    @PreviewParameter(BooleanProvider::class) isActive: Boolean,
 ) {
     JunTheme {
         RegularButton(
-            onClick = {}, isActive = isActive, modifier = Modifier.padding(16.dp)
+            onClick = {},
+            isActive = isActive,
+            modifier = Modifier.padding(16.dp),
         )
     }
 }
@@ -263,7 +266,7 @@ fun CircleButtonPreview() {
     JunTheme {
         CircleButton(
             icon = Icons.Default.Add,
-            onClick = {}
+            onClick = {},
         )
     }
 }
@@ -274,7 +277,7 @@ fun TextButtonPreview() {
     JunTheme {
         TextButton(
             text = "텍스트 버튼",
-            onClick = {}
+            onClick = {},
         )
     }
 }
@@ -285,7 +288,7 @@ private fun IconButtonPreview() {
     JunTheme {
         TextIconButton(
             icon = Icons.Default.Add,
-            text = "수정"
+            text = "수정",
         )
     }
 }

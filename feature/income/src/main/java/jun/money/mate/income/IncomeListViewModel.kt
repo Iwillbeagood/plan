@@ -122,7 +122,7 @@ internal class IncomeListViewModel @Inject constructor(
                     onSuccess = {
                         unselectedIncomes()
                         hideModal()
-                    }
+                    },
                 )
             }
         }

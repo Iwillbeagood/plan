@@ -4,12 +4,14 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class ComponentItem(
-    val text: String, val selected: Boolean = false
+    val text: String,
+    val selected: Boolean = false,
 ) {
     companion object {
         fun List<String>.toComponentItems() = mapIndexed { index, s ->
             ComponentItem(
-                text = s, selected = index == 0
+                text = s,
+                selected = index == 0,
             )
         }
     }

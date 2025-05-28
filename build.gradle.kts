@@ -12,6 +12,31 @@ plugins {
     alias(libs.plugins.room) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.spotless)
+}
+
+subprojects {
+    apply(plugin = "com.diffplug.spotless")
+
+    spotless {
+        kotlin {
+            target("**/*.kt")
+            targetExclude("$buildDir/**/*.kt")
+            targetExclude("bin/**/*.kt")
+            ktlint()
+                .setEditorConfigPath("$rootDir/.editorconfig")
+                .editorConfigOverride(
+                    mapOf(
+                        "ktlint_standard_enum-entry-name-case" to "disabled",
+                        "ktlint_standard_class-naming" to "disabled",
+                        "ktlint_standard_function-naming" to "disabled",
+                    ),
+                )
+            trimTrailingWhitespace()
+            indentWithSpaces()
+            endWithNewline()
+        }
+    }
 }
 
 apply {

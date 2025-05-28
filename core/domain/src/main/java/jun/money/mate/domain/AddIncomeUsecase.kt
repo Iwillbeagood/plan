@@ -41,7 +41,7 @@ class AddIncomeUsecase @Inject constructor(
                 amount = amount,
                 date = day,
                 dateType = dateType,
-                addDate = LocalDate.now()
+                addDate = LocalDate.now(),
             ),
         )
         onSuccess()

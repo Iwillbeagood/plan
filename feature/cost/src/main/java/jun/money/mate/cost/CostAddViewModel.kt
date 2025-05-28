@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class CostAddViewModel @Inject constructor(
-    private val upsertCostUsecase: UpsertCostUsecase
+    private val upsertCostUsecase: UpsertCostUsecase,
 ) : ViewModel() {
 
     var currentStep = mutableStateOf(CostStep.entries.first())
@@ -74,7 +74,7 @@ internal class CostAddViewModel @Inject constructor(
                 costType = state.costType,
                 day = state.day,
                 onSuccess = ::complete,
-                onError = ::showSnackBar
+                onError = ::showSnackBar,
             )
         }
     }
@@ -94,7 +94,7 @@ internal class CostAddViewModel @Inject constructor(
     fun amountValueChange(value: String) {
         _costAddState.update {
             it.copy(
-                amount = value.toLongOrNull() ?: 0
+                amount = value.toLongOrNull() ?: 0,
             )
         }
     }
@@ -123,7 +123,3 @@ internal class CostAddViewModel @Inject constructor(
         }
     }
 }
-
-
-
-

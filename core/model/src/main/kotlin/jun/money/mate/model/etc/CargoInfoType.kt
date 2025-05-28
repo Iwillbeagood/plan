@@ -12,7 +12,7 @@ enum class CargoInfoType {
     UNLOADING_METHOD,
     MIXED_LENGTH,
     MIXED_WEIGHT,
-    CAR_AMOUNT
+    CAR_AMOUNT,
 }
 
 enum class SelectTimeType {

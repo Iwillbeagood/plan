@@ -6,19 +6,17 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import androidx.room.util.TableInfo
 import jun.money.mate.database.AppDatabase
-import jun.money.mate.model.consumption.PastBudget
 import java.time.LocalDate
 import java.time.YearMonth
 
 @Entity(
-    tableName = AppDatabase.BUDGET_TABLE_NAME
+    tableName = AppDatabase.BUDGET_TABLE_NAME,
 )
 data class BudgetEntity(
     @PrimaryKey val id: Long,
     val title: String,
-    val budget: Long
+    val budget: Long,
 )
 
 @Entity(
@@ -28,10 +26,10 @@ data class BudgetEntity(
             entity = BudgetEntity::class,
             parentColumns = ["id"],
             childColumns = ["budgetId"],
-            onDelete = ForeignKey.CASCADE
-        )
+            onDelete = ForeignKey.CASCADE,
+        ),
     ],
-    indices = [Index(value = ["budgetId"])]
+    indices = [Index(value = ["budgetId"])],
 )
 data class UsedEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -48,10 +46,10 @@ data class UsedEntity(
             entity = BudgetEntity::class,
             parentColumns = ["id"],
             childColumns = ["budgetId"],
-            onDelete = ForeignKey.CASCADE
-        )
+            onDelete = ForeignKey.CASCADE,
+        ),
     ],
-    indices = [Index(value = ["budgetId"])]
+    indices = [Index(value = ["budgetId"])],
 )
 data class PastBudgetEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -65,12 +63,12 @@ data class BudgetWithUsed(
     @Embedded val budget: BudgetEntity,
     @Relation(
         parentColumn = "id",
-        entityColumn = "budgetId"
+        entityColumn = "budgetId",
     )
     val usedList: List<UsedEntity>,
     @Relation(
         parentColumn = "id",
-        entityColumn = "budgetId"
+        entityColumn = "budgetId",
     )
-    val pastBudgets: List<PastBudgetEntity>
+    val pastBudgets: List<PastBudgetEntity>,
 )

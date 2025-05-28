@@ -18,7 +18,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
@@ -53,12 +52,12 @@ fun DefaultDialog(
     ) {
         Surface(
             shape = RoundedCornerShape(4.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Column(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.tertiary)
-                    .padding(vertical = 10.dp)
+                    .padding(vertical = 10.dp),
             ) {
                 if (title.isNotEmpty()) {
                     Text(
@@ -67,13 +66,13 @@ fun DefaultDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp)
-                            .padding(top = 10.dp)
+                            .padding(top = 10.dp),
                     )
                 }
                 Spacer(modifier = Modifier.height(contentSpace))
                 Column(
                     modifier = Modifier
-                        .padding(horizontal = contentPadding)
+                        .padding(horizontal = contentPadding),
                 ) {
                     content()
                     Spacer(modifier = Modifier.height(contentSpace))
@@ -122,9 +121,9 @@ fun TwoBtnDialog(
             RegularButton(
                 text = button2Text,
                 onClick = button2Click,
-                modifier = Modifier.weight(5f)
+                modifier = Modifier.weight(5f),
             )
-        }
+        },
     )
 }
 
@@ -138,7 +137,7 @@ fun TextDialog(
     button1Text: String = stringResource(id = R.string.btn_no),
     button2Text: String = stringResource(id = R.string.btn_complete),
     button1Click: () -> Unit = onDismissRequest,
-    button2Click: () -> Unit
+    button2Click: () -> Unit,
 ) {
     DefaultDialog(
         title = title,
@@ -151,7 +150,7 @@ fun TextDialog(
                 text = content,
                 style = TypoTheme.typography.titleMediumM,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             VerticalSpacer(16.dp)
         },
@@ -167,9 +166,9 @@ fun TextDialog(
             RegularButton(
                 text = button2Text,
                 onClick = button2Click,
-                modifier = Modifier.weight(5f)
+                modifier = Modifier.weight(5f),
             )
-        }
+        },
     )
 }
 
@@ -199,13 +198,13 @@ fun DefaultBottomSheet(
                 .background(MaterialTheme.colorScheme.surfaceDim)
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 20.dp)
-                .navigationBarsPadding()
+                .navigationBarsPadding(),
         ) {
             if (sheetTitle.isNotEmpty()) {
                 Text(
                     text = sheetTitle,
                     style = TypoTheme.typography.headlineSmallB,
-                    color = sheetTitleColor
+                    color = sheetTitleColor,
                 )
                 Spacer(modifier = Modifier.height(sheetContentSpace))
             }
@@ -220,7 +219,6 @@ fun DefaultBottomSheet(
                     }
                 }
             }
-
         }
     }
 }
@@ -251,14 +249,14 @@ fun TwoButtonBottomSheet(
                 text = button1Text,
                 modifier = Modifier.weight(3f),
                 isActive = false,
-                onClick = button1Click
+                onClick = button1Click,
             )
         },
         sheetButton2 = {
             RegularButton(
                 text = button2Text,
                 modifier = Modifier.weight(7f),
-                onClick = button2Click
+                onClick = button2Click,
             )
         },
     )
@@ -278,7 +276,7 @@ private fun TextDialogPreview() {
                     text = "아니요",
                     modifier = Modifier.weight(3f),
                     isActive = false,
-                    onClick = {}
+                    onClick = {},
                 )
             },
             button2 = {
@@ -287,9 +285,8 @@ private fun TextDialogPreview() {
                     modifier = Modifier.weight(7f),
                     onClick = {},
                 )
-
             },
-            onDismissRequest = {}
+            onDismissRequest = {},
         )
     }
 }
@@ -306,7 +303,7 @@ private fun BottomScaffoldPreview() {
                 Text(
                     text = "등록을 하시겠습니까?",
                     style = TypoTheme.typography.titleLargeM,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             },
             sheetButton1 = {
@@ -314,7 +311,7 @@ private fun BottomScaffoldPreview() {
                     text = "아니요",
                     modifier = Modifier.weight(3f),
                     isActive = false,
-                    onClick = {}
+                    onClick = {},
                 )
             },
             sheetButton2 = {
@@ -324,7 +321,7 @@ private fun BottomScaffoldPreview() {
                     onClick = {},
                 )
             },
-            onDismissRequest = { /*TODO*/ }
+            onDismissRequest = { /*TODO*/ },
         )
     }
 }

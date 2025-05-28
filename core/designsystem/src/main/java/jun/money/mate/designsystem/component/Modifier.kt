@@ -14,7 +14,7 @@ import jun.money.mate.designsystem.theme.Gray7
 @Stable
 fun Modifier.circleBackground(
     color: Color = Gray7,
-    padding: Dp = 5.dp
+    padding: Dp = 5.dp,
 ): Modifier {
     return this
         .clip(CircleShape)

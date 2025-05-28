@@ -16,7 +16,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.theme.Gray6
 import jun.money.mate.designsystem.theme.Gray7
 import jun.money.mate.designsystem.theme.TypoTheme
 
@@ -28,10 +27,10 @@ fun UnderLineText(
     textAlign: TextAlign = TextAlign.Start,
     textStyle: TextStyle = TypoTheme.typography.titleMediumB,
     isSelected: Boolean = false,
-    content: @Composable () -> Unit = {}
+    content: @Composable () -> Unit = {},
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -39,10 +38,10 @@ fun UnderLineText(
                 .background(
                     color = if (isSelected) Gray7 else MaterialTheme.colorScheme.surface,
                 )
-                .padding(horizontal = 16.dp, vertical = 10.dp)
+                .padding(horizontal = 16.dp, vertical = 10.dp),
         ) {
             Box(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 if (value.isEmpty()) {
                     Text(
@@ -50,7 +49,7 @@ fun UnderLineText(
                         style = textStyle,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 } else {
                     Text(
@@ -59,7 +58,7 @@ fun UnderLineText(
                         textAlign = textAlign,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             }
@@ -75,11 +74,11 @@ fun FixedText(
     color: Color = MaterialTheme.colorScheme.onSurface,
     textAlign: TextAlign = TextAlign.Start,
     textStyle: TextStyle = TypoTheme.typography.titleMediumB,
-    content: @Composable () -> Unit = {}
+    content: @Composable () -> Unit = {},
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Text(
             text = value,
@@ -90,7 +89,7 @@ fun FixedText(
             color = color,
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 16.dp, vertical = 10.dp)
+                .padding(horizontal = 16.dp, vertical = 10.dp),
         )
         content()
     }

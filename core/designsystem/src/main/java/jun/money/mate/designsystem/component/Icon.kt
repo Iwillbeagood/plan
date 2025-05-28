@@ -27,7 +27,7 @@ fun CircleIcon(
         tint = tint,
         modifier = modifier
             .circleBackground(tint.copy(alpha = 0.4f))
-            .size(size)
+            .size(size),
     )
 }
 

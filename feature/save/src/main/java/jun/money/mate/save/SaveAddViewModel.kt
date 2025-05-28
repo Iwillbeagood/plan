@@ -8,8 +8,8 @@ import jun.money.mate.domain.AddSaveUsecase
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.save.SavingsType
 import jun.money.mate.save.contract.SaveAddEffect
-import jun.money.mate.save.contract.SaveAddState
 import jun.money.mate.save.contract.SaveAddModalEffect
+import jun.money.mate.save.contract.SaveAddState
 import jun.money.mate.ui.number.ValueState
 import jun.money.mate.ui.number.ValueState.Companion.value
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SaveAddViewModel @Inject constructor(
-    private val addSaveUsecase: AddSaveUsecase
+    private val addSaveUsecase: AddSaveUsecase,
 ) : ViewModel() {
 
     var addStep = mutableStateOf(SaveAddStep.entries.first())
@@ -94,7 +94,7 @@ internal class SaveAddViewModel @Inject constructor(
                     showSnackBar(MessageType.Message("저축 계획이 추가되었습니다."))
                     incomeAddComplete()
                 },
-                onError = ::showSnackBar
+                onError = ::showSnackBar,
             )
         }
     }
@@ -102,7 +102,7 @@ internal class SaveAddViewModel @Inject constructor(
     fun amountValueChange(value: ValueState) {
         _saveAddState.update {
             it.copy(
-                amount = value.value(it.amountString).toLongOrNull() ?: 0
+                amount = value.value(it.amountString).toLongOrNull() ?: 0,
             )
         }
     }
@@ -144,7 +144,3 @@ internal class SaveAddViewModel @Inject constructor(
         }
     }
 }
-
-
-
-

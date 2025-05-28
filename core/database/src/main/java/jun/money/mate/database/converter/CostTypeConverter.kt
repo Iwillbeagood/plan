@@ -2,8 +2,6 @@ package jun.money.mate.database.converter
 
 import androidx.room.TypeConverter
 import jun.money.mate.model.spending.CostType
-import jun.money.mate.model.spending.NormalType
-import jun.money.mate.model.spending.SubscriptionType
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

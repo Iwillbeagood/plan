@@ -34,7 +34,8 @@ enum class MainBottomNavItem(
         titleRes = R.string.tab_budget,
         icon = Icons.AutoMirrored.Filled.ReceiptLong,
         route = MainTabRoute.Budget.Main,
-    );
+    ),
+    ;
 
     companion object {
         fun find(predicate: (MainTabRoute) -> Boolean): MainBottomNavItem? {

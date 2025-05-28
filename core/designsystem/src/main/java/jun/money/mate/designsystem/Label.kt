@@ -21,13 +21,13 @@ fun Label(
 ) {
     Surface(
         color = color,
-        shape = RoundedCornerShape(6.dp)
+        shape = RoundedCornerShape(6.dp),
     ) {
         Text(
             text = text,
             style = TypoTheme.typography.labelLargeM,
             color = White1,
-            modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+            modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
         )
     }
 }
@@ -38,7 +38,7 @@ private fun LabelPreview() {
     JunTheme {
         Label(
             text = "Label",
-            color = Gray3
+            color = Gray3,
         )
     }
 }

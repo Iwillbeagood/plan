@@ -3,7 +3,6 @@ package jun.money.mate.income.contract
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import jun.money.mate.model.etc.DateType
-import jun.money.mate.model.income.Income
 import jun.money.mate.utils.currency.CurrencyFormatter
 import java.time.LocalDate
 

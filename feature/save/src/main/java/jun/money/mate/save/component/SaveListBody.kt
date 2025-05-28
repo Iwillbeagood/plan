@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,10 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JunTheme
-import jun.money.mate.designsystem_date.datetimepicker.MonthBar
+import jun.money.mate.designsystemDate.datetimepicker.MonthBar
 import jun.money.mate.model.save.SavePlanList
 import jun.money.mate.model.save.SavingChallenge
-import java.time.LocalDate
 import java.time.YearMonth
 
 @Composable
@@ -30,12 +28,12 @@ internal fun SaveListBody(
     savingChallengeList: List<SavingChallenge>,
     onShowDetail: (Long) -> Unit,
     onExecuteChange: (Boolean, Long) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
         shadowElevation = 2.dp,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         Column {
             VerticalSpacer(20.dp)
@@ -43,11 +41,11 @@ internal fun SaveListBody(
                 month = month,
                 onPrev = onPrev,
                 onNext = onNext,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
             VerticalSpacer(20.dp)
             LazyColumn(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 items(savingChallengeList) { savingChallenge ->
                     SavingChallengeItem(

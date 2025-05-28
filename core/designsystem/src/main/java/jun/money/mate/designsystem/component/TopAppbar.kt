@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import jun.money.mate.designsystem.R
 import jun.money.mate.designsystem.theme.Gray1
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
@@ -38,7 +37,7 @@ fun TopAppbar(
     title: String = "",
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     navigationType: TopAppbarType = TopAppbarType.Default,
-    onBackEvent: () -> Unit = {}
+    onBackEvent: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -46,11 +45,11 @@ fun TopAppbar(
             .height(50.dp)
             .background(backgroundColor)
             .statusBarsPadding()
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = 8.dp),
     ) {
         Row(
             modifier = modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             TopAppbarIcon(
                 icon = Icons.Default.ArrowBackIosNew,
@@ -60,7 +59,7 @@ fun TopAppbar(
             VerticalSpacer(16.dp)
             Text(
                 text = title,
-                style = TypoTheme.typography.titleNormalB
+                style = TypoTheme.typography.titleNormalB,
             )
             Spacer(modifier = Modifier.weight(1f))
 
@@ -84,7 +83,7 @@ fun TopAppbarIcon(
     Box(
         modifier = modifier
             .size(50.dp)
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick),
     ) {
         Icon(
             painter = painterResource(iconId),
@@ -106,7 +105,7 @@ fun TopAppbarIcon(
         modifier = Modifier
             .size(40.dp)
             .clip(RoundedCornerShape(8.dp))
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick),
     ) {
         Icon(
             imageVector = icon,
@@ -127,7 +126,7 @@ sealed interface TopAppbarType {
 fun BasicTopAppbarPreview() {
     JunTheme {
         TopAppbar(
-            title = "등록"
+            title = "등록",
         )
     }
 }
@@ -142,11 +141,9 @@ fun CustomTopAppbarPreview() {
                 Text(
                     modifier = Modifier
                         .padding(end = 5.dp),
-                    text = "테스트"
+                    text = "테스트",
                 )
-            }
+            },
         )
     }
 }
-
-

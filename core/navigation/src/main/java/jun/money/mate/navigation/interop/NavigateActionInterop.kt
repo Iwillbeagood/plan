@@ -2,7 +2,6 @@ package jun.money.mate.navigation.interop
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import jun.money.mate.navigation.MainBottomNavItem
-import java.time.YearMonth
 
 val LocalNavigateActionInterop = staticCompositionLocalOf<NavigateActionInterop> {
     error("No NavigateActionInterop provided")

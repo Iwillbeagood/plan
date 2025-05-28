@@ -13,8 +13,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.Gray8
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 
 @Composable
@@ -24,11 +24,11 @@ fun TextCheckBox(
     style: TextStyle = TypoTheme.typography.titleNormalM,
     checked: Boolean = false,
     enabled: Boolean = true,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Checkbox(
             checked = checked,
@@ -37,14 +37,15 @@ fun TextCheckBox(
                 uncheckedColor = Gray8,
                 checkmarkColor = White1,
             ),
-            onCheckedChange = onCheckedChange
+            onCheckedChange = onCheckedChange,
         )
-        if (text.isNotEmpty())
+        if (text.isNotEmpty()) {
             Text(
                 text = text,
                 style = style,
-                modifier = Modifier
+                modifier = Modifier,
             )
+        }
     }
 }
 
@@ -53,7 +54,7 @@ fun CheckBox(
     checked: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    onCheckedChange: (Boolean) -> Unit = {}
+    onCheckedChange: (Boolean) -> Unit = {},
 ) {
     CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
         Checkbox(
@@ -64,35 +65,31 @@ fun CheckBox(
                 checkmarkColor = White1,
             ),
             onCheckedChange = onCheckedChange,
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun CheckBoxPreview(
-) {
+private fun CheckBoxPreview() {
     JunTheme {
         TextCheckBox(
             checked = true,
-            text = "가입자 정보 동일"
+            text = "가입자 정보 동일",
         ) {
-
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun EmptyCheckBoxPreview(
-) {
+private fun EmptyCheckBoxPreview() {
     JunTheme {
         TextCheckBox(
             checked = false,
-            text = ""
+            text = "",
         ) {
-
         }
     }
 }

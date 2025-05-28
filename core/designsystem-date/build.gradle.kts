@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    setNamespace("designsystem_date")
+    setNamespace("designsystemDate")
 }
 
 dependencies {

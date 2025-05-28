@@ -30,7 +30,7 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem_date.datetimepicker.DayPicker
+import jun.money.mate.designsystemDate.datetimepicker.DayPicker
 import jun.money.mate.model.spending.CostType
 import jun.money.mate.model.spending.NormalType
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
@@ -39,7 +39,7 @@ import jun.money.mate.ui.AddScaffold
 
 @Composable
 internal fun CostDetailRoute(
-    viewModel: CostDetailViewModel = hiltViewModel()
+    viewModel: CostDetailViewModel = hiltViewModel(),
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
 
@@ -50,11 +50,11 @@ internal fun CostDetailRoute(
     AddScaffold(
         buttonText = "수정하기",
         onGoBack = navigateAction::popBackStack,
-        onComplete = viewModel::editCost
+        onComplete = viewModel::editCost,
     ) {
         ChallengeContent(
             uiState = uiState,
-            viewModel = viewModel
+            viewModel = viewModel,
         )
     }
 
@@ -71,7 +71,7 @@ internal fun CostDetailRoute(
 @Composable
 private fun ChallengeContent(
     uiState: CostDetailState,
-    viewModel: CostDetailViewModel
+    viewModel: CostDetailViewModel,
 ) {
     StateAnimatedVisibility<CostDetailState.UiData>(
         target = uiState,
@@ -96,7 +96,7 @@ private fun ChallengeScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .animateContentSize()
+            .animateContentSize(),
     ) {
         VerticalSpacer(50.dp)
         ChallengeDetailField(
@@ -104,7 +104,7 @@ private fun ChallengeScreen(
         ) {
             CostTypeSelector(
                 onSelected = onCostTypeSelected,
-                costType = uiState.costType
+                costType = uiState.costType,
             )
         }
         ChallengeDetailField(
@@ -123,9 +123,9 @@ private fun ChallengeScreen(
                 value = uiState.amountString,
                 onValueChange = onAmountValueChange,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.NumberPassword
+                    keyboardType = KeyboardType.NumberPassword,
                 ),
-                hint = "금액을 입력해 주세요"
+                hint = "금액을 입력해 주세요",
             )
             TopToBottomAnimatedVisibility(uiState.amount != 0L) {
                 Column {
@@ -134,7 +134,7 @@ private fun ChallengeScreen(
                         text = uiState.amountWon,
                         style = TypoTheme.typography.labelLargeM,
                         textAlign = TextAlign.End,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
             }

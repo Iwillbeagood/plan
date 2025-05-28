@@ -28,10 +28,10 @@ data class ChallengeEntity(
             entity = ChallengeEntity::class,
             parentColumns = ["id"],
             childColumns = ["challengeId"],
-            onDelete = ForeignKey.CASCADE
-        )
+            onDelete = ForeignKey.CASCADE,
+        ),
     ],
-    indices = [Index(value = ["challengeId"])]
+    indices = [Index(value = ["challengeId"])],
 )
 data class ChallengeProgressEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -39,14 +39,14 @@ data class ChallengeProgressEntity(
     val challengeId: Long,
     val amount: Long,
     val isAchieved: Boolean,
-    val date: LocalDate
+    val date: LocalDate,
 )
 
 data class ChallengeWithProgress(
     @Embedded val challenge: ChallengeEntity,
     @Relation(
         parentColumn = "id",
-        entityColumn = "challengeId"
+        entityColumn = "challengeId",
     )
-    val progressList: List<ChallengeProgressEntity>
+    val progressList: List<ChallengeProgressEntity>,
 )

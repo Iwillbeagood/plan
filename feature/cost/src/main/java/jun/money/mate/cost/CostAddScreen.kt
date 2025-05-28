@@ -32,15 +32,14 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem_date.datetimepicker.DayPicker
+import jun.money.mate.designsystemDate.datetimepicker.DayPicker
 import jun.money.mate.model.spending.CostType
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.ui.AddScaffold
 
-
 internal enum class CostStep(
-    val message: String
+    val message: String,
 ) {
     CostType("${Title}의 종류를 입력해 주세요"),
     Amount("지출 금액을 입력해 주세요"),
@@ -49,7 +48,7 @@ internal enum class CostStep(
 
 @Composable
 internal fun CostAddRoute(
-    viewModel: CostAddViewModel = hiltViewModel()
+    viewModel: CostAddViewModel = hiltViewModel(),
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
 
@@ -66,7 +65,7 @@ internal fun CostAddRoute(
         },
         buttonVisible = viewModel.currentStep.value != CostStep.CostType,
         onGoBack = navigateAction::popBackStack,
-        onComplete = viewModel::nextStep
+        onComplete = viewModel::nextStep,
     ) {
         CostAddScreen(
             currentStep = viewModel.currentStep.value,
@@ -104,7 +103,7 @@ private fun CostAddScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .animateContentSize()
+            .animateContentSize(),
     ) {
         VerticalSpacer(30.dp)
         if (currentStep.message.isNotBlank()) {
@@ -136,13 +135,13 @@ private fun CostAddScreen(
                     hint = "금액을 입력해 주세요",
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next,
-                        keyboardType = KeyboardType.NumberPassword
+                        keyboardType = KeyboardType.NumberPassword,
                     ),
                     keyboardActions = KeyboardActions(
                         onNext = {
                             onNextStep()
-                        }
-                    )
+                        },
+                    ),
                 )
                 TopToBottomAnimatedVisibility(uiState.amount != 0L) {
                     Column {
@@ -151,7 +150,7 @@ private fun CostAddScreen(
                             text = uiState.amountWon,
                             style = TypoTheme.typography.labelLargeM,
                             textAlign = TextAlign.End,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                 }
@@ -164,7 +163,7 @@ private fun CostAddScreen(
         ) {
             CostTypeSelector(
                 onSelected = onCostTypeSelected,
-                costType = uiState.costType
+                costType = uiState.costType,
             )
         }
     }

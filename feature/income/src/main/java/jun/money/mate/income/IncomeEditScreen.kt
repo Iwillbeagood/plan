@@ -152,7 +152,7 @@ private fun IncomeEditBlock(
                 onDateTypeSelected = onDateTypeSelected,
                 dateType = uiState.dateType,
                 date = uiState.date,
-                disableTypeChange = true
+                disableTypeChange = true,
             )
         }
     }

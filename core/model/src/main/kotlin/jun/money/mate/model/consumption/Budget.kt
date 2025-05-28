@@ -37,7 +37,7 @@ data class Budget(
             budgetId = 1L,
             meno = "점심",
             amount = 10000,
-            date = LocalDate.now()
+            date = LocalDate.now(),
         )
 
         val sample = Budget(
@@ -52,16 +52,16 @@ data class Budget(
                     budgetId = 1L,
                     meno = "저녁",
                     amount = 20000,
-                    date = LocalDate.now()
+                    date = LocalDate.now(),
                 ),
                 Used(
                     id = 3L,
                     budgetId = 3L,
                     meno = "아침",
                     amount = 20000,
-                    date = LocalDate.now().plusDays(1)
+                    date = LocalDate.now().plusDays(1),
                 ),
-            )
+            ),
         )
     }
 }
@@ -69,7 +69,7 @@ data class Budget(
 data class PastBudget(
     val budget: Long,
     val amountUsed: Long,
-    val date: YearMonth
+    val date: YearMonth,
 ) {
     val usageRate get() = (amountUsed.toDouble() / (budget / 0.9)) * 100
     val isOverBudget get() = amountUsed > budget
@@ -83,7 +83,7 @@ data class PastBudget(
             PastBudget(
                 budget = 100000,
                 amountUsed = 10000 * (1..12).random().toLong(),
-                date = YearMonth.now().minusMonths(it.toLong())
+                date = YearMonth.now().minusMonths(it.toLong()),
             )
         }
     }

@@ -4,28 +4,29 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface CostType {
-
     @Serializable
     data class Normal(
-        val normalType: NormalType
+        val normalType: NormalType,
     ) : CostType
 
     @Serializable
     data class Subscription(
-        val subscriptionType: SubscriptionType
+        val subscriptionType: SubscriptionType,
     ) : CostType
 
     @Serializable
-    data class Etc(val type: String) : CostType
+    data class Etc(
+        val type: String,
+    ) : CostType
 
     companion object {
-
         val CostType.name: String
-            get() = when (this) {
-                is Normal -> normalType.name
-                is Subscription -> subscriptionType.name
-                is Etc -> type
-            }
+            get() =
+                when (this) {
+                    is Normal -> normalType.name
+                    is Subscription -> subscriptionType.name
+                    is Etc -> type
+                }
     }
 }
 
@@ -42,7 +43,9 @@ enum class NormalType {
 }
 
 @Serializable
-enum class SubscriptionType(val category: SubscriptionCategory) {
+enum class SubscriptionType(
+    val category: SubscriptionCategory,
+) {
     // 🎬 영상 스트리밍
     넷플릭스(SubscriptionCategory.스트리밍),
     유튜브(SubscriptionCategory.스트리밍),
@@ -83,5 +86,5 @@ enum class SubscriptionCategory {
     쇼핑,
     배달,
     전자책,
-    AI
+    AI,
 }

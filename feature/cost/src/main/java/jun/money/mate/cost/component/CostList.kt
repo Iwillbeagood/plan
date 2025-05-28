@@ -35,7 +35,7 @@ import jun.money.mate.utils.toRemainingDayString
 internal fun CostItem(
     cost: Cost,
     @DrawableRes imageRes: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val border = if (cost.selected) {
         BorderStroke(3.dp, MaterialTheme.colorScheme.primary)
@@ -50,20 +50,20 @@ internal fun CostItem(
         border = border,
         modifier = Modifier
             .height(90.dp)
-            .padding(vertical = 2.dp)
+            .padding(vertical = 2.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
+            modifier = modifier,
         ) {
             Icon(
                 painter = painterResource(imageRes),
                 tint = Color.Unspecified,
                 contentDescription = null,
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp),
             )
             HorizontalSpacer(30.dp)
-            Column{
+            Column {
                 Text(
                     text = Utils.formatAmountWon(cost.amount),
                     style = TypoTheme.typography.titleLargeB.nonScaledSp,
@@ -92,7 +92,7 @@ private fun CostListPreview() {
         CostItem(
             cost = Cost.samples.first(),
             imageRes = R.drawable.ic_coin,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

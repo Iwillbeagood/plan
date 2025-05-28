@@ -30,18 +30,18 @@ import javax.inject.Inject
 internal class CostDetailViewModel @Inject constructor(
     private val upsertCostUsecase: UpsertCostUsecase,
     private val costRepository: CostRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val id = savedStateHandle.toRoute<MainTabRoute.Cost.Detail>().id
 
     private val _costAddState = MutableStateFlow<CostDetailState>(CostDetailState.Loading)
-    val costDetailState: StateFlow<CostDetailState> =_costAddState.onStart {
+    val costDetailState: StateFlow<CostDetailState> = _costAddState.onStart {
         fetchCost()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = CostDetailState.Loading
+        initialValue = CostDetailState.Loading,
     )
 
     private val _costEffect = MutableSharedFlow<CostDetailEffect>()
@@ -55,7 +55,7 @@ internal class CostDetailViewModel @Inject constructor(
                     id = cost.id,
                     amount = cost.amount,
                     day = cost.day,
-                    costType = cost.costType
+                    costType = cost.costType,
                 )
             }
         }
@@ -70,7 +70,7 @@ internal class CostDetailViewModel @Inject constructor(
                     day = it.day,
                     costType = it.costType,
                     onSuccess = ::editComplete,
-                    onError = ::showSnackBar
+                    onError = ::showSnackBar,
                 )
             }
         }
@@ -85,7 +85,7 @@ internal class CostDetailViewModel @Inject constructor(
     fun amountValueChange(value: String) {
         _costAddState.updateWithData<CostDetailState, CostDetailState.UiData> {
             it.copy(
-                amount = value.toLongOrNull() ?: 0
+                amount = value.toLongOrNull() ?: 0,
             )
         }
     }

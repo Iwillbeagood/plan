@@ -5,7 +5,6 @@ import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.error.MessageType
 import jun.money.mate.model.income.Income
 import java.time.LocalDate
-import java.time.YearMonth
 import javax.inject.Inject
 
 class EditIncomeUsecase @Inject constructor(
@@ -39,8 +38,8 @@ class EditIncomeUsecase @Inject constructor(
                 amount = amount,
                 date = date,
                 dateType = dateType,
-                addDate = addDate
-            )
+                addDate = addDate,
+            ),
         )
 
         onSuccess()

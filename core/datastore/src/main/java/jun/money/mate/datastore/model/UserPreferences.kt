@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserPreferences(
-    val a: String = ""
+    val a: String = "",
 )

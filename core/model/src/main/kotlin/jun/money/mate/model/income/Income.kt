@@ -41,7 +41,7 @@ data class Income(
 }
 
 data class IncomeList(
-    val incomes: List<Income>
+    val incomes: List<Income>,
 ) {
 
     val monthlyTotal get() = incomes.filter { it.dateType == DateType.Monthly }.sumOf { it.amount }
@@ -57,7 +57,7 @@ data class IncomeList(
             incomes = listOf(
                 Income.regularSample,
                 Income.variableSample,
-            )
+            ),
         )
     }
 }

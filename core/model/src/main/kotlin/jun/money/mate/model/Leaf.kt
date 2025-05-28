@@ -5,10 +5,9 @@ data class Leaf(
     val startY: Float,
     val endY: Float,
     val swingAmount: Float,
-    val isRed: Boolean = false
+    val isRed: Boolean = false,
 )
 
-
 data class LeafOrder(
-    val isRed: Boolean
+    val isRed: Boolean,
 )

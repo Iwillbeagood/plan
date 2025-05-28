@@ -25,7 +25,7 @@ import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem_date.datetimepicker.MonthBar
+import jun.money.mate.designsystemDate.datetimepicker.MonthBar
 import jun.money.mate.model.Utils.formatDateToKorean
 import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.etc.DateType.Monthly
@@ -124,10 +124,10 @@ private fun IncomeItem(
                         )
                         Text(
                             text =
-                                when (income.dateType) {
-                                    Monthly -> "매월 ${income.date}일"
-                                    Specific -> formatDateToKorean(income.localDate)
-                                },
+                            when (income.dateType) {
+                                Monthly -> "매월 ${income.date}일"
+                                Specific -> formatDateToKorean(income.localDate)
+                            },
                             style = TypoTheme.typography.titleSmallR,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )

@@ -73,7 +73,7 @@ data class SavePlan(
             addYearMonth = YearMonth.now(),
             savingsType = SavingsType.적금(
                 periodStart = LocalDate.now(),
-                periodMonth = 6
+                periodMonth = 6,
             ),
             executed = false,
         )
@@ -81,7 +81,7 @@ data class SavePlan(
 }
 
 data class SavePlanList(
-    val savePlans: List<SavePlan>
+    val savePlans: List<SavePlan>,
 ) {
 
     val executedTotal get() = savePlans.filter { it.executed }.sumOf { it.amount }
@@ -93,8 +93,8 @@ data class SavePlanList(
         val sample = SavePlanList(
             savePlans = listOf(
                 SavePlan.sample,
-                SavePlan.sample
-            )
+                SavePlan.sample,
+            ),
         )
     }
 }

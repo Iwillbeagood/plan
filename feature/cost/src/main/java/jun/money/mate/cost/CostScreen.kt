@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,18 +35,14 @@ import jun.money.mate.cost.contract.CostEffect
 import jun.money.mate.cost.contract.CostModalEffect
 import jun.money.mate.cost.contract.CostState
 import jun.money.mate.cost.navigation.Title
-import jun.money.mate.designsystem.component.HorizontalDivider
-import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.RegularButton
-import jun.money.mate.designsystem.component.TwoBtnDialog
 import jun.money.mate.designsystem.component.StateAnimatedVisibility
+import jun.money.mate.designsystem.component.TwoBtnDialog
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
-import jun.money.mate.designsystem.theme.Gray9
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.model.spending.Cost
-import jun.money.mate.model.spending.CostType
 import jun.money.mate.navigation.interop.LocalNavigateActionInterop
 import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.res.R
@@ -58,7 +51,7 @@ import jun.money.mate.utils.toImageRes
 
 @Composable
 internal fun CostRoute(
-    viewModel: CostViewModel = hiltViewModel()
+    viewModel: CostViewModel = hiltViewModel(),
 ) {
     ChangeStatusBarColor()
 
@@ -70,12 +63,12 @@ internal fun CostRoute(
     CostContent(
         uiState = uiState,
         viewModel = viewModel,
-        onShowCostAddScreen = navigateAction::navigateToCostAdd
+        onShowCostAddScreen = navigateAction::navigateToCostAdd,
     )
 
     CostModalContent(
         modalEffect = modalEffect,
-        viewModel = viewModel
+        viewModel = viewModel,
     )
 
     LaunchedEffect(Unit) {
@@ -98,13 +91,13 @@ private fun CostContent(
         target = uiState,
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             CostScreen(
                 uiState = it,
                 onSelectCost = viewModel::selectCost,
                 onShowCostAddScreen = onShowCostAddScreen,
-                onSelectedCalendarValue = viewModel::selectCalendarValue
+                onSelectedCalendarValue = viewModel::selectCalendarValue,
             )
             EditSheet(
                 selectedCount = it.selectedCount,
@@ -113,7 +106,7 @@ private fun CostContent(
                 onDelete = viewModel::showDeleteDialog,
                 modifier = Modifier
                     .padding(vertical = 20.dp, horizontal = 16.dp)
-                    .align(Alignment.BottomCenter)
+                    .align(Alignment.BottomCenter),
             )
         }
     }
@@ -124,21 +117,21 @@ private fun CostScreen(
     uiState: CostState.Data,
     onSelectCost: (Cost) -> Unit,
     onShowCostAddScreen: () -> Unit,
-    onSelectedCalendarValue: (CostCalendarValue?) -> Unit
+    onSelectedCalendarValue: (CostCalendarValue?) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background),
     ) {
         VerticalSpacer(50.dp)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Column(
-                modifier = Modifier.padding(start = 20.dp)
+                modifier = Modifier.padding(start = 20.dp),
             ) {
                 Text(
                     text = "이번달의 전체 $Title",
@@ -167,14 +160,14 @@ private fun CostScreen(
             borderStroke = 12.dp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 20.dp),
         )
         VerticalSpacer(10.dp)
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp)
+                .padding(horizontal = 10.dp),
         ) {
             item {
                 Column {
@@ -187,15 +180,16 @@ private fun CostScreen(
                     VerticalSpacer(30.dp)
                     if (uiState.costs.isNotEmpty()) {
                         Crossfade(
-                            uiState.selectedCalendarValue
+                            uiState.selectedCalendarValue,
                         ) {
                             Text(
-                                text = if (it != null)
+                                text = if (it != null) {
                                     "${it.date}일 $Title"
-                                else
-                                    "전체 $Title",
+                                } else {
+                                    "전체 $Title"
+                                },
                                 style = TypoTheme.typography.titleMediumM,
-                                modifier = Modifier.padding(start = 10.dp)
+                                modifier = Modifier.padding(start = 10.dp),
                             )
                         }
                         VerticalSpacer(4.dp)
@@ -213,7 +207,7 @@ private fun CostScreen(
                         .clickable {
                             onSelectCost(cost)
                         }
-                        .padding(horizontal = 16.dp)
+                        .padding(horizontal = 16.dp),
                 )
             }
             item {
@@ -226,7 +220,7 @@ private fun CostScreen(
 @Composable
 private fun CostModalContent(
     modalEffect: CostModalEffect,
-    viewModel: CostViewModel
+    viewModel: CostViewModel,
 ) {
     when (modalEffect) {
         CostModalEffect.Hidden -> {}
@@ -238,9 +232,9 @@ private fun CostModalContent(
                 content = {
                     Text(
                         text = "선택한 소비를 삭제하시겠습니까?",
-                        style = TypoTheme.typography.titleMediumM
+                        style = TypoTheme.typography.titleMediumM,
                     )
-                }
+                },
             )
         }
     }
@@ -252,11 +246,11 @@ private fun CostScreenPreview() {
     JunTheme {
         CostScreen(
             uiState = CostState.Data(
-                costs = Cost.samples
+                costs = Cost.samples,
             ),
             onSelectCost = {},
             onShowCostAddScreen = {},
-            onSelectedCalendarValue = {}
+            onSelectedCalendarValue = {},
         )
     }
 }

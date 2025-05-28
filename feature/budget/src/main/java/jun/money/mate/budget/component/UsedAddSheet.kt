@@ -31,7 +31,7 @@ import jun.money.mate.designsystem.component.TopToBottomAnimatedVisibility
 import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem_date.datetimepicker.DatePicker
+import jun.money.mate.designsystemDate.datetimepicker.DatePicker
 import jun.money.mate.model.consumption.Used
 import jun.money.mate.utils.currency.CurrencyFormatter
 import java.time.LocalDate

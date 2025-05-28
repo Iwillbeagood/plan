@@ -24,10 +24,10 @@ import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
 
-internal enum class CostOption {
-    일반,
-    구독,
-    기타
+internal enum class CostOption(val displayName: String) {
+    General("일반"),
+    Subscription("구독"),
+    Etc("기타"),
 }
 
 @Composable
@@ -35,39 +35,38 @@ internal fun CostOptionTab(
     selectedOption: CostOption,
     onTabClick: (CostOption) -> Unit,
     modifier: Modifier = Modifier,
-    style: TextStyle = TypoTheme.typography.titleSmallM
+    style: TextStyle = TypoTheme.typography.titleSmallM,
 ) {
     Surface(
         shape = CircleShape,
-        color =  White1,
+        color = White1,
         border = BorderStroke(1.dp, Gray6),
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         TabRow(
             selectedTabIndex = selectedOption.ordinal,
             containerColor = White1,
             contentColor = MaterialTheme.colorScheme.onSurface,
             indicator = { tabPositions ->
-                Box(
-                ) {
+                Box() {
                     Surface(
                         shape = CircleShape,
-                        color =  main.copy(alpha = 0.3f),
+                        color = main.copy(alpha = 0.3f),
                         modifier = Modifier
                             .tabIndicatorOffset(tabPositions[selectedOption.ordinal])
                             .align(Alignment.Center)
-                            .padding(horizontal = 4.dp)
+                            .padding(horizontal = 4.dp),
                     ) {
                         Text(
                             text = "",
                             style = style,
                             modifier = Modifier
-                                .padding(8.dp)
+                                .padding(8.dp),
                         )
                     }
                 }
             },
-            divider = {}
+            divider = {},
         ) {
             CostOption.entries.forEachIndexed { tabIndex, tab ->
                 Tab(
@@ -75,7 +74,7 @@ internal fun CostOptionTab(
                     onClick = { onTabClick(tab) },
                     text = {
                         Text(
-                            text = tab.name,
+                            text = tab.displayName,
                             style = if (selectedOption.ordinal == tabIndex) {
                                 style.copy(fontWeight = FontWeight.Bold)
                             } else {
@@ -87,14 +86,13 @@ internal fun CostOptionTab(
                                 main
                             },
                             maxLines = 1,
-                            modifier = Modifier.padding(vertical = 2.dp)
+                            modifier = Modifier.padding(vertical = 2.dp),
                         )
                     },
                 )
             }
         }
     }
-
 }
 
 @Preview
@@ -102,8 +100,8 @@ internal fun CostOptionTab(
 private fun LoginOptionTabPreview() {
     JunTheme {
         CostOptionTab(
-            selectedOption = CostOption.구독,
-            onTabClick = {}
+            selectedOption = CostOption.Subscription,
+            onTabClick = {},
         )
     }
 }

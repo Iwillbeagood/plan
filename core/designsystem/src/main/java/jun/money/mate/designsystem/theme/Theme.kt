@@ -58,7 +58,7 @@ val LocalDarkTheme = compositionLocalOf { true }
 @Composable
 fun JunTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
@@ -83,14 +83,14 @@ fun JunTheme(
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
-            content = content
+            content = content,
         )
     }
 }
 
 @Composable
 fun ChangeStatusBarColor(
-    color: Color = MaterialTheme.colorScheme.background
+    color: Color = MaterialTheme.colorScheme.background,
 ) {
     val view = LocalView.current
     val darkTheme = LocalDarkTheme.current

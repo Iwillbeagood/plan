@@ -32,7 +32,7 @@ private data class Acorn(
     val x: Float,
     val count: Int,
     val rotation: Float,
-    val imageId: Int
+    val imageId: Int,
 )
 
 @Composable
@@ -67,7 +67,7 @@ internal fun AcornBox(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height((screenHeight * 0.4f).dp)
+            .height((screenHeight * 0.4f).dp),
     ) {
         acorns.forEachIndexed { _, (x, count, rotation, iconId) ->
             val animatedY = remember { Animatable(-50f) }
@@ -77,8 +77,8 @@ internal fun AcornBox(
                     targetValue = maxDropHeight - (count * 10f),
                     animationSpec = tween(
                         durationMillis = Random.nextInt(1000, 3000),
-                        easing = EaseOutBounce
-                    )
+                        easing = EaseOutBounce,
+                    ),
                 )
             }
 
@@ -88,7 +88,7 @@ internal fun AcornBox(
                 modifier = Modifier
                     .size(50.dp)
                     .absoluteOffset(x.dp, animatedY.value.dp)
-                    .graphicsLayer(rotationZ = rotation)
+                    .graphicsLayer(rotationZ = rotation),
             )
         }
     }

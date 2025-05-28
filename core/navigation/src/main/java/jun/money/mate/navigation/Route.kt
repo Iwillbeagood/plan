@@ -1,6 +1,5 @@
 package jun.money.mate.navigation
 
-import jun.money.mate.navigation.argument.AddType
 import kotlinx.serialization.Serializable
 
 sealed interface Route {
@@ -18,7 +17,7 @@ sealed interface Route {
         data object Add : Income
 
         @Serializable
-        data class Edit(val id: Long): Income
+        data class Edit(val id: Long) : Income
     }
 
     @Serializable
@@ -32,7 +31,6 @@ sealed interface Route {
 
         @Serializable
         data object Add : Save
-
     }
 
     @Serializable
@@ -82,6 +80,4 @@ sealed interface MainTabRoute : Route {
         @Serializable
         data object Add : Budget
     }
-
 }
-

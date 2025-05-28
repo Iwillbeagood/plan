@@ -26,7 +26,7 @@ import jun.money.mate.designsystem.theme.main
 
 @Composable
 fun CheckIcon(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var checked by remember { mutableStateOf(false) }
 
@@ -37,11 +37,11 @@ fun CheckIcon(
     Surface(
         color = main,
         shape = CircleShape,
-        modifier = modifier.size(24.dp)
+        modifier = modifier.size(24.dp),
     ) {
         AnimatedCheckIcon(
             isChecked = checked,
-            modifier = Modifier.padding(4.dp)
+            modifier = Modifier.padding(4.dp),
         )
     }
 }
@@ -51,12 +51,12 @@ fun AnimatedCheckIcon(
     isChecked: Boolean,
     modifier: Modifier = Modifier,
     color: Color = White1,
-    strokeWidth: Float = 8f
+    strokeWidth: Float = 8f,
 ) {
     val animationProgress by animateFloatAsState(
         targetValue = if (isChecked) 1f else 0f,
         animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing),
-        label = "CheckAnimation"
+        label = "CheckAnimation",
     )
 
     Canvas(modifier = modifier.size(24.dp)) {
@@ -78,7 +78,7 @@ fun AnimatedCheckIcon(
             start = Offset(startX, startY),
             end = Offset(firstSegmentEndX, firstSegmentEndY),
             strokeWidth = strokeWidth,
-            cap = StrokeCap.Round
+            cap = StrokeCap.Round,
         )
 
         if (animationProgress > 0.5f) {
@@ -87,7 +87,7 @@ fun AnimatedCheckIcon(
                 start = Offset(midX, midY),
                 end = Offset(secondSegmentEndX, secondSegmentEndY),
                 strokeWidth = strokeWidth,
-                cap = StrokeCap.Round
+                cap = StrokeCap.Round,
             )
         }
     }

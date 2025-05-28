@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +12,6 @@ import dagger.hilt.components.SingletonComponent
 import jun.money.mate.database.AppDatabase
 import jun.money.mate.database.AppDatabase.Companion.DATABASE_NAME
 import jun.money.mate.utils.BuildConfig
-import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 import javax.inject.Singleton
 

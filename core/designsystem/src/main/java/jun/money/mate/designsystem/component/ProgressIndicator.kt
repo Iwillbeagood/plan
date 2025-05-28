@@ -18,16 +18,16 @@ import jun.money.mate.designsystem.theme.JunTheme
 
 @Composable
 fun ProgressIndicator(
-    visible: Boolean = true
+    visible: Boolean = true,
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Scrim(
             color = Color.Gray,
-            visible = visible
+            visible = visible,
         )
         if (visible) {
             CircularProgressIndicator()
@@ -43,7 +43,8 @@ fun Scrim(
     if (color.isSpecified) {
         val alpha by animateFloatAsState(
             targetValue = if (visible) 0.5f else 0f,
-            animationSpec = TweenSpec(), label = ""
+            animationSpec = TweenSpec(),
+            label = "",
         )
         val dismissSheet = if (visible) {
             Modifier.clearAndSetSemantics {}
@@ -53,7 +54,7 @@ fun Scrim(
         Canvas(
             Modifier
                 .fillMaxSize()
-                .then(dismissSheet)
+                .then(dismissSheet),
         ) {
             drawRect(color = color, alpha = alpha)
         }

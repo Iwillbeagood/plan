@@ -33,7 +33,7 @@ import jun.money.mate.database.entity.UsedEntity
         PastBudgetEntity::class,
         ChallengeEntity::class,
         ChallengeProgressEntity::class,
-        CostEntity::class
+        CostEntity::class,
     ],
     version = 1,
     exportSchema = true,
@@ -47,7 +47,7 @@ import jun.money.mate.database.entity.UsedEntity
         YearMonthConverter::class,
         ChallengeTypeConverter::class,
         CostTypeConverter::class,
-    ]
+    ],
 )
 internal abstract class AppDatabase : RoomDatabase() {
 

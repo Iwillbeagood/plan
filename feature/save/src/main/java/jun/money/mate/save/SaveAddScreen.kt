@@ -25,29 +25,29 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem_date.datetimepicker.DayPicker
+import jun.money.mate.designsystemDate.datetimepicker.DayPicker
 import jun.money.mate.model.save.SavingsType
+import jun.money.mate.navigation.interop.LocalNavigateActionInterop
+import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.save.component.SaveCategories
 import jun.money.mate.save.contract.SaveAddEffect
 import jun.money.mate.save.contract.SaveAddModalEffect
 import jun.money.mate.save.contract.SaveAddState
 import jun.money.mate.ui.AddScaffold
-import jun.money.mate.navigation.interop.LocalNavigateActionInterop
-import jun.money.mate.navigation.interop.rememberShowSnackBar
 import jun.money.mate.ui.number.NumberKeyboard
 import jun.money.mate.ui.number.ValueState
 
 internal enum class SaveAddStep(
-    val message: String
+    val message: String,
 ) {
     Category("먼저 무엇을 저축할지 선택해 주세요"),
     Amount("월 납입할 금액을 입력해 주세요"),
-    Type("납입이 진행되는 날짜를 선택해 주세요");
+    Type("납입이 진행되는 날짜를 선택해 주세요"),
 }
 
 @Composable
 internal fun SaveAddRoute(
-    viewModel: SaveAddViewModel = hiltViewModel()
+    viewModel: SaveAddViewModel = hiltViewModel(),
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.surface)
 
@@ -73,7 +73,7 @@ internal fun SaveAddRoute(
             onShowNumberBottomSheet = viewModel::showNumberKeyboard,
             onDaySelected = viewModel::daySelected,
             onCategorySelected = viewModel::categorySelected,
-            selectedCategory = saveAddState.category
+            selectedCategory = saveAddState.category,
         )
     }
     SaveModalContent(
@@ -107,7 +107,7 @@ private fun SaveAddScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .animateContentSize()
+            .animateContentSize(),
     ) {
         VerticalSpacer(50.dp)
         Text(
@@ -121,7 +121,7 @@ private fun SaveAddScreen(
         ) {
             DayPicker(
                 onDaySelected = onDaySelected,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
         SaveAddField(
@@ -141,7 +141,7 @@ private fun SaveAddScreen(
                             text = uiState.amountWon,
                             style = TypoTheme.typography.labelLargeM,
                             textAlign = TextAlign.End,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                 }

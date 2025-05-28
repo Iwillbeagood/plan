@@ -20,8 +20,7 @@ fun NavController.navigateToSaveAdd() {
     navigate(Route.Save.Add)
 }
 
-fun NavGraphBuilder.saveNavGraph(
-) {
+fun NavGraphBuilder.saveNavGraph() {
     composable<Route.Save.List> {
         SaveListRoute()
     }

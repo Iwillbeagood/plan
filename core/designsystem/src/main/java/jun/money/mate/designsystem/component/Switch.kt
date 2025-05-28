@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.etc.BooleanProvider
 import jun.money.mate.designsystem.theme.Black
 import jun.money.mate.designsystem.theme.Gray5
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.White1
 import jun.money.mate.designsystem.theme.main
 
@@ -43,19 +43,19 @@ fun DefaultSwitch(
                 checkedTrackColor = checkedColor,
                 uncheckedTrackColor = uncheckedColor,
                 checkedBorderColor = checkedColor,
-                uncheckedBorderColor = uncheckedColor
+                uncheckedBorderColor = uncheckedColor,
             ),
             thumbContent = {
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     drawCircle(
                         color = White1,
                         radius = 37f,
-                        center = center
+                        center = center,
                     )
                 }
             },
             onCheckedChange = onCheckedChange,
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }
@@ -77,32 +77,29 @@ fun TextSwitch(
         Text(
             text = text,
             color = if (checked) Black else Gray5,
-            style = style
+            style = style,
         )
         Spacer(modifier = Modifier.width(6.dp))
         DefaultSwitch(
             checked = checked,
             checkedColor = checkedColor,
             uncheckedColor = uncheckedColor,
-            onCheckedChange = onCheckedChange
+            onCheckedChange = onCheckedChange,
         )
     }
-
 }
-
 
 @Preview(showBackground = true)
 @Composable
 private fun SwitchPreview(
-    @PreviewParameter(BooleanProvider::class) checked: Boolean
+    @PreviewParameter(BooleanProvider::class) checked: Boolean,
 ) {
     JunTheme {
         Column {
             DefaultSwitch(
                 checked = checked,
                 onCheckedChange = {
-
-                }
+                },
             )
         }
     }
@@ -111,7 +108,7 @@ private fun SwitchPreview(
 @Preview
 @Composable
 private fun TextSwitchPreview(
-    @PreviewParameter(BooleanProvider::class) checked: Boolean
+    @PreviewParameter(BooleanProvider::class) checked: Boolean,
 ) {
     JunTheme {
         Column {
@@ -119,8 +116,7 @@ private fun TextSwitchPreview(
                 text = "자동",
                 checked = checked,
                 onCheckedChange = {
-
-                }
+                },
             )
         }
     }

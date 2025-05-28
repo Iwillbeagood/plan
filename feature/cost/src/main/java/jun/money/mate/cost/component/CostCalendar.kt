@@ -3,7 +3,6 @@ package jun.money.mate.cost.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,8 +21,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,14 +45,14 @@ import kotlin.math.ceil
 data class CostCalendarValue(
     val date: Int,
     val costs: List<Cost>,
-    val selected: Boolean = false
+    val selected: Boolean = false,
 )
 
 @Composable
 internal fun CostCalendar(
     costCalendarValue: List<CostCalendarValue>,
     selectedCalendarValue: CostCalendarValue?,
-    onSelectedCalendarValue: (CostCalendarValue?) -> Unit
+    onSelectedCalendarValue: (CostCalendarValue?) -> Unit,
 ) {
     val currentMonth = LocalDate.now().month
     val currentYear = LocalDate.now().year
@@ -70,14 +67,14 @@ internal fun CostCalendar(
 
     Surface(
         shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface
+        color = MaterialTheme.colorScheme.surface,
     ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(daysInWeek),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 10.dp)
-                .heightIn(max = 350.dp)
+                .heightIn(max = 350.dp),
         ) {
             items(daysInWeek) { index ->
                 val dayOfWeek = LocalDate.now().plusDays(index.toLong()).dayOfWeek
@@ -85,7 +82,7 @@ internal fun CostCalendar(
                     text = dayOfWeek.getDisplayName(TextStyle.SHORT, koreanLocale),
                     style = TypoTheme.typography.titleMediumB.nonScaledSp,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(top = 12.dp, bottom = 6.dp)
+                    modifier = Modifier.padding(top = 12.dp, bottom = 6.dp),
                 )
             }
             items(totalRows * daysInWeek) { index ->
@@ -100,15 +97,15 @@ internal fun CostCalendar(
                         modifier = Modifier
                             .clip(RoundedCornerShape(4.dp))
                             .clickable(
-                            enabled = item != null,
-                            onClick = {
-                                if (item != null && item != selectedCalendarValue) {
-                                    onSelectedCalendarValue(item)
-                                } else {
-                                    onSelectedCalendarValue(null)
-                                }
-                            }
-                        )
+                                enabled = item != null,
+                                onClick = {
+                                    if (item != null && item != selectedCalendarValue) {
+                                        onSelectedCalendarValue(item)
+                                    } else {
+                                        onSelectedCalendarValue(null)
+                                    }
+                                },
+                            ),
                     )
                 } else {
                     // 달력의 빈 공간을 채우기 위해 Spacer 사용
@@ -124,68 +121,66 @@ private fun DayCell(
     date: LocalDate,
     selected: Boolean,
     costCalendarValue: CostCalendarValue?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp)
             .background(
-                if (selected)
+                if (selected) {
                     MaterialTheme.colorScheme.primary
-                else
-                    MaterialTheme.colorScheme.surface
-            )
-        ,
+                } else
+                    MaterialTheme.colorScheme.surface,
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Top,
     ) {
         Text(
             text = date.dayOfMonth.toString(),
-            style = if (date == LocalDate.now())
+            style = if (date == LocalDate.now()) {
                 TypoTheme.typography.titleMediumB.nonScaledSp
-            else
+            } else
                 TypoTheme.typography.titleMediumM.nonScaledSp,
-            color = if (selected)
+            color = if (selected) {
                 White1
-            else if (date == LocalDate.now())
+            } else if (date == LocalDate.now()) {
                 MaterialTheme.colorScheme.primary
-            else
+            } else
                 MaterialTheme.colorScheme.onSurfaceVariant,
         )
         VerticalSpacer(2.dp)
         if (costCalendarValue != null) {
             Row(
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 val size = costCalendarValue.costs.size
                 if (size > 2) {
                     Text(
                         text = "${size}개",
                         style = TypoTheme.typography.titleMediumM.nonScaledSp,
-                        color = if (selected)
+                        color = if (selected) {
                             White1
-                        else
+                        } else
                             MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(2.dp)
+                        modifier = Modifier.padding(2.dp),
                     )
                 } else {
                     costCalendarValue.costs.forEach { cost ->
                         Icon(
                             painter = painterResource(
-                                cost.costType.toImageRes()
+                                cost.costType.toImageRes(),
                             ),
                             tint = Color.Unspecified,
                             contentDescription = "Spending Icon",
                             modifier = Modifier
                                 .padding(2.dp)
-                                .size(16.dp)
+                                .size(16.dp),
                         )
                     }
                 }
             }
-
         }
     }
 }
@@ -198,11 +193,11 @@ private fun CalendarScreenPreview() {
             costCalendarValue = listOf(
                 CostCalendarValue(
                     10,
-                    Cost.samples
-                )
+                    Cost.samples,
+                ),
             ),
             selectedCalendarValue = null,
-            onSelectedCalendarValue = {}
+            onSelectedCalendarValue = {},
         )
     }
 }

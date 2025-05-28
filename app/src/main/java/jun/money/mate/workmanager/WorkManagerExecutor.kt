@@ -3,7 +3,6 @@ package jun.money.mate.workmanager
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ListenableWorker
-import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
@@ -58,12 +57,11 @@ class WorkManagerExecutor @Inject constructor(
         workManager.enqueueUniquePeriodicWork(
             uniqueWorkName = name,
             existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.KEEP,
-            request = workRequest
+            request = workRequest,
         )
 
         observeWorkManager(name)
     }
-
 
     private fun observeWorkManager(name: String) {
         CoroutineScope(Dispatchers.IO).launch {

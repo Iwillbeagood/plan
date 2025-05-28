@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem_date.datetimepicker.DayPicker
-import jun.money.mate.designsystem_date.datetimepicker.WeekPicker
+import jun.money.mate.designsystemDate.datetimepicker.DayPicker
+import jun.money.mate.designsystemDate.datetimepicker.WeekPicker
 import jun.money.mate.model.save.ChallengeType
 import jun.money.mate.ui.TypeButton
 import java.time.LocalDate

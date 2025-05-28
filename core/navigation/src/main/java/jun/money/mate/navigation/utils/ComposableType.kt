@@ -14,26 +14,36 @@ import androidx.navigation.compose.composable
 inline fun <reified T : Any, reified Type : Any> NavGraphBuilder.composableType(
     deepLinks: List<NavDeepLink> = emptyList(),
     noinline enterTransition:
-    (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
-    EnterTransition?)? =
+    (
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
+        EnterTransition?
+    )? =
         null,
     noinline exitTransition:
-    (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
-    ExitTransition?)? =
+    (
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
+        ExitTransition?
+    )? =
         null,
     noinline popEnterTransition:
-    (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
-    EnterTransition?)? =
+    (
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
+        EnterTransition?
+    )? =
         enterTransition,
     noinline popExitTransition:
-    (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
-    ExitTransition?)? =
+    (
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
+        ExitTransition?
+    )? =
         exitTransition,
     noinline sizeTransform:
-    (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
-    SizeTransform?)? =
+    (
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards
+        SizeTransform?
+    )? =
         null,
-    noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
+    noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) {
     composable<T>(
         typeMap = createTypeMap(Type::class),
@@ -43,6 +53,6 @@ inline fun <reified T : Any, reified Type : Any> NavGraphBuilder.composableType(
         popEnterTransition = popEnterTransition,
         popExitTransition = popExitTransition,
         sizeTransform = sizeTransform,
-        content = content
+        content = content,
     )
 }

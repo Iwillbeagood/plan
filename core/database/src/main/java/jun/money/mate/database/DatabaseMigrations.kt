@@ -24,6 +24,4 @@ package jun.money.mate.database
  * 이 클래스는 `AutoMigrationSpec`을 구현해야 합니다.
  */
 
-internal object DatabaseMigrations {
-
-}
+internal object DatabaseMigrations

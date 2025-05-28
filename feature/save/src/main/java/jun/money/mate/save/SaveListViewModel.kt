@@ -24,9 +24,9 @@ import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
-internal class SavingListViewModel @Inject constructor(
+internal class SaveListViewModel @Inject constructor(
     private val saveRepository: SaveRepository,
-    getChallengeProgressUsecase: GetChallengeProgressUsecase
+    getChallengeProgressUsecase: GetChallengeProgressUsecase,
 ) : ViewModel() {
 
     private val _month = MutableStateFlow<YearMonth>(YearMonth.now())
@@ -38,7 +38,7 @@ internal class SavingListViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = SavingListState.Loading
+        initialValue = SavingListState.Loading,
     )
 
     val challengeState: StateFlow<List<SavingChallenge>> = month.flatMapLatest { month ->
@@ -46,7 +46,7 @@ internal class SavingListViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
+        initialValue = emptyList(),
     )
 
     private val _savingListEffect = MutableSharedFlow<SavingListEffect>()

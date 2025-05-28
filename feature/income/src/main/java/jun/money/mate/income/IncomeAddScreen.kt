@@ -180,7 +180,7 @@ private fun IncomeAddScreen(
                         onNextStep()
                     },
                 ),
-                onFocus = onDismiss
+                onFocus = onDismiss,
             )
         }
         VerticalSpacer(400.dp)

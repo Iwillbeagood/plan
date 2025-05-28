@@ -65,7 +65,7 @@ data class Challenge(
                     isAchieved = true,
                     date = LocalDate.now().plusMonths(1),
                 ),
-            )
+            ),
         )
     }
 }
@@ -82,5 +82,5 @@ data class ChallengeProgress(
 enum class ChallengeProgressType {
     Now,
     PAST,
-    UPCOMING
+    UPCOMING,
 }

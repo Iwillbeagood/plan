@@ -12,7 +12,7 @@ sealed interface ChallengeType {
 
     @Serializable
     data class Weekly(
-        @Serializable(with = DayOfWeekSerializer::class) val week: DayOfWeek
+        @Serializable(with = DayOfWeekSerializer::class) val week: DayOfWeek,
     ) : ChallengeType
 
     @Serializable

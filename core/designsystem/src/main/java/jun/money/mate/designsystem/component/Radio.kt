@@ -53,7 +53,7 @@ fun RadioGroup(
         Column(
             verticalArrangement = Arrangement.spacedBy(verticalSpace),
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
+            modifier = modifier,
         ) {
             Radios(
                 list = list,
@@ -65,7 +65,7 @@ fun RadioGroup(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
+            modifier = modifier,
         ) {
             Radios(
                 list = list,
@@ -83,35 +83,47 @@ private fun Radios(
 ) {
     list.forEach {
         RadioButton(
-            modifier = modifier, text = it.text, selected = it.selected, onClick = {
+            modifier = modifier,
+            text = it.text,
+            selected = it.selected,
+            onClick = {
                 onRadioClick(it)
-            })
+            },
+        )
     }
 }
 
 @Composable
 fun RadioButton(
     modifier: Modifier = Modifier,
-    text: String = "", selected: Boolean = false,
-    onClick: () -> Unit
+    text: String = "",
+    selected: Boolean = false,
+    onClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .clickable {
                 onClick()
-            }) {
+            },
+    ) {
         Canvas(
-            modifier = Modifier.size(26.dp)
+            modifier = Modifier.size(26.dp),
         ) {
             drawCircle(
-                color = main, radius = 40f, center = center
+                color = main,
+                radius = 40f,
+                center = center,
             )
             drawCircle(
-                color = White1, radius = 35f, center = center
+                color = White1,
+                radius = 35f,
+                center = center,
             )
             drawCircle(
-                color = if (selected) main else White1, radius = 22f, center = center
+                color = if (selected) main else White1,
+                radius = 22f,
+                center = center,
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -119,7 +131,7 @@ fun RadioButton(
             text = text,
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
-            style = if (selected) TypoTheme.typography.titleNormalM else TypoTheme.typography.titleNormalR
+            style = if (selected) TypoTheme.typography.titleNormalM else TypoTheme.typography.titleNormalR,
         )
     }
 }
@@ -127,11 +139,12 @@ fun RadioButton(
 @Preview(showBackground = true)
 @Composable
 private fun RadioButtonPreview(
-    @PreviewParameter(BooleanProvider::class) isSelected: Boolean
+    @PreviewParameter(BooleanProvider::class) isSelected: Boolean,
 ) {
     JunTheme {
         RadioButton(
-            text = "자동", selected = isSelected
+            text = "자동",
+            selected = isSelected,
         ) {}
     }
 }
@@ -140,9 +153,11 @@ private fun RadioButtonPreview(
 @Composable
 private fun RadioGroupVerticalPreview() {
     JunTheme {
-        RadioGroup(radioList = listOf("자동", "주간", "야간").toComponentItems(),
+        RadioGroup(
+            radioList = listOf("자동", "주간", "야간").toComponentItems(),
             orientation = Orientation.Vertical,
-            onClick = {})
+            onClick = {},
+        )
     }
 }
 
@@ -150,9 +165,10 @@ private fun RadioGroupVerticalPreview() {
 @Composable
 private fun RadioGroupHorizontalPreview() {
     JunTheme {
-        RadioGroup(radioList = listOf("자동", "주간", "야간").toComponentItems(),
+        RadioGroup(
+            radioList = listOf("자동", "주간", "야간").toComponentItems(),
             orientation = Orientation.Horizontal,
-            onClick = {})
+            onClick = {},
+        )
     }
 }
-

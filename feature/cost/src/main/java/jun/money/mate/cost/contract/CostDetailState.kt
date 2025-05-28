@@ -2,7 +2,6 @@ package jun.money.mate.cost.contract
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import jun.money.mate.model.etc.DateType
 import jun.money.mate.model.spending.CostType
 import jun.money.mate.utils.currency.CurrencyFormatter
 

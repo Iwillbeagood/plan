@@ -20,9 +20,10 @@ fun HorizontalDivider(
     HorizontalDivider(
         modifier = modifier,
         color = lineColor,
-        thickness = thickness
+        thickness = thickness,
     )
 }
+
 @Composable
 fun HorizontalDivider(
     thickness: Dp = 1.dp,
@@ -30,7 +31,7 @@ fun HorizontalDivider(
 ) {
     HorizontalDivider(
         color = lineColor,
-        thickness = thickness
+        thickness = thickness,
     )
 }
 
@@ -43,7 +44,7 @@ fun VerticalDivider(
     VerticalDivider(
         modifier = modifier,
         color = lineColor,
-        thickness = thickness
+        thickness = thickness,
     )
 }
 
@@ -51,6 +52,6 @@ fun VerticalDivider(
 @Composable
 private fun HmHorizontalDividerPreview() {
     HorizontalDivider(
-        lineColor = Gray8
+        lineColor = Gray8,
     )
 }

@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jun.money.mate.cost.component.CostCalendarValue
 import jun.money.mate.cost.contract.CostEffect
-import jun.money.mate.cost.contract.CostState
 import jun.money.mate.cost.contract.CostModalEffect
+import jun.money.mate.cost.contract.CostState
 import jun.money.mate.cost.navigation.Title
 import jun.money.mate.dataApi.database.CostRepository
 import jun.money.mate.model.etc.error.MessageType
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class CostViewModel @Inject constructor(
-    private val costRepository: CostRepository
+    private val costRepository: CostRepository,
 ) : ViewModel() {
 
     private val _costState = MutableStateFlow<CostState>(CostState.Loading)
@@ -37,7 +37,7 @@ internal class CostViewModel @Inject constructor(
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = CostState.Loading
+            initialValue = CostState.Loading,
         )
 
     private val _costEffect = MutableSharedFlow<CostEffect>()
@@ -53,7 +53,7 @@ internal class CostViewModel @Inject constructor(
                 .collect { costs ->
                     _costState.update {
                         CostState.Data(
-                            costs = costs
+                            costs = costs,
                         )
                     }
                 }
@@ -70,9 +70,9 @@ internal class CostViewModel @Inject constructor(
                                 !it.selected
                             } else {
                                 it.selected
-                            }
+                            },
                         )
-                    }
+                    },
                 )
             }
         }
@@ -82,7 +82,7 @@ internal class CostViewModel @Inject constructor(
         viewModelScope.launch {
             _costState.updateWithData<CostState, CostState.Data> { state ->
                 state.copy(
-                    selectedCalendarValue = costCalendarValue
+                    selectedCalendarValue = costCalendarValue,
                 )
             }
         }
@@ -114,9 +114,9 @@ internal class CostViewModel @Inject constructor(
                 state.copy(
                     costs = state.costs.map {
                         it.copy(
-                            selected = false
+                            selected = false,
                         )
-                    }
+                    },
                 )
             }
         }

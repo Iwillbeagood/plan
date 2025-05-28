@@ -20,7 +20,7 @@ import java.time.YearMonth
 class BudgetMonthlyWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val budgetRepository: BudgetRepository
+    private val budgetRepository: BudgetRepository,
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
@@ -45,7 +45,7 @@ class BudgetMonthlyWorker @AssistedInject constructor(
         val pastBudget = PastBudget(
             budget = budget.budget,
             amountUsed = budget.amountUsed,
-            date = YearMonth.now()
+            date = YearMonth.now(),
         )
         Logger.d("addPastBudget: $pastBudget")
         budgetRepository.insertPastBudget(pastBudget, budget.id)

@@ -10,7 +10,7 @@ internal fun Income.toIncomeEntity() = IncomeEntity(
     amount = amount,
     addDate = addDate,
     dateType = dateType,
-    date = date
+    date = date,
 )
 
 internal fun IncomeEntity.toIncome() = Income(

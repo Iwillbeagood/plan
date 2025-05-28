@@ -40,7 +40,7 @@ internal class SaveDetailViewModel @Inject constructor(
     private val saveRepository: SaveRepository,
     private val editSaveUsecase: EditSaveUsecase,
     private val deleteSaveUsecase: DeleteSaveUsecase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val id = savedStateHandle.toRoute<Route.Save.Detail>().id
@@ -54,7 +54,7 @@ internal class SaveDetailViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = SaveDetailState.Loading
+        initialValue = SaveDetailState.Loading,
     )
 
     private val _modalEffect = MutableStateFlow<SaveDetailModalEffect>(SaveDetailModalEffect.Hidden)
@@ -104,8 +104,8 @@ internal class SaveDetailViewModel @Inject constructor(
         _saveDetailState.updateWithData<SaveDetailState, SaveDetailState.Data> {
             it.copy(
                 savePlan = it.savePlan.copy(
-                    day = day
-                )
+                    day = day,
+                ),
             )
         }
     }
@@ -116,8 +116,8 @@ internal class SaveDetailViewModel @Inject constructor(
         _saveDetailState.updateWithData<SaveDetailState, SaveDetailState.Data> {
             it.copy(
                 savePlan = it.savePlan.copy(
-                    amount = value.value(it.amountString).toLongOrNull() ?: 0
-                )
+                    amount = value.value(it.amountString).toLongOrNull() ?: 0,
+                ),
             )
         }
     }
@@ -155,7 +155,6 @@ internal class SaveDetailViewModel @Inject constructor(
             _saveEffect.emit(SaveDetailEffect.SaveDetailComplete)
         }
     }
-
 }
 
 @Stable

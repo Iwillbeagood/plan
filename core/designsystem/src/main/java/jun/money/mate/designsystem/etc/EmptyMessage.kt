@@ -12,17 +12,17 @@ import jun.money.mate.designsystem.theme.TypoTheme
 
 @Composable
 fun EmptyMessage(
-    text: String
+    text: String,
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceDim)
+            .background(MaterialTheme.colorScheme.surfaceDim),
     ) {
         Text(
             text = text,
             style = TypoTheme.typography.titleMediumR,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center),
         )
     }
 }

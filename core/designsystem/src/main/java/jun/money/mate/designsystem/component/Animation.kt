@@ -28,14 +28,14 @@ import kotlinx.coroutines.delay
 fun FadeAnimatedVisibility(
     visible: Boolean,
     modifier: Modifier = Modifier,
-    content: @Composable AnimatedVisibilityScope.() -> Unit
+    content: @Composable AnimatedVisibilityScope.() -> Unit,
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn(animationSpec = tween(300)),
         exit = fadeOut(animationSpec = tween(300)),
         content = content,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -43,7 +43,7 @@ fun FadeAnimatedVisibility(
 inline fun <reified T> StateAnimatedVisibility(
     target: Any,
     modifier: Modifier = Modifier,
-    noinline content: @Composable (T) -> Unit
+    noinline content: @Composable (T) -> Unit,
 ) {
     AnimatedVisibility(
         visible = target is T,
@@ -54,20 +54,20 @@ inline fun <reified T> StateAnimatedVisibility(
                 content(target)
             }
         },
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
 @Composable
 fun ExpandAnimatedVisibility(
     visible: Boolean,
-    content: @Composable AnimatedVisibilityScope.() -> Unit
+    content: @Composable AnimatedVisibilityScope.() -> Unit,
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = expandIn(),
         exit = shrinkOut(),
-        content = content
+        content = content,
     )
 }
 
@@ -75,20 +75,20 @@ fun ExpandAnimatedVisibility(
 fun LeftToRightSlideFadeAnimatedVisibility(
     visible: Boolean = true,
     modifier: Modifier = Modifier,
-    content: @Composable AnimatedVisibilityScope.() -> Unit
+    content: @Composable AnimatedVisibilityScope.() -> Unit,
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = slideInHorizontally(
             initialOffsetX = { fullWidth -> -fullWidth },
-            animationSpec = tween(300)
+            animationSpec = tween(300),
         ) + fadeIn(animationSpec = tween(300)),
         exit = slideOutHorizontally(
             targetOffsetX = { fullWidth -> -fullWidth },
-            animationSpec = tween(300)
+            animationSpec = tween(300),
         ) + fadeOut(animationSpec = tween(300)),
         modifier = modifier,
-        content = content
+        content = content,
     )
 }
 
@@ -96,20 +96,22 @@ fun LeftToRightSlideFadeAnimatedVisibility(
 fun BottomToTopAnimatedVisibility(
     visible: Boolean,
     modifier: Modifier = Modifier,
-    content: @Composable() AnimatedVisibilityScope.() -> Unit
+    content:
+    @Composable()
+    AnimatedVisibilityScope.() -> Unit,
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = slideInVertically(
             initialOffsetY = { fullHeight -> fullHeight },
-            animationSpec = tween(300)
+            animationSpec = tween(300),
         ),
         exit = slideOutVertically(
             targetOffsetY = { fullHeight -> fullHeight },
-            animationSpec = tween(300)
+            animationSpec = tween(300),
         ),
         modifier = modifier,
-        content = content
+        content = content,
     )
 }
 
@@ -117,7 +119,9 @@ fun BottomToTopAnimatedVisibility(
 fun BottomToTopAnimatedVisibility(
     time: Long,
     modifier: Modifier = Modifier,
-    content: @Composable() AnimatedVisibilityScope.() -> Unit
+    content:
+    @Composable()
+    AnimatedVisibilityScope.() -> Unit,
 ) {
     var isVisible by remember { mutableStateOf(false) }
 
@@ -125,14 +129,14 @@ fun BottomToTopAnimatedVisibility(
         visible = isVisible,
         enter = slideInVertically(
             initialOffsetY = { fullHeight -> fullHeight },
-            animationSpec = tween(300)
+            animationSpec = tween(300),
         ),
         exit = slideOutVertically(
             targetOffsetY = { fullHeight -> fullHeight },
-            animationSpec = tween(300)
+            animationSpec = tween(300),
         ),
         modifier = modifier,
-        content = content
+        content = content,
     )
 
     LaunchedEffect(true) {
@@ -145,20 +149,20 @@ fun BottomToTopAnimatedVisibility(
 fun BottomToTopSlideFadeAnimatedVisibility(
     visible: Boolean = true,
     modifier: Modifier = Modifier,
-    content: @Composable AnimatedVisibilityScope.() -> Unit
+    content: @Composable AnimatedVisibilityScope.() -> Unit,
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = slideInVertically(
             initialOffsetY = { fullHeight -> fullHeight },
-            animationSpec = tween(300)
+            animationSpec = tween(300),
         ) + fadeIn(animationSpec = tween(300)),
         exit = slideOutVertically(
             targetOffsetY = { fullHeight -> fullHeight },
-            animationSpec = tween(300)
+            animationSpec = tween(300),
         ) + fadeOut(animationSpec = tween(300)),
         modifier = modifier,
-        content = content
+        content = content,
     )
 }
 
@@ -167,20 +171,20 @@ fun TopToBottomAnimatedVisibility(
     visible: Boolean,
     modifier: Modifier = Modifier,
     duration: Int = 600,
-    content: @Composable AnimatedVisibilityScope.() -> Unit
+    content: @Composable AnimatedVisibilityScope.() -> Unit,
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = slideInVertically(
             initialOffsetY = { fullHeight -> -fullHeight },
-            animationSpec = tween(duration)
+            animationSpec = tween(duration),
         ) + fadeIn(animationSpec = tween(duration)),
         exit = slideOutVertically(
             targetOffsetY = { fullHeight -> -fullHeight },
-            animationSpec = tween(duration)
+            animationSpec = tween(duration),
         ) + fadeOut(animationSpec = tween(duration)),
         modifier = modifier,
-        content = content
+        content = content,
     )
 }
 
@@ -189,21 +193,21 @@ fun TopToBottomAnimatedVisibility(
     time: Long,
     modifier: Modifier = Modifier,
     duration: Int = 600,
-    content: @Composable AnimatedVisibilityScope.() -> Unit
+    content: @Composable AnimatedVisibilityScope.() -> Unit,
 ) {
     var isVisible by remember { mutableStateOf(false) }
     AnimatedVisibility(
         visible = isVisible,
         enter = slideInVertically(
             initialOffsetY = { fullHeight -> -fullHeight },
-            animationSpec = tween(duration)
+            animationSpec = tween(duration),
         ) + fadeIn(animationSpec = tween(duration)),
         exit = slideOutVertically(
             targetOffsetY = { fullHeight -> -fullHeight },
-            animationSpec = tween(duration)
+            animationSpec = tween(duration),
         ) + fadeOut(animationSpec = tween(duration)),
         modifier = modifier,
-        content = content
+        content = content,
     )
 
     LaunchedEffect(true) {
@@ -219,18 +223,17 @@ fun <T> CrossfadeWithSlide(
     modifier: Modifier = Modifier,
     animationSpec: FiniteAnimationSpec<Float> = tween(durationMillis = 500),
     label: String = "CrossfadeWithSlide",
-    content: @Composable (T) -> Unit
+    content: @Composable (T) -> Unit,
 ) {
     AnimatedContent(
         targetState = targetState,
         transitionSpec = {
             fadeIn(animationSpec) + slideInVertically { fullHeight -> fullHeight / 2 } with
-                    fadeOut(animationSpec) + slideOutVertically { fullHeight -> fullHeight / 2 }
+                fadeOut(animationSpec) + slideOutVertically { fullHeight -> fullHeight / 2 }
         },
         modifier = modifier,
-        label = label
+        label = label,
     ) { state ->
         content(state)
     }
 }
-

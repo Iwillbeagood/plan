@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.component.HorizontalSpacer
 import jun.money.mate.designsystem.component.VerticalSpacer
-import jun.money.mate.designsystem_date.datetimepicker.DatePicker
-import jun.money.mate.designsystem_date.datetimepicker.DayPicker
-import jun.money.mate.designsystem_date.datetimepicker.TimeBoundaries
+import jun.money.mate.designsystemDate.datetimepicker.DatePicker
+import jun.money.mate.designsystemDate.datetimepicker.DayPicker
+import jun.money.mate.designsystemDate.datetimepicker.TimeBoundaries
 import jun.money.mate.model.etc.DateType
 import java.time.LocalDate
 
@@ -22,7 +22,7 @@ fun DateAdd(
     onDateTypeSelected: (DateType) -> Unit,
     dateType: DateType?,
     date: Int = LocalDate.now().dayOfMonth,
-    disableTypeChange: Boolean = false
+    disableTypeChange: Boolean = false,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),

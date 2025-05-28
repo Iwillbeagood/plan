@@ -39,7 +39,7 @@ import jun.money.mate.designsystem.component.VerticalSpacer
 import jun.money.mate.designsystem.theme.ChangeStatusBarColor
 import jun.money.mate.designsystem.theme.JunTheme
 import jun.money.mate.designsystem.theme.TypoTheme
-import jun.money.mate.designsystem_date.datetimepicker.DayPicker
+import jun.money.mate.designsystemDate.datetimepicker.DayPicker
 import jun.money.mate.model.Utils
 import jun.money.mate.model.save.SavePlan
 import jun.money.mate.model.save.SavingsType
@@ -52,7 +52,7 @@ import jun.money.mate.ui.number.NumberKeyboard
 
 @Composable
 internal fun SaveDetailRoute(
-    viewModel: SaveDetailViewModel = hiltViewModel()
+    viewModel: SaveDetailViewModel = hiltViewModel(),
 ) {
     ChangeStatusBarColor(MaterialTheme.colorScheme.background)
 
@@ -73,17 +73,16 @@ internal fun SaveDetailRoute(
                         style = TypoTheme.typography.titleMediumM,
                         modifier = Modifier
                             .clickable(
-                                onClick = viewModel::showDeleteDialog
+                                onClick = viewModel::showDeleteDialog,
                             )
-                            .padding(5.dp)
-                        ,
+                            .padding(5.dp),
                     )
-                }
+                },
             )
         },
         bottomBar = {
             BottomToTopSlideFadeAnimatedVisibility(
-                visible = viewModel.isEdited.value
+                visible = viewModel.isEdited.value,
             ) {
                 RegularButton(
                     text = "수정하기",
@@ -91,21 +90,21 @@ internal fun SaveDetailRoute(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(MaterialTheme.colorScheme.surfaceDim)
-                        .padding(16.dp)
+                        .padding(16.dp),
                 )
             }
-        }
+        },
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
-                .padding(it)
+                .padding(it),
         ) {
             SaveDetailContent(
                 isEdited = viewModel.isEdited.value,
                 saveDetailState = saveDetailState,
-                viewModel = viewModel
+                viewModel = viewModel,
             )
         }
     }
@@ -129,7 +128,7 @@ internal fun SaveDetailRoute(
 private fun SaveDetailContent(
     isEdited: Boolean,
     saveDetailState: SaveDetailState,
-    viewModel: SaveDetailViewModel
+    viewModel: SaveDetailViewModel,
 ) {
     StateAnimatedVisibility<SaveDetailState.Data>(
         target = saveDetailState,
@@ -162,11 +161,11 @@ private fun SaveDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
     ) {
         VerticalSpacer(40.dp)
         SaveDetailField(
-            title = "매월 납입금액"
+            title = "매월 납입금액",
         ) {
             Column {
                 UnderLineText(
@@ -181,17 +180,17 @@ private fun SaveDetailScreen(
                             text = uiState.amountWon,
                             style = TypoTheme.typography.labelLargeM,
                             textAlign = TextAlign.End,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                 }
             }
         }
         SaveDetailField(
-            title = "납입 날짜"
+            title = "납입 날짜",
         ) {
             Crossfade(
-                isEdited
+                isEdited,
             ) {
                 when (it) {
                     true -> {
@@ -200,7 +199,7 @@ private fun SaveDetailScreen(
                                 onDaySelected(selected.toInt())
                             },
                             selectedDay = uiState.savePlan.day.toString(),
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
 
@@ -219,32 +218,32 @@ private fun SaveDetailScreen(
         ) {
             FixedText(
                 value = uiState.savePlan.savingsType.title,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         SaveDetailField(
             visible = uiState.savePlan.savingsType is SavingsType.PeriodType,
-            title = "납입기간"
+            title = "납입기간",
         ) {
             FixedText(
                 value = uiState.savePlan.period,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         SaveDetailField(
-            title = "전체 납입한 금액"
+            title = "전체 납입한 금액",
         ) {
             FixedText(
                 value = Utils.formatAmountWon(uiState.savePlan.periodTotal),
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         SaveDetailField(
-            title = "납입횟수"
+            title = "납입횟수",
         ) {
             FixedText(
                 value = uiState.savePlan.getPaidCount().toString() + " 번",
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -296,16 +295,16 @@ private fun SaveDetailModalContent(
                         text = "저축을 삭제하시겠습니까?",
                         style = TypoTheme.typography.titleMediumM,
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                     VerticalSpacer(16.dp)
                     TextCheckBox(
                         checked = checked,
                         text = "다른 납입 내역도 함께 삭제",
                         style = TypoTheme.typography.titleSmallM,
-                        onCheckedChange = { checked = it }
+                        onCheckedChange = { checked = it },
                     )
-                }
+                },
             )
         }
         SaveDetailModalEffect.ShowPeriodDeleteConfirmDialog -> {

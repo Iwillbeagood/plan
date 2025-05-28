@@ -27,8 +27,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.YearMonth
 import javax.inject.Inject
 
 @HiltViewModel
@@ -65,7 +63,7 @@ internal class IncomeEditViewModel @Inject constructor(
                         amount = it.amount,
                         date = it.date,
                         dateType = it.dateType,
-                        addDate = it.addDate
+                        addDate = it.addDate,
                     )
                 }
             }

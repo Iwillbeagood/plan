@@ -6,7 +6,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import androidx.room.Upsert
-import jun.money.mate.database.AppDatabase
 import jun.money.mate.database.AppDatabase.Companion.BUDGET_TABLE_NAME
 import jun.money.mate.database.AppDatabase.Companion.BUDGET_USED_TABLE_NAME
 import jun.money.mate.database.entity.BudgetEntity

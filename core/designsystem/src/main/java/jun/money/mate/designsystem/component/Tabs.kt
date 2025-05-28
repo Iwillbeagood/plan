@@ -35,15 +35,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import jun.money.mate.designsystem.theme.Gray6
-import jun.money.mate.designsystem.theme.TypoTheme
 import jun.money.mate.designsystem.theme.JunTheme
+import jun.money.mate.designsystem.theme.TypoTheme
 
 @Composable
 fun TabRow(
     tabs: List<String>,
     selectedTabIndex: Int,
     onTabClick: (Int) -> Unit,
-    style: TextStyle = TypoTheme.typography.titleMediumM
+    style: TextStyle = TypoTheme.typography.titleMediumM,
 ) {
     Box(
         modifier = Modifier.fillMaxWidth(),
@@ -56,13 +56,13 @@ fun TabRow(
                 if (selectedTabIndex < tabPositions.size) {
                     SecondaryIndicator(
                         color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
+                        modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
                     )
                 }
             },
             divider = {
                 HorizontalDivider()
-            }
+            },
         ) {
             tabs.forEachIndexed { tabIndex, tab ->
                 Tab(
@@ -82,7 +82,7 @@ fun TabRow(
                                 Gray6
                             },
                             maxLines = 1,
-                            modifier = Modifier.padding(vertical = 2.dp)
+                            modifier = Modifier.padding(vertical = 2.dp),
                         )
                     },
                 )
@@ -98,7 +98,7 @@ fun ScrollableTab(
     onTabClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     style: TextStyle = TypoTheme.typography.titleMediumM,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceDim
+    containerColor: Color = MaterialTheme.colorScheme.surfaceDim,
 ) {
     val density = LocalDensity.current
     val tabWidths = remember {
@@ -119,12 +119,12 @@ fun ScrollableTab(
             SecondaryIndicator(
                 modifier = Modifier.customTabIndicatorOffset(
                     currentTabPosition = tabPositions[selectedTabIndex],
-                    tabWidth = tabWidths[selectedTabIndex]
+                    tabWidth = tabWidths[selectedTabIndex],
                 ),
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
         },
-        divider = {}
+        divider = {},
     ) {
         tabs.forEachIndexed { tabIndex, tab ->
             Tab(
@@ -146,7 +146,7 @@ fun ScrollableTab(
                         onTextLayout = { textLayoutResult ->
                             tabWidths[tabIndex] =
                                 with(density) { textLayoutResult.size.width.toDp() }
-                        }
+                        },
                     )
                 },
             )
@@ -156,20 +156,22 @@ fun ScrollableTab(
 
 private fun Modifier.customTabIndicatorOffset(
     currentTabPosition: TabPosition,
-    tabWidth: Dp
+    tabWidth: Dp,
 ): Modifier = composed(
     inspectorInfo = debugInspectorInfo {
         name = "customTabIndicatorOffset"
         value = currentTabPosition
-    }
+    },
 ) {
     val currentTabWidth by animateDpAsState(
         targetValue = tabWidth,
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing), label = ""
+        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing),
+        label = "",
     )
     val indicatorOffset by animateDpAsState(
         targetValue = ((currentTabPosition.left + currentTabPosition.right - tabWidth) / 2),
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing), label = ""
+        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing),
+        label = "",
     )
     fillMaxWidth()
         .wrapContentSize(Alignment.BottomStart)
@@ -188,7 +190,7 @@ private fun TabPreview() {
             selectedTabIndex = selectedTabIndex,
             onTabClick = {
                 selectedTabIndex = it
-            }
+            },
         )
     }
 }
@@ -208,12 +210,12 @@ private fun ScrollableTabPreview() {
                 "아이디 찾기",
                 "비밀번호 찾기",
                 "아이디 찾기",
-                "비밀번호 찾기"
+                "비밀번호 찾기",
             ),
             selectedTabIndex = selectedTabIndex,
             onTabClick = {
                 selectedTabIndex = it
-            }
+            },
         )
     }
 }

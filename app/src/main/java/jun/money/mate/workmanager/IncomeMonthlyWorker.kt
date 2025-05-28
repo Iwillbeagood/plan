@@ -20,7 +20,7 @@ import java.time.YearMonth
 class IncomeMonthlyWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val incomeRepository: IncomeRepository
+    private val incomeRepository: IncomeRepository,
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
@@ -29,8 +29,9 @@ class IncomeMonthlyWorker @AssistedInject constructor(
             incomeRepository.getIncomesByMonth(YearMonth.now())
                 .collect {
                     it.incomes.forEach { income ->
-                        if (income.dateType == DateType.Monthly)
+                        if (income.dateType == DateType.Monthly) {
                             addNextMonthIncome(income)
+                        }
                     }
                 }
         }
@@ -48,7 +49,7 @@ class IncomeMonthlyWorker @AssistedInject constructor(
                     title = income.title,
                     amount = income.amount,
                     date = income.date,
-                )
+                ),
             )
         }
     }
