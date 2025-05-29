@@ -44,5 +44,5 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
       - name: Run Spotless
-        run: ./gradlew spotlessApply
+        run: ./gradlew spotlessApply --no-configuration-cache
 
