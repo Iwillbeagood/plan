@@ -97,8 +97,8 @@ fun BottomToTopAnimatedVisibility(
     visible: Boolean,
     modifier: Modifier = Modifier,
     content:
-        @Composable()
-        AnimatedVisibilityScope.() -> Unit,
+    @Composable()
+    AnimatedVisibilityScope.() -> Unit,
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -120,8 +120,8 @@ fun BottomToTopAnimatedVisibility(
     time: Long,
     modifier: Modifier = Modifier,
     content:
-        @Composable()
-        AnimatedVisibilityScope.() -> Unit,
+    @Composable()
+    AnimatedVisibilityScope.() -> Unit,
 ) {
     var isVisible by remember { mutableStateOf(false) }
 
@@ -232,7 +232,7 @@ fun <T> CrossfadeWithSlide(
                 fadeIn(
                     animationSpec,
                 ) + slideInVertically { fullHeight -> fullHeight / 2 }
-            ).togetherWith(
+                ).togetherWith(
                 fadeOut(animationSpec) + slideOutVertically { fullHeight -> fullHeight / 2 },
             )
         },
