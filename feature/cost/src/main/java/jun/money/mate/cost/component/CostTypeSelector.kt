@@ -96,7 +96,7 @@ private fun CategoryField(
     onSelected: (CostType?) -> Unit,
     costType: CostType? = null,
 ) {
-    var selectedTab by remember { mutableStateOf(CostOption.일반) }
+    var selectedTab by remember { mutableStateOf(CostOption.General) }
     var etcValue by remember { mutableStateOf("") }
     val grouped = SubscriptionType.entries.groupBy { it.category }
 
@@ -113,9 +113,9 @@ private fun CategoryField(
         LazyVerticalGrid(
             columns = GridCells.Fixed(
                 when (selectedTab) {
-                    CostOption.일반 -> 4
-                    CostOption.구독 -> 3
-                    CostOption.기타 -> 1
+                    CostOption.General -> 4
+                    CostOption.Subscription -> 3
+                    CostOption.Etc -> 1
                 },
             ),
             modifier = Modifier
@@ -123,7 +123,7 @@ private fun CategoryField(
                 .heightIn(max = 1000.dp),
         ) {
             when (selectedTab) {
-                CostOption.일반 -> {
+                CostOption.General -> {
                     items(NormalType.entries) {
                         TypeItem(
                             imageRes = it.toImageRes(),
@@ -138,7 +138,7 @@ private fun CategoryField(
                         )
                     }
                 }
-                CostOption.구독 -> {
+                CostOption.Subscription -> {
                     grouped.forEach { (category, types) ->
                         item(span = { GridItemSpan(3) }) {
                             Text(
@@ -165,7 +165,7 @@ private fun CategoryField(
                         }
                     }
                 }
-                CostOption.기타 -> {
+                CostOption.Etc -> {
                     item {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
