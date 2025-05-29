@@ -12,17 +12,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
+      - uses: actions/checkout@v4
+      # Gradle 캐시 추가
+      - name: Cache Gradle files
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      # 빌드 아티팩트 캐시 추가
+      - name: Cache build outputs
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/build
+          key: ${{ runner.os }}-build-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+      - name: set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
-    - name: Run Spotless
-      run: ./gradlew spotlessApply
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Run Spotless
+        run: ./gradlew spotlessApply
+
