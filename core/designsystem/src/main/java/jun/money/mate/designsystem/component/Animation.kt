@@ -14,7 +14,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -97,8 +97,8 @@ fun BottomToTopAnimatedVisibility(
     visible: Boolean,
     modifier: Modifier = Modifier,
     content:
-    @Composable()
-    AnimatedVisibilityScope.() -> Unit,
+        @Composable()
+        AnimatedVisibilityScope.() -> Unit,
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -120,8 +120,8 @@ fun BottomToTopAnimatedVisibility(
     time: Long,
     modifier: Modifier = Modifier,
     content:
-    @Composable()
-    AnimatedVisibilityScope.() -> Unit,
+        @Composable()
+        AnimatedVisibilityScope.() -> Unit,
 ) {
     var isVisible by remember { mutableStateOf(false) }
 
@@ -228,8 +228,13 @@ fun <T> CrossfadeWithSlide(
     AnimatedContent(
         targetState = targetState,
         transitionSpec = {
-            fadeIn(animationSpec) + slideInVertically { fullHeight -> fullHeight / 2 } with
-                fadeOut(animationSpec) + slideOutVertically { fullHeight -> fullHeight / 2 }
+            (
+                fadeIn(
+                    animationSpec,
+                ) + slideInVertically { fullHeight -> fullHeight / 2 }
+            ).togetherWith(
+                fadeOut(animationSpec) + slideOutVertically { fullHeight -> fullHeight / 2 },
+            )
         },
         modifier = modifier,
         label = label,

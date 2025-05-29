@@ -1,6 +1,7 @@
 package jun.money.mate.model.save
 
 import jun.money.mate.model.save.SavingsType.PeriodType.Companion.periodEndDate
+import jun.money.mate.model.serializer.LocalDateSerializer
 import jun.money.mate.model.serializer.YearMonthSerializer
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
@@ -42,14 +43,14 @@ sealed interface SavingsType {
 
     @Serializable
     data class 적금(
-        @Serializable(with = YearMonthSerializer::class) override val periodStart: LocalDate = LocalDate.now(),
+        @Serializable(with = LocalDateSerializer::class) override val periodStart: LocalDate = LocalDate.now(),
         override val periodMonth: Int = 0,
     ) : SavingsType,
         PeriodType
 
     @Serializable
     data class 보험저축(
-        @Serializable(with = YearMonthSerializer::class) override val periodStart: LocalDate = LocalDate.now(),
+        @Serializable(with = LocalDateSerializer::class) override val periodStart: LocalDate = LocalDate.now(),
         override val periodMonth: Int = 0,
     ) : SavingsType,
         PeriodType
