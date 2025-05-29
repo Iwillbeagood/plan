@@ -1,6 +1,6 @@
 [versions]
 activityCompose = "1.7.2"
-androidGradlePlugin = "8.4.2"
+androidGradlePlugin = "8.10.1"
 androidDesugarJdkLibs = "2.0.4"
 androidxCore = "1.13.1"
 androidxAppCompat = "1.7.0"
