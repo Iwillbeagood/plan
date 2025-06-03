@@ -6,6 +6,15 @@ plugins {
 
 android {
     setNamespace("testing")
+
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md",
+            )
+        }
+    }
 }
 
 dependencies {
